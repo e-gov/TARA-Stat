@@ -47,3 +47,23 @@ a, a:hover, a:active, a:visited {
   font-family: 'Courier New', monospace;
   font-size: 14pt;
 }
+
+.info, .viga {
+  padding: .5em;
+  border: .5em;
+  border-left-style: solid;
+  page-break-inside: avoid;
+  margin: 1em auto;
+}  
+
+.info {
+  border-color: #52E052;
+  background: #E9FBE9;
+  overflow: auto;
+}
+
+.viga {
+  border-color: orange;
+  border-style: none solid;
+  background: #FFEECC;
+}

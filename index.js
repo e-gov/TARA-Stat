@@ -7,7 +7,7 @@
 
 'use strict';
 
-/* Vajalike teekide laadimine */
+/* Teekide laadimine */
 
 /* Veebiraamistik Express */
 const express = require('express');
@@ -23,6 +23,9 @@ const requestModule = require('request');
 
 /* HTTP päringute silumisvahend. Praegu välja lülitatud */
 // require('request-debug')(requestModule);
+
+/* MongoDB */
+const MongoClient = require('mongodb').MongoClient;
 
 /* Veebiserveri ettevalmistamine */
 const app = express();
@@ -47,6 +50,12 @@ app.use(bodyParser.json());
  application/x-www-form-urlencoded parsimiseks */
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/* Andmebaasiühenduse loomine */
+const MONGODB_URL = 'mongodb://localhost:27017';
+
+// Andmebaasi nimi
+const LOGIBAAS = 'db';
+
 /**
  *  Järgnevad marsruuteri töötlusreeglid
  */
@@ -62,7 +71,35 @@ app.get('/lisa', function (req, res) {
  * Kuva esileht ja väljasta statistika
  */
 app.get('/', function (req, res) {
+  // Ühendu logibaasi külge
+  MongoClient.connect(MONGODB_URL, (err, client) => {
+    if (err === null) {
+      console.log("Logibaasiga ühendumine õnnestus");
+      res.render('pages/index', { connectionOK: true });
+      // const db = client.db(LOGIBAAS);
+      // client.close();
+    }
+    else {
+      console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
+      res.render('pages/index', { connectionOK: false });
+    }
+  });
+});
+
+/**
+ * Väljasta statistika
+ */
+app.get('/stat', function (req, res) {
+
   res.render('pages/index');
+});
+
+/**
+ * Vasta elusolekupäringule
+ */
+app.get('/status', function (req, res) {
+
+  res.send('TARA-Stat: OK');
 });
 
 /**

@@ -9,8 +9,11 @@
 
     <h1>TARA statistika</h1>
 
-    <p>
-      <a href='https://e-gov.github.io/TARA-Doku/'>TARA </a> on teenus, millega avaliku sektori asutus saab e-teenuses autentida nii Eesti kui ka teisest EL riigist tulnud kasutaja.</p>
+    <% if (connectionOK) { %>
+      <p class='info'>Ühendus logibaasiga OK</p>
+    <% } else { %>  
+      <p class='viga'>ERR-01: Logibaasiga ühendumine ebaõnnestus</p>
+    <% } %>
 
     <p>Vaata statistikat:
       <a href='/stat'>
@@ -18,9 +21,6 @@
       </a>
     </p>
 
-    <p><a href='https://github.com/e-gov/TARA-Stat'>Lähtekood</a>.
-    </p>
- 
     </body>
 
 </html>
