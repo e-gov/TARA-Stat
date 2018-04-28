@@ -1,4 +1,4 @@
-TARA-Stat on eksperimentaalne mikroteenus statistika tootmiseks ja vaatamiseks 
+TARA-Stat on eksperimentaalne mikroteenus TARA statistika tootmiseks ja vaatamiseks 
 
 Statistikakasutaja UI:
 
