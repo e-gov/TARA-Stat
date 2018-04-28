@@ -13,7 +13,6 @@
 const express = require('express');
 
 /* HTTP päringu parsimisvahendid */
-const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const qs = require('query-string');
 
@@ -28,6 +27,7 @@ const requestModule = require('request');
 
 /* Veebiserveri ettevalmistamine */
 const app = express();
+app.set('port', 8080);
 
 /* Sea juurkaust, millest serveeritakse sirvikusse ressursse
  vt http://expressjs.com/en/starter/static-files.html 

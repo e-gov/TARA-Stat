@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/e-gov/TARA-Stat/issues"
   },
-  "homepage": "https://github.com/e-gov/TARA-Stat#readme"
+  "homepage": "https://github.com/e-gov/TARA-Stat#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "query-string": "^6.0.0",
+    "request": "^2.85.0"
+  }
 }
