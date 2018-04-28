@@ -1,5 +1,9 @@
 TARA-Stat on mikroteenus statistika tootmiseks ja vaatamiseks 
 
-<img src='docs/Capture.PNG' width= "300">
+Statistikakasutaja UI:
 
-<img src='docs/Arhi.PNG' width= "400">
+<img src='docs/Capture.PNG' width= "280">
+
+Üldistatud arhitektuur:
+
+<img src='docs/Arhi.PNG' width= "500">
