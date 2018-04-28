@@ -24,10 +24,9 @@ const requestModule = require('request');
 /* HTTP päringute silumisvahend. Praegu välja lülitatud */
 // require('request-debug')(requestModule);
 
-
 /* Veebiserveri ettevalmistamine */
 const app = express();
-app.set('port', 8080);
+app.set('port', 5000);
 
 /* Sea juurkaust, millest serveeritakse sirvikusse ressursse
  vt http://expressjs.com/en/starter/static-files.html 
