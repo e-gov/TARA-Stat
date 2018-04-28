@@ -1,2 +1,3 @@
 # TARA-Stat
-TARA statistikateenus | Statistics Service of TARA 
+
+Mikroteenus TARA statistika tootmiseks ja vaatamiseks 
