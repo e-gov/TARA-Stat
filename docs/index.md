@@ -166,7 +166,7 @@ Kasulikul µT-l on tavaliselt 2-3 liidest. Liideste kvaliteet (lihtsus, selgus, 
 
  TARA-Stat pakub 4 liidest. Neist kaks on peamised ja kaks on toetavad. Liideseid nimetan ka otspunktideks. Liidestest arusaamiseks on abiks arhitektuurijoonis (vt joonis 1). 
 
-<img src='img/Arhi.PNG' width= "500">
+<p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
 
 Joonis 1. TARA-Stat üldistatud arhitektuur
 
@@ -191,7 +191,7 @@ Näiteks, [httpie](https://httpie.org/) abil:
   - vajutada nupule
   - kuvatakse autentimiste arv perioodi jooksul klientrakenduste lõikes
 
-<img src='img/Capture.PNG' width= "650">
+<p style='text-align:center;'><img src='img/Capture.PNG' width= "650"></p>
 
 Joonis 2. Statistikakasutaja UI
 
