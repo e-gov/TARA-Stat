@@ -3,24 +3,28 @@
 
   <head>
     <% include ../partials/header.ejs %>
+    <script src='js/alusta.js'></script>
   </head>
 
-  <body>
+  <body onload="alusta();">
 
     <h1>TARA statistika</h1>
 
-    <% if (connectionOK) { %>
-      <p class='info'>Ühendus logibaasiga OK</p>
-    <% } else { %>  
-      <p class='viga'>ERR-01: Logibaasiga ühendumine ebaõnnestus</p>
-    <% } %>
+    <p class='info'>Ühendus logibaasiga OK</p>
 
-    <p>Vaata statistikat:
-      <a href='/stat'>
-        <i class="ikoon material-icons">show_chart</i>
-      </a>
-    </p>
+    <div style='display: flex; justify-content: space-between; align-items: center;'>
+      <label class='active'>
+        Periood, nt
+        <code>2018-04</code> (regex avaldis): 
+        <input id='perioodiMuster' type='text' style='margin: 0 2rem;' autocomplete='off'>
+      </label>
+      <div id='sooritaNupp' class='nupp' title='Arvuta statistika'>
+        <i class='ikoon material-icons'>search</i>
+      </div>
+    </div>
 
-    </body>
+    <p id='Tulem'></p>
+
+  </body>
 
 </html>

@@ -13,16 +13,8 @@
 const express = require('express');
 
 /* HTTP päringu parsimisvahendid */
+/* Ei tea miks, kuid body-parser on vajalik */
 const bodyParser = require('body-parser');
-const qs = require('query-string');
-
-/* HTTP kliendi teek
-  Vt https://www.npmjs.com/package/request 
-*/
-const requestModule = require('request');
-
-/* HTTP päringute silumisvahend. Praegu välja lülitatud */
-// require('request-debug')(requestModule);
 
 /* MongoDB */
 const MongoClient = require('mongodb').MongoClient;
@@ -42,19 +34,12 @@ app.set('views', __dirname + '/views');
 /* Määra kasutatav mallimootor */
 app.set('view engine', 'ejs');
 
-/* Vajalik seadistus MIME-tüübi application/json 
-parsimiseks */
-app.use(bodyParser.json());
-
-/* Vajalik seadistus MIME-tüübi
- application/x-www-form-urlencoded parsimiseks */
-app.use(bodyParser.urlencoded({ extended: true }));
-
 /* Andmebaasiühenduse loomine */
 const MONGODB_URL = 'mongodb://localhost:27017';
 
 // Andmebaasi nimi
-const LOGIBAAS = 'db';
+const LOGIBAAS = 'logibaas';
+const COLLECTION = 'autentimised';
 
 /**
  *  Järgnevad marsruuteri töötlusreeglid
@@ -68,30 +53,92 @@ app.get('/lisa', function (req, res) {
 });
 
 /**
- * Kuva esileht ja väljasta statistika
+ * Kuva esileht
  */
 app.get('/', function (req, res) {
   // Ühendu logibaasi külge
   MongoClient.connect(MONGODB_URL, (err, client) => {
     if (err === null) {
       console.log("Logibaasiga ühendumine õnnestus");
-      res.render('pages/index', { connectionOK: true });
-      // const db = client.db(LOGIBAAS);
-      // client.close();
+      res.render('pages/index');
+      const db = client.db(LOGIBAAS);
+      client.close();
     }
     else {
       console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-      res.render('pages/index', { connectionOK: false });
+      res.render('pages/viga', { veateade: "ERR-01: Logibaasiga ühendumine ebaõnnestus" });
     }
   });
 });
 
 /**
  * Väljasta statistika
+ * (AJAX päring)
  */
 app.get('/stat', function (req, res) {
 
-  res.render('pages/index');
+  /**
+   * Leia autentimiste arv klienditi
+   */
+  const leiaKlienditi = function (r, db, callback) {
+    const collection = db.collection(COLLECTION);
+    collection
+      .aggregate([
+        {
+          $match: {
+            aeg: { $regex: r }
+          }
+        },
+        {
+          $group: {
+            _id: "$klient",
+            kirjeteArv: { $sum: 1 }
+          }
+        }
+      ])
+      .toArray(function (err, kirjed) {
+        console.log(err);
+        if (err === null) {
+          callback(kirjed);
+        }
+        else {
+          console.log('ERR-02: Viga logibaasist lugemisel');
+          res.render('pages/viga', { veateade: "ERR-02: Viga logibaasist lugemisel" });
+        }
+      });
+  }
+
+  /* Võta päringu query-osast sirvikust saadetud perioodimuster */
+  const p = req.query.p;
+  /* undefined, kui parameeter päringus puudub */
+  console.log('Perioodimuster: ', p);
+  /* Moodusta regex */
+  var r;
+  if (p) {
+    r = new RegExp(p);
+  }
+  else {
+    r = new RegExp('.*');
+  }
+
+  // Ühendu logibaasi külge
+  MongoClient.connect(MONGODB_URL, (err, client) => {
+    if (err === null) {
+      console.log("Logibaasiga ühendumine õnnestus");
+      const db = client.db(LOGIBAAS);
+      leiaKlienditi(r, db, (kirjed) => {
+        res.send(
+          {
+            kirjed: kirjed
+          });
+        client.close();
+      });
+    }
+    else {
+      console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
+      res.send({ });
+    }
+  });
 });
 
 /**

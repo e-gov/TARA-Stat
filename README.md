@@ -1,4 +1,4 @@
-TARA-Stat on eksperimentaalne mikroteenus TARA statistika tootmiseks ja vaatamiseks 
+TARA-Stat on eksperimentaalne mikroteenus TARA statistika tootmiseks ja vaatamiseks.
 
 Statistikakasutaja UI:
 
@@ -7,3 +7,6 @@ Statistikakasutaja UI:
 Üldistatud arhitektuur:
 
 <img src='docs/Arhi.PNG' width= "500">
+
+Vt ka [TARA kasutusstatistika](https://e-gov.github.io/TARA-Doku/Statistika) (spetsifikatsioon).
+

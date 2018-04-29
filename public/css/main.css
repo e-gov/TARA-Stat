@@ -29,6 +29,11 @@ h1 {
   font-size: 48px; color: #757575;
 }
 
+.nupp { margin: 0.5rem 0.5rem;
+  cursor: pointer;
+  color: #757575;
+}
+
 a, a:hover, a:active, a:visited {
   color: 292B2C !important;
   text-decoration: underline;
@@ -67,3 +72,10 @@ a, a:hover, a:active, a:visited {
   border-style: none solid;
   background: #FFEECC;
 }
+
+/* Tabelid */
+table { table-layout: fixed;
+  width: 100%; margin: 0 4em 2em 0; }
+table { border-collapse: collapse; }
+table, th, td { border: 1px solid black; }
+td { padding: 0 1em;}
