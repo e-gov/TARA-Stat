@@ -8,7 +8,7 @@ v 0.1, 29.04.2018
 
 Käesolevast kirjutisest võiks saada mikroteenuste _primer_. Praegu on see aga kirjeldus ühe mikroteenuse tegemisest.
 
-## Kontekst
+## 1. Kontekst
 
 Meil ei jätku inimesi, kes kõik vajalikud e-teenused välja arendaks, olemasolevaid uuendaks ja innovatsiooni sisse tooks. See paneb otsima võimalusi IT-d senisest teistmoodi teha. Nagu iga keerulise probleemiga, on probleemi raske sõnastada. Puudu ei ole inimestest, vaid ... aga milles täpselt on probleem? Avaliku sektori IT on keeruline, aeganõudev ja kohmakas. Tuleb lisada, et sageli ka tehnoloogiliselt vananenud.
 
@@ -16,7 +16,7 @@ Süsteemide ehitamisest koosnevana mikroteenustest räägitakse IT-maailmas prae
 
 Kontekstiks on keskmine või suurem organisatsioon, kes haldab oma IT-taristut. Taristust teame niipalju, et seal töötab palju mitmesuguseid süsteeme, rakendatakse virtualiseerimist. Tehnoloogiate poolest palju selliseid, mis tüüpilised sama suurusega organisatsioonidele. Nagu igal pool, on aktuaalne IT automatiseerimine, sest inimesi kõige vajaliku ärategemiseks napib. Turvanõuete poolest on süsteemid erinevad, kuid üldiselt on turvanõuded kõrged.
 
-## Mikroteenus
+## 2. Mikroteenus
 
 (µT) on iseseisva elutsükliga, kiiresti arendatav, selgepiiriliste liidestega, iseseisev, ühte kasulikku funktsiooni täitev rakendus.
 - iseseisva elutsükliga - Mida see tähendab? µT arendus ei pea käima süsteemi teiste osade arendusega ühte jalga. µT tehakse valmis ja pannakse tööle. Muudetakse siis, kui on vaja.
@@ -25,13 +25,13 @@ Kontekstiks on keskmine või suurem organisatsioon, kes haldab oma IT-taristut. 
 - iseseisev - Iseseisvus tähendab võimalikult väheseid sõltuvusi (_dependencies_). Mitte ainult sõltuvused teistest (mikro)teenustest, vaid ka kasutatavatest teekidest, raamistikest jm tehnoloogiatest. 
 
 Ülesanne lahendamisel on eelistatud standardsed ja adekvaatse keerukusega tööriistad.
-{: .teade}
+{: .node}
 
 Miks see on oluline? Kuigi µT on äravisatavad ja ümberkirjutatavad, on siiski kasulik neid aeg-ajalt täiendada. µT arendus ei tohiks olla pidev. Kergem on meelde tuletada ja muuta koodi, mis on kirjutatud laialt levinud keeles.
 
 - ühte kasulikku funktsiooni täitev - Ühe funktsiooni tõttu langevad ära või lihtsustuvad mitmed monoliitarenduses palju aega ja energiat nõudvad tööd. Vaja ei ole spetsiaalset süsteemi kasutusjuhtude kirjelduste haldamiseks - kasutusjuhtusid ongi 2-3. 
 
-## 7 päeva
+## 3. 7 päeva
 
 µT peaks olema (ümber-)kirjutatav u nädalaga. Milliste tööde ja toimingute vahel see aeg jaguneb? Koodi kirjutamine on ainult osa arendusest. Arendust mõistame siin DevOps vaatenurgast. S.t arendus on kõik see, mis ei ole teenuse käitamine. Arendamine on ka tarkvara paigaldamine. Planeerin järgmise ajakava:
 
@@ -44,9 +44,9 @@ päev    | töö                | tulemus
 5.\     | testpaigalduse läbitegemine; paralleelselt tarkvara viimistlemine, eriti turvalisuse tõstmise seisukohalt (_hardening_) | paigaldamine läbi mängitud
 6.\     | toodangusse paigaldamine, klientide teavitamine | µT on kasutusvalmis; klientidele on teenust esitletud
 
-## TARA-Stat
+## 4. TARA-Stat
 
-### Funktsioon
+### 4.1 Funktsioon
 
 TARA-Stat on eksperimentaalne µT [autentimisteenuse TARA]((https://e-gov.github.io/TARA-Doku) kasutusstatistika tootmiseks ja vaatamiseks. Olemas on varem koostatud spetsifikatsioon: [TARA kasutusstatistika](https://e-gov.github.io/TARA-Doku/Statistika).
 
@@ -57,7 +57,7 @@ Funktsioon - pakub võimalust
 
 Ongi kõik. Kohe tekib küsimus, kas seda pole liiga vähe? See µT on spetsialiseeritud logi. Logimine on ulatuslik teema. Logitakse mitmel erineval eesmärgil - turvamine, kasutajate pöördumiste lahendamine, teenuse ülaloleku seiramine jm. Autentimisteenuses TARA on juba oma, keerukas logilahendus - mis on (potentsiaalselt) ühendatud võimsa keskse logisüsteemiga. Kas siis eraldi, spetsialiseeritud logilahendusel on mõtet? See on mittetriviaalne, kuid väga oluline küsimus. Eraldi logilahendusel puuduks mõte, kui olemasolev võimas, väga paindlik ja paljude omadustega, _out-of-the-box_ logisüsteem oleks seadistatav vajaduse lahendamiseks vähema ajaga kui kulub µT arendamiseks. Praktika näitab siiski, et võimsate universaallahenduste tundmaõppimine ja seadistamine võib olla väga töömahukas. Ise tehes saame teha täpselt selle mida vajame - täpselt nii nagu tahame. Küsimusele kumb on parem - kas ise tehtud µT või seadistatud võimas universaalne vahend - ei ole universaalset vastust. Ise põlve otsas tegemine nõuab oskusi ja on kahtlemata riskantne. Kuid reaalsed riskid on ka suurte universaalsete valmislahenduste puhul. Näeme ju praktikas ikka ja jälle, kuidas majja tuuakse ilus ja võimas raamistik, meetod või keel, kuid selle juurutamine võtab aastaid ning suur osa vahendi võimalustest jäävad kasutamata. Igal juhul oleme µT puhul oma kahjusid tõkestanud - äraviskamisel kaotame maksimaalselt ühe nädala töö. Kui arvestada õppimist, siis tõenäoliselt vähem.
 
-### Komponendid
+### 4.2 Komponendid
 
 µT-l võib olla oma sisestruktuur. Igal juhul peab seel olema lihtne. µT TARA-Stat koosneb kahest komponendist ja neljast liidesest.
 
@@ -73,13 +73,13 @@ Liidesed:
 - logibaasi haldamise liides
 - elutukse liides.
 
-### Olek
+### 4.3 Olek
 
 Vahel seatakse tingimuseks, et µT ei tohi hoida olekut (_state_). Minu meelest see ei ole põhjendatud. Olekuta (_stateless_) µT oleks pelgalt teisendaja (vrdl Amazon pilve lambda-funktsioon). Kusagil peab olekut hoidma ja kui lööme äriloogika µT-teks, oleku aga viskame kõik ühte PostgreSQL andmebaasi, siis see viib minu meelest tagasi monoliitlahenduse suunas. Kesksel andmebaasil on suured eelised, eelkõige sünkroonimise probleemi lahendamises. Vägisi pealesunnitud keskne andmebaas võib siiski olla ainult näiliselt efektiivne. Kui toetatav äriloogika olemuselt ongi hajus - s.t et süsteemi äriloogiline olek ei saagi olla igal ajamomendil kooskõlaline - siis on keskne sünkroonimine kunstlik ja raskesti tajutavaid probleeme tekitav. Iga süsteemi puhul ei sobi ka oleku hoidmine "kliendi poolel" (s.t sirvikus). 
 
 Minu µT-stel võib olla ka olek (_state_) ja TARA-Stat puhul nii ongi. TARA-Stat olek ei ole keerukas. Olekuks on logi. Logikirjed on ühtse struktuuriga.
 
-### Oleku hoidmise tehniline lahendus
+#### 4.3.1 Oleku hoidmise tehniline lahendus
 
 Nii lihtsat andmestruktuuri võiks hoida tavalises logifailis. Siiski on TARA-Stat-is kasutusel andmebaasisüsteem (MongoDB). See on oluline otsus. Oleku hoidmise tehnoloogiavalikul olid alternatiivid:
 - fail(id)
@@ -92,7 +92,7 @@ Andmebaasi teema juures tuleb märkida veel seda, et andmebaasi haldamine, sh j�
 
 TARA-Stat olek õnneks ei ole keerukas. Nõuded andmekvaliteedile ei ole ka väga kõrged. Statistika kvaliteet ei kannata, kui väike hulk logikirjeid peaks ka kaduma minema. Olukord võib siiski kiiresti muutuda, kui logi peaks hakatama kasutama klientidele arvete esitamiseks (_billing_). Siis peaks arvestus olema täpne.  
 
-### Programmeerimiskeel
+### 4.4 Programmeerimiskeel
 
 TARA-Stat on kirjutatud Javascriptis. Täpsemalt, tehnoloogiapinu on järgmine (järgnev loetelu ei sisalda organisatsiooni IT-taristu spetsiifilisi tehnoloogiad - nende nimetamine ei oleks turvakaalustluste tõttu hea praktika):
 - rakendus
@@ -120,7 +120,7 @@ Tehnoloogiad on valitud kasinuse põhimõttel. Kasutatud (tehtud strateegiliste 
 
 Tehnoloogiate valimisel ei saa läbi katsetamiseta. Kulutasin omajagu aega RESTHeart [RESTHEart](http://restheart.org/) - MongoDB veebiliides s.o rakendus, mis ühendub MongoDB külge ja võimaldab REST API kaudu andmebaasi kasutada - uurimisele. Ühel hetkel sain aru, et lisalüli ei ole vaja ja lihtsam on  MongoDB veebiliides kirjutada ise, kasutades standardset MongoDB Node.JS draiverit. (See on väga tüüpiline. Internetis pakutakse palju raamistikke, vahendeid jms, mis on ehitatud teise vahendi peale ning nagu pakuksid lisaväärtust. Arvestades, et iga vahendit tuleb tundma õppida ja häälestada, on tihti kasulik sellistest kahtlast lisaväärtust pakkuvatest vahekihtidest loobuda ja programmeerida ise, standardsete vahenditega.)
 
-### Töö jätkamine teise arendaja poolt
+### 4.5 Töö jätkamine teise arendaja poolt
 
 Kas teine arendaja saab tööd TARA-Stat-ga jätkata? Usun, et jah, saab - kui ta tunneb µT-ses kasutatud võtmetehnoloogiaid või on valmis neid õppima. Praegusel juhul MongoDB ja Node.JS. (HTTP REST tundmist eeldan.) Koodi maht on väike - 200 LOC. See on kindlasti endale selgeks tehtav. Kasutatud on standardseid, laialt tuntud teeke. 
 
@@ -129,7 +129,7 @@ Kui arendaja peaks MongoDB või Node.JS mitte tudnma ega soovi neid õppida, sii
 Äravisatavus ja ümberkirjutatavus on µT tähtsamate omaduste hulgas.
 {: .adv}
 
-### Kasutajad
+### 4.6 Kasutajad
 
 TARA-Stat-l on neli võimalikku kasutajat. (Kasutajaks loeme µT-ga suhtlevat osapoolt. Kasutajad võivad olla inim- või masinkasutajad).
 
@@ -141,7 +141,7 @@ TARA-Stat-l on neli võimalikku kasutajat. (Kasutajaks loeme µT-ga suhtlevat os
 
 **Monitooringusüsteem** saab TARA-Stat-le saata "elutuksepäringu". TARA-Stat vastab, kas ta toimib.
 
-### Liidesed
+### 4.7 Liidesed
 
 Kasulikul µT-l on tavaliselt 2-3 liidest. Liideste kvaliteet (lihtsus, selgus, kasulikkus) on väga oluline. Liideseid on kahte tüüpi: masinliidesed ja inimkasutaja liidesed (_UI_). 
 
@@ -153,7 +153,7 @@ Joonis 1. TARA-Stat üldistatud arhitektuur
 
 Järgnevalt liidestest tehniliselt ja lähemalt.
 
-#### Logikirje lisamise otspunkt
+#### 4.7.1 Logikirje lisamise otspunkt
 
 Saata `POST` päring `localhost:5000` (või paigaldusaadressil), mille kehas on JSON kujul
 
@@ -163,7 +163,7 @@ Näiteks, [httpie](https://httpie.org/) abil:
 
 `http POST :5000 aeg=2018-04-29T00:00:30 klient=e-teenusA meetod=mobileID`
 
-#### Statistika väljastamise otspunkt (statistikakasutaja UI)
+#### 4.7.2 Statistika väljastamise otspunkt (statistikakasutaja UI)
 
 - Statistikakasutaja sirvikus avada leht `localhost:5000` (või paigaldusaadressil).
 - Määrata periood (võib jääda ka tühjaks)
@@ -176,10 +176,10 @@ Näiteks, [httpie](https://httpie.org/) abil:
 
 Joonis 2. Statistikakasutaja UI
 
-#### Elutukse otspunkt
+#### 4.7.3 Elutukse otspunkt
 
 Päringu `localhost:5000/status` saamisel kontrollitakse logibaasi ülevalolekut. Kui logibaas on üleval, siis tagastatakse HTTP vastus `200` `OK`, vastasel korral `500` `Internal Server Error`.
 
-#### Andmebaasi haldamise liides
+#### 4.7.4 Andmebaasi haldamise liides
 
 Admin saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo - vajadusel kustutada logibaasist vanu kirjeid.
