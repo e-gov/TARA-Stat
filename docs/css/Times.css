@@ -1,5 +1,5 @@
 /* 
-   Lihtne laadileht
+   Standardne laadileht, kasutusel repodes: TARA-Doku, eIDAS-Connector
 */
 
 /*#region Paigutus */
@@ -8,10 +8,10 @@ body {
   margin: 0 0; 
   padding: 0 0 2em 0; 
   /* font-family: 'Segoe UI', Arial, serif; */
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 15px; 
+  font-family: Arial, sans-serif;
+  font-size: 17px; 
   color: #222325 !important;
-  line-height: 1.2 !important;
+  line-height: 1.4 !important;
   }
 
 /* Päis */
@@ -171,7 +171,7 @@ a.nupp:hover {
   overflow: auto;
 }
 
-.adv {
+.advisement {
   border-color: orange;
   border-style: none solid;
   background: #FFEECC;
