@@ -1,5 +1,3 @@
 TARA-Stat on eksperimentaalne mikroteenus TARA statistika tootmiseks ja vaatamiseks.
 
-## Statistikakasutaja UI
-
-<img src='docs/Capture.PNG' width= "650">
+Vt [https://e-gov.github.io/TARA-Stat/](https://e-gov.github.io/TARA-Stat/).
