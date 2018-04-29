@@ -205,14 +205,32 @@ Päringu `localhost:5000/status` saamisel kontrollib TARA-Stat oma logibaasi ül
 
 Admin saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo - vajadusel kustutada logibaasist vanu kirjeid.
 
-## 5 Veateated
+## 5 Turvamine
+
+Analüüsime võimalusi µT turvamiseks.
+
+## 5.1 Andmebaasi turve
+
+MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega. 
+
+ turvameede | rakendada    |
+------------|:------------:| 
+| sisse lülitada andmebaasi poole pöördujate autentimine<br>- lihtsaim autentimismehhanism on MongoDB vaikimisi autentimismehhanism. See on soolaga salasõna põhine. | jah |
+| rakendada rollipõhist pääsuhaldust | jah |
+| rakendada TLS | ? (andmebaas suhtleb ainult samas masinas oleva rakendusega. Masinas ei ole teisi rakendusi) |
+| andmebaasi krüpteerimine | ei (konfidentsiaalsusvajadus ei ole kõrge) |
+| kaitsta andmebaasi failisüsteemi õigustega | ? |
+| piirata võrgus nähtavust | jah |
+| andmebaasi auditilogi | ei (terviklusvajadus ei ole nii kõrge) |
+
+## 6 Veateated
 
 ERR-01: Logibaasiga ühendumine ebaõnnestus<br>
 ERR-02: Viga logibaasist lugemisel
 
-## 6 Kasulikku
+## 7 Kasulikku
 
-### 6.1 MongoDB
+### 7.1 MongoDB
 
 MongoDB
 - [paigaldusjuhend Windows-le](https://docs.mongodb.com/master/tutorial/install-mongodb-on-windows/)
@@ -248,7 +266,7 @@ MongoDB Node.JS Driver
 - [Using the Aggregation Framework](http://mongodb.github.io/node-mongodb-native/2.0/tutorials/aggregation/)
 
 
-### 6.2 Node.JS
+### 7.2 Node.JS
 
 ejs
 [EJS Syntax Reference](https://github.com/mde/ejs/blob/master/docs/syntax.md)
