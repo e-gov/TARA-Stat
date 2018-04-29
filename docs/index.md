@@ -31,6 +31,9 @@ Kontekstiks on keskmine või suurem organisatsioon, kes haldab oma IT-taristut. 
 µT sõltuvuste arv peab olema väike. Iga liides on sõltuvus. Iga kasutatav teek, tehnoloogia või arendusvahend on samuti sõltuvus.
 {: .adv}
 
+Sõltuvuseks võib olla ka liiga keerukus arendusprotsess.
+{: .adv}
+
 Miks see on oluline? Kuigi µT on äravisatavad ja ümberkirjutatavad, on siiski kasulik neid aeg-ajalt täiendada. µT arendus ei tohiks olla pidev. Kergem on meelde tuletada ja muuta koodi, mis on kirjutatud laialt levinud keeles.
 
 **Ühte kasulikku funktsiooni täitev**. Ühe funktsiooni tõttu langevad ära või lihtsustuvad mitmed monoliitarenduses palju aega ja energiat nõudvad tööd. Vaja ei ole spetsiaalset süsteemi kasutusjuhtude kirjelduste haldamiseks - kasutusjuhtusid ongi 2-3. 
@@ -42,14 +45,14 @@ Miks see on oluline? Kuigi µT on äravisatavad ja ümberkirjutatavad, on siiski
 
 Milliste tööde ja toimingute vahel see aeg jaguneb? Koodi kirjutamine on ainult osa arendusest. Arendust mõistame siin DevOps vaatenurgast. S.t arendus on kõik see, mis ei ole teenuse käitamine. Arendamine on ka tarkvara paigaldamine. Planeerin järgmise ajakava:
 
-päev    | töö                | tulemus
---------|--------------------|------------
-1\.     | arenduskeskkonna ülesseadmine,<br> koodi kirjutamine  | repo loodud, teegid ja tehnoloogiad valitud, vähemalt üks otspunkt teostatud
-2\.     | koodi kirjutamine (jätk) | kõik otspunktid teostatud, äriloogika põhiosas teostatud (v.a nt turvakontrollid); arendaja masinas töötab; testitud käsitsi
-3\.     | API spetsifikatsiooni jm dokumentatsiooni kirjutamine | µT API ja muud dok-n koostatud ja rahuldavas seisus |
-4\.     | paigaldusprotsessi ja -plaani koostamine | paigaldusplaan
-5\.     | testpaigalduse läbitegemine; paralleelselt tarkvara viimistlemine, eriti turvalisuse tõstmise seisukohalt (_hardening_) | paigaldamine läbi mängitud
-6\.     | toodangusse paigaldamine, klientide teavitamine | µT on kasutusvalmis; klientidele on teenust esitletud
+päev    | töö                | tulemus  | edenemine   |
+--------|--------------------|----------|:-----------:|
+1\.     | arenduskeskkonna ülesseadmine,<br> koodi kirjutamine  | repo loodud, teegid ja tehnoloogiad valitud, vähemalt üks otspunkt teostatud | OK |
+2\.     | koodi kirjutamine (jätk) | kõik otspunktid teostatud, äriloogika põhiosas teostatud (v.a nt turvakontrollid); arendaja masinas töötab; testitud käsitsi | OK |
+3\.     | API spetsifikatsiooni jm dokumentatsiooni kirjutamine | µT API ja muu dok-n koostatud ja rahuldavas seisus | OK |
+4\.     | paigaldusprotsessi ja -plaani koostamine, paralleelselt tarkvara viimistlemine, eriti turvalisuse tõstmise seisukohalt (_hardening_) | paigaldusplaan | |
+5\.     | testpaigalduse läbitegemine; paralleelselt tarkvara viimistlemine, eriti turvalisuse tõstmise seisukohalt (_hardening_) | paigaldamine läbi mängitud | |
+6\.     | toodangusse paigaldamine, klientide teavitamine | µT on kasutusvalmis; klientidele on teenust esitletud | |
 
 ## 4. TARA-Stat
 
@@ -207,3 +210,45 @@ Admin saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo -
 ERR-01: Logibaasiga ühendumine ebaõnnestus<br>
 ERR-02: Viga logibaasist lugemisel
 
+## 6 Kasulikku
+
+### 6.1 MongoDB
+
+MongoDB
+- [paigaldusjuhend Windows-le](https://docs.mongodb.com/master/tutorial/install-mongodb-on-windows/)
+- käivitamine (Windows): `"C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe"`
+- pääsuhaldus
+  - [Enable Auth](https://docs.mongodb.com/manual/tutorial/enable-authentication/)
+
+MongoDB Compass
+- [juhend](https://docs.mongodb.com/compass/current/)
+
+mongo
+- "an interactive JavaScript shell interface to MongoDB"
+- [ülevaade](https://docs.mongodb.com/manual/mongo/)
+- [Reference](https://docs.mongodb.com/manual/reference/program/mongo/#bin.mongo)
+- käivitamine: `mongo`
+
+MongoDB server
+- käivitamine: `mongod`
+- käivitamisel vaikimisi(?) seotakse localhost-ga. S.t väljast tulevaid pöördumisi ei teeninda. Välispöördumiste teenindamiseks käivitada `--bind_ip <address>` või `--bind_ip_all`.
+- vaikimisi teenindab pordil `27017`.
+- konsoolile logib ühendusi.
+
+MongoDB standardne pääsumehhanism - [Salted Challenge Response Authentication Mechanism](https://docs.mongodb.com/manual/core/authentication-mechanisms/).
+[Pääsu seadmise juhend](https://docs.mongodb.com/manual/tutorial/enable-authentication/) (MongoDB)
+
+Rakendus suhtleb MongoDB-ga TCP/IP socket-i põhise [MongoDB wire protocol](https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/)-iga.
+
+MongoDB Node.JS Driver 
+- [ülevaade](http://mongodb.github.io/node-mongodb-native/?jmp=docs&_ga=2.138292915.2088530382.1524857109-302204577.1524857109)
+- [dok-n](http://mongodb.github.io/node-mongodb-native/3.0/)
+
+- [Aggregation Pipeline](https://docs.mongodb.com/manual/core/aggregation-pipeline/)
+- [Using the Aggregation Framework](http://mongodb.github.io/node-mongodb-native/2.0/tutorials/aggregation/)
+
+
+### 6.2 Node.JS
+
+ejs
+[EJS Syntax Reference](https://github.com/mde/ejs/blob/master/docs/syntax.md)
