@@ -72,7 +72,7 @@ Ongi kõik. Kohe tekib küsimus, kas seda pole liiga vähe? See µT on spetsiali
 
 ### 4.2 Komponendid
 
-µT- sisestruktuur peab olema. µT TARA-Stat koosneb kahest komponendist ja neljast liidesest.
+µT- sisestruktuur peab olema lihtne. µT TARA-Stat koosneb kahest komponendist ja neljast liidesest.
 
 Komponendid:
 - rakendus
