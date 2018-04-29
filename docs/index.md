@@ -194,8 +194,16 @@ Joonis 2. Statistikakasutaja UI
 
 #### 4.7.3 Elutukse otspunkt
 
-Päringu `localhost:5000/status` saamisel kontrollitakse logibaasi ülevalolekut. Kui logibaas on üleval, siis tagastatakse HTTP vastus `200` `OK`, vastasel korral `500` `Internal Server Error`.
+Päringu `localhost:5000/status` saamisel kontrollib TARA-Stat oma logibaasi ülevalolekut.
+- Kui logibaas on üleval, siis tagastatakse HTTP vastus `200` `OK`,
+- vastasel korral `500` `Internal Server Error`.
 
 #### 4.7.4 Andmebaasi haldamise liides
 
 Admin saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo - vajadusel kustutada logibaasist vanu kirjeid.
+
+## 5 Veateated
+
+ERR-01: Logibaasiga ühendumine ebaõnnestus<br>
+ERR-02: Viga logibaasist lugemisel
+
