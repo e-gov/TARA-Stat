@@ -1,0 +1,12 @@
+title: TARA-Stat
+repo: "https://github.com/e-gov/TARA-Stat"
+baseurl: "https://e-gov.github.io/TARA-Stat"
+
+defaults:
+  -
+    scope:
+      path: "" # Kõik failid
+    values:
+      layout: "Times"
+
+  
