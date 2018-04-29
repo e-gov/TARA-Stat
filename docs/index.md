@@ -207,14 +207,14 @@ Admin saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo -
 
 ## 5 Turvamine
 
-Analüüsime võimalusi µT turvamiseks.
+Analüüsime võimalusi µT turvamiseks. Eeldame, et kuigi µT-st kasutatakse organisatsiooni sisevõrgus, ei saa paigalduskeskkonna täielikku turvalisust eeldada ([MFN 19.4](https://e-gov.github.io/MFN/#19.4)). 
 
 ## 5.1 Andmebaasi turve
 
 MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega. 
 
- turvameede | rakendada    |
-------------|:------------:| 
+ turvameede | tasub rakendada    |
+------------|:------------:|
 | sisse lülitada andmebaasi poole pöördujate autentimine<br>- lihtsaim autentimismehhanism on MongoDB vaikimisi autentimismehhanism. See on soolaga salasõna põhine. | jah |
 | rakendada rollipõhist pääsuhaldust | jah |
 | rakendada TLS | ? (andmebaas suhtleb ainult samas masinas oleva rakendusega. Masinas ei ole teisi rakendusi) |
