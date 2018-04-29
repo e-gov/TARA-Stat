@@ -13,7 +13,6 @@
 const express = require('express');
 
 /* HTTP päringu parsimisvahendid */
-/* Ei tea miks, kuid body-parser on vajalik */
 const bodyParser = require('body-parser');
 
 /* MongoDB */
@@ -34,6 +33,10 @@ app.set('views', __dirname + '/views');
 /* Määra kasutatav mallimootor */
 app.set('view engine', 'ejs');
 
+/* Vajalik seadistus MIME-tüübi application/json
+parsimiseks */
+app.use(bodyParser.json());
+
 /* Andmebaasiühenduse loomine */
 const MONGODB_URL = 'mongodb://localhost:27017';
 
@@ -44,13 +47,6 @@ const COLLECTION = 'autentimised';
 /**
  *  Järgnevad marsruuteri töötlusreeglid
  */
-
-/**
- * Logi kirje
- */
-app.get('/lisa', function (req, res) {
-  console.log('--- Logikirje lisamine');
-});
 
 /**
  * Kuva esileht
@@ -75,7 +71,7 @@ app.get('/', function (req, res) {
  * Väljasta statistika
  * (AJAX päring)
  */
-app.get('/stat', function (req, res) {
+app.get('/stat', (req, res) => {
 
   /**
    * Leia autentimiste arv klienditi
@@ -136,17 +132,59 @@ app.get('/stat', function (req, res) {
     }
     else {
       console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-      res.send({ });
+      res.send({});
     }
   });
+});
+
+/**
+ * Lisa logikirje
+ * POST päring, kehas JSON
+ * { "aeg": ..., "klient": ..., "meetod": ... }
+ */
+app.post('/', (req, res) => {
+  console.log('--- Logikirje lisamine');
+  var aeg = req.body.aeg;
+  var klient = req.body.klient;
+  var meetod = req.body.meetod;
+
+  // Ühendu logibaasi külge
+  MongoClient.connect(MONGODB_URL, (err, client) => {
+    if (err === null) {
+      console.log("Logibaasiga ühendumine õnnestus");
+      const db = client.db(LOGIBAAS);
+      db.collection(COLLECTION)
+        .insert({
+          aeg: aeg,
+          klient: klient,
+          meetod: meetod
+        });
+      client.close();
+      res.status(200).send('OK');
+    }
+    else {
+      console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
+      res.status(500).send('Internal Server Error')
+    }
+  });
+
 });
 
 /**
  * Vasta elusolekupäringule
  */
 app.get('/status', function (req, res) {
-
-  res.send('TARA-Stat: OK');
+  // Kontrolli andmebaasiühendust
+  MongoClient.connect(MONGODB_URL, (err, client) => {
+    if (err === null) {
+      client.close();
+      res.status(200).send('OK');
+    }
+    else {
+      console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
+      res.status(500).send('Internal Server Error')
+    }
+  });
 });
 
 /**
