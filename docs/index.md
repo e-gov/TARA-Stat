@@ -31,7 +31,7 @@ Kontekstiks on keskmine või suurem organisatsioon, kes haldab oma IT-taristut. 
 µT sõltuvuste arv peab olema väike. Iga liides on sõltuvus. Iga kasutatav teek, tehnoloogia või arendusvahend on samuti sõltuvus.
 {: .adv}
 
-Sõltuvuseks võib olla ka liiga keerukus arendusprotsess.
+Sõltuvuseks võib olla ka liiga keerukas arendusprotsess.
 {: .adv}
 
 Miks see on oluline? Kuigi µT on äravisatavad ja ümberkirjutatavad, on siiski kasulik neid aeg-ajalt täiendada. µT arendus ei tohiks olla pidev. Kergem on meelde tuletada ja muuta koodi, mis on kirjutatud laialt levinud keeles.
@@ -137,7 +137,7 @@ Tehnoloogiad on valitud kasinuse põhimõttel. Kasutatud (tehtud strateegiliste 
 Ühe µT sisetehnoloogiad ei tohi mõjutada teise µT sisetehnoloogiate valikut.
 {: .adv}
 
-Tehnoloogiate valimisel ei saa läbi katsetamiseta. Kulutasin omajagu aega RESTHeart [RESTHEart](http://restheart.org/) - MongoDB veebiliides s.o rakendus, mis ühendub MongoDB külge ja võimaldab REST API kaudu andmebaasi kasutada - uurimisele. Ühel hetkel sain aru, et lisalüli ei ole vaja ja lihtsam on  MongoDB veebiliides kirjutada ise, kasutades standardset MongoDB Node.JS draiverit. (See on väga tüüpiline. Internetis pakutakse palju raamistikke, vahendeid jms, mis on ehitatud teise vahendi peale ning nagu pakuksid lisaväärtust. Arvestades, et iga vahendit tuleb tundma õppida ja häälestada, on tihti kasulik sellistest kahtlast lisaväärtust pakkuvatest vahekihtidest loobuda ja programmeerida ise, standardsete vahenditega.)
+Tehnoloogiate valimisel ei saa läbi katsetamiseta. Kulutasin omajagu aega [RESTHEart](http://restheart.org/) - MongoDB veebiliides s.o rakendus, mis ühendub MongoDB külge ja võimaldab REST API kaudu andmebaasi kasutada - uurimisele. Ühel hetkel sain aru, et lisalüli ei ole vaja ja lihtsam on  MongoDB veebiliides kirjutada ise, kasutades standardset MongoDB Node.JS draiverit. (See on väga tüüpiline. Internetis pakutakse palju raamistikke, vahendeid jms, mis on ehitatud teise vahendi peale ning nagu pakuksid lisaväärtust. Arvestades, et iga vahendit tuleb tundma õppida ja häälestada, on tihti kasulik sellistest kahtlast lisaväärtust pakkuvatest vahekihtidest loobuda ja programmeerida ise, standardsete vahenditega.)
 
 ### 4.5 Töö jätkamine teise arendaja poolt
 
@@ -156,7 +156,7 @@ TARA-Stat-l on neli võimalikku kasutajat. (Kasutajaks loeme µT-ga suhtlevat os
 
 **TARA-Server** saadab TARA-Stat-i logikirjeid. TARA-Server võib olla paigaldatud mitmes instantsis.
 
-**Admin** omab täielikku juurdepääsu TARA-Stat masinale. Admin saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo - vajadusel kustutada logibaasist vanu kirjeid. (Kasutusstatistika pakub huvi u aasta jooksul). See on harv tegevus.
+**Süsteemihaldur** omab täielikku juurdepääsu TARA-Stat masinale. Süsteemihaldur saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo - vajadusel kustutada logibaasist vanu kirjeid. (Kasutusstatistika pakub huvi u aasta jooksul). See on harv tegevus.
 
 **Monitooringusüsteem** saab TARA-Stat-le saata "elutuksepäringu". TARA-Stat vastab, kas ta toimib.
 
