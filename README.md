@@ -2,7 +2,7 @@ TARA-Stat on eksperimentaalne mikroteenus TARA statistika tootmiseks ja vaatamis
 
 ## Statistikakasutaja UI
 
-<img src='docs/Capture.PNG' width= "500">
+<img src='docs/Capture.PNG' width= "650">
 
 ## Üldistatud arhitektuur
 
@@ -12,7 +12,7 @@ Vt ka [TARA kasutusstatistika](https://e-gov.github.io/TARA-Doku/Statistika) (sp
 
 ## Logikirje lisamine
 
-Saata `POST` päring `localhost:5000`, mille kehas on JSON kujul
+Saata `POST` päring `localhost:5000` (või paigaldusaadressil), mille kehas on JSON kujul
 
 `{ "aeg": ..., "klient": ..., "meetod": ... }`
 
@@ -22,7 +22,7 @@ Näiteks, [httpie](https://httpie.org/) abil:
 
 ## Statistika arvutamine
 
-- Statistikakasutaja sirvikus avada leht `localhost:5000`.
+- Statistikakasutaja sirvikus avada leht `localhost:5000` (või paigaldusaadressil).
 - Määrata periood (võib jääda ka tühjaks)
   - sisestades regulaaravaldise
   - nt `2018-04` valib 2018. a aprilli logikirjed
