@@ -215,13 +215,13 @@ MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [tu
 
  turvameede | tasub rakendada
 ------------|:------------
-| sisse lülitada andmebaasi poole pöördujate autentimine<br>- lihtsaim autentimismehhanism on MongoDB vaikimisi autentimismehhanism. See on soolaga salasõna põhine. | jah 
-| rakendada rollipõhist pääsuhaldust | jah 
-| rakendada TLS | ? (andmebaas suhtleb ainult samas masinas oleva rakendusega. Masinas ei ole teisi rakendusi) 
-| andmebaasi krüpteerimine | ei (konfidentsiaalsusvajadus ei ole kõrge) 
-| kaitsta andmebaasi failisüsteemi õigustega | ? 
-| piirata võrgus nähtavust | jah 
-| andmebaasi auditilogi | ei (terviklusvajadus ei ole nii kõrge) 
+ sisse lülitada andmebaasi poole pöördujate autentimine<br>- lihtsaim autentimismehhanism on MongoDB vaikimisi autentimismehhanism. See on soolaga salasõna põhine. | jah 
+ rakendada rollipõhist pääsuhaldust | jah 
+ rakendada TLS | ? (andmebaas suhtleb ainult samas masinas oleva rakendusega. Masinas ei ole teisi rakendusi) 
+ andmebaasi krüpteerimine | ei (konfidentsiaalsusvajadus ei ole kõrge) 
+ kaitsta andmebaasi failisüsteemi õigustega | ? 
+ piirata võrgus nähtavust | jah 
+ andmebaasi auditilogi | ei (terviklusvajadus ei ole nii kõrge) 
 
 ## 6 Veateated
 
