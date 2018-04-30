@@ -1,7 +1,7 @@
 # Mikroteenuste arhitektuuri poole
 {: .no_toc}
 
-2. päev, 30.04.2018
+2\. päev, 30.04.2018
 
 - TOC
 {:toc}
