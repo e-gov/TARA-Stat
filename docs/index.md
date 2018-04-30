@@ -6,9 +6,13 @@ v 0.2, 30.04.2018
 - TOC
 {:toc}
 
-Käesolevast kirjutisest võiks saada mikroteenuste _primer_. Praegu on see aga kirjeldus ühe mikroteenuse tegemisest.
+Käesolevast kirjutisest võiks saada mikroteenuste _primer_ (aabits). Praegu on see aga kirjeldus ühe mikroteenuse tegemisest.
 
-Esimeses jaotises käsitleme mikroteenuse (µT) vajadust ja üldise omadusi. Teises jaotises spetsifitseerime ja dokumenteerime ühe konkreetse µT (TARA-Stat). Kolmandas jaotises esitame kasulikke viiteid kasutatud tehnoloogiate kohta.
+Esimeses jaotises analüüsin mikroteenuse (µT) vajadust ja üldisi omadusi.
+
+Teises jaotises spetsifitseerin ja dokumenteerin üht konkreetset µT-t (TARA-Stat). Eesmärk on teha ise protsess otsast lõpuni läbi.
+
+Kolmandas jaotises on viiteid kasutatud tehnoloogiate kohta.
 
 ## 1. Vajadus ja väljakutse
 
@@ -131,7 +135,7 @@ Osapoolte suure arvu puhul on otstarbekas kasutada **sertifitseerimisteenust** (
 
 Autentimisskeemi valik sõltub suhtluspartnerite arvust ja stabiilsusest ning kas suhtluspartnerid kuuluvad ühe ja sama või erinevate organisatsioonide haldusalasse.
 
-Võtmeküsimused on kes kannab võtmehalduse kulu või sertifitseerimis- või autentimisteenuse osutamise kulu. CA teenused pole tasuta ja ka organisatsiooni enda CA pidamine on kulu.
+Võtmeküsimus (_pun intended_) on kes kannab võtmehalduse kulu või sertifitseerimis- või autentimisteenuse osutamise kulu. CA teenused pole tasuta ja ka organisatsiooni enda CA pidamine on kulu.
 
 µT puhul, mis pakub masinliidest väikesele arvule, kindlatele partneritele, võiks kasutada sümmeetrilist API võtit.
 
@@ -152,9 +156,25 @@ Ruuteri tasandil piiratakse võrgu piiril toimuvat liiklust.
 
 Virtuaalse kohtvõrgu (_Virtual LAN, VLAN_) tasandil määratakse, millised masinad pannakse kokku ühte virtuaalsesse kohtvõrku.
 
-#### 1.4.5 Ühendamine
+#### 1.4.5 Pääsu jagamine
 
-Eraldamine ei ole siiski kunagi absoluutne. Veebisirviku näites oleksid veebilehed vga primitiivsed kui veebileht suhtleks ainult oma serveripoolega. **Ühendamine* on isoleerimise vastandprotsess. Koos moodustavad need dialektilise terviku, omamoodi yingi ja yangi. Samas sirvikus töötavate veebirakenduste ühendamiseks ongi loodud erinevaid võimalusi: allikavaheline ressursijagamine, _Cross Origin Resouce Sharing_ (_CORS_), postMessage API, vanematest JSONP.
+Meeldib see meile või mitte, kuid oluliste tagajärgedega toiminguid saavad teha ainult vastavate volitustega isikud. Standardne mehhanism on rollipõhine pääsuhaldus (Role-Based Access Control, RBAC) ja sellest pääseme ainult siis, kui µT on tõeliselt _single purpose_ s.t ongi ainult üks toiming. µT-ses endas ei ole rollihalduse teostamine otstarbekas ega mõeldavgi. µT-ses endas peaks olema ainult autenditud kasutaja rolli kontrollimine. Rollide omistamine ja äravõtmine peaks käima väljaspool. 
+
+µT tavaliselt ei suuda ise teha rollihaldust, vaid vajab seda teenusena.
+{: .adv}
+
+#### 1.4.6 Ühendamine
+
+Eraldamine ei ole siiski kunagi absoluutne. Veebisirviku näites oleksid veebilehed väga primitiivsed kui veebileht suhtleks ainult oma serveripoolega. **Ühendamine* on isoleerimise vastandprotsess. Koos moodustavad need dialektilise terviku, omamoodi yingi ja yangi. Samas sirvikus töötavate veebirakenduste ühendamiseks ongi loodud erinevaid võimalusi: allikavaheline ressursijagamine, _Cross Origin Resouce Sharing_ (_CORS_), postMessage API, vanematest JSONP.
+
+#### 1.4.7 Transpordi turvamine
+
+Monoliitrakenduses ei ole komponentidevahelise andmeedastuse turvamine probleem. Üks Java meetod kutsub välja teist. Kõik see toimub Java virtuaalmasina (JVM) sees. Eeldame, et JVM-s keegi pealt ei kuula ega vahele ei sekku. _That's it_. µT-sed aga on paigaldatud igaüks eraldi ja seetõttu peavad suhtlema üle vähem või rohkem ebaturvalise võrgu.
+
+µT peaks suhtlema turvatud protokolli kaudu. Levinuim protokolli selles suhtluses on HTTP. 
+
+µT-l peaks olema HTTPS võimekus.
+{: .adv}
 
 ## 2. TARA-Stat
 
@@ -311,7 +331,7 @@ Admin saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo -
 
 Analüüsime võimalusi TARA-Stat-i turvamiseks. Eeldame, et kuigi µT-st kasutatakse organisatsiooni sisevõrgus, ei saa paigalduskeskkonna täielikku turvalisust eeldada ([MFN 19.4](https://e-gov.github.io/MFN/#19.4)). 
 
-### 2.8.1 Andmebaasi turve
+#### 2.8.1 Andmebaasi turve
 
 MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega. 
 
@@ -325,9 +345,62 @@ MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [tu
  piirata võrgus nähtavust | jah 
  andmebaasi auditilogi | ei (terviklusvajadus ei ole nii kõrge) 
 
-## 2.9 Paigaldamine
+### 2.9 Paigaldusplaan
 
-MongoDB seadistamine
+Käesolev jaotis esitab kokkuvõtlikult TARA-Stat-i paigaldamiseks ja käitamiseks vajaliku teabe ja seejärel annab detailsed paigaldusjuhised
+
+### 2.9.1 Paigaldamiseks ja käitamiseks vajalik teabe (kokkuvõte)
+
+TARA-Stat paigaldatakse Linux-i masinasse (Ubuntu 16 LTS). TARA-Stat koosneb kahest komponendist (mõlemad paigaldatakse samasse masinasse): veebirakendus ja logibaas.
+
+Veebirakendus vajab tööks Node.JS paigaldamist. Logibaas vajab MongoDB paigaldamist.
+
+TARA-Stat peab olema kättesaadav ainult organisatsiooni sisevõrgus, järgmistele inim- ja masinkasutajatele:
+  - statistikakasutajale (tüüpiliselt teenusehaldur)
+  - TARA-Server rakendusele.
+
+Statistikakasutaja pöördub sirviku abil statistika väljastamise otspunkti. TARA-Server pöördub logikirje lisamise otspunkti.  
+
+Lisaks on TARA-Stat vajadusel võimeline pakkuma elutukse otspunkti organisatsiooni monitooringulahendusele.
+
+TARA-Stat-le peab vajadusel olema juurdepääs ka süsteemiadministraatoril, et kustutada aegunud logikirjed. Süsteemiandministraator vajab tööriistu MongoDB Compass ja/või mongos (MongoDB Shell) - need tuleks samuti paigaldada.
+
+Logibaas suhtleb ainult veebirakendusega ega tohi suhtlust masinast väljapoole.
+
+### 2.9.2 Paigaldus
+
+1\. Valmistada virtuaalmasin (VM).
+
+2\. Paigaldada Ubuntu 16 LTS.
+
+3\. Node.JS
+a) Paigaldada Node.JS (viimane stabiilne versioon).<br>
+b) Seadistada Node.JS.
+
+4\. MongoDB
+a) Paigaldada MongoDB (viimane stabiilne versioon).<br>
+b) Seadistada MongoDB.<br>
+c) Luua tühi logibaas.<br>
+d) Luua kasutajad.
+
+5\. Paigaldada veebirakendus.<br>
+a) Kopeerida veebirakendus ([https://github.com/e-gov/TARA-Stat](https://github.com/e-gov/TARA-Stat)) organisatsiooni sisereposse.<br>
+b) Paigaldada veebirakendus siserepost VM-i.
+
+6\. Piirata võrguavatus
+a) Pääsureeglite seadmine VM tulemüüris
+b) Pääsureeglite seadmine VLAN-is ja/või sisevõrgu ruuteri(te)s).
+
+7\. Luua usaldus TARA-Serveri ja TARA-Stat-i vahel
+a) Genereerida API-võti.
+b) Paigaldada API-võti TARA-Serveri konf-i.
+c) Paigaldada API-võti TARA-Stat-i konf-i.
+
+#### 2.9.3 Node.JS paigaldamine ja seadistamine
+
+TODO
+
+#### 2.9.4 MongoDB paigaldamine ja seadistamine
 
 MongoDB-d võib seadistada kas [konfiguratsioonifailiga](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file) või andmebaasideemoni käivitamiskäsu `mongod` parameetritega. Mõistlik on seadistada konfiguratsioonifailiga, andes faili asukoha käivituskäsus:
 
@@ -335,9 +408,13 @@ MongoDB-d võib seadistada kas [konfiguratsioonifailiga](https://docs.mongodb.co
 
 Konfiguratsioonifailis määrata:
 
+TODO
 
+#### 2.9.5 Veebirakenduse paigaldamine ja seadistamine
 
-## 2.10 Veateated
+TODO
+
+### 2.10 Veateated
 
 ERR-01: Logibaasiga ühendumine ebaõnnestus<br>
 ERR-02: Viga logibaasist lugemisel
