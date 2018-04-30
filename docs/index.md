@@ -363,9 +363,9 @@ Statistikakasutaja pöördub sirviku abil statistika väljastamise otspunkti. TA
 
 Lisaks on TARA-Stat vajadusel võimeline pakkuma elutukse otspunkti organisatsiooni monitooringulahendusele.
 
-TARA-Stat-le peab vajadusel olema juurdepääs ka süsteemiadministraatoril, et kustutada aegunud logikirjed. Süsteemiandministraator vajab tööriistu MongoDB Compass ja/või mongos (MongoDB Shell) - need tuleks samuti paigaldada.
+TARA-Stat-le peab vajadusel olema juurdepääs ka süsteemiadministraatoril, et kustutada aegunud logikirjed. Süsteemiandministraator vajab tööriistu MongoDB Compass ja/või `mongo` (MongoDB Shell) - need tuleks samuti paigaldada.
 
-Logibaas suhtleb ainult veebirakendusega ega tohi suhtlust masinast väljapoole.
+Logibaas suhtleb ainult veebirakendusega; ei tohi suhelda masinast väljapoole.
 
 #### 2.9.2 Paigaldamine (Ubuntu)
 
@@ -384,14 +384,30 @@ b) Seadistada MongoDB.<br>
 MongoDB-d võib seadistada kas [konfiguratsioonifailiga](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file) või andmebaasideemoni käivitamiskäsu `mongod` parameetritega. Mõistlik on seadistada konfiguratsioonifailiga. Konfiguratsioonifailis määrata: TODO
 
 c) Luua tühi logibaas.<br>
+
+Luua database `logibaas` ja selles collection `autentimised`.
+
+Kasutada `mongo` (MongoDB Shell) või MongoDB Compass-i.
+
+Vt [mongo Shell Quick Reference](https://docs.mongodb.com/manual/reference/mongo-shell/).
+
+`show dbs` - kuvab andmebaasid
+
+TODO: Kirjutada skript.
+
 d) Luua kasutajad.
+
+`show users` - kuvab kasutajad<br>
+`show roles` - kuvab rollid
+
+TODO: Kirjutada skript.
 
 5\. Paigaldada veebirakendus.<br>
 a) Kopeerida veebirakendus ([https://github.com/e-gov/TARA-Stat](https://github.com/e-gov/TARA-Stat)) organisatsiooni sisereposse.<br>
 b) Paigaldada veebirakendus siserepost VM-i.
 
-6\. Piirata võrguavatus
-a) Pääsureeglite seadmine VM tulemüüris
+6\. Piirata võrguavatus<br>
+a) Pääsureeglite seadmine VM tulemüüris<br>
 b) Pääsureeglite seadmine VLAN-is ja/või sisevõrgu ruuteri(te)s).
 
 7\. Genereerida ja paigaldada veebirakenduse HTTPS võtmed
@@ -409,9 +425,9 @@ Failid `localhost.cert` ja `localhost.key` kanda veebirakenduse juurkausta alamk
 Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andma teadet "vigane turvasertifikaat". Teatest saab üle, kui kasutaja lisab erandi.
 {: .adv}
 
-8\. Luua usaldus TARA-Serveri ja TARA-Stat-i vahel
-a) Genereerida API-võti.
-b) Paigaldada API-võti TARA-Serveri konf-i.
+8\. Luua usaldus TARA-Serveri ja TARA-Stat-i vahel<br>
+a) Genereerida API-võti.<br>
+b) Paigaldada API-võti TARA-Serveri konf-i.<br>
 c) Paigaldada API-võti TARA-Stat-i konf-i.
 
 #### 2.9.3 Käivitamine (Ubuntu)
