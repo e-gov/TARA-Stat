@@ -1,7 +1,7 @@
 # Mikroteenuste arhitektuuri poole
 {: .no_toc}
 
-v 0.1, 29.04.2018
+v 0.2, 30.04.2018
 
 - TOC
 {:toc}
@@ -10,11 +10,11 @@ Käesolevast kirjutisest võiks saada mikroteenuste _primer_. Praegu on see aga 
 
 Esimeses jaotises käsitleme mikroteenuse (µT) vajadust ja üldise omadusi. Teises jaotises spetsifitseerime ja dokumenteerime ühe konkreetse µT (TARA-Stat). Kolmandas jaotises esitame kasulikke viiteid kasutatud tehnoloogiate kohta.
 
-# 1. Vajadus ja väljakutse
+## 1. Vajadus ja väljakutse
 
 Monoliitrakenduse arendamine ja paigaldamine on tüüpiliselt pikk ja vaevaline protsess. Miks see nii on? Raskused on osalt objektiivsed, sest kvaliteedi- ja turvanõudeid on palju ja neid ei saa ignoreerida. Monoliitrakendusi mikroteenustega asendades peaksime vältima, et töömaht ei multiplitseeruks. Mikroteenus ei tohiks olla samaväärne andmekoguga - kogu sellest tuleneva arendus- ja haldusbürokraatiaga. Samas peavad kõik olulised kvaliteedi- ja turvanõuded olema täidetud ka mikroteenuste puhul. See on võib-olla suurim väljakutse.
 
-## 1.1 Kontekst
+### 1.1 Kontekst
 
 Meil ei jätku inimesi, kes kõik vajalikud e-teenused välja arendaks, olemasolevaid uuendaks ja innovatsiooni sisse tooks. See paneb otsima võimalusi IT-d senisest teistmoodi teha. Nagu iga keerulise probleemiga, on probleemi raske sõnastada. Puudu ei ole inimestest, vaid ... aga milles täpselt on probleem? Avaliku sektori IT on keeruline, aeganõudev ja kohmakas. Tuleb lisada, et sageli ka tehnoloogiliselt vananenud.
 
@@ -22,7 +22,7 @@ Süsteemide ehitamisest koosnevana mikroteenustest räägitakse IT-maailmas prae
 
 Kontekstiks on keskmine või suurem organisatsioon, kes haldab oma IT-taristut. Taristust teame niipalju, et seal töötab palju mitmesuguseid süsteeme, rakendatakse virtualiseerimist. Tehnoloogiate poolest palju selliseid, mis tüüpilised sama suurusega organisatsioonidele. Nagu igal pool, on aktuaalne IT automatiseerimine, sest inimesi kõige vajaliku ärategemiseks napib. Turvanõuete poolest on süsteemid erinevad, kuid üldiselt on turvanõuded kõrged.
 
-## 1.2 Mikroteenus
+### 1.2 Mikroteenus
 
 Mikroteenus (µT) on iseseisva elutsükliga, kiiresti arendatav, selgepiiriliste liidestega, iseseisev, ühte kasulikku funktsiooni täitev rakendus.
 {: .note}
@@ -45,7 +45,7 @@ Miks see on oluline? Kuigi µT on äravisatavad ja ümberkirjutatavad, on siiski
 
 **Ühte kasulikku funktsiooni täitev**. Ühe funktsiooni tõttu langevad ära või lihtsustuvad mitmed monoliitarenduses palju aega ja energiat nõudvad tööd. Vaja ei ole spetsiaalset süsteemi kasutusjuhtude kirjelduste haldamiseks - kasutusjuhtusid ongi 2-3. 
 
-## 1.3 7 päeva
+### 1.3 7 päeva
 
 µT peaks olema (ümber-)kirjutatav u nädalaga.
 {: .adv}
@@ -140,7 +140,7 @@ Turvalisust ei saa tasuta. Juurdepääsu piiramist vajava API korral ei pääse 
 
 Võrgu tasandil saab samuti autentida, kontrollides teise osapoole IP-aadressi. Kuid  tavaliselt ei loeta seda piisavaks. Osapoole (siis rakenduse) IP ei tarvise olla piisavalt püsiv. Samuti peetakse IP-aadresside võltsimist (_IP spoofing_) teatavaks ohuks.
 
-Kokkuvõttes, autentimine on alati kulu. Sellest kulust saab vabaneda ainult siis, kui autentimine pole vajalik s.t teenust saab osutada anonüümsele kasutajale. Pääsu piiramise vajadus võib siiski olla ka anonüümteenuse korral. Sellest järgmisest jaotises.
+Kokkuvõttes, autentimine on alati kulu. Sellest kulust saab vabaneda ainult siis, kui autentimine pole vajalik s.t teenust saab osutada anonüümsele kasutajale. Pääsu piiramise vajadus võib siiski olla ka anonüümteenuse korral. Sellest järgmistes jaotistes.
 
 #### 1.4.4 Võrgule avatuse piiramine
 
