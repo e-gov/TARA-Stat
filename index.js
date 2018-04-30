@@ -3,11 +3,18 @@
   ja vaatamiseks
 
   Priit Parmakson, 2018
+
+  30.04.2018 - lisatud HTTPS
+  vt https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/
 */
 
 'use strict';
 
 /* Teekide laadimine */
+var https = require('https');
+
+/* Sertide laadimiseks */
+var fs = require('fs');
 
 /* Veebiraamistik Express */
 const express = require('express');
@@ -36,6 +43,18 @@ app.set('view engine', 'ejs');
 /* Vajalik seadistus MIME-tüübi application/json
 parsimiseks */
 app.use(bodyParser.json());
+
+/* HTTPS suvandid */
+var options = {
+  key: fs.readFileSync( './keys/localhost.key' ),
+  cert: fs.readFileSync( './keys/localhost.cert' ),
+  requestCert: false,
+  rejectUnauthorized: false
+};
+
+/* HTTPS serveri loomine */
+var port = process.env.PORT || 443;
+var server = https.createServer( options, app );
 
 /* Andmebaasiühenduse loomine */
 const MONGODB_URL = 'mongodb://localhost:27017';
@@ -190,8 +209,14 @@ app.get('/status', function (req, res) {
 /**
  * Veebiserveri käivitamine 
  */
+
+ /* HTTP puhul
 app.listen(app.get('port'), function () {
   console.log('---- TARA-Stat käivitatud ----');
 });
+*/
+server.listen( port, function () {
+  console.log( '--- TARA-Stat kuulab pordil: ' + server.address().port );
+} );
 
 

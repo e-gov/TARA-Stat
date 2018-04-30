@@ -367,7 +367,7 @@ TARA-Stat-le peab vajadusel olema juurdepääs ka süsteemiadministraatoril, et 
 
 Logibaas suhtleb ainult veebirakendusega ega tohi suhtlust masinast väljapoole.
 
-#### 2.9.2 Paigaldus
+#### 2.9.2 Paigaldamine (Ubuntu)
 
 1\. Valmistada virtuaalmasin (VM).
 
@@ -396,23 +396,57 @@ a) Genereerida API-võti.
 b) Paigaldada API-võti TARA-Serveri konf-i.
 c) Paigaldada API-võti TARA-Stat-i konf-i.
 
-#### 2.9.3 Node.JS paigaldamine ja seadistamine
+Node.JS paigaldamine ja seadistamine
 
 TODO
 
-#### 2.9.4 MongoDB paigaldamine ja seadistamine
+MongoDB paigaldamine ja seadistamine
 
-MongoDB-d võib seadistada kas [konfiguratsioonifailiga](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file) või andmebaasideemoni käivitamiskäsu `mongod` parameetritega. Mõistlik on seadistada konfiguratsioonifailiga, andes faili asukoha käivituskäsus:
+MongoDB-d võib seadistada kas [konfiguratsioonifailiga](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file) või andmebaasideemoni käivitamiskäsu `mongod` parameetritega. Mõistlik on seadistada konfiguratsioonifailiga. Konfiguratsioonifailis määrata:
+
+TODO
+
+Veebirakenduse paigaldamine ja seadistamine
+
+TODO
+
+#### 2.9.3 Käivitamine (Ubuntu)
+
+1\. MongoDB käivitamine
 
 `mongod --config /etc/mongod.conf`
 
-Konfiguratsioonifailis määrata:
+MongoDB vastab diagnostiliste teadetega ja
 
-TODO
+`[initandlisten] waiting for connections on port 27017`
 
-#### 2.9.5 Veebirakenduse paigaldamine ja seadistamine
+2\. Veebirakenduse käivitamine
 
-TODO
+Command Prompt veebirakenduse juurkausta ja
+
+`node index`
+
+Veebirakendus teatab
+
+`TARA-Stat kuulab pordil: 443`
+
+#### 2.9.4 Paigaldamine ja käivitamine (Windows)
+
+Arendamisel ja testimisel Windows-masinas tuleb:
+
+1\. Paigaldada MongoDB.<br>
+2\. Lisada `C:\Program Files\MongoDB\Server\3.6\bin` Path-i.<br>
+-- Search, envir -> Edit environmental variables<br>
+3\. Paigalduse kontroll: `mongod --version`.<br>
+4\. MongoDB käivitamine: `"C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe"`
+
+5\. Paigaldada Node.JS
+6\. Lisada `C:\Program Files\nodejs\` Path-i.
+7\. Paigalduse kontroll: `node -v`.
+
+8\. Veebirakenduse käivitamine: veebirakenduse juurkaustas: `node index`.
+
+
 
 ### 2.10 Veateated
 
