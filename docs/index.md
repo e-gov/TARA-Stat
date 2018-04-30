@@ -1,7 +1,7 @@
 # Mikroteenuste arhitektuuri poole
 {: .no_toc}
 
-v 0.2, 30.04.2018
+2. päev, 30.04.2018
 
 - TOC
 {:toc}
@@ -327,7 +327,7 @@ Päringu `localhost:5000/status` saamisel kontrollib TARA-Stat oma logibaasi ül
 
 Admin saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo - vajadusel kustutada logibaasist vanu kirjeid.
 
-## 2.8 Turvamine
+### 2.8 Turvamine
 
 Analüüsime võimalusi TARA-Stat-i turvamiseks. Eeldame, et kuigi µT-st kasutatakse organisatsiooni sisevõrgus, ei saa paigalduskeskkonna täielikku turvalisust eeldada ([MFN 19.4](https://e-gov.github.io/MFN/#19.4)). 
 
@@ -349,7 +349,7 @@ MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [tu
 
 Käesolev jaotis esitab kokkuvõtlikult TARA-Stat-i paigaldamiseks ja käitamiseks vajaliku teabe ja seejärel annab detailsed paigaldusjuhised
 
-### 2.9.1 Paigaldamiseks ja käitamiseks vajalik teabe (kokkuvõte)
+#### 2.9.1 Paigaldamiseks ja käitamiseks vajalik teabe (kokkuvõte)
 
 TARA-Stat paigaldatakse Linux-i masinasse (Ubuntu 16 LTS). TARA-Stat koosneb kahest komponendist (mõlemad paigaldatakse samasse masinasse): veebirakendus ja logibaas.
 
@@ -367,7 +367,7 @@ TARA-Stat-le peab vajadusel olema juurdepääs ka süsteemiadministraatoril, et 
 
 Logibaas suhtleb ainult veebirakendusega ega tohi suhtlust masinast väljapoole.
 
-### 2.9.2 Paigaldus
+#### 2.9.2 Paigaldus
 
 1\. Valmistada virtuaalmasin (VM).
 
