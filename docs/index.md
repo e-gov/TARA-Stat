@@ -373,13 +373,16 @@ Logibaas suhtleb ainult veebirakendusega ega tohi suhtlust masinast väljapoole.
 
 2\. Paigaldada Ubuntu 16 LTS.
 
-3\. Node.JS
+3\. Paigaldada ja seadistada Node.JS
 a) Paigaldada Node.JS (viimane stabiilne versioon).<br>
 b) Seadistada Node.JS.
 
-4\. MongoDB
+4\. Paigaldada ja seadistada MongoDB
 a) Paigaldada MongoDB (viimane stabiilne versioon).<br>
 b) Seadistada MongoDB.<br>
+
+MongoDB-d võib seadistada kas [konfiguratsioonifailiga](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file) või andmebaasideemoni käivitamiskäsu `mongod` parameetritega. Mõistlik on seadistada konfiguratsioonifailiga. Konfiguratsioonifailis määrata: TODO
+
 c) Luua tühi logibaas.<br>
 d) Luua kasutajad.
 
@@ -391,42 +394,43 @@ b) Paigaldada veebirakendus siserepost VM-i.
 a) Pääsureeglite seadmine VM tulemüüris
 b) Pääsureeglite seadmine VLAN-is ja/või sisevõrgu ruuteri(te)s).
 
-7\. Luua usaldus TARA-Serveri ja TARA-Stat-i vahel
+7\. Genereerida ja paigaldada veebirakenduse HTTPS võtmed
+
+Vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concepts); [Self-Signed, Trusted Certificates for Node.js & Express.js](https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/)
+
+`openssl genrsa -out localhost.key 2048`
+
+`openssl req -new -x509 -key localhost.key -out localhost.cert -days 3650 -subj /CN=localhost`
+
+kus `localhost` asemel kasutada sobivat nime, nt `TARA-Stat`.
+
+Failid `localhost.cert` ja `localhost.key` kanda veebirakenduse juurkausta alamkausta `keys`.
+
+Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andma teadet "vigane turvasertifikaat". Teatest saab üle, kui kasutaja lisab erandi.
+{: .adv}
+
+8\. Luua usaldus TARA-Serveri ja TARA-Stat-i vahel
 a) Genereerida API-võti.
 b) Paigaldada API-võti TARA-Serveri konf-i.
 c) Paigaldada API-võti TARA-Stat-i konf-i.
 
-Node.JS paigaldamine ja seadistamine
-
-TODO
-
-MongoDB paigaldamine ja seadistamine
-
-MongoDB-d võib seadistada kas [konfiguratsioonifailiga](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file) või andmebaasideemoni käivitamiskäsu `mongod` parameetritega. Mõistlik on seadistada konfiguratsioonifailiga. Konfiguratsioonifailis määrata:
-
-TODO
-
-Veebirakenduse paigaldamine ja seadistamine
-
-TODO
-
 #### 2.9.3 Käivitamine (Ubuntu)
 
-1\. MongoDB käivitamine
+1\. MongoDB käivitamine:
 
 `mongod --config /etc/mongod.conf`
 
-MongoDB vastab diagnostiliste teadetega ja
+MongoDB vastab diagnostiliste teadetega ja:
 
 `[initandlisten] waiting for connections on port 27017`
 
 2\. Veebirakenduse käivitamine
 
-Command Prompt veebirakenduse juurkausta ja
+Veebirakenduse juurkaustas:
 
 `node index`
 
-Veebirakendus teatab
+Veebirakendus teatab:
 
 `TARA-Stat kuulab pordil: 443`
 
@@ -434,24 +438,41 @@ Veebirakendus teatab
 
 Arendamisel ja testimisel Windows-masinas tuleb:
 
-1\. Paigaldada MongoDB.<br>
-2\. Lisada `C:\Program Files\MongoDB\Server\3.6\bin` Path-i.<br>
--- Search, envir -> Edit environmental variables<br>
-3\. Paigalduse kontroll: `mongod --version`.<br>
-4\. MongoDB käivitamine: `"C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe"`
+1\. Paigaldada MongoDB.
+
+2\. Lisada `C:\Program Files\MongoDB\Server\3.6\bin` Path-i.
+
+-- Search, `envir` -> `Edit environmental variables`
+
+3\. Paigalduse kontroll:
+
+`mongod --version`.
+
+4\. MongoDB käivitamine:
+
+`"C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe"`
 
 5\. Paigaldada Node.JS
+
 6\. Lisada `C:\Program Files\nodejs\` Path-i.
-7\. Paigalduse kontroll: `node -v`.
 
-8\. Veebirakenduse käivitamine: veebirakenduse juurkaustas: `node index`.
+7\. Paigalduse kontroll:
 
+`node -v`.
 
+8\. Veebirakenduse käivitamine: veebirakenduse juurkaustas:
+
+`node index`.
+
+Veebirakenduse käivitumise kontroll:
+
+`https://localhost`
 
 ### 2.10 Veateated
 
-ERR-01: Logibaasiga ühendumine ebaõnnestus<br>
-ERR-02: Viga logibaasist lugemisel
+kood | veateade | soovitus
+ERR-01 | Logibaasiga ühendumine ebaõnnestus | Kontrollida, kas MongoDB töötab
+ERR-02 | Viga logibaasist lugemisel |  Kontrollida, kas MongoDB töötab
 
 ## 3 Kasulikku
 
