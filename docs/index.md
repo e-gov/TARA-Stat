@@ -183,6 +183,7 @@ Monoliitrakenduses ei ole komponentidevahelise andmeedastuse turvamine probleem.
 TARA-Stat on eksperimentaalne µT [autentimisteenuse TARA](https://e-gov.github.io/TARA-Doku) kasutusstatistika tootmiseks ja vaatamiseks. Olemas on varem koostatud spetsifikatsioon: [TARA kasutusstatistika](https://e-gov.github.io/TARA-Doku/Statistika).
 
 TARA-Stat pakub:
+
 - võimalust autentimisteenuses fikseeritud autentimistoimingute logimiseks, hilisema statistikaarvutamise tarbeks
 - võimalust logi põhjal lihtsa - kuid autentimisteenuse haldamiseks vajaliku - statistika arvutamiseks ja vaatamiseks
   - eelkõige huvitab autentimiste arv klientrakenduste lõikes ajaperioodil
@@ -197,12 +198,14 @@ Ongi kõik. Kohe tekib küsimus, kas seda pole liiga vähe? See µT on spetsiali
 µT- sisestruktuur peab olema lihtne. µT TARA-Stat koosneb kahest komponendist ja neljast liidesest.
 
 Komponendid:
+
 - rakendus
   - serveripoolne osa
   - kasutaja sirvikusse laetav osa
 - andmebaas (logibaas).
 
 Liidesed:
+
 - logikirje lisamise liides
 - statistika väljastamise liides
 - logibaasi haldamise liides
@@ -217,6 +220,7 @@ Minu µT-stel võib olla ka olek (_state_) ja TARA-Stat puhul nii ongi. TARA-Sta
 #### 2.3.1 Oleku hoidmise tehniline lahendus
 
 Nii lihtsat andmestruktuuri võiks hoida tavalises logifailis. Siiski on TARA-Stat-is kasutusel andmebaasisüsteem (MongoDB). See on oluline otsus. Oleku hoidmise tehnoloogiavalikul olid alternatiivid:
+
 - fail(id)
 - PostgreSQL andmebaas
 - MongoDB andmebaas.
@@ -230,6 +234,7 @@ TARA-Stat olek õnneks ei ole keerukas. Nõuded andmekvaliteedile ei ole ka väg
 ### 2.4 Programmeerimiskeel
 
 TARA-Stat on kirjutatud Javascriptis. Täpsemalt, tehnoloogiapinu on järgmine (järgnev loetelu ei sisalda organisatsiooni IT-taristu spetsiifilisi tehnoloogiad - nende nimetamine ei oleks turvakaalustluste tõttu hea praktika):
+
 - rakendus
   - serveripoolne osa
     - Node.JS
@@ -290,7 +295,7 @@ Kuna statistika on üldistatud ega sisalda isikuandmeid, lähtume statistika ots
 
 Kasulikul µT-l on tavaliselt 2-3 liidest. Liideste kvaliteet (lihtsus, selgus, kasulikkus) on väga oluline. Liideseid on kahte tüüpi: masinliidesed ja inimkasutaja liidesed (_UI_). 
 
- TARA-Stat pakub 4 liidest. Neist kaks on peamised ja kaks on toetavad. Liideseid nimetan ka otspunktideks. Liidestest arusaamiseks on abiks arhitektuurijoonis (vt joonis 1). 
+TARA-Stat pakub 4 liidest. Neist kaks on peamised ja kaks on toetavad. Liideseid nimetan ka otspunktideks. Liidestest arusaamiseks on abiks arhitektuurijoonis (vt joonis 1). 
 
 <p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
 
@@ -324,7 +329,7 @@ Päringu `localhost:5000/status` saamisel kontrollib TARA-Stat oma logibaasi ül
 
 #### 2.7.4 Andmebaasi haldamise liides
 
-Admin saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo - vajadusel kustutada logibaasist vanu kirjeid.
+Andmehaldur saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo - vajadusel kustutada logibaasist vanu kirjeid.
 
 ### 2.8 Turvamine
 
@@ -360,6 +365,7 @@ TARA-Stat paigaldatakse Linux-i masinasse (Ubuntu 16 LTS). TARA-Stat koosneb kah
 Veebirakendus vajab tööks Node.JS paigaldamist. Logibaas vajab MongoDB paigaldamist.
 
 TARA-Stat peab olema kättesaadav ainult organisatsiooni sisevõrgus, järgmistele inim- ja masinkasutajatele:
+
   - statistikakasutajale (tüüpiliselt teenusehaldur)
   - TARA-Server rakendusele.
 
@@ -423,6 +429,7 @@ Märkus. Logibaasi (MongoDB andmebaasi) ja selles kogumit (_collection_) ei ole 
 #### 2.9.5 Andmebaasi kasutajate loomine
 
 Lülita sisse logibaasi kasutajate autentimine, rollihaldus ja luua logibaasi kasutajad. Logibaasile tuleb luua kolm kasutajat:
+
 - `userAdmin` - kasutajate haldur
 - `rakendus` - TARA-Stat veebirakendus
 - `andmehaldur` - haldur, kes saab aegunud logikirjeid kustutada
@@ -530,6 +537,7 @@ Kontroll: Veendu faili `package.json` sisu abil, et moodulid on paigaldatud.
 #### 2.9.6 Piira võrguavatus
 
 Sea pääsureeglid VM tulemüüris. Vaja on:
+
 - HTTPS päringud TARA-Server-lt
 - HTTPS päringud Statistikakasutajalt (pöördub sirvikuga)
 - HTTPS päringud monitooringulahenduselt (kui kasutatakse).
@@ -633,29 +641,35 @@ ERR-02 | Viga logibaasist lugemisel |  Kontrollida, kas MongoDB töötab
 ## 3 Kasulikku
 
 MongoDB, "a document database with the scalability and flexibility that you want with the querying and indexing that you need"
+
 - [docs](https://docs.mongodb.com/)
 
 MongoDB server
+
 - käivitamine: `mongod`
 - vaikimisi teenindab pordil `27017`.
 - rakendus suhtleb MongoDB-ga TCP/IP socket-i põhise [MongoDB wire protocol](https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/)-iga.
 - MongoDB standardne pääsumehhanism - [Salted Challenge Response Authentication Mechanism](https://docs.mongodb.com/manual/core/authentication-mechanisms/).
 
 mongo, "an interactive JavaScript shell interface to MongoDB"
+
 - [ülevaade](https://docs.mongodb.com/manual/mongo/)
 - [Reference](https://docs.mongodb.com/manual/reference/program/mongo/#bin.mongo)
 - käivitamine: `mongo`
 
 MongoDB Compass Community, "The GUI for MongoDB.", "The Easiest Way to Explore and Manipulate Your MongoDB Data."
+
 - [juhend](https://docs.mongodb.com/compass/current/)
 
 MongoDB Node.JS Driver 
+
 - [ülevaade](http://mongodb.github.io/node-mongodb-native/?jmp=docs&_ga=2.138292915.2088530382.1524857109-302204577.1524857109)
 - [dok-n](http://mongodb.github.io/node-mongodb-native/3.0/)
 - [Aggregation Pipeline](https://docs.mongodb.com/manual/core/aggregation-pipeline/)
 - [Using the Aggregation Framework](http://mongodb.github.io/node-mongodb-native/2.0/tutorials/aggregation/)
 
 ejs, "Effective JavaScript templating"
+
 - [docs](http://ejs.co/)
 - [Syntax Reference](https://github.com/mde/ejs/blob/master/docs/syntax.md)
 
