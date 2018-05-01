@@ -272,13 +272,15 @@ Kui arendaja peaks MongoDB või Node.JS mitte tudnma ega soovi neid õppida, sii
 
 ### 2.6 Kasutajad
 
-TARA-Stat-l on neli võimalikku kasutajat. (Kasutajaks loeme µT-ga suhtlevat osapoolt. Kasutajad võivad olla inim- või masinkasutajad).
+TARA-Stat-l on 5 võimalikku kasutajat. (Kasutajaks loeme µT-ga suhtlevat osapoolt. Kasutajad võivad olla inim- või masinkasutajad).
 
 **Statistikakasutaja**  on autentimisteenust TARA käitava organisatsiooni teenistuja - teenusehaldur või tootejuht- kes vajab teavet teenuse kasutamise mahu, sh trendide kohta. Statistikakasutajale tuleb pakkuda statistikat. Eriti vajalik on teave teenuse tarbimismahtudest klientrakenduste lõikes. Statistikakasutajal peab olema võimalik ette anda periood, mille kohta statistika arvutatakse. Statistikakasutajal ei tohi olla võimalust logi muuta. Juurdepääs statistikale peab olema piiratud; ainult määratud isikud, määratud töökohtadelt.
 
 **TARA-Server** saadab TARA-Stat-i logikirjeid. TARA-Server võib olla paigaldatud mitmes instantsis.
 
-**Süsteemihaldur** omab täielikku juurdepääsu TARA-Stat masinale. Süsteemihaldur saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo - vajadusel kustutada logibaasist vanu kirjeid. (Kasutusstatistika pakub huvi u aasta jooksul). See on harv tegevus.
+**Andmehaldur** on inimene, kes, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI mongo - kustutab logibaasist aegunud kirjeid. (Kasutusstatistika pakub huvi u aasta jooksul). See on harv tegevus.
+
+**Admin** on inimene, kes paigaldab tarkvara, loob andmebaasi kasutajatele (TARA-Server, andmehaldur) kontod ja annab pääsuõigused.
 
 **Monitooringusüsteem** saab TARA-Stat-le saata "elutuksepäringu". TARA-Stat vastab, kas ta toimib.
 
@@ -345,11 +347,9 @@ MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [tu
  piirata võrgus nähtavust | jah 
  andmebaasi auditilogi | ei (terviklusvajadus ei ole nii kõrge) 
 
-### 2.9 Paigaldusplaan
+### 2.9 Paigaldamine (Ubuntu)
 
-Käesolev jaotis esitab kokkuvõtlikult TARA-Stat-i paigaldamiseks ja käitamiseks vajaliku teabe ja seejärel annab detailsed paigaldusjuhised
-
-#### 2.9.1 Paigaldamiseks ja käitamiseks vajalik teabe (kokkuvõte)
+#### 2.9.1 Ülevaade
 
 TARA-Stat paigaldatakse Linux-i masinasse (Ubuntu 16 LTS). TARA-Stat koosneb kahest komponendist (mõlemad paigaldatakse samasse masinasse): veebirakendus ja logibaas.
 
@@ -363,64 +363,118 @@ Statistikakasutaja pöördub sirviku abil statistika väljastamise otspunkti. TA
 
 Lisaks on TARA-Stat vajadusel võimeline pakkuma elutukse otspunkti organisatsiooni monitooringulahendusele.
 
-TARA-Stat-le peab vajadusel olema juurdepääs ka süsteemiadministraatoril, et kustutada aegunud logikirjed. Süsteemiandministraator vajab tööriistu MongoDB Compass ja/või `mongo` (MongoDB Shell) - need tuleks samuti paigaldada.
+TARA-Stat-le peab vajadusel olema juurdepääs ka andmehalduril, et kustutada aegunud logikirjed. Andmehaldur vajab tööriistu MongoDB Compass ja/või `mongo` (MongoDB Shell) - need tuleks samuti paigaldada.
 
 Logibaas suhtleb ainult veebirakendusega; ei tohi suhelda masinast väljapoole.
 
-#### 2.9.2 Paigaldamine (Ubuntu)
+#### 2.9.2 VM ja op-süsteem
 
-1\. Valmistada virtuaalmasin (VM).
+1\.Valmista virtuaalmasin (VM).<br>
+2\. Paigalda Ubuntu 16 LTS.
 
-2\. Paigaldada Ubuntu 16 LTS.
+#### 2.9.3 Node.JS
 
-3\. Paigaldada ja seadistada Node.JS
-a) Paigaldada Node.JS (viimane stabiilne versioon).<br>
-b) Seadistada Node.JS.
+1\. Paigalda Node.JS (viimane stabiilne versioon).<br>
+2\. Seadista Node.JS.
 
-4\. Paigaldada ja seadistada MongoDB
-a) Paigaldada MongoDB (viimane stabiilne versioon).<br>
-b) Seadistada MongoDB.<br>
+TODO
 
-MongoDB-d võib seadistada kas [konfiguratsioonifailiga](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file) või andmebaasideemoni käivitamiskäsu `mongod` parameetritega. Mõistlik on seadistada konfiguratsioonifailiga. Konfiguratsioonifailis määrata: TODO
+#### 2.9.4 MongoDB
 
-Märkus. Logibaasi (MongoDB andmebaasi) ja selles kogumit (collection) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
+3\. Paigalda MongoDB (viimane stabiilne versioon).<br>
+4\. Seadista MongoDB.<br>
 
-c) Lülitada sisse logibaasi kasutajate autentimine, rollihaldus ja luua logibaasi kasutajad.
+MongoDB-d võib seadistada kas [konfiguratsioonifailiga](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file) või andmebaasideemoni käivitamiskäsu `mongod` parameetritega. Mõistlik on seadistada konfiguratsioonifailiga. Konfiguratsioonifailis määrata: 
 
-Logibaasile tuleb luua kaks kasutajat:
-- `userAdmin` - admin
+TODO
+
+Märkus. Logibaasi (MongoDB andmebaasi) ja selles kogumit (_collection_) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
+
+#### 2.9.5 Andmebaasi kasutajate loomine
+
+Lülita sisse logibaasi kasutajate autentimine, rollihaldus ja luua logibaasi kasutajad. Logibaasile tuleb luua kolm kasutajat:
+- `userAdmin` - kasutajate haldur
 - `rakendus` - TARA-Stat veebirakendus
+- `andmehaldur` - haldur, kes saab aegunud logikirjeid kustutada
 
 Kasutajate eristamine on vajalik pigem tuleviku vajadusi arvestades. Protseduuri vt [Enable Auth](https://docs.mongodb.com/manual/tutorial/enable-authentication/).
 
-1\. Ühendu andmebaasi külge: `mongo`
-2\. Loo admin: 
+Kasutajakontosid hoitakse samuti MongoDB andmebaasides. Kasutame andmebaasi `admin` kasutajate halduri konto hoidmiseks. Teiste kasutajate kontosid hoiame andmebaasis `users`.
+
+1\. Loo kasutajate haldur.
+
+Ühendu andmebaasi külge: `mongo` ja
 
 ```
 use admin
 db.createUser(
   {
-    user: "myUserAdmin",
-    pwd: "abc123",
+    user: "userAdmin",
+    pwd: "changeit",
     roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
   }
 )
 ```
 
+2\. Lülita sisse rollihaldus. Sea andmebaasi konf-ifailis `security.authorization ` tõeseks ja käivita andmebaas uuesti.
+
+3\. Ühendu uuesti andmebaasi külge - `mongo` ja autendi end kasutajana `admin`:
+
+```
+mongo --port 27017 -u "userAdmin" -p "changeit" --authenticationDatabase "admin"
+```
+
+või pärast `mongo` käivitamist:
+
+```
+use admin
+db.auth("userAdmin", "changeit" )
+```
+
+4\. Loo kasutaja `rakendus`
+
+```
+use users
+db.createUser(
+  {
+    user: "rakendus",
+    pwd: "changeit",
+    roles: [ { role: "readWrite", db: "logibaas" } ]
+  }
+)
+```
+
+5\. Loo kasutaja `andmehaldur`
+
+```
+use users
+db.createUser(
+  {
+    user: "andmehaldur",
+    pwd: "changeit",
+    roles: [ { role: "readWrite", db: "logibaas" } ]
+  }
+)
+```
+
+6\. Kontrolli loodut
+
 `show users` - kuvab kasutajad<br>
 `show roles` - kuvab rollid
 
-TODO: Kirjutada skript.
+#### 2.9.5 Veebirakendus
 
-5\. Paigaldada veebirakendus.<br>
-a) Kopeerida veebirakendus ([https://github.com/e-gov/TARA-Stat](https://github.com/e-gov/TARA-Stat)) organisatsiooni sisereposse.<br>
-b) Paigaldada veebirakendus siserepost VM-i.
+1\. Kopeeri veebirakendus ([https://github.com/e-gov/TARA-Stat](https://github.com/e-gov/TARA-Stat)) organisatsiooni sisereposse.
 
-6\. Piirata võrguavatus<br>
-a) Pääsureeglite seadmine VM tulemüüris<br>
-b) Pääsureeglite seadmine VLAN-is ja/või sisevõrgu ruuteri(te)s).
+2\. Paigalda veebirakendus siserepost VM-i.
 
-7\. Genereerida ja paigaldada veebirakenduse HTTPS võtmed
+#### 2.9.6 Piira võrguavatus
+
+Sea pääsureeglid VM tulemüüris.
+
+Sea pääsureeglid VLAN-is ja/või sisevõrgu ruuteri(te)s).
+
+#### 2.9.7 Genereeri ja paigalda veebirakenduse HTTPS võtmed
 
 Vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concepts); [Self-Signed, Trusted Certificates for Node.js & Express.js](https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/)
 
@@ -435,14 +489,15 @@ Failid `localhost.cert` ja `localhost.key` kanda veebirakenduse juurkausta alamk
 Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andma teadet "vigane turvasertifikaat". Teatest saab üle, kui kasutaja lisab erandi.
 {: .adv}
 
-8\. Luua usaldus TARA-Serveri ja TARA-Stat-i vahel<br>
-a) Genereerida API-võti.<br>
-b) Paigaldada API-võti TARA-Serveri konf-i.<br>
-c) Paigaldada API-võti TARA-Stat-i konf-i.
+#### 2.9.8 Loo usaldus TARA-Serveri ja TARA-Stat-i vahel
 
-#### 2.9.3 Käivitamine (Ubuntu)
+1\. Genereeri API-võti.<br>
+2\. Paigalda API-võti TARA-Serveri konf-i.<br>
+3\. Paigalda API-võti TARA-Stat-i konf-i.
 
-1\. MongoDB käivitamine:
+#### 2.9.9 Käivita
+
+1\. Käivita MongoDB:
 
 `mongod --config /etc/mongod.conf`
 
@@ -450,7 +505,7 @@ MongoDB vastab diagnostiliste teadetega ja:
 
 `[initandlisten] waiting for connections on port 27017`
 
-2\. Veebirakenduse käivitamine
+2\. Käivita veebirakendus
 
 Veebirakenduse juurkaustas:
 
@@ -460,7 +515,7 @@ Veebirakendus teatab:
 
 `TARA-Stat kuulab pordil: 443`
 
-#### 2.9.4 Paigaldamine ja käivitamine (Windows)
+### 2.10 Paigaldamine ja käivitamine (Windows)
 
 Arendamisel ja testimisel Windows-masinas tuleb:
 
