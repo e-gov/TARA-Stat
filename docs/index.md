@@ -1,4 +1,4 @@
-<p><i class='ikoon material-icons'>memory</i><br><br></p>
+<p style='margin: 1em 0 2em 1em;'><i class='ikoon material-icons'>memory</i></p>
 
 # Mikroteenuste arhitektuuri poole
 {: .no_toc}
