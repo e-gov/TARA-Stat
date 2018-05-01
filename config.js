@@ -20,3 +20,7 @@ config.collection = 'autentimised';
 
 /* MongoDB URL */
 config.mongodb_url = 'mongodb://localhost:27017';
+
+/* TARA-Serveri nimi ja salasõna (API võti) */
+config.taraserver = 'taraserver';
+config.taraserverpwd = process.env.TARASERVERPWD || 'changeit';

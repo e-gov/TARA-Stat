@@ -527,7 +527,7 @@ Node.JS vajab tööks rida Javascipti mooduleid. Need on kirjeldatud failis `pac
 
 `npm install <moodul> --save`
 
-Paigaldada tuleb järgmised moodulid: `body-parser`, `ejs`, `express`, `mongodb`, `request`.
+Paigaldada tuleb järgmised moodulid: `body-parser`, `ejs`, `express`, `mongodb`, `request`, `basic-auth`.
 
 Kontroll: Veendu faili `package.json` sisu abil, et moodulid on paigaldatud.
 
@@ -555,8 +555,10 @@ Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andm
 
 #### 2.9.8 Loo usaldus TARA-Serveri ja TARA-Stat-i vahel
 
-1\. Genereeri API-võti.<br>
-2\. Paigalda API-võti TARA-Serveri konf-i.<br>
+1\. Genereeri API-võti. Juhusõne pikkusega 20 tärki.
+
+2\. Paigalda API-võti TARA-Stat-i konf-i. Vt fail `config.js`; Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`process.env`).
+
 3\. Paigalda API-võti TARA-Stat-i konf-i.
 
 #### 2.9.9 Käivita

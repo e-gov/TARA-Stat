@@ -25,6 +25,9 @@ const express = require('express');
 /* HTTP päringu parsimisvahendid */
 const bodyParser = require('body-parser');
 
+/* Basic Authentication vahend */
+var auth = require('basic-auth');
+
 /* MongoDB */
 const MongoClient = require('mongodb').MongoClient;
 
@@ -161,11 +164,33 @@ app.get('/stat', (req, res) => {
 });
 
 /**
+ * Kontrolli kredentsiaale (API-võtit)
+ */
+function check (name, pass) {
+  var valid = true;
+  // Simple method to prevent short-circut and use timing-safe compare
+  valid = compare(name, config.taraserver) && valid;
+  valid = compare(pass, config.taraserverpwd) && valid;
+  return valid
+}
+
+/**
  * Lisa logikirje
  * POST päring, kehas JSON
  * { "aeg": ..., "klient": ..., "meetod": ... }
  */
-app.post('/', (req, res) => {
+app.post('/',
+  /* Kontrolli kredentsiaale */  
+  (req, res) => {
+    var credentials = auth(req);
+    if (!credentials || !check(credentials.name, credentials.pass)) {
+      res.statusCode = 401;
+      res.end('Access denied');
+    } else {
+      next();
+    }
+  },  
+  (req, res) => {
   console.log('--- Logikirje lisamine');
   var aeg = req.body.aeg;
   var klient = req.body.klient;
