@@ -113,15 +113,18 @@ Ei ole _overkill_ kasutada OSI kihimudelit, võib-olla valides sealt relevantsed
 
 Rakenduse tasandil on suhtluse osapoolte autentimiseks mitu võimalust:
 
-- sümmeetriline võti (salasõna)
-  - rühma võti
-  - individuaalne võti
-- asümmeetriline võtmepaar
-  - ise tõendatud (_self-signed_)
-  - sertifitseerimisteenuse poolse tõendamisega (CA)
-    - organisatsiooni enda CA
-    - väline CA
-- autentimisteenus (_trusted third party_).
+sümmeetriline võti (salasõna)
+- rühma võti
+- individuaalne võti
+
+asümmeetriline võtmepaar
+- ise tõendatud (_self-signed_)
+- sertifitseerimisteenuse poolse tõendamisega (CA)
+
+- organisatsiooni enda CA
+- väline CA
+
+autentimisteenus (_trusted third party_).
 
 **Sümmeetriline võti** e salasõna (_secret_), on sõne vm väärtus, mida teavad suhtluse mõlemad osapooled (ja ainult nemad) (vähemalt võtmevahetuse etapil - hiljem võib üks osapool hoida salasõna räsi). Pöörduja paneb salasõna päringusse kaasa. Masinliidese puhul nimetatakse API võtmeks (_API Key_), Inimliidese puhul parooliks. Salasõna on lihtne, järeleproovitud lahendus väikese arvu suhtlevate osapoolte korral. 
 
@@ -186,7 +189,8 @@ TARA-Stat pakub:
 
 - võimalust autentimisteenuses fikseeritud autentimistoimingute logimiseks, hilisema statistikaarvutamise tarbeks
 - võimalust logi põhjal lihtsa - kuid autentimisteenuse haldamiseks vajaliku - statistika arvutamiseks ja vaatamiseks
-  - eelkõige huvitab autentimiste arv klientrakenduste lõikes ajaperioodil
+
+Eelkõige huvitab autentimiste arv klientrakenduste lõikes ajaperioodil.
 
 Ongi kõik. Kohe tekib küsimus, kas seda pole liiga vähe? See µT on spetsialiseeritud logi. Logimine on ulatuslik teema. Logitakse mitmel erineval eesmärgil - turvamine, kasutajate pöördumiste lahendamine, teenuse ülaloleku seiramine jm. Autentimisteenuses TARA on juba oma, keerukas logilahendus - mis on (potentsiaalselt) ühendatud võimsa keskse logisüsteemiga. Kas siis eraldi, spetsialiseeritud logilahendusel on mõtet? See on mittetriviaalne, kuid väga oluline küsimus. Eraldi logilahendusel puuduks mõte, kui olemasolev võimas, väga paindlik ja paljude omadustega, _out-of-the-box_ logisüsteem oleks seadistatav vajaduse lahendamiseks vähema ajaga kui kulub µT arendamiseks. Praktika näitab siiski, et võimsate universaallahenduste tundmaõppimine ja seadistamine võib olla väga töömahukas. Ise tehes saame teha täpselt selle mida vajame - täpselt nii nagu tahame. Küsimusele kumb on parem - kas ise tehtud µT või seadistatud võimas universaalne vahend - ei ole universaalset vastust. Ise põlve otsas tegemine nõuab oskusi ja on kahtlemata riskantne. Kuid reaalsed riskid on ka suurte universaalsete valmislahenduste puhul. Näeme ju praktikas ikka ja jälle, kuidas majja tuuakse ilus ja võimas raamistik, meetod või keel, kuid selle juurutamine võtab aastaid ning suur osa vahendi võimalustest jäävad kasutamata. Igal juhul oleme µT puhul oma kahjusid tõkestanud - äraviskamisel kaotame maksimaalselt ühe nädala töö. Kui arvestada õppimist, siis tõenäoliselt vähem.
 
@@ -199,9 +203,7 @@ Ongi kõik. Kohe tekib küsimus, kas seda pole liiga vähe? See µT on spetsiali
 
 Komponendid:
 
-- rakendus
-  - serveripoolne osa
-  - kasutaja sirvikusse laetav osa
+- rakendus (serveripoolne osa, kasutaja sirvikusse laetav osa)
 - andmebaas (logibaas).
 
 Liidesed:
@@ -233,28 +235,17 @@ TARA-Stat olek õnneks ei ole keerukas. Nõuded andmekvaliteedile ei ole ka väg
 
 ### 2.4 Programmeerimiskeel
 
-TARA-Stat on kirjutatud Javascriptis. Täpsemalt, tehnoloogiapinu on järgmine (järgnev loetelu ei sisalda organisatsiooni IT-taristu spetsiifilisi tehnoloogiad - nende nimetamine ei oleks turvakaalustluste tõttu hea praktika):
+TARA-Stat on kirjutatud Javascriptis. Täpsemalt, tehnoloogiapinu on järgmine ( loetelus ei ole organisatsiooni IT-taristu turvaspetsiifilisi tehnoloogiad):
 
-- rakendus
-  - serveripoolne osa
-    - Node.JS
-      - Express
-      - MongoDB JS Driver
-  - sirvikusse laetav osa
-    - HTML5, CSS, Javascript
-    - jQuery, Google Material Design ikoonid
-- andmebaas
-  - MongoDB
-- avalik koodirepo 
-  - GitHub  
-- dokumentatsioon
-  - Jekyll
-- arendusvahendid
-  - koodi kirjutamine
-    - Visual Studio Code
-  testimine
-    - Visual Studion Code Debugger
-    - [httpie](https://httpie.org/) - (HTTP käsureaklient. Kasulik REST API-de uurimisel ja silumisel. Väidetavalt parem kui curl.)
+ komponent                   | tehnoloogiad
+-----------------------------|--------------------------
+rakendus - serveripoolne osa | Node.JS, Express, MongoDB JS Driver
+rakendus - sirvikusse laetav osa | HTML5, CSS, Javascript, jQuery, Google Material Design ikoonid
+andmebaas | MongoDB
+avalik koodirepo | GitHub
+dokumentatsioon | Jekyll
+arendusvahendid - koodimine | Visual Studio Code (võib ka muu)
+testimine | Visual Studion Code Debugger, [httpie](https://httpie.org/) - (HTTP käsureaklient. Kasulik REST API-de uurimisel ja silumisel. Väidetavalt parem kui curl.)
 
 Tehnoloogiad on valitud kasinuse põhimõttel. Kasutatud on (tehtud strateegiliste valikute raames) võimalikult standardseid vahendeid.
 
@@ -311,12 +302,13 @@ Saata `POST` päring `https://<tara-stat>` (kus `<tara-stat>` on TARA-Stat-i dom
 
 #### 2.7.2 Statistika väljastamise otspunkt (statistikakasutaja UI)
 
-- Statistikakasutaja sirvikus avada leht `https://<tara-stat>` (kus `<tara-stat>` on TARA-Stat-i domeeninimi).
-- Määrata periood (võib jääda ka tühjaks)
-  - sisestades regulaaravaldise
-  - nt `2018-04` valib 2018. a aprilli logikirjed
-  - vajutada nupule
-  - kuvatakse autentimiste arv perioodi jooksul klientrakenduste lõikes
+Statistikakasutaja sirvikus avada leht `https://<tara-stat>` (kus `<tara-stat>` on TARA-Stat-i domeeninimi).
+
+Määrata periood (võib jääda ka tühjaks)
+- sisestades regulaaravaldise
+- nt `2018-04` valib 2018. a aprilli logikirjed
+- vajutada nupule
+- kuvatakse autentimiste arv perioodi jooksul klientrakenduste lõikes
 
 <p style='text-align:center;'><img src='img/Capture.PNG' width= "650"></p>
 
@@ -324,7 +316,7 @@ Joonis 2. Statistikakasutaja UI
 
 #### 2.7.3 Elutukse otspunkt
 
-Päringu `localhost:5000/status` saamisel kontrollib TARA-Stat oma logibaasi ülevalolekut. Kui logibaas on üleval, siis tagastatakse HTTP vastus `200` `OK`,
+Päringu `https://<tara-stat>/status` saamisel kontrollib TARA-Stat oma logibaasi ülevalolekut. Kui logibaas on üleval, siis tagastatakse HTTP vastus `200` `OK`,
 - vastasel korral `500` `Internal Server Error`.
 
 #### 2.7.4 Andmebaasi haldamise liides
@@ -351,6 +343,8 @@ MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [tu
 
 #### 2.8.2 Veebirakenduse turve
 
+Rakendatakse järgmisi meetmeid:
+
 - Logikirje lisamise otspunkt kaitsta API võtmega (salasõnaga).
 - Statistika väljastamise otspunkt API võtmega kaitset ei vaja, kui tohib olla ligipääsetav ainult organisatsiooni sisevõrgus.
 - Elutukse otspunkt tohib olla ligipääsetav ainult organisatsiooni sisevõrgus.
@@ -366,8 +360,8 @@ Veebirakendus vajab tööks Node.JS paigaldamist. Logibaas vajab MongoDB paigald
 
 TARA-Stat peab olema kättesaadav ainult organisatsiooni sisevõrgus, järgmistele inim- ja masinkasutajatele:
 
-  - statistikakasutajale (tüüpiliselt teenusehaldur)
-  - TARA-Server rakendusele.
+- statistikakasutajale (tüüpiliselt teenusehaldur)
+- TARA-Server rakendusele.
 
 Statistikakasutaja pöördub sirviku abil statistika väljastamise otspunkti. TARA-Server pöördub logikirje lisamise otspunkti.  
 
@@ -385,9 +379,7 @@ Logibaas suhtleb ainult veebirakendusega; ei tohi suhelda masinast väljapoole.
 #### 2.9.3 Node.JS
 
 1\. Paigalda Node.JS (viimane stabiilne versioon).<br>
-2\. Seadista Node.JS.
-
-TODO
+2\. Seadista Node.JS. TODO
 
 #### 2.9.4 MongoDB
 
@@ -424,7 +416,8 @@ security:
    authorization: enabled
 ```   
 
-Märkus. Logibaasi (MongoDB andmebaasi) ja selles kogumit (_collection_) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
+Logibaasi (MongoDB andmebaasi) ja selles kogumit (_collection_) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
+{: .note}
 
 #### 2.9.5 Andmebaasi kasutajate loomine
 
@@ -513,9 +506,6 @@ use users
 show users
 ```
 
-`show users` - kuvab kasutajad<br>
-`show roles` - kuvab rollid
-
 #### 2.9.5 Veebirakendus
 
 1\. Kopeeri veebirakendus ([https://github.com/e-gov/TARA-Stat](https://github.com/e-gov/TARA-Stat)) organisatsiooni sisereposse.
@@ -524,9 +514,12 @@ show users
 
 Kontrolli veebirakenduse konf-i: `config.js`. Seal ei tohiks olla vajadust midagi muuta.
 
-3\. Paigalda Node.JS sõltuvused
+3\. Paigalda Node.JS teegid
 
-Node.JS vajab tööks rida Javascipti mooduleid. Need on kirjeldatud failis `package.json`. Moodulid tuleb paigaldada kausta `node_modules`. Repo ei sisalda mooduleid. Need tuleb paigaldada eraldi, Node.JS paketihalduri `npm` abil.
+Node.JS vajab tööks rida Javascipti teeke. Need on kirjeldatud failis `package.json`. Teegid tuleb paigaldada kausta `node_modules`. Kui repo ei sisalda teeke, siis tuleb need paigaldada eraldi, Node.JS paketihalduri `npm` abil. (npm vajab eraldi paigaldamist). 
+
+Alternatiiv on paigaldada teegid repo kaudu.
+{: .adv}
 
 `npm install <moodul> --save`
 
@@ -589,17 +582,22 @@ Veebirakendus teatab:
 
 Kui arenduseks kasutada Windows-masinat, siis on järgmised erisused.
 
-- MongoDB paigaldamine
-  - Lisada `C:\Program Files\MongoDB\Server\3.6\bin` Path-i
-    - Search, `envir` -> `Edit environmental variables`
-  - Paigalduse kontroll: `mongod --version`.
-  - MongoDB vajab kausta andmete hoidmiseks. Loo kaust `C:\data\db`.
-- MongoDB käivitamine
-  - `"C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe"`
-  - path-i seadmise järel lihtsalt `mongod`
-  - konfifaili loomise järel: `mongod --config C:\data\mongod.conf` 
-- MongoDB seadistamine
-  - (mittevajalik) loo konfifail `C:\data\mongod.conf`.
+MongoDB paigaldamine
+
+- Lisada `C:\Program Files\MongoDB\Server\3.6\bin` Path-i
+  - Search, `envir` -> `Edit environmental variables`
+- Paigalduse kontroll: `mongod --version`.
+- MongoDB vajab kausta andmete hoidmiseks. Loo kaust `C:\data\db`.
+
+MongoDB käivitamine
+
+- `"C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe"`
+- path-i seadmise järel lihtsalt `mongod`
+- konfifaili loomise järel: `mongod --config C:\data\mongod.conf` 
+
+MongoDB seadistamine
+
+- (mittevajalik) loo konfifail `C:\data\mongod.conf`.
 
 ````
 net:
@@ -614,9 +612,10 @@ security:
    authorization: enabled
 ```   
 
-- Node.JS paigaldamine
-  - Lisada `C:\Program Files\nodejs\` Path-i
-  - Paigalduse kontroll `node -v`
+Node.JS paigaldamine
+
+- Lisada `C:\Program Files\nodejs\` Path-i
+- Paigalduse kontroll `node -v`
 
 8\. Veebirakenduse käivitamine: veebirakenduse juurkaustas:
 
