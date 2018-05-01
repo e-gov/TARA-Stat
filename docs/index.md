@@ -251,7 +251,7 @@ TARA-Stat on kirjutatud Javascriptis. Täpsemalt, tehnoloogiapinu on järgmine (
     - Visual Studion Code Debugger
     - [httpie](https://httpie.org/) - (HTTP käsureaklient. Kasulik REST API-de uurimisel ja silumisel. Väidetavalt parem kui curl.)
 
-Tehnoloogiad on valitud kasinuse põhimõttel. Kasutatud (tehtud strateegiliste valikute raames) võimalikult standardseid vahendeid.
+Tehnoloogiad on valitud kasinuse põhimõttel. Kasutatud on (tehtud strateegiliste valikute raames) võimalikult standardseid vahendeid.
 
 Ühes µT-s kasutatavate tehnoloogiate (teekide, keelte jms) hulka tuleb hoida kontrolli all. Valida tuleb ainult vajalikud, soovitavalt üldlevinud vahendid. Vahendid ei tohi olla lahendatava ülesande suhtes liiga "võimsad".
 {: .adv}
@@ -274,7 +274,9 @@ Kui arendaja peaks MongoDB või Node.JS mitte tudnma ega soovi neid õppida, sii
 
 TARA-Stat-l on 5 võimalikku kasutajat. (Kasutajaks loeme µT-ga suhtlevat osapoolt. Kasutajad võivad olla inim- või masinkasutajad).
 
-**Statistikakasutaja**  on autentimisteenust TARA käitava organisatsiooni teenistuja - teenusehaldur või tootejuht- kes vajab teavet teenuse kasutamise mahu, sh trendide kohta. Statistikakasutajale tuleb pakkuda statistikat. Eriti vajalik on teave teenuse tarbimismahtudest klientrakenduste lõikes. Statistikakasutajal peab olema võimalik ette anda periood, mille kohta statistika arvutatakse. Statistikakasutajal ei tohi olla võimalust logi muuta. Juurdepääs statistikale peab olema piiratud; ainult määratud isikud, määratud töökohtadelt.
+**Statistikakasutaja**  on autentimisteenust TARA käitava organisatsiooni teenistuja - teenusehaldur või tootejuht- kes vajab teavet teenuse kasutamise mahu, sh trendide kohta. Statistikakasutajale tuleb pakkuda statistikat. Eriti vajalik on teave teenuse tarbimismahtudest klientrakenduste lõikes. Statistikakasutajal peab olema võimalik ette anda periood, mille kohta statistika arvutatakse. Statistikakasutajal ei tohi olla võimalust logi muuta.
+
+Kuna statistika on üldistatud ega sisalda isikuandmeid, lähtume statistika otspunkti turvamisel, et otspunkt on avatud organisatsiooni sisevõrgus, kõigile töötajatele.
 
 **TARA-Server** saadab TARA-Stat-i logikirjeid. TARA-Server võib olla paigaldatud mitmes instantsis.
 
@@ -308,7 +310,7 @@ Näiteks, [httpie](https://httpie.org/) abil:
 
 #### 2.7.2 Statistika väljastamise otspunkt (statistikakasutaja UI)
 
-- Statistikakasutaja sirvikus avada leht `localhost:5000` (või paigaldusaadressil).
+- Statistikakasutaja sirvikus avada leht `https://<tara-stat>` (kus `<tara-stat>` on TARA-Stat-i domeeninimi).
 - Määrata periood (võib jääda ka tühjaks)
   - sisestades regulaaravaldise
   - nt `2018-04` valib 2018. a aprilli logikirjed
@@ -321,8 +323,7 @@ Joonis 2. Statistikakasutaja UI
 
 #### 2.7.3 Elutukse otspunkt
 
-Päringu `localhost:5000/status` saamisel kontrollib TARA-Stat oma logibaasi ülevalolekut.
-- Kui logibaas on üleval, siis tagastatakse HTTP vastus `200` `OK`,
+Päringu `localhost:5000/status` saamisel kontrollib TARA-Stat oma logibaasi ülevalolekut. Kui logibaas on üleval, siis tagastatakse HTTP vastus `200` `OK`,
 - vastasel korral `500` `Internal Server Error`.
 
 #### 2.7.4 Andmebaasi haldamise liides
@@ -337,7 +338,7 @@ Analüüsime võimalusi TARA-Stat-i turvamiseks. Eeldame, et kuigi µT-st kasuta
 
 MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega. 
 
- turvameede | tasub rakendada
+ turvameede | rakendada?
 ------------|:------------
  sisse lülitada andmebaasi poole pöördujate autentimine<br>- lihtsaim autentimismehhanism on MongoDB vaikimisi autentimismehhanism. See on soolaga salasõna põhine. | jah 
  rakendada rollipõhist pääsuhaldust | jah 
@@ -346,6 +347,13 @@ MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [tu
  kaitsta andmebaasi failisüsteemi õigustega | ? 
  piirata võrgus nähtavust | jah 
  andmebaasi auditilogi | ei (terviklusvajadus ei ole nii kõrge) 
+
+#### 2.8.2 Veebirakenduse turve
+
+- Logikirje lisamise otspunkt kaitsta API võtmega (salasõnaga).
+- Statistika väljastamise otspunkt API võtmega kaitset ei vaja, kui tohib olla ligipääsetav ainult organisatsiooni sisevõrgus.
+- Elutukse otspunkt tohib olla ligipääsetav ainult organisatsiooni sisevõrgus.
+- Veebirakenduse API-s ainult HTTPS.
 
 ### 2.9 Paigaldamine (Ubuntu)
 
@@ -511,7 +519,7 @@ show users
 
 2\. Paigalda veebirakendus siserepost VM-i.
 
-Kontrolli veebirakenduse konf-i: `config.js`.
+Kontrolli veebirakenduse konf-i: `config.js`. Seal ei tohiks olla vajadust midagi muuta.
 
 3\. Paigalda Node.JS sõltuvused
 
