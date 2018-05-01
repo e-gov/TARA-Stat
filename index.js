@@ -10,6 +10,9 @@
 
 'use strict';
 
+/* Konf-i laadimine */
+var config = require('./config');
+
 /* Teekide laadimine */
 var https = require('https');
 
@@ -27,7 +30,8 @@ const MongoClient = require('mongodb').MongoClient;
 
 /* Veebiserveri ettevalmistamine */
 const app = express();
-app.set('port', 5000);
+/* TODO: Eemaldada?
+app.set('port', 5000); */
 
 /* Sea juurkaust, millest serveeritakse sirvikusse ressursse
  vt http://expressjs.com/en/starter/static-files.html 
@@ -46,22 +50,22 @@ app.use(bodyParser.json());
 
 /* HTTPS suvandid */
 var options = {
-  key: fs.readFileSync( './keys/localhost.key' ),
-  cert: fs.readFileSync( './keys/localhost.cert' ),
+  key: fs.readFileSync( config.key ),
+  cert: fs.readFileSync( config.cert ),
   requestCert: false,
   rejectUnauthorized: false
 };
 
 /* HTTPS serveri loomine */
-var port = process.env.PORT || 443;
+var port = config.port;
 var server = https.createServer( options, app );
 
 /* Andmebaasiühenduse loomine */
-const MONGODB_URL = 'mongodb://localhost:27017';
+const MONGODB_URL = config.mongodb_url;
 
 // Andmebaasi nimi
-const LOGIBAAS = 'logibaas';
-const COLLECTION = 'autentimised';
+const LOGIBAAS = config.logibaas;
+const COLLECTION = config.collection;
 
 /**
  *  Järgnevad marsruuteri töötlusreeglid

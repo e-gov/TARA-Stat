@@ -200,7 +200,7 @@ Komponendid:
 - rakendus
   - serveripoolne osa
   - kasutaja sirvikusse laetav osa
-- andmebaas.
+- andmebaas (logibaas).
 
 Liidesed:
 - logikirje lisamise liides
@@ -234,10 +234,10 @@ TARA-Stat on kirjutatud Javascriptis. Täpsemalt, tehnoloogiapinu on järgmine (
   - serveripoolne osa
     - Node.JS
       - Express
-      - MongoDB Driver
+      - MongoDB JS Driver
   - sirvikusse laetav osa
     - HTML5, CSS, Javascript
-    - jQuery, Google Material Design ikoonis
+    - jQuery, Google Material Design ikoonid
 - andmebaas
   - MongoDB
 - avalik koodirepo 
@@ -511,9 +511,24 @@ show users
 
 2\. Paigalda veebirakendus siserepost VM-i.
 
+Kontrolli veebirakenduse konf-i: `config.js`.
+
+3\. Paigalda Node.JS sõltuvused
+
+Node.JS vajab tööks rida Javascipti mooduleid. Need on kirjeldatud failis `package.json`. Moodulid tuleb paigaldada kausta `node_modules`. Repo ei sisalda mooduleid. Need tuleb paigaldada eraldi, Node.JS paketihalduri `npm` abil.
+
+`npm install <moodul> --save`
+
+Paigaldada tuleb järgmised moodulid: `body-parser`, `ejs`, `express`, `mongodb`, `request`.
+
+Kontroll: Veendu faili `package.json` sisu abil, et moodulid on paigaldatud.
+
 #### 2.9.6 Piira võrguavatus
 
-Sea pääsureeglid VM tulemüüris.
+Sea pääsureeglid VM tulemüüris. Vaja on:
+- HTTPS päringud TARA-Server-lt
+- HTTPS päringud Statistikakasutajalt (pöördub sirvikuga)
+- HTTPS päringud monitooringulahenduselt (kui kasutatakse).
 
 Sea pääsureeglid VLAN-is ja/või sisevõrgu ruuteri(te)s).
 
@@ -521,13 +536,11 @@ Sea pääsureeglid VLAN-is ja/või sisevõrgu ruuteri(te)s).
 
 Vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concepts); [Self-Signed, Trusted Certificates for Node.js & Express.js](https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/)
 
-`openssl genrsa -out localhost.key 2048`
+`openssl genrsa -out tara-stat.key 2048`
 
-`openssl req -new -x509 -key localhost.key -out localhost.cert -days 3650 -subj /CN=localhost`
+`openssl req -new -x509 -key tara-stat.key -out tara-stat.cert -days 3650 -subj /CN=tara-stat`
 
-kus `localhost` asemel kasutada sobivat nime, nt `TARA-Stat`.
-
-Failid `localhost.cert` ja `localhost.key` kanda veebirakenduse juurkausta alamkausta `keys`.
+Failid `tara-stat.cert` ja `tara-stat.key` kanda veebirakenduse juurkausta alamkausta `keys`.
 
 Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andma teadet "vigane turvasertifikaat". Teatest saab üle, kui kasutaja lisab erandi.
 {: .adv}
@@ -558,7 +571,7 @@ Veebirakendus teatab:
 
 `TARA-Stat kuulab pordil: 443`
 
-### 2.10 Paigaldamise erisused Windows-is
+### 2.10 Erisused Windows-is
 
 Kui arenduseks kasutada Windows-masinat, siis on järgmised erisused.
 
@@ -599,7 +612,7 @@ Veebirakenduse käivitumise kontroll:
 
 `https://localhost`
 
-### 2.10 Veateated
+### 2.11 Veateated
 
 kood | veateade | vea lahendamise soovitus
 ERR-01 | Logibaasiga ühendumine ebaõnnestus | Kontrollida, kas MongoDB töötab
