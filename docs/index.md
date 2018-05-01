@@ -385,7 +385,27 @@ MongoDB-d võib seadistada kas [konfiguratsioonifailiga](https://docs.mongodb.co
 
 Märkus. Logibaasi (MongoDB andmebaasi) ja selles kogumit (collection) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
 
-c) Luua kasutajad.
+c) Lülitada sisse logibaasi kasutajate autentimine, rollihaldus ja luua logibaasi kasutajad.
+
+Logibaasile tuleb luua kaks kasutajat:
+- `userAdmin` - admin
+- `rakendus` - TARA-Stat veebirakendus
+
+Kasutajate eristamine on vajalik pigem tuleviku vajadusi arvestades. Protseduuri vt [Enable Auth](https://docs.mongodb.com/manual/tutorial/enable-authentication/).
+
+1\. Ühendu andmebaasi külge: `mongo`
+2\. Loo admin: 
+
+```
+use admin
+db.createUser(
+  {
+    user: "myUserAdmin",
+    pwd: "abc123",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+)
+```
 
 `show users` - kuvab kasutajad<br>
 `show roles` - kuvab rollid
