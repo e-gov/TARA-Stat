@@ -300,13 +300,9 @@ Järgnevalt liidestest tehniliselt ja lähemalt.
 
 #### 2.7.1 Logikirje lisamise otspunkt
 
-Saata `POST` päring `localhost:5000` (või paigaldusaadressil), mille kehas on JSON kujul
+Saata `POST` päring `https://<tara-stat>` (kus `<tara-stat>` on TARA-Stat-i domeeninimi), mille kehas on JSON kujul
 
-`{ "aeg": ..., "klient": ..., "meetod": ... }`
-
-Näiteks, [httpie](https://httpie.org/) abil:
-
-`http POST :5000 aeg=2018-04-29T00:00:30 klient=e-teenusA meetod=mobileID`
+`{ "aeg": <ISO date>, "klient": <klientrakenduse nimi>, "meetod": <MobileID,  ID_CARD vm meetod> }`
 
 #### 2.7.2 Statistika väljastamise otspunkt (statistikakasutaja UI)
 
@@ -618,9 +614,15 @@ security:
 
 `node index`.
 
+#### 2.10.1 Testimine
+
 Veebirakenduse käivitumise kontroll:
 
 `https://localhost`
+
+Logikirje lisamist saab testida nt [httpie](https://httpie.org/) abil:
+
+`http POST :443 -a taraserver:changeit aeg=2018-04-29T00:00:30 klient=e-teenusA meetod=mobileID`
 
 ### 2.11 Veateated
 
@@ -630,29 +632,31 @@ ERR-02 | Viga logibaasist lugemisel |  Kontrollida, kas MongoDB töötab
 
 ## 3 Kasulikku
 
-**MongoDB**, "a document database with the scalability and flexibility that you want with the querying and indexing that you need"
+MongoDB, "a document database with the scalability and flexibility that you want with the querying and indexing that you need"
 - [docs](https://docs.mongodb.com/)
 
-**MongoDB server**
+MongoDB server
 - käivitamine: `mongod`
 - vaikimisi teenindab pordil `27017`.
 - rakendus suhtleb MongoDB-ga TCP/IP socket-i põhise [MongoDB wire protocol](https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/)-iga.
 - MongoDB standardne pääsumehhanism - [Salted Challenge Response Authentication Mechanism](https://docs.mongodb.com/manual/core/authentication-mechanisms/).
 
-**mongo**, "an interactive JavaScript shell interface to MongoDB"
+mongo, "an interactive JavaScript shell interface to MongoDB"
 - [ülevaade](https://docs.mongodb.com/manual/mongo/)
 - [Reference](https://docs.mongodb.com/manual/reference/program/mongo/#bin.mongo)
 - käivitamine: `mongo`
 
-**MongoDB Compass Community**, "The GUI for MongoDB.", "The Easiest Way to Explore and Manipulate Your MongoDB Data."
+MongoDB Compass Community, "The GUI for MongoDB.", "The Easiest Way to Explore and Manipulate Your MongoDB Data."
 - [juhend](https://docs.mongodb.com/compass/current/)
 
-**MongoDB Node.JS Driver** 
+MongoDB Node.JS Driver 
 - [ülevaade](http://mongodb.github.io/node-mongodb-native/?jmp=docs&_ga=2.138292915.2088530382.1524857109-302204577.1524857109)
 - [dok-n](http://mongodb.github.io/node-mongodb-native/3.0/)
 - [Aggregation Pipeline](https://docs.mongodb.com/manual/core/aggregation-pipeline/)
 - [Using the Aggregation Framework](http://mongodb.github.io/node-mongodb-native/2.0/tutorials/aggregation/)
 
-**ejs**, "Effective JavaScript templating"
+ejs, "Effective JavaScript templating"
 - [docs](http://ejs.co/)
 - [Syntax Reference](https://github.com/mde/ejs/blob/master/docs/syntax.md)
+
+[httpie](https://httpie.org/), "a command line HTTP client with an intuitive UI, JSON support, syntax highlighting"
