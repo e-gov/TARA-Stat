@@ -1,3 +1,5 @@
+<p><i class='ikoon material-icons'>memory</i><br><br></p>
+
 # Mikroteenuste arhitektuuri poole
 {: .no_toc}
 
