@@ -23,7 +23,7 @@ function alusta() {
     var perioodiMuster = $('#perioodiMuster').val();
 
     /* Piisab tee andmisest. See lisatakse allik-URL-le (origin) */
-    var url = 'http://localhost:5000/stat';
+    var url = '/stat';
     if (perioodiMuster && perioodiMuster.length > 0) {
       url = url + '?p=' + perioodiMuster;
     }
