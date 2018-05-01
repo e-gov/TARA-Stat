@@ -381,12 +381,38 @@ TODO
 
 #### 2.9.4 MongoDB
 
-3\. Paigalda MongoDB (viimane stabiilne versioon).<br>
-4\. Seadista MongoDB.<br>
+1\. Paigalda MongoDB (viimane stabiilne versioon).
 
-MongoDB-d võib seadistada kas [konfiguratsioonifailiga](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file) või andmebaasideemoni käivitamiskäsu `mongod` parameetritega. Mõistlik on seadistada konfiguratsioonifailiga. Konfiguratsioonifailis määrata: 
+2\. Seadista MongoDB.
 
-TODO
+Leia konfi-fail (`/etc/mongod.conf`) või moodusta uus. Vt [MongoDB Configuration](https://docs.mongodb.com/manual/administration/configuration/).
+
+Edaspidi käivita MongoDB konfi-faili näitamisega: 
+
+`mongod --config /etc/mongod.conf`
+
+Konfifaili sisu:
+
+```
+processManagement:
+   fork: true
+net:
+   bindIp: 127.0.0.1
+   port: 27017
+storage:
+   dbPath: /srv/mongodb
+systemLog:
+   destination: file
+   path: "/var/log/mongodb/mongod.log"
+   logAppend: true
+```
+
+Hiljem lisa konfi-faili:
+
+```
+security:
+   authorization: enabled
+```   
 
 Märkus. Logibaasi (MongoDB andmebaasi) ja selles kogumit (_collection_) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
 
@@ -403,7 +429,7 @@ Kasutajakontosid hoitakse samuti MongoDB andmebaasides. Kasutame andmebaasi `adm
 
 1\. Loo kasutajate haldur.
 
-Ühendu andmebaasi külge: `mongo` ja
+Käivita MongoDB (vt allpool) ja ühendu CLI-ga andmebaasi külge: `mongo`. Seejärel:
 
 ```
 use admin
@@ -431,6 +457,13 @@ use admin
 db.auth("userAdmin", "changeit" )
 ```
 
+Kontrolli, et konto on õigesti loodud:
+
+```
+use admin
+show users
+```
+
 4\. Loo kasutaja `rakendus`
 
 ```
@@ -443,6 +476,9 @@ db.createUser(
   }
 )
 ```
+
+NB! Väärtused nagu `readWrite` on tõstutundlikud.
+{: .adv}
 
 5\. Loo kasutaja `andmehaldur`
 
@@ -458,6 +494,13 @@ db.createUser(
 ```
 
 6\. Kontrolli loodut
+
+Kontrolli, et kontod on õigesti loodud:
+
+```
+use users
+show users
+```
 
 `show users` - kuvab kasutajad<br>
 `show roles` - kuvab rollid
@@ -501,7 +544,7 @@ Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andm
 
 `mongod --config /etc/mongod.conf`
 
-MongoDB vastab diagnostiliste teadetega ja:
+MongoDB vastab diagnostiliste teadetega ja lõpuks:
 
 `[initandlisten] waiting for connections on port 27017`
 
@@ -515,31 +558,38 @@ Veebirakendus teatab:
 
 `TARA-Stat kuulab pordil: 443`
 
-### 2.10 Paigaldamine ja käivitamine (Windows)
+### 2.10 Paigaldamise erisused Windows-is
 
-Arendamisel ja testimisel Windows-masinas tuleb:
+Kui arenduseks kasutada Windows-masinat, siis on järgmised erisused.
 
-1\. Paigaldada MongoDB.
+- MongoDB paigaldamine
+  - Lisada `C:\Program Files\MongoDB\Server\3.6\bin` Path-i
+    - Search, `envir` -> `Edit environmental variables`
+  - Paigalduse kontroll: `mongod --version`.
+  - MongoDB vajab kausta andmete hoidmiseks. Loo kaust `C:\data\db`.
+- MongoDB käivitamine
+  - `"C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe"`
+  - path-i seadmise järel lihtsalt `mongod`
+  - konfifaili loomise järel: `mongod --config C:\data\mongod.conf` 
+- MongoDB seadistamine
+  - (mittevajalik) loo konfifail `C:\data\mongod.conf`.
 
-2\. Lisada `C:\Program Files\MongoDB\Server\3.6\bin` Path-i.
+````
+net:
+   bindIp: 127.0.0.1
+   port: 27017
+````  
 
--- Search, `envir` -> `Edit environmental variables`
+Hiljem lisa:
 
-3\. Paigalduse kontroll:
+```
+security:
+   authorization: enabled
+```   
 
-`mongod --version`.
-
-4\. MongoDB käivitamine:
-
-`"C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe"`
-
-5\. Paigaldada Node.JS
-
-6\. Lisada `C:\Program Files\nodejs\` Path-i.
-
-7\. Paigalduse kontroll:
-
-`node -v`.
+- Node.JS paigaldamine
+  - Lisada `C:\Program Files\nodejs\` Path-i
+  - Paigalduse kontroll `node -v`
 
 8\. Veebirakenduse käivitamine: veebirakenduse juurkaustas:
 
