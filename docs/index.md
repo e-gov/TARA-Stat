@@ -383,19 +383,9 @@ b) Seadistada MongoDB.<br>
 
 MongoDB-d võib seadistada kas [konfiguratsioonifailiga](https://docs.mongodb.com/manual/reference/configuration-options/#configuration-file) või andmebaasideemoni käivitamiskäsu `mongod` parameetritega. Mõistlik on seadistada konfiguratsioonifailiga. Konfiguratsioonifailis määrata: TODO
 
-c) Luua tühi logibaas.<br>
+Märkus. Logibaasi (MongoDB andmebaasi) ja selles kogumit (collection) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
 
-Luua database `logibaas` ja selles collection `autentimised`.
-
-Kasutada `mongo` (MongoDB Shell) või MongoDB Compass-i.
-
-Vt [mongo Shell Quick Reference](https://docs.mongodb.com/manual/reference/mongo-shell/).
-
-`show dbs` - kuvab andmebaasid
-
-TODO: Kirjutada skript.
-
-d) Luua kasutajad.
+c) Luua kasutajad.
 
 `show users` - kuvab kasutajad<br>
 `show roles` - kuvab rollid
