@@ -65,13 +65,17 @@ p { margin: 0 0 1em 0; }
 /*#endregion */
 
 /*#region Loetelud */
-#Tekst ul {
+ul {
   list-style-type: '-  ';
   margin: -1em 0 1em 0;
   padding-left: 1em;
 }  
 
-#Tekst > ol {
+ul ul {
+  margin-top: 0 !important;
+}
+
+ol {
   padding-left: 1em;
 }  
 /*#endregion */
