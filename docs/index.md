@@ -578,7 +578,7 @@ Veebirakenduse juurkaustas:
 
 Veebirakendus teatab:
 
-`TARA-Stat kuulab pordil: 443`
+`--- TARA-Stat kuulab pordil: 443`
 
 ### 2.10 Erisused Windows-is
 
@@ -656,7 +656,13 @@ mongo, "an interactive JavaScript shell interface to MongoDB"
 
 - [ülevaade](https://docs.mongodb.com/manual/mongo/)
 - [Reference](https://docs.mongodb.com/manual/reference/program/mongo/#bin.mongo)
-- käivitamine: `mongo`
+- käivitamine ja sisselogimine kasutajan `userAdmin`:
+
+```
+mongo`
+use admin
+db.auth("userAdmin", "changeit")
+```
 
 MongoDB Compass Community, "The GUI for MongoDB.", "The Easiest Way to Explore and Manipulate Your MongoDB Data."
 

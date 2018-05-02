@@ -11,6 +11,9 @@
 'use strict';
 
 /* Konf-i laadimine */
+/* Linux
+var config = require('./config');
+*/
 var config = require('./config');
 
 /* Teekide laadimine */
@@ -27,6 +30,9 @@ const bodyParser = require('body-parser');
 
 /* Basic Authentication vahend */
 var auth = require('basic-auth');
+
+/* Node.JS utiliidid */
+const f = require('util').format;
 
 /* MongoDB */
 const MongoClient = require('mongodb').MongoClient;
@@ -52,9 +58,10 @@ parsimiseks */
 app.use(bodyParser.json());
 
 /* HTTPS suvandid */
+/* TODO config tööle */
 var options = {
-  key: fs.readFileSync( config.key ),
-  cert: fs.readFileSync( config.cert ),
+  key: fs.readFileSync("keys\\tara-stat.key"),
+  cert: fs.readFileSync("keys\\tara-stat.cert"),
   requestCert: false,
   rejectUnauthorized: false
 };
@@ -63,12 +70,28 @@ var options = {
 var port = config.port;
 var server = https.createServer( options, app );
 
-/* Andmebaasiühenduse loomine */
-const MONGODB_URL = config.mongodb_url;
 
-// Andmebaasi nimi
+/* Andmebaasi nimi */
 const LOGIBAAS = config.logibaas;
 const COLLECTION = config.collection;
+
+/* Andmebaasiga ühendumise kredentsiaalid */
+const user = config.mongouser;
+const pwd = config.mongouserpwd;
+const authMechanism = 'DEFAULT';
+
+/**
+ * Andmebaasiga ühendumise URL
+ * Vt 
+ * https://docs.mongodb.com/manual/reference/connection-string/
+ * ja http://mongodb.github.io/node-mongodb-native/3.0/tutorials/connect/authenticating/
+ * NB! Konto andmebaas - users - on URL-i hardcoded.
+ */
+const MONGODB_URL =
+  f('mongodb://%s:%s@localhost:27017/users?authMechanism=%s',
+    user,
+    pwd,
+    authMechanism);
 
 /**
  *  Järgnevad marsruuteri töötlusreeglid
@@ -104,6 +127,9 @@ app.get('/stat', (req, res) => {
    */
   const leiaKlienditi = function (r, db, callback) {
     const collection = db.collection(COLLECTION);
+    /**
+     * Lisada autentimine
+     */
     collection
       .aggregate([
         {
@@ -125,6 +151,7 @@ app.get('/stat', (req, res) => {
         }
         else {
           console.log('ERR-02: Viga logibaasist lugemisel');
+          /* TODO Ajax-päringule vastamisel see pole adekvaatne */
           res.render('pages/viga', { veateade: "ERR-02: Viga logibaasist lugemisel" });
         }
       });
@@ -244,7 +271,7 @@ app.listen(app.get('port'), function () {
   console.log('---- TARA-Stat käivitatud ----');
 });
 */
-server.listen( port, function () {
+server.listen(port, function () {
   console.log( '--- TARA-Stat kuulab pordil: ' + server.address().port );
 } );
 
