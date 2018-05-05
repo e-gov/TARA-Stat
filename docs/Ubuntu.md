@@ -10,9 +10,10 @@ permalink: Ubuntu
 
 Käesolev abitekst käsitleb Linux Ubuntu virtuaalmasina (VM) loomist Windows-arvutis ja selle sisutamist töövahenditega.
 
-**[Oracle Virtualbox]**(https://www.virtualbox.org/) on virtualiseerimisvahend, millega saab oma arvutis luua ja käitada virtuaalmasinaid. Vt:
+**Oracle Virtualbox**  on virtualiseerimisvahend, millega saab oma arvutis luua ja käitada virtuaalmasinaid. Vt:
 
 - [Virtualbox User Manual](http://www.virtualbox.org/manual/)
+- [https://www.virtualbox.org/](https://www.virtualbox.org/)
 
 **Ubuntu** on Linuxi distributsioon, mis kasutab Debiani paketihaldust ja on kasutamise lihtsustamiseks teinud kindla programmide valiku: üks aknahaldur – GNOME, üks veebilehitseja – Firefox, üks meiliprogramm – Thunderbird jne. -- [Vikipeedia](https://et.wikipedia.org/wiki/Ubuntu).
 
@@ -27,9 +28,9 @@ Paigaldab süsteemiadministraator. Kasutajale saab Windows-is kättesaadavaks vi
 
 ## Virtuaalmasinahalduri kasutamine
 
-| Ubuntu virtuaalmasina loomine | `File`, `New` TODO detailid! |
-| VM käivitamine | `Start` |
-| Hetktõmmise tegemine | `Take` |
+- Ubuntu virtuaalmasina loomine: `File`, `New` TODO detailid!
+- VM käivitamine: `Start`
+- Hetktõmmise tegemine: `Take`
 
 ## Ubuntu Desktop
 
@@ -48,9 +49,9 @@ Sageli kasutatavad tööriistad ja programmid on mõtet lisada käivitusribale (
 
 Töötab aknavahetus: `Alt`+`Tab`.
 
-### Mittevajaliku eemaldamine
+## Mittevajaliku eemaldamine
 
-Failihalduri (`Files`) abil võib kasutajakaustast (`home`) eemaldada mittevajalikud kaustad nagu `Music` jms.
+Failihalduri (`Files`) abil võib kasutajakaustast (`home`) eemaldada mittevajalikud kaustad nagu Music jms.
 
 `Ubuntu Software` > `Installed` > `Remove` abil saab vabaneda mittevajalikest tarkvaradest nagu mängud, soovi korral ka Libre jms.
 
@@ -60,7 +61,7 @@ TODO Kuidas seada ebamõistlikke lukustusaegu?
 
 ## Täiendamine töövahenditega
 
-Vajadused ja eelistused on individuaalsed. Tarkvara (pakette) paigaldamise vahent on `apt` (Advance Package Tool), seda käivitatakse admini õigustes (_superuser do_). Nt curl-i paigaldamine:
+Vajadused ja eelistused on individuaalsed. Tarkvara (pakette) paigaldamise vahend on `apt` (Advance Package Tool), seda käivitatakse admini õigustes (_superuser do_). Nt curl-i paigaldamine:
 
 `sudo apt-get install curl`
 
