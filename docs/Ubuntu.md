@@ -92,6 +92,12 @@ git config --global user.email "testuser@example.com"
 
 - kontrolli: `git config --list`.
 
+Push-sel parooliküsimise vältimine: `git config credential.helper store`
+
+## Pääsuõigused
+
+Töö toimub tavalise kasutajana (_non-root user_), kellel on `sudo` õigused (õigus anda käske admin-na).
+
 ## Võrguühendused
 
 VM-le võib seadistada ühe või mitu võrguadapterit. Seda tehakse virtuaalmasinahalduris: `Settings`, `Network`, valida adapter ja seadistada.
