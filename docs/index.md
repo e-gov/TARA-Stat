@@ -558,7 +558,7 @@ Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andm
 
 2\. Paigalda API-võti TARA-Stat-i konf-i. Vt fail `config.js`; Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`process.env`).
 
-3\. Paigalda API-võti TARA-Stat-i konf-i.
+3\. Paigalda API-võti TARA-Serveri-i konf-i.
 
 #### 2.9.9 Käivita
 
@@ -631,7 +631,7 @@ Veebirakenduse käivitumise kontroll:
 
 Logikirje lisamist saab testida nt [httpie](https://httpie.org/) abil:
 
-`http POST :443 -a taraserver:changeit aeg=2018-04-29T00:00:30 klient=e-teenusA meetod=mobileID`
+`http -a taraserver:changeit POST :443 aeg=2018-04-29T00:00:30 klient=e-teenusA meetod=mobileID`
 
 ### 2.11 Veateated
 

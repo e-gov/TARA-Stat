@@ -208,7 +208,8 @@ function check (name, pass) {
  */
 app.post('/',
   /* Kontrolli kredentsiaale */  
-  (req, res) => {
+  (req, res) => { /*
+    console.log('--- Kredentsiaalide kontrollimine');
     var credentials = auth(req);
     if (!credentials || !check(credentials.name, credentials.pass)) {
       res.statusCode = 401;
@@ -216,7 +217,7 @@ app.post('/',
     } else {
       next();
     }
-  },  
+  }, */ 
   (req, res) => {
   console.log('--- Logikirje lisamine');
   var aeg = req.body.aeg;
