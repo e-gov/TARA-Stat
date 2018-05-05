@@ -96,7 +96,9 @@ Push-sel parooliküsimise vältimine: `git config credential.helper store`
 
 ## Pääsuõigused
 
-Töö toimub tavalise kasutajana (_non-root user_), kellel on `sudo` õigused (õigus anda käske admin-na).
+Töö toimub tavalise kasutajana (_non-root user_), kellel on `sudo` õigused (õigus anda käske admin-na). Tavalise kasutaja loomine: `adduser <nimi>`.
+
+Kasutajale sudo-õiguste andmine: `usermode -aG sudo <kasutaja>`.
 
 ## Võrguühendused
 
