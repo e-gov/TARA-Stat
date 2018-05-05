@@ -1,0 +1,85 @@
+---
+permalink: Ubuntu
+---
+
+## Ubuntu juhend
+
+Käesolev juhend süstematiseerib praktilist teavet, mis võib olla kasulik Linux Ubuntu virtuaalmasina (VM) loomisel Windows-arvutis ja selle sisutamisel tööks - eelkõige programmeerimiseks - vajalike töövahenditega.
+
+[Oracle Virtualbox](https://www.virtualbox.org/) on virtualiseerimisvahend, millega saab oma arvutis luua ja käitada virtuaalmasinaid. 
+
+- [Virtualbox User Manual](http://www.virtualbox.org/manual/)
+
+Ubuntu on "Ubuntu on Linuxi distributsioon, mis kasutab Debiani paketihaldust ja on kasutamise lihtsustamiseks teinud kindla programmide valiku: üks aknahaldur – GNOME, üks veebilehitseja – Firefox, üks meiliprogramm – Thunderbird jne." [Vikipeedia](https://et.wikipedia.org/wiki/Ubuntu).
+
+- Machtelt Garrels (2008) [Introduction to Linux](https://www.tldp.org/LDP/intro-linux/html/intro-linux.html)
+- [Linux Documentation Project](https://www.tldp.org/guides.html) teised juhendid
+
+### Oracle Virtualbox paigaldamine
+
+Paigaldab süsteemiadministraator. Kasutajale saab Windows-is kättesaadavaks virtuaalmasinahaldur (Oracle Virtualbox VM Manager).
+
+### Virtuaalmasinahalduri kasutamine
+
+| Ubuntu virtuaalmasina loomine | `File`, `New` TODO |
+| VM käivitamine | `Start` |
+| Hetktõmmise tegemine | `Take` |
+
+### Ubuntu Desktop
+
+Ubuntu Desktop koosneb käivitusribast (Launcher) ja avatud akende alast. Käivitusribal on kasulíkke tööriistu:
+- `Search`
+- `Files` - failihaldur
+- `Terminal`
+- `System Settings` (Ubuntu Desktop-i seadistused. Virtualbox-i seadistused vt `File`, `Preferences` ja VM seadistused `Machine`, `Settings`)
+- `Firefox`
+
+Sageli kasutatavad tööriistad ja programmid on mõtet lisada käivitusribale (`Lock to Launcher`).
+
+### Kopeerimine ja asetamine
+
+... on Linux VM-s Windows-masinaga võrreldes piiratum. Seadistamisvõimalusi on -  `Machine`, `Settings`, `General`, `Advanced`, `Shared Clipboard', `Bidirectional`, kuid need on keerulised ja ka siis kõik ei tööta. Enamasti töötab parem hiireklõps + `Copy` v `Paste`.
+
+Töötab aknavahetus: `Alt`+`Tab`.
+
+### Mittevajaliku eemaldamine
+
+Failihalduri (`Files`) abil võib kasutajakaustast (`home`) eemaldada mittevajalikud kaustad nagu `Music` jms.
+
+`Ubuntu Software` > `Installed` > `Remove` abil saab vabaneda mittevajalikest tarkvaradest nagu mängud, soovi korral ka Libre jms.
+
+Ubuntu Desktop Käivitusribalt saab `System Settings`, `Appearance`, `Background` abil vahetada töölaua taustavärvi.
+
+TODO Kuidas seada ebamõistlikke lukustusaegu? 
+
+### Täiendamine töövahenditega
+
+Vajadused ja eelistused on individuaalsed. Tarkvara (pakette) paigaldamise vahent on `apt` (Advance Package Tool), seda käivitatakse admini õigustes (superuser do). Nt curl-i paigaldamine:
+
+`sudo apt-get install curl`
+
+Paigaldatud pakettide nimekiri: `apt list --installed`.
+
+Paigaldatud tarkvara uuendamine: `sudo apt-get update`
+
+Mõned tarkvarad paigaldatakse mitmes sammus: 1) internetist laetakse alla Debian-i pakett (`.deb`); 2) see paigaldatakse Debian-i paketihalduri `dpkg` abil; 3) lõplik paigaldamine `apt-get` abil. Nt: [Visual Studio Code paigaldamine](https://code.visualstudio.com/docs/setup/linux). Visual Studio Code on koodiredaktor (IDE), mis sobib eriti Javascripti (Node.js) ökosüsteemis kasutamiseks. 
+
+- `dpkg -l` - paigaldatud pakettide nimekiri
+- `dpkg -i <file>.deb` - paigalda pakett
+
+`code` - käivitamine
+
+[Git-i paigaldamine](https://www.liquidweb.com/kb/install-git-ubuntu-16-04-lts/)
+
+`sudo apt-get install git-core`
+
+Kontrolli: `git --version`
+
+Sea git-i vaikimisi kasutaja:
+
+```
+git config --global user.name "testuser"
+git config --global user.email "testuser@example.com"
+```
+
+Kontrolli: `git config --list`.
