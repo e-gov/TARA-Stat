@@ -29,7 +29,8 @@ Paigaldab süsteemiadministraator. Kasutajale saab Windows-is kättesaadavaks vi
 ## Virtuaalmasinahalduri kasutamine
 
 - Ubuntu virtuaalmasina loomine: `File`, `New` TODO detailid!
-- VM käivitamine: `Start`
+- VM OS-i tõmmise tõmbamine internetist Windows-masinasse: nt `ubuntu-16.04.4-desktop-amd64` kaustas `Downloads` 
+- VM esmakordne käivitamine: `Start`, näidata OS-i tõmmise asukoht. OS paigaldatakse VM-sse.
 - Hetktõmmise tegemine: `Take`
 
 ## Ubuntu Desktop
@@ -57,7 +58,7 @@ Failihalduri (`Files`) abil võib kasutajakaustast (`home`) eemaldada mittevajal
 
 Ubuntu Desktop Käivitusribalt saab `System Settings`, `Appearance`, `Background` abil vahetada töölaua taustavärvi.
 
-TODO Kuidas seada ebamõistlikke lukustusaegu? 
+VM kuvalukku (kui host-i kuvalukust piisab) saad seadistada `System Settings`, `Brightness & Lock`.
 
 ## Täiendamine töövahenditega
 
@@ -90,3 +91,23 @@ git config --global user.email "testuser@example.com"
 ```
 
 - kontrolli: `git config --list`.
+
+## Võrguühendused
+
+VM-le võib seadistada ühe või mitu võrguadapterit. Seda tehakse virtuaalmasinahalduris: `Settings`, `Network`, valida adapter ja seadistada.
+
+**NAT võrguadapter**. Lihtsaim võrguadapter on nn `NAT` tüüpi. See võimaldab VM-st pööduda internetti.
+
+**Host-only võrguadapter**. Kui soovid mõlemapidist pöördumisvõimalust VM ja host-arvuti (_host_) vahel, siis lisa teine adapter, tüüpiga `Host-only`. Hosti jaoks on VM IP `192.168.56.101` (dünaamiline IP, vaata, milline see on, `ifconfig` abil VM-s, `ipconfig` abil Windows-is). Nüüd saad VM-s üles panna veebiserveri ja pöörduda selle poole host-st.
+
+Vt. [Accessing your Virtualbox Guest from your Host OS](https://gist.github.com/odan/48fc744434ec6566ca9f7a993f4a7ffb).
+
+`arp -a`
+
+10.0.2.2
+192.168.56.100
+192.168.56.1
+
+## Pöördumine host-i kaustada poole
+
+Virtuaalmasinahalduris: `Settings`, `Shared folders`, `Machine folders`, `+` ja vali host-i kaust.
