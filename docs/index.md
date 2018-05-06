@@ -186,7 +186,7 @@ Monoliitrakenduses ei ole komponentidevahelise andmeedastuse turvamine probleem.
 
 ### 1.5 "It works on my machine!"
 
-Küpsusaste 0 - Ei tööta üheski keskkonnas
+Küpsusaste 0 - Ei tööta veel üheski keskkonnas
 
 Küpsusaste 1 - Arendaja masinas töötab
 
@@ -194,13 +194,13 @@ Küpsusaste 1 - Arendaja masinas töötab
 
 Arendaja on paigaldanud kõik arendatavad komponendid, nende käitamiseks vajaliku süsteemitarkvara (veebiserveri, andmebaasisüsteemi jms) ja testiprogrammid (maketid e _mock-up_-id jms) oma arvutisse. Tihti pannakse ka sidusteenused, millele arendaja masinast on raske juurde pääseda, arendaja arvutisse. Arvuti huugab. Arendaja masinas arendamine on efektiivne, kuna sidusteenuseid kas veel ei ole või asuvad need tulemüüride taga. Silumisvahendite (__debugger_-te) kasutamine on hõlbus. Veebiteenused suhtlevad lokaalse masina (`localhost`) kaudu. Imiteeritakse veebiliiklust ja põhimõtteliselt kõik nagu töötaks. _It works on my machine!_ Toodangukeskkonnas aga ollakse veel väga kaugel. Allpool tuleb juttu mikroteenusest TARA-Stat. TARA-Stat peab toodangus töötama eraldi masinas, Linux Ubuntu op-süsteemis. TARA-Stat peab suhtlema teises masinas töötava TARA-Serveriga (Java rakendus Ubuntu virtuaalmasinas) ja pakkuma statistikakasutajale veebiteenust. Arendaja masinas aga on kõik üheskoos, Windows-is. Kuigi tarkvara on testitud - TARA-Serveri asemel on makettrakendus `mockup`, on toodangusse siit veel pikk tee. 
 
-Küpsusaste 2 - Toodangulähedases keskkonnas, käsitsi, osaliselt testitud
+Küpsusaste 2 - Toodangulähedases keskkonnas paigaldatud, osa otspunkte käsitsi testitud
 
 <p style='text-align:center;'><img src='img/TEST-02.PNG' width= "400"></p>
 
 µT on juba paigaldatud toodanguga sarnasesse keskkonda - Ubuntu virtuaalmasinasse. Testitud on ühte otspunkti (statistika väljastamist). Seda tehti pöördumisega arendaja Windows-masinast. Asi töötas! Paigaldusjuhend on oluliselt ümber töötatud, sest kuigi Node.js ja MongoDB töötavad mõlemas op-süsteemis, on Windows-sse ja Ubuntusse paigaldamisel arvukalt erinevusi. Seni on paigaldusjuhend veel teksti kujul. Eesmärk on jõuda automaatselt täidetava paigaldusskriptini.
 
-Küpsusaste 3 - (kava) Toodangulähedases keskkonnas testitud - maketiga
+Küpsusaste 3 - (kava) Toodangulähedases keskkonnas kõik otspunktid testitud, sh maketiga
 
 <p style='text-align:center;'><img src='img/TEST-03.PNG' width= "500"></p>
 
@@ -210,11 +210,13 @@ Küpsusaste 4 - (kava) Testkeskkonnas töötab
 
 ...
 
-Paigaldusjuhis on lõplikult koostatud ja hoolikalt läbi tehtud. Paigaldamine on adekvaatselt automatiseeritud paigaldusskripti(de) abil. Süsteemiadministraator on juhise järgi paigalduse läbi teinud.
+Paigaldusjuhis on lõplikult koostatud ja hoolikalt läbi tehtud. Paigaldamine on adekvaatselt automatiseeritud paigaldusskripti(de) abil. Süsteemiadministraator on juhise järgi paigalduse probleemideta läbi teinud.
 
-Küpsusaste 5 - Toodangus töötab
+Küpsusaste 5 - (lõpp-eesmärk) Toodangus töötab
 
 <p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
+
+Reaalsed kasutaja, reaalsed andmed, reaalsed teenused.
 
 ## 2. TARA-Stat
 
