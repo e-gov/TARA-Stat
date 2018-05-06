@@ -186,25 +186,33 @@ Monoliitrakenduses ei ole komponentidevahelise andmeedastuse turvamine probleem.
 
 ### 1.5 "It works on my machine!"
 
-µT testimine
-
-Lõpp-eesmärk - Toodangus töötab
-
-<p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
+Küpsusaste 0 - Ei tööta üheski keskkonnas
 
 Küpsusaste 1 - Arendaja masinas töötab
 
 <p style='text-align:center;'><img src='img/TEST-01.PNG' width= "500"></p>
 
-Küpsusaste 2 - Toodangulähedases keskkonnas testitud (osaliselt, käsitsi)
-)
+Arendaja on paigaldanud kõik arendatavad komponendid, nende käitamiseks vajaliku süsteemitarkvara (veebiserveri, andmebaasisüsteemi jms) ja testiprogrammid (maketid e _mock-up_-id jms) oma arvutisse. Tihti pannakse ka sidusteenused, millele arendaja masinast on raske juurde pääseda, arendaja arvutisse. Arvuti huugab. Arendaja masinas arendamine on efektiivne, kuna sidusteenuseid kas veel ei ole või asuvad need tulemüüride taga. Silumisvahendite (__debugger_-te) kasutamine on hõlbus. Veebiteenused suhtlevad lokaalse masina (`localhost`) kaudu. Imiteeritakse veebiliiklust ja põhimõtteliselt kõik nagu töötaks. _It works on my machine!_ Toodangukeskkonnas aga ollakse veel väga kaugel. Allpool tuleb juttu mikroteenusest TARA-Stat. TARA-Stat peab toodangus töötama eraldi masinas, Linux Ubuntu op-süsteemis. TARA-Stat peab suhtlema teises masinas töötava TARA-Serveriga (Java rakendus Ubuntu virtuaalmasinas) ja pakkuma statistikakasutajale veebiteenust. Arendaja masinas aga on kõik üheskoos, Windows-is. Kuigi tarkvara on testitud - TARA-Serveri asemel on makettrakendus `mockup`, on toodangusse siit veel pikk tee. 
 
-<p style='text-align:center;'><img src='img/TEST-02.PNG' width= "500"></p>
+Küpsusaste 2 - Toodangulähedases keskkonnas, käsitsi, osaliselt testitud
+
+<p style='text-align:center;'><img src='img/TEST-02.PNG' width= "400"></p>
+
+µT on juba paigaldatud toodanguga sarnasesse keskkonda - Ubuntu virtuaalmasinasse. Testitud on ühte otspunkti (statistika väljastamist). Seda tehti pöördumisega arendaja Windows-masinast. Asi töötas! Paigaldusjuhend on oluliselt ümber töötatud, sest kuigi Node.js ja MongoDB töötavad mõlemas op-süsteemis, on Windows-sse ja Ubuntusse paigaldamisel arvukalt erinevusi. Seni on paigaldusjuhend veel teksti kujul. Eesmärk on jõuda automaatselt täidetava paigaldusskriptini.
 
 Küpsusaste 3 - Toodangulähedases keskkonnas testitud - maketiga
 
 <p style='text-align:center;'><img src='img/TEST-03.PNG' width= "500"></p>
 
+Samm-sammult tuleb liikuda toodangu poole. Järgmisena on kavas paigaldada makettrakendus eraldi virtuaalmasinasse ja selle abil läbi mängida suhtlus TARA-Serveri ja µT vahel. Küsimus ei ole mitte niivõrd sõnumivormingutes ja äriloogikas - see on testitud - kui andmevahetuse käimapanemine sisevõrgus, pääsuõiguste jms testimine.
+
+Küpsusaste 4 - Testkeskkonnas töötab
+
+...
+
+Küpsusaste 5 - Toodangus töötab
+
+<p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
 
 ## 2. TARA-Stat
 
