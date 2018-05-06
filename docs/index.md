@@ -184,6 +184,28 @@ Monoliitrakenduses ei ole komponentidevahelise andmeedastuse turvamine probleem.
 µT-l peaks olema HTTPS võimekus.
 {: .adv}
 
+### 1.5 "It works on my machine!"
+
+µT testimine
+
+Lõpp-eesmärk - Toodangus töötab
+
+<p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
+
+Küpsusaste 1 - Arendaja masinas töötab
+
+<p style='text-align:center;'><img src='img/TEST-01.PNG' width= "500"></p>
+
+Küpsusaste 2 - Toodangulähedases keskkonnas testitud (osaliselt, käsitsi)
+)
+
+<p style='text-align:center;'><img src='img/TEST-02.PNG' width= "500"></p>
+
+Küpsusaste 3 - Toodangulähedases keskkonnas testitud - maketiga
+
+<p style='text-align:center;'><img src='img/TEST-03.PNG' width= "500"></p>
+
+
 ## 2. TARA-Stat
 
 ### 2.1 Funktsioon
