@@ -35,8 +35,8 @@ config.mongodb_url = 'mongodb://localhost:27017';
 config.mongouser = 'rakendus';
 config.mongouserpwd = process.env.MONGOUSERPWD || 'changeit';
 
-/* TARA-Serveri nimi ja salasõna (API võti) */
-config.taraserver = 'taraserver';
-config.taraserverpwd = process.env.TARASERVERPWD || 'changeit';
+/* Logikirje lisamise API võti */
+config.tarastatuser = 'changeit';
+config.tarastatsecret = process.env.TARASTATSECRET || 'changeit';
 
 module.exports = config;

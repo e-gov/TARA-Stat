@@ -4,8 +4,6 @@
 
   Priit Parmakson, 2018
 
-  30.04.2018 - lisatud HTTPS
-  vt https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/
 */
 
 'use strict';
@@ -17,6 +15,9 @@ var config = require('./config');
 var config = require('./config');
 
 /* Teekide laadimine */
+/** HTTPS
+ *   vt https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/
+ */
 var https = require('https');
 
 /* Sertide laadimiseks */
@@ -25,7 +26,10 @@ var fs = require('fs');
 /* Veebiraamistik Express */
 const express = require('express');
 
-/* HTTP päringu parsimisvahendid */
+/*Ä
+ * HTTP päringu parsimisvahend
+ * NB! AInult application/JSON
+ *  */
 const bodyParser = require('body-parser');
 
 /* Basic Authentication vahend */
@@ -68,17 +72,23 @@ var options = {
 
 /* HTTPS serveri loomine */
 var port = config.port;
-var server = https.createServer( options, app );
+var server = https.createServer(options, app);
 
-
+/**
+ * Paigaldusparameetrid
+ */
 /* Andmebaasi nimi */
 const LOGIBAAS = config.logibaas;
 const COLLECTION = config.collection;
 
 /* Andmebaasiga ühendumise kredentsiaalid */
-const user = config.mongouser;
-const pwd = config.mongouserpwd;
+const MONGO_USER = config.mongouser;
+const MONGO_PWD = config.mongouserpwd;
 const authMechanism = 'DEFAULT';
+
+/* Logikirje lisamise API võti */
+const TARA_STAT_USER = config.tarastatuser;
+const TARA_STAT_SECRET = config.tarastatsecret;
 
 /**
  * Andmebaasiga ühendumise URL
@@ -89,8 +99,8 @@ const authMechanism = 'DEFAULT';
  */
 const MONGODB_URL =
   f('mongodb://%s:%s@localhost:27017/users?authMechanism=%s',
-    user,
-    pwd,
+    MONGO_USER,
+    MONGO_PWD,
     authMechanism);
 
 /**
@@ -104,7 +114,7 @@ app.get('/', function (req, res) {
   // Ühendu logibaasi külge
   MongoClient.connect(MONGODB_URL, (err, client) => {
     if (err === null) {
-      console.log("Logibaasiga ühendumine õnnestus");
+      console.log("--- Logibaasiga ühendumine õnnestus");
       res.render('pages/index');
       const db = client.db(LOGIBAAS);
       client.close();
@@ -160,7 +170,7 @@ app.get('/stat', (req, res) => {
   /* Võta päringu query-osast sirvikust saadetud perioodimuster */
   const p = req.query.p;
   /* undefined, kui parameeter päringus puudub */
-  console.log('Perioodimuster: ', p);
+  // console.log('--- Perioodimuster: ', p);
   /* Moodusta regex */
   var r;
   if (p) {
@@ -173,7 +183,7 @@ app.get('/stat', (req, res) => {
   // Ühendu logibaasi külge
   MongoClient.connect(MONGODB_URL, (err, client) => {
     if (err === null) {
-      console.log("Logibaasiga ühendumine õnnestus");
+      // console.log("--- Logibaasiga ühendumine õnnestus");
       const db = client.db(LOGIBAAS);
       leiaKlienditi(r, db, (kirjed) => {
         res.send(
@@ -193,12 +203,11 @@ app.get('/stat', (req, res) => {
 /**
  * Kontrolli kredentsiaale (API-võtit)
  */
-function check (name, pass) {
-  var valid = true;
-  // Simple method to prevent short-circut and use timing-safe compare
-  valid = compare(name, config.taraserver) && valid;
-  valid = compare(pass, config.taraserverpwd) && valid;
-  return valid
+function check(name, pass) {
+  // console.log('--- Kredentsiaalide kontroll');
+  // console.log(name + ' = ' + TARA_STAT_USER + '?');
+  // console.log(pass + ' = ' + TARA_STAT_SECRET + '?');
+  return ((name === TARA_STAT_USER) && (pass === TARA_STAT_SECRET))
 }
 
 /**
@@ -207,44 +216,50 @@ function check (name, pass) {
  * { "aeg": ..., "klient": ..., "meetod": ... }
  */
 app.post('/',
-  /* Kontrolli kredentsiaale */  
-  (req, res) => { /*
-    console.log('--- Kredentsiaalide kontrollimine');
+  /* Kontrolli kredentsiaale */
+  (req, res, next) => { 
     var credentials = auth(req);
     if (!credentials || !check(credentials.name, credentials.pass)) {
       res.statusCode = 401;
-      res.end('Access denied');
+      res.end('ERR-04: Logibaasi poole pöörduja autentimine ebaõnnestus');
     } else {
+      // console.log('--- Logikirje lisaja autenditud');
       next();
     }
-  }, */ 
+  },
   (req, res) => {
-  console.log('--- Logikirje lisamine');
-  var aeg = req.body.aeg;
-  var klient = req.body.klient;
-  var meetod = req.body.meetod;
+    // console.log('--- Logikirje lisamine');
+    var aeg = req.body.aeg;
+    var klient = req.body.klient;
+    var meetod = req.body.meetod;
+    // console.log(JSON.stringify(req.body));
+    // console.log('aeg: ' + aeg + ', klient: ' + klient + ', meetod: ' + meetod);
+    if (!aeg || !klient || !meetod) {
+      res.status(400).send('ERR-03: Valesti moodustatud logikirje');
+    }
 
-  // Ühendu logibaasi külge
-  MongoClient.connect(MONGODB_URL, (err, client) => {
-    if (err === null) {
-      console.log("Logibaasiga ühendumine õnnestus");
-      const db = client.db(LOGIBAAS);
-      db.collection(COLLECTION)
-        .insert({
-          aeg: aeg,
-          klient: klient,
-          meetod: meetod
-        });
-      client.close();
-      res.status(200).send('OK');
-    }
-    else {
-      console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-      res.status(500).send('Internal Server Error')
-    }
+    // Ühendu logibaasi külge
+    MongoClient.connect(MONGODB_URL, (err, client) => {
+      if (err === null) {
+        // console.log("--- Logibaasiga ühendumine õnnestus");
+        const db = client.db(LOGIBAAS);
+        db.collection(COLLECTION)
+          .insert({
+            aeg: aeg,
+            klient: klient,
+            meetod: meetod
+          });
+        client.close();
+        console.log('--- Kirje lisatud');
+        res.status(200).send('OK');
+      }
+      else {
+        console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
+        res.status(500).send('Internal Server Error')
+      }
+    });
+
   });
-
-});
 
 /**
  * Vasta elusolekupäringule
@@ -267,13 +282,13 @@ app.get('/status', function (req, res) {
  * Veebiserveri käivitamine 
  */
 
- /* HTTP puhul
+/* HTTP puhul
 app.listen(app.get('port'), function () {
-  console.log('---- TARA-Stat käivitatud ----');
+ console.log('---- TARA-Stat käivitatud ----');
 });
 */
 server.listen(port, function () {
-  console.log( '--- TARA-Stat kuulab pordil: ' + server.address().port );
-} );
+  console.log('--- TARA-Stat kuulab pordil: ' + server.address().port);
+});
 
 

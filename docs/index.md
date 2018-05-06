@@ -8,6 +8,9 @@
 - TOC
 {:toc}
 
+Kõik salasõnad (`changeit` jt) ja paigaldusparameetrid (hostinimed, pordinumbrid jms)tekstis ja repo koodis on näitlikud.
+{: .adv}
+
 Käesolevast kirjutisest võiks saada mikroteenuste _primer_ (aabits). Praegu on see aga kirjeldus ühe mikroteenuse tegemisest.
 
 Esimeses jaotises analüüsin mikroteenuse (µT) vajadust ja üldisi omadusi.
@@ -290,10 +293,6 @@ Kasulikul µT-l on tavaliselt 2-3 liidest. Liideste kvaliteet (lihtsus, selgus, 
 
 TARA-Stat pakub 4 liidest. Neist kaks on peamised ja kaks on toetavad. Liideseid nimetan ka otspunktideks. Liidestest arusaamiseks on abiks arhitektuurijoonis (vt joonis 1). 
 
-<p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
-
-Joonis 1. TARA-Stat üldistatud arhitektuur
-
 Järgnevalt liidestest tehniliselt ja lähemalt.
 
 #### 2.7.1 Logikirje lisamise otspunkt
@@ -311,10 +310,6 @@ Määrata periood (võib jääda ka tühjaks)
 - nt `2018-04` valib 2018. a aprilli logikirjed
 - vajutada nupule
 - kuvatakse autentimiste arv perioodi jooksul klientrakenduste lõikes
-
-<p style='text-align:center;'><img src='img/Capture.PNG' width= "650"></p>
-
-Joonis 2. Statistikakasutaja UI
 
 #### 2.7.3 Elutukse otspunkt
 
@@ -637,9 +632,25 @@ Logikirje lisamist saab testida nt [httpie](https://httpie.org/) abil:
 
 kood | veateade | vea lahendamise soovitus
 ERR-01 | Logibaasiga ühendumine ebaõnnestus | Kontrollida, kas MongoDB töötab
-ERR-02 | Viga logibaasist lugemisel |  Kontrollida, kas MongoDB töötab
+ERR-02 | Viga logibaasist lugemisel | Kontrollida, kas MongoDB töötab
+ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Serveris
+ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
 
-## 3 Kasulikku
+## 3 Joonised
+
+### 3.1 TARA-Stat üldistatud arhitektuur
+
+<p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
+
+### 3.2 Statistikakasutaja UI
+
+<p style='text-align:center;'><img src='img/Capture.PNG' width= "650"></p>
+
+### 3.3 Testimine arendusmasinas
+
+<p style='text-align:center;'><img src='img/TEST-01.PNG' width= "500"></p>
+
+## 4 Kasulikku
 
 MongoDB, "a document database with the scalability and flexibility that you want with the querying and indexing that you need"
 
@@ -681,3 +692,4 @@ ejs, "Effective JavaScript templating"
 - [Syntax Reference](https://github.com/mde/ejs/blob/master/docs/syntax.md)
 
 [httpie](https://httpie.org/), "a command line HTTP client with an intuitive UI, JSON support, syntax highlighting"
+
