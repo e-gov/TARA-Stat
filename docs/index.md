@@ -375,38 +375,48 @@ Logibaas suhtleb ainult veebirakendusega; ei tohi suhelda masinast väljapoole.
 
 #### 2.9.3 Node.JS
 
-1\. Paigalda Node.JS (viimane stabiilne versioon).<br>
-2\. Seadista Node.JS. TODO
+1\. Paigalda Node.JS (viimane stabiilne versioon).
+
+`sudo apt-get install nodejs`
+
+Kontrolli: `nodejs -v`
+
+2\. Seadista Node.JS. Ei ole vajalik.
 
 #### 2.9.4 MongoDB
 
 1\. Paigalda MongoDB (viimane stabiilne versioon).
 
+Vajadusel vt: [Install MongoDB Community Edition on Ubuntu](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/).
+
+Paigalda pakettide kontrollimise võtmed:
+
+`sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5`
+
+Moodusta vajalik fail, et apt leiaks paketid üles:
+
+`echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list`
+
+Paigalda ainult vajalikud MongoDB komponendid - andmebaasiserver `mongod` ja shell `mongo`:
+
+`sudo apt-get install -y mongodb-org-server=3.6.4 mongodb-org-shell=3.6.4`
+
+Paigaldamisel luuakse kasutaja `mongodb` ja lisatakse ta kasutajate gruppi `mongodb`.
+
+Kontrolli paigaldust: `mongod --version`
+
 2\. Seadista MongoDB.
 
-Leia konfi-fail (`/etc/mongod.conf`) või moodusta uus. Vt [MongoDB Configuration](https://docs.mongodb.com/manual/administration/configuration/).
+Leia konfi-fail (`/etc/mongod.conf`). Kontrolli seadistusi. Nt andmebaasi kaust on `/var/lib/mongodb`.
+
+Vajadusel vt [MongoDB Configuration](https://docs.mongodb.com/manual/administration/configuration/).
 
 Edaspidi käivita MongoDB konfi-faili näitamisega: 
 
 `mongod --config /etc/mongod.conf`
 
-Konfifaili sisu:
 
-```
-processManagement:
-   fork: true
-net:
-   bindIp: 127.0.0.1
-   port: 27017
-storage:
-   dbPath: /srv/mongodb
-systemLog:
-   destination: file
-   path: "/var/log/mongodb/mongod.log"
-   logAppend: true
-```
-
-Hiljem lisa konfi-faili:
+Pärast kasutajate moodustamist (vt allpool) lisa konfi-faili:
 
 ```
 security:
@@ -430,7 +440,11 @@ Kasutajakontosid hoitakse samuti MongoDB andmebaasides. Kasutame andmebaasi `adm
 
 1\. Loo kasutajate haldur.
 
-Käivita MongoDB (vt allpool) ja ühendu CLI-ga andmebaasi külge: `mongo`. Seejärel:
+Käivita MongoDB:
+
+`mongod --config /etc/mongod.conf`
+
+Ühendu CLI-ga andmebaasi külge: `mongo`. Seejärel:
 
 ```
 use admin

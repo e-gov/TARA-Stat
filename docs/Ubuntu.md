@@ -8,7 +8,7 @@ permalink: Ubuntu
 - TOC
 {:toc}
 
-Käesolev abitekst käsitleb Linux Ubuntu virtuaalmasina (VM) loomist Windows-arvutis ja selle sisutamist töövahenditega.
+Käesolev abitekst käsitleb Linux Ubuntu virtuaalmasina (VM) loomist Windows-arvutis ja selle sisustamist töövahenditega.
 
 **Oracle Virtualbox**  on virtualiseerimisvahend, millega saab oma arvutis luua ja käitada virtuaalmasinaid. Vt:
 
@@ -62,13 +62,13 @@ VM kuvalukku (kui host-i kuvalukust piisab) saad seadistada `System Settings`, `
 
 ## Täiendamine töövahenditega
 
-Vajadused ja eelistused on individuaalsed. Tarkvara (pakette) paigaldamise vahend on `apt` (Advance Package Tool), seda käivitatakse admini õigustes (_superuser do_). Nt curl-i paigaldamine:
+Vajadused ja eelistused on individuaalsed. Tarkvara (pakette) paigaldamise vahend on `apt` ([Advance Package Tool](https://en.wikipedia.org/wiki/APT_(Debian))), seda käivitatakse admini õigustes (_superuser do_). Nt curl-i paigaldamine:
 
 `sudo apt-get install curl`
 
 Paigaldatud pakettide nimekiri: `apt list --installed`.
 
-Paigaldatud tarkvara uuendamine: `sudo apt-get update`
+Pakutavate pakettide nimekirja uuendamine: `sudo apt-get update`
 
 Mõned tarkvarad paigaldatakse mitmes sammus: 1) internetist laetakse alla Debian-i pakett (`.deb`); 2) see paigaldatakse Debian-i paketihalduri `dpkg` abil; 3) lõplik paigaldamine `apt-get` abil.
 
@@ -109,12 +109,6 @@ VM-le võib seadistada ühe või mitu võrguadapterit. Seda tehakse virtuaalmasi
 **Host-only võrguadapter**. Kui soovid mõlemapidist pöördumisvõimalust VM ja host-arvuti (_host_) vahel, siis lisa teine adapter, tüüpiga `Host-only`. Hosti jaoks on VM IP `192.168.56.101` (dünaamiline IP, vaata, milline see on, `ifconfig` abil VM-s, `ipconfig` abil Windows-is). Nüüd saad VM-s üles panna veebiserveri ja pöörduda selle poole host-st.
 
 Vt. [Accessing your Virtualbox Guest from your Host OS](https://gist.github.com/odan/48fc744434ec6566ca9f7a993f4a7ffb).
-
-`arp -a`
-
-10.0.2.2
-192.168.56.100
-192.168.56.1
 
 ## Pöördumine host-i kaustada poole
 
