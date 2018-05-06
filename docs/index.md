@@ -632,7 +632,9 @@ Sirvik ütleb, et `Your connection is not secure`. See on selle tõttu,et veebir
 
 Voilà!
 
+<p style='text-align:center;'><img src='img/Capture.PNG' width= "650"></p>
 
+Miks tabelis ei ole statistikat? Sest logibaas on tühi.
 
 ### 2.10 Erisused Windows-is
 
