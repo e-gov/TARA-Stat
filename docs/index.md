@@ -1,4 +1,4 @@
-Kõik salasõnad (`changeit` jt) ja paigaldusparameetrid (hostinimed, pordinumbrid jms)tekstis ja repo koodis on näitlikud.
+Kõik salasõnad (`changeit` jt) ja paigaldusparameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
 {: .adv}
 
 <!-- p style='margin: 1em 0 2em 1em;'><i class='ikoon material-icons'>memory</i></p -->
@@ -6,7 +6,7 @@ Kõik salasõnad (`changeit` jt) ja paigaldusparameetrid (hostinimed, pordinumbr
 # Mikroteenuste arhitektuuri poole
 {: .no_toc}
 
-3\. päev, 06.05.2018<br><br>
+3\. päev, 07.05.2018<br><br>
 
 - TOC
 {:toc}
