@@ -1,15 +1,15 @@
-<p style='margin: 1em 0 2em 1em;'><i class='ikoon material-icons'>memory</i></p>
+Kõik salasõnad (`changeit` jt) ja paigaldusparameetrid (hostinimed, pordinumbrid jms)tekstis ja repo koodis on näitlikud.
+{: .adv}
+
+<!-- p style='margin: 1em 0 2em 1em;'><i class='ikoon material-icons'>memory</i></p -->
 
 # Mikroteenuste arhitektuuri poole
 {: .no_toc}
 
-2\. päev, 30.04.2018<br><br>
+3\. päev, 06.05.2018<br><br>
 
 - TOC
 {:toc}
-
-Kõik salasõnad (`changeit` jt) ja paigaldusparameetrid (hostinimed, pordinumbrid jms)tekstis ja repo koodis on näitlikud.
-{: .adv}
 
 Käesolevast kirjutisest võiks saada mikroteenuste _primer_ (aabits). Praegu on see aga kirjeldus ühe mikroteenuse tegemisest.
 
