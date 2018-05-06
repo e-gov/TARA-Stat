@@ -200,15 +200,17 @@ Küpsusaste 2 - Toodangulähedases keskkonnas, käsitsi, osaliselt testitud
 
 µT on juba paigaldatud toodanguga sarnasesse keskkonda - Ubuntu virtuaalmasinasse. Testitud on ühte otspunkti (statistika väljastamist). Seda tehti pöördumisega arendaja Windows-masinast. Asi töötas! Paigaldusjuhend on oluliselt ümber töötatud, sest kuigi Node.js ja MongoDB töötavad mõlemas op-süsteemis, on Windows-sse ja Ubuntusse paigaldamisel arvukalt erinevusi. Seni on paigaldusjuhend veel teksti kujul. Eesmärk on jõuda automaatselt täidetava paigaldusskriptini.
 
-Küpsusaste 3 - Toodangulähedases keskkonnas testitud - maketiga
+Küpsusaste 3 - (kava) Toodangulähedases keskkonnas testitud - maketiga
 
 <p style='text-align:center;'><img src='img/TEST-03.PNG' width= "500"></p>
 
-Samm-sammult tuleb liikuda toodangu poole. Järgmisena on kavas paigaldada makettrakendus eraldi virtuaalmasinasse ja selle abil läbi mängida suhtlus TARA-Serveri ja µT vahel. Küsimus ei ole mitte niivõrd sõnumivormingutes ja äriloogikas - see on testitud - kui andmevahetuse käimapanemine sisevõrgus, pääsuõiguste jms testimine.
+Samm-sammult tuleb liikuda toodangu poole. Järgmisena on kavas paigaldada makettrakendus eraldi virtuaalmasinasse ja selle abil läbi mängida suhtlus TARA-Serveri ja µT vahel. Küsimus ei ole mitte niivõrd sõnumivormingutes ja äriloogikas - see on testitud - kui andmevahetuse käimapanemises sisevõrgus, pääsuõiguste jms testimises.
 
-Küpsusaste 4 - Testkeskkonnas töötab
+Küpsusaste 4 - (kava) Testkeskkonnas töötab
 
 ...
+
+Paigaldusjuhis on lõplikult koostatud ja hoolikalt läbi tehtud. Paigaldamine on adekvaatselt automatiseeritud paigaldusskripti(de) abil. Süsteemiadministraator on juhise järgi paigalduse läbi teinud.
 
 Küpsusaste 5 - Toodangus töötab
 
