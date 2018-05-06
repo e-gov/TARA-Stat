@@ -437,7 +437,7 @@ Paigalda ainult vajalikud MongoDB komponendid - andmebaasiserver `mongod` ja she
 
 Paigaldamisel luuakse kasutaja `mongodb` ja lisatakse ta kasutajate gruppi `mongodb`.
 
-Kontrolli paigaldust: `mongod --version`, ´compgen -u`, `compgen -g`
+Kontrolli paigaldust: `mongod --version`, `compgen -u`, `compgen -g`
 
 Sea kasutajale `mongodb` parool: `sudo passwd mongodb`
 
@@ -666,7 +666,7 @@ Sirvik ütleb, et `Your connection is not secure`. See on selle tõttu,et veebir
 
 Voilà!
 
-<p style='text-align:center;'><img src='img/Capture.PNG' width= "650"></p>
+<p style='text-align:center;'><img src='img/VOILA.PNG' width= "650"></p>
 
 Miks tabelis ei ole statistikat? Sest logibaas on tühi.
 
