@@ -7,7 +7,7 @@
 var config = {};
 
 /* HTTPS Serveri port*/
-config.port = process.env.PORT || 443;
+config.port = process.env.PORT || 5000;
 
 /* HTTPS privaatvõti ja sert */
 
@@ -15,13 +15,13 @@ config.port = process.env.PORT || 443;
  * Windows-le
  * Oluline: Backslash escape \\
  */
-config.key = "keys\\tara-stat.key";
-config.cert = 'keys\\tara-stat.cert';
+// config.key = "keys\\tara-stat.key";
+// config.cert = 'keys\\tara-stat.cert';
 
-/* Linux-is:
-config.key = './keys/tara-stat.key';
-config.cert = './keys/tara-stat.cert';
-*/
+/* Linux-is: */
+config.key = '/home/priit/TARA-Stat/keys/tara-stat.key';
+config.cert = '/home/priit/TARA-Stat/keys/tara-stat.cert';
+/* */
 
 /* Andmebaasi nimi */
 config.logibaas = 'logibaas';

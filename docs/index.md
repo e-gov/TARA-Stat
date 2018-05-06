@@ -403,7 +403,9 @@ Paigalda ainult vajalikud MongoDB komponendid - andmebaasiserver `mongod` ja she
 
 Paigaldamisel luuakse kasutaja `mongodb` ja lisatakse ta kasutajate gruppi `mongodb`.
 
-Kontrolli paigaldust: `mongod --version`
+Kontrolli paigaldust: `mongod --version`, ´compgen -u`, `compgen -g`
+
+Sea kasutajale `mongodb` parool: `sudo passwd mongodb`
 
 2\. Seadista MongoDB.
 
@@ -413,15 +415,7 @@ Vajadusel vt [MongoDB Configuration](https://docs.mongodb.com/manual/administrat
 
 Edaspidi käivita MongoDB konfi-faili näitamisega: 
 
-`mongod --config /etc/mongod.conf`
-
-
-Pärast kasutajate moodustamist (vt allpool) lisa konfi-faili:
-
-```
-security:
-   authorization: enabled
-```   
+`mongod --config /etc/mongod.conf`  
 
 Logibaasi (MongoDB andmebaasi) ja selles kogumit (_collection_) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
 {: .note}
@@ -438,13 +432,22 @@ Kasutajate eristamine on vajalik pigem tuleviku vajadusi arvestades. Protseduuri
 
 Kasutajakontosid hoitakse samuti MongoDB andmebaasides. Kasutame andmebaasi `admin` kasutajate halduri konto hoidmiseks. Teiste kasutajate kontosid hoiame andmebaasis `users`.
 
-1\. Loo kasutajate haldur.
+Anna kasutajale, kes andmebaasi käivitab, õigused:
+
+```
+sudo chown -R priit /var/lib/mongodb
+sudo chown -R priit /var/log/mongodb
+```
+
+~~Ava uus terminal ja sisesta `$|# exec su - mongodb` (lülitumine kasutajale `mongodb`)~~
 
 Käivita MongoDB:
 
 `mongod --config /etc/mongod.conf`
 
-Ühendu CLI-ga andmebaasi külge: `mongo`. Seejärel:
+Ava uus terminal ja ühendu CLI-ga andmebaasi külge: `mongo`. Seejärel:
+
+1\. Loo kasutajate haldur.
 
 ```
 use admin
@@ -457,9 +460,20 @@ db.createUser(
 )
 ```
 
-2\. Lülita sisse rollihaldus. Sea andmebaasi konf-ifailis `security.authorization ` tõeseks ja käivita andmebaas uuesti.
+2\. Lülita sisse rollihaldus. Sea andmebaasi konf-ifailis `mongod --config /etc/mongod.conf`:
 
-3\. Ühendu uuesti andmebaasi külge - `mongo` ja autendi end kasutajana `admin`:
+```
+security:
+   authorization: enabled
+``` 
+
+ja käivita andmebaas uuesti (`&` on käivitamine taustaprotsessina):
+
+`mongod --config /etc/mongod.conf &`
+
+Veendu protsessi tekkimises: `jobs`
+
+3\. Ühendu CLI `mongo` abil uuesti andmebaasi külge, seekord kasutajana `admin`:
 
 ```
 mongo --port 27017 -u "userAdmin" -p "changeit" --authenticationDatabase "admin"
@@ -475,7 +489,6 @@ db.auth("userAdmin", "changeit" )
 Kontrolli, et konto on õigesti loodud:
 
 ```
-use admin
 show users
 ```
 
@@ -523,18 +536,21 @@ show users
 
 2\. Paigalda veebirakendus siserepost VM-i.
 
+Järgnevas eeldame, et TARA-Stat asub kaustas `~/TARA-Stat`. Toodangukeskkonnas võib asukoht olla teine.
+{: .adv}
+
 Kontrolli veebirakenduse konf-i: `config.js`. Seal ei tohiks olla vajadust midagi muuta.
 
 3\. Paigalda Node.JS teegid
 
-Node.JS vajab tööks rida Javascipti teeke. Need on kirjeldatud failis `package.json`. Teegid tuleb paigaldada kausta `node_modules`. Kui repo ei sisalda teeke, siis tuleb need paigaldada eraldi, Node.JS paketihalduri `npm` abil. (npm vajab eraldi paigaldamist). 
+Node.JS vajab tööks rida Javascipti teeke. Need on kirjeldatud failis `package.json`. Teegid tuleb paigaldada kausta `node_modules`. Kui repo ei sisalda teeke, siis tuleb need paigaldada eraldi, Node.js paketihalduri `npm` abil. (npm on paigaldatud koos Node.js-ga). 
 
 Alternatiiv on paigaldada teegid repo kaudu.
 {: .adv}
 
 `npm install <moodul> --save`
 
-Paigaldada tuleb järgmised moodulid: `body-parser`, `ejs`, `express`, `mongodb`, `request`, `basic-auth`.
+Paigaldada tuleb järgmised moodulid: `body-parser`, `ejs`, `express`, `mongodb`, `request`, `basic-auth` ja `request-debug`.
 
 Kontroll: Veendu faili `package.json` sisu abil, et moodulid on paigaldatud.
 
@@ -550,16 +566,27 @@ Sea pääsureeglid VLAN-is ja/või sisevõrgu ruuteri(te)s).
 
 #### 2.9.7 Genereeri ja paigalda veebirakenduse HTTPS võtmed
 
-Vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concepts); [Self-Signed, Trusted Certificates for Node.js & Express.js](https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/)
+Moodusta kausta `TARA-Stat` alla alamkaust `keys`:
+
+```
+mkdir keys
+cd keys
+```
+
+Genereeri võtmed:
 
 `openssl genrsa -out tara-stat.key 2048`
 
 `openssl req -new -x509 -key tara-stat.key -out tara-stat.cert -days 3650 -subj /CN=tara-stat`
 
-Failid `tara-stat.cert` ja `tara-stat.key` kanda veebirakenduse juurkausta alamkausta `keys`.
+Veendu, et failid `tara-stat.cert` ja `tara-stat.key` on veebirakenduse juurkausta alamkaustas `keys`.
+
+Ava fail `config.js` ja sea failide `tara-stat.cert` ja `tara-stat.key` asukohad. (Kommenteeri välja Windows-i seadistused).
 
 Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andma teadet "vigane turvasertifikaat". Teatest saab üle, kui kasutaja lisab erandi.
 {: .adv}
+
+Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concepts); [Self-Signed, Trusted Certificates for Node.js & Express.js](https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/)
 
 #### 2.9.8 Loo usaldus TARA-Serveri ja TARA-Stat-i vahel
 
@@ -567,7 +594,7 @@ Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andm
 
 2\. Paigalda API-võti TARA-Stat-i konf-i. Vt fail `config.js`; Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`process.env`).
 
-3\. Paigalda API-võti TARA-Serveri-i konf-i.
+3\. Paigalda API-võti TARA-Stat poole pöörduva rakenduse (TARA-Server) konf-i.
 
 #### 2.9.9 Käivita
 
@@ -579,7 +606,11 @@ MongoDB vastab diagnostiliste teadetega ja lõpuks:
 
 `[initandlisten] waiting for connections on port 27017`
 
-2\. Käivita veebirakendus
+2\. Sea veebirakenduse port
+
+Kui pordil 443 töötab juba teine rakendus, siis ava fail `config.js` ja sea port (nt `5000`). 
+
+3\. Käivita veebirakendus
 
 Veebirakenduse juurkaustas:
 
@@ -587,7 +618,21 @@ Veebirakenduse juurkaustas:
 
 Veebirakendus teatab:
 
-`--- TARA-Stat kuulab pordil: 443`
+`--- TARA-Stat kuulab pordil: 5000`
+
+#### 2.9.10 Testi statistika väljastamise otspunkti
+
+Pöördu teisest arvutist (kas Windows-host-st või teisest VM-st) veebirakenduse statistika väljastamise otspunkti poole. Järgnevas eeldame näitena, et masina, kuhu TARA-Stat paigaldati, IP-aadress on `192.168.56.101`. Ava sirvikus:
+
+```
+https://192.168.56.101:5000
+```
+
+Sirvik ütleb, et `Your connection is not secure`. See on selle tõttu,et veebirakendusel on _self-signed_ sert. Aktsepteeri erand.
+
+Voilà!
+
+
 
 ### 2.10 Erisused Windows-is
 

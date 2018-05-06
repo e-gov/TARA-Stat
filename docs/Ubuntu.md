@@ -22,7 +22,13 @@ Linuxi kohta vt nt:
 - Machtelt Garrels (2008) [Introduction to Linux](https://www.tldp.org/LDP/intro-linux/html/intro-linux.html)
 - [Linux Documentation Project](https://www.tldp.org/guides.html) teised juhendid
 
-## Oracle Virtualbox-i paigaldamine
+Ubuntu kohta vt nt:
+
+- [Ubuntu Desktop Guide](https://help.ubuntu.com/16.04/ubuntu-help/index.html) (16.04)
+- [Ubuntu Server Guide](https://help.ubuntu.com/16.04/serverguide/index.html) (16.04)
+
+
+- [Ubuntu Server Guide](https://help.ubuntu.com/16.04/serverguide/index.html) (16.04)## Oracle Virtualbox-i paigaldamine
 
 Paigaldab süsteemiadministraator. Kasutajale saab Windows-is kättesaadavaks virtuaalmasinahaldur (Oracle Virtualbox VM Manager).
 
@@ -96,9 +102,13 @@ Push-sel parooliküsimise vältimine: `git config credential.helper store`
 
 ## Pääsuõigused
 
-Töö toimub tavalise kasutajana (_non-root user_), kellel on `sudo` õigused (õigus anda käske admin-na). Tavalise kasutaja loomine: `adduser <nimi>`.
+Töö toimub tavalise kasutajana (_non-root user_), kellel võib olla `sudo` õigus (õigus anda käske admin-na). (Ubuntus peakasutaja - _root_ - ilma eriseadistuseta ei saagi sisse logida.) Op-süsteemi paigaldamisel loodud esimesel kasutajal on `sudo` õigus.
+
+Tavalise kasutaja loomine: `adduser <nimi>`.
 
 Kasutajale sudo-õiguste andmine: `usermode -aG sudo <kasutaja>`.
+
+Vt [Ubuntu User Management](https://help.ubuntu.com/16.04/serverguide/user-management.html)
 
 ## Võrguühendused
 

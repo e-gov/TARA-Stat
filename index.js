@@ -62,10 +62,9 @@ parsimiseks */
 app.use(bodyParser.json());
 
 /* HTTPS suvandid */
-/* TODO config tööle */
 var options = {
-  key: fs.readFileSync("keys\\tara-stat.key"),
-  cert: fs.readFileSync("keys\\tara-stat.cert"),
+  key: fs.readFileSync(config.key),
+  cert: fs.readFileSync(config.cert),
   requestCert: false,
   rejectUnauthorized: false
 };
