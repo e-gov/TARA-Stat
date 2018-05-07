@@ -206,7 +206,7 @@ Küpsusaste 2 - Toodangulähedases keskkonnas paigaldatud, osa otspunkte käsits
 
 µT on juba paigaldatud toodanguga sarnasesse keskkonda - Ubuntu virtuaalmasinasse. Testitud on ühte otspunkti (statistika väljastamist). Seda tehti pöördumisega arendaja Windows-masinast. Asi töötas! Paigaldusjuhend on oluliselt ümber töötatud, sest kuigi Node.js ja MongoDB töötavad mõlemas op-süsteemis, on Windows-sse ja Ubuntusse paigaldamisel arvukalt erinevusi. Seni on paigaldusjuhend veel teksti kujul. Eesmärk on jõuda automaatselt täidetava paigaldusskriptini.
 
-Küpsusaste 3 - (kava) Toodangulähedases keskkonnas kõik otspunktid testitud, sh maketiga
+Küpsusaste 3 - Toodangulähedases keskkonnas kõik otspunktid testitud, sh maketiga
 
 <p style='text-align:center;'><img src='img/TEST-03.PNG' width= "500"></p>
 
