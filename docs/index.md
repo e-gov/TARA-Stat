@@ -3,7 +3,7 @@ Kõik salasõnad (`changeit` jt) ja paigaldusparameetrid (hostinimed, pordinumbr
 
 <!-- p style='margin: 1em 0 2em 1em;'><i class='ikoon material-icons'>memory</i></p -->
 
-# Mikroteenuste arhitektuuri poole
+# Mikroteenust TARA-Stat
 {: .no_toc}
 
 4\. päev, 07.05.2018<br><br>
