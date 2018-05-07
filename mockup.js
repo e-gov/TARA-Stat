@@ -5,6 +5,9 @@
  * Genereerib logikirjeid ja lisab need logibaasi
  */
 
+/* Konf-i laadimine */
+var config = require('./mockup-config');
+
 /* HTTP kliendi teek
   Vt https://www.npmjs.com/package/request 
   http://stackabuse.com/the-node-js-request-module/
@@ -15,11 +18,11 @@ const requestModule = require('request');
 // require('request-debug')(requestModule);
 
 /* Logiteenuse URL */
-const TARA_STAT_URL = 'https://localhost';
+const TARA_STAT_URL = config.TARASTATURL;
 
 /* Logiteenuse API kasutajanimi ja võti */
-const API_USER = 'changeit';
-const API_KEY = 'changeit';
+const API_USER = config.TARASTATUSER;
+const API_KEY = config.TARASTATKEY;
 
 /* Logikirjete vahemiku algus */
 var a = { y: 2018, m: 0, d: 1 };
@@ -33,6 +36,8 @@ var klientrakendused = [
   'klientrakendus C'];
 var meetodid = ['MobileID', 'ID_CARD', 'eIDAS'];
 
+console.log('--- TARA-Stat makettrakendus');
+console.log('--- Genereerin ' + N.toString() + ' logikirjet');
 for (var i = 0; i < N; i++) {
   saadaLogisse(
     TARA_STAT_URL,
@@ -88,10 +93,10 @@ function saadaLogisse(url, kp, klientr, meetod) {
     options,
     function (error, response, body) {
       if (error) {
-        console.log('Viga logiteenuse poole pöördumisel: ', error);
+        console.log('--- Viga logiteenuse poole pöördumisel: ', error);
         return;
       }
-      console.log(response.statusCode);
+      console.log('--- Logikirje saadetud. HTTP staatuskood: ' + response.statusCode);
     });
 }
 

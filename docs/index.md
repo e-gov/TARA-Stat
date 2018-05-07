@@ -381,9 +381,9 @@ Rakendatakse järgmisi meetmeid:
 - Elutukse otspunkt tohib olla ligipääsetav ainult organisatsiooni sisevõrgus.
 - Veebirakenduse API-s ainult HTTPS.
 
-### 2.9 Paigaldamine (Ubuntu)
+## 3 Paigaldamine (Ubuntu)
 
-#### 2.9.1 Ülevaade
+### 3.1 Ülevaade
 
 TARA-Stat paigaldatakse Linux-i masinasse (Ubuntu 16 LTS). TARA-Stat koosneb kahest komponendist (mõlemad paigaldatakse samasse masinasse): veebirakendus ja logibaas.
 
@@ -402,12 +402,12 @@ TARA-Stat-le peab vajadusel olema juurdepääs ka andmehalduril, et kustutada ae
 
 Logibaas suhtleb ainult veebirakendusega; ei tohi suhelda masinast väljapoole.
 
-#### 2.9.2 VM ja op-süsteem
+### 3.2 VM ja op-süsteem
 
 1\.Valmista virtuaalmasin (VM).<br>
 2\. Paigalda Ubuntu 16 LTS.
 
-#### 2.9.3 Node.JS
+### 3.3 Node.JS
 
 1\. Paigalda Node.JS (viimane stabiilne versioon).
 
@@ -417,7 +417,7 @@ Kontrolli: `nodejs -v`
 
 2\. Seadista Node.JS. Ei ole vajalik.
 
-#### 2.9.4 MongoDB
+### 3.4 MongoDB
 
 1\. Paigalda MongoDB (viimane stabiilne versioon).
 
@@ -454,7 +454,7 @@ Edaspidi käivita MongoDB konfi-faili näitamisega:
 Logibaasi (MongoDB andmebaasi) ja selles kogumit (_collection_) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
 {: .note}
 
-#### 2.9.5 Andmebaasi kasutajate loomine
+### 3.5 Andmebaasi kasutajate loomine
 
 Lülita sisse logibaasi kasutajate autentimine, rollihaldus ja luua logibaasi kasutajad. Logibaasile tuleb luua kolm kasutajat:
 
@@ -564,7 +564,7 @@ use users
 show users
 ```
 
-#### 2.9.5 Veebirakendus
+### 3.5 Veebirakendus
 
 1\. Kopeeri veebirakendus ([https://github.com/e-gov/TARA-Stat](https://github.com/e-gov/TARA-Stat)) organisatsiooni sisereposse.
 
@@ -588,7 +588,7 @@ Paigaldada tuleb järgmised moodulid: `body-parser`, `ejs`, `express`, `mongodb`
 
 Kontroll: Veendu faili `package.json` sisu abil, et moodulid on paigaldatud.
 
-#### 2.9.6 Piira võrguavatus
+### 3.6 Piira võrguavatus
 
 Sea pääsureeglid VM tulemüüris. Vaja on:
 
@@ -598,7 +598,7 @@ Sea pääsureeglid VM tulemüüris. Vaja on:
 
 Sea pääsureeglid VLAN-is ja/või sisevõrgu ruuteri(te)s).
 
-#### 2.9.7 Genereeri ja paigalda veebirakenduse HTTPS võtmed
+### 3.7 Genereeri ja paigalda veebirakenduse HTTPS võtmed
 
 Moodusta kausta `TARA-Stat` alla alamkaust `keys`:
 
@@ -622,7 +622,7 @@ Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andm
 
 Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concepts); [Self-Signed, Trusted Certificates for Node.js & Express.js](https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/)
 
-#### 2.9.8 Loo usaldus TARA-Serveri ja TARA-Stat-i vahel
+### 3.8 Loo usaldus TARA-Serveri ja TARA-Stat-i vahel
 
 1\. Genereeri API-võti. Juhusõne pikkusega 20 tärki.
 
@@ -630,7 +630,7 @@ Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concep
 
 3\. Paigalda API-võti TARA-Stat poole pöörduva rakenduse (TARA-Server) konf-i.
 
-#### 2.9.9 Käivita
+### 3.9 Käivita
 
 1\. Käivita MongoDB:
 
@@ -654,7 +654,7 @@ Veebirakendus teatab:
 
 `--- TARA-Stat kuulab pordil: 5000`
 
-#### 2.9.10 Testi statistika väljastamise otspunkti
+### 3.10 Testi statistika väljastamise otspunkti
 
 Pöördu teisest arvutist (kas Windows-host-st või teisest VM-st) veebirakenduse statistika väljastamise otspunkti poole. Järgnevas eeldame näitena, et masina, kuhu TARA-Stat paigaldati, IP-aadress on `192.168.56.101`. Ava sirvikus:
 
@@ -670,7 +670,19 @@ Voilà!
 
 Miks tabelis ei ole statistikat? Sest logibaas on tühi.
 
-### 2.10 Erisused Windows-is
+## 4 Käitamine
+
+### 4.11 Veateated
+
+kood | veateade | vea lahendamise soovitus
+ERR-01 | Logibaasiga ühendumine ebaõnnestus | Kontrollida, kas MongoDB töötab
+ERR-02 | Viga logibaasist lugemisel | Kontrollida, kas MongoDB töötab
+ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Serveris
+ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
+
+## 5 Arendamine
+
+### 5.1 Arendamine Windows-masinas
 
 Kui arenduseks kasutada Windows-masinat, siis on järgmised erisused.
 
@@ -713,7 +725,7 @@ Node.JS paigaldamine
 
 `node index`.
 
-#### 2.10.1 Testimine
+### 5.2 Testimine (käsitsi)
 
 Veebirakenduse käivitumise kontroll:
 
@@ -723,29 +735,64 @@ Logikirje lisamist saab testida nt [httpie](https://httpie.org/) abil:
 
 `http -a taraserver:changeit POST :443 aeg=2018-04-29T00:00:30 klient=e-teenusA meetod=mobileID`
 
-### 2.11 Veateated
+### 5.3 Testimine maketrakendusega
 
-kood | veateade | vea lahendamise soovitus
-ERR-01 | Logibaasiga ühendumine ebaõnnestus | Kontrollida, kas MongoDB töötab
-ERR-02 | Viga logibaasist lugemisel | Kontrollida, kas MongoDB töötab
-ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Serveris
-ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
+Tarkvara koosseisus on logikirjete lisamise otspunkti testimise
+makettrakendus. Makettrakendus genereerib logikirjeid ja lisab need logibaasi. Makettrakenduse kood asub TARA-Stat repos failis `mockup.js`. Rakendus vajab tööks Node.js-i.
 
-## 3 Joonised
+**Seadistamine**. Seadista makettrakendust parameetrite muutmisega failis `mockup-config` või parameetrite andmisega käivitamise käsurealt (`process.env`). Seadistada tuleb:
+- TARA-Stat logikirje lisamise otspunkti URL
+- nimetatud otspunkti pääsemiseks vajalik API kasutajanimi
+- ja salasõna (API võti).
 
-### 3.1 TARA-Stat üldistatud arhitektuur
+**Paigaldamine**. Makettrakendust võib käitada TARA-Stat-ga ühes masinas, eraldi Node.js instantsis. Kindlam on siiski testida paigaldamisega eraldi masinasse:
+
+1\. Valmista VM ja paigalda Ubuntu.
+
+2\. Paigalda Node.js ja npm:
+
+```
+sudo apt-get install nodejs
+sudo apt install npm
+```
+
+3\. Paigalda Node.js teegid
+
+```
+npm install request --save
+
+```
+
+4\. Paigalda TARA-Stat kood (nt tõmba git-ga).
+
+5\. Selgita välja TARA-Stat logikirje lisamise otspunkti URL, API kasutajanimi ja salasõna.
+
+6\. Veendu, et (teises masinas) TARA-Stat töötab.
+
+7.\ Liigu kausta TARA-Stat. Käivita makettrakendus:
+
+```
+TARASTATURL='https://192.168.56.101:5000' \ TARASTATUSER='changeit' \
+TARASTATSECRET='changeit' \
+node mockup 
+```
+Makettrakendus väljastab konsoolile teavet oma töö kohta.
+
+## 6 Joonised
+
+### 6.1 TARA-Stat üldistatud arhitektuur
 
 <p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
 
-### 3.2 Statistikakasutaja UI
+### 6.2 Statistikakasutaja UI
 
 <p style='text-align:center;'><img src='img/Capture.PNG' width= "650"></p>
 
-### 3.3 Testimine arendusmasinas
+### 6.3 Testimine arendusmasinas
 
 <p style='text-align:center;'><img src='img/TEST-01.PNG' width= "500"></p>
 
-## 4 Kasulikku
+## 7 Kasulikku
 
 MongoDB, "a document database with the scalability and flexibility that you want with the querying and indexing that you need"
 
