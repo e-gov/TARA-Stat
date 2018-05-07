@@ -6,7 +6,7 @@ Kõik salasõnad (`changeit` jt) ja paigaldusparameetrid (hostinimed, pordinumbr
 # Mikroteenuste arhitektuuri poole
 {: .no_toc}
 
-3\. päev, 07.05.2018<br><br>
+4\. päev, 07.05.2018<br><br>
 
 - TOC
 {:toc}
@@ -752,14 +752,14 @@ Logikirje lisamist saab testida nt [httpie](https://httpie.org/) abil:
 ### 5.3 Testimine maketrakendusega
 
 Tarkvara koosseisus on logikirjete lisamise otspunkti testimise
-makettrakendus. Makettrakendus genereerib logikirjeid ja lisab need logibaasi. Makettrakenduse kood asub TARA-Stat repos failis `mockup.js`. Rakendus vajab tööks Node.js-i.
+makettrakendus. Makettrakendus genereerib logikirjeid ja lisab need logibaasi. Makettrakenduse kood asub TARA-Stat repos failis `mockup.js`. Makettrakendus vajab tööks Node.js-i.
 
 **Seadistamine**. Seadista makettrakendust parameetrite muutmisega failis `mockup-config` või parameetrite andmisega käivitamise käsurealt (`process.env`). Seadistada tuleb:
 - TARA-Stat logikirje lisamise otspunkti URL
 - nimetatud otspunkti pääsemiseks vajalik API kasutajanimi
 - ja salasõna (API võti).
 
-**Paigaldamine**. Makettrakendust võib käitada TARA-Stat-ga ühes masinas, eraldi Node.js instantsis. Kindlam on siiski testida paigaldamisega eraldi masinasse:
+**Paigaldamine**. Makettrakendust võib käitada ka TARA-Stat-ga ühes masinas, eraldi Node.js instantsis. Kindlam on siiski testida paigaldamisega eraldi masinasse:
 
 1\. Valmista VM ja paigalda Ubuntu.
 
@@ -777,21 +777,24 @@ npm install request --save
 
 ```
 
-4\. Paigalda TARA-Stat kood (nt tõmba git-ga).
+4\. Paigalda TARA-Stat kood (nt tõmba git-ga). Järgnevas eeldame, et TARA-Stat asub kaustas `~/TARA-Stat`.
 
 5\. Selgita välja TARA-Stat logikirje lisamise otspunkti URL, API kasutajanimi ja salasõna.
 
+Testimisel VirtualBox VM-des arvesta, et VM-dele antakse IP-d dünaamiliselt (alates `192.168.56.101`-st). 
+
 6\. Veendu, et (teises masinas) TARA-Stat töötab.
 
-7.\ Liigu kausta TARA-Stat. Käivita makettrakendus:
+7\. Liigu kausta TARA-Stat. Käivita makettrakendus:
 
 ```
-TARASTATURL='https://192.168.56.102:5000' \ TARASTATUSER='changeit' \
+TARASTATURL='https://192.168.56.102:5000' \
+TARASTATUSER='changeit' \
 TARASTATSECRET='changeit' \
 nodejs TARA-Stat/mockup 
 ```
 
-Makettrakendus väljastab konsoolile teavet logikirjete logibaasi saatmise edukuse kohta.
+Makettrakendus väljastab konsoolile teavet logikirjete logibaasi saatmise edukuse kohta. TARA-Stat masinast võid konsoolilt kontrollida, et saadetud kirjed tõesti salvestati logibaasi.
 
 Logikirjete genereerimise ja logibaasi saatmise järel lõpetab makettrakendus töö.
 
