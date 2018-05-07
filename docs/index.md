@@ -15,7 +15,13 @@ Käesolevast kirjutisest võiks saada mikroteenuste _primer_ (aabits). Praegu on
 
 Esimeses jaotises analüüsin mikroteenuse (µT) vajadust ja üldisi omadusi.
 
-Teises jaotises spetsifitseerin ja dokumenteerin üht konkreetset µT-t (TARA-Stat). Eesmärk on teha ise protsess otsast lõpuni läbi.
+Ülejäänud jaotised spetsifitseerivad ja dokumenteerivad konkreetse µT-t - TARA-Stat:
+- jaotis 2 sisaldab TARA-Stat kirjelduse
+- jaotises 3 on juhised TARA-Stat paigaldamiseks
+- jaotises 4 on käitajale vajalik teave
+- jaotises 5 on (edasi)arendajale suunatud teave
+- joonised on jaotises 6
+- ja kasulikku teavet tehnoloogiate kohta leiab jaotisest 7.
 
 Kolmandas jaotises on viiteid kasutatud tehnoloogiate kohta.
 
@@ -333,7 +339,15 @@ Järgnevalt liidestest tehniliselt ja lähemalt.
 
 Saata `POST` päring `https://<tara-stat>` (kus `<tara-stat>` on TARA-Stat-i domeeninimi), mille kehas on JSON kujul
 
-`{ "aeg": <ISO date>, "klient": <klientrakenduse nimi>, "meetod": <MobileID,  ID_CARD vm meetod> }`
+```
+{ 
+  "aeg": <ISO date>,
+  "klient": <klientrakenduse nimi>,
+  "meetod": <MobileID,  ID_CARD, eIDAS vm meetod>
+}
+```
+
+`ISO date` on ajatempel kujul `2018-04-28`, millele võib järgneda kellaaja osa.
 
 #### 2.7.2 Statistika väljastamise otspunkt (statistikakasutaja UI)
 
