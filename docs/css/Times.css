@@ -8,7 +8,7 @@ body {
   margin: 0 0; 
   padding: 0 0 2em 0; 
   /* font-family: 'Segoe UI', Arial, serif; */
-  font-family: Arial, sans-serif;
+  font-family: 'Gothic A1', sans-serif;
   font-size: 16px; 
   color: #222325 !important;
   line-height: 1.4 !important;
@@ -35,7 +35,6 @@ body {
 /*#region Pealkirjad */
 h1 {
   font-size: 24px !important;
-  font-family: 'Segoe UI Semibold', Arial, Helvetica, sans-serif;
   margin-top: 1em;
   margin-bottom: 1rem;
 }
