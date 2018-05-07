@@ -8,7 +8,7 @@ var config = {};
 config.TARASTATURL = process.env.TARASTATURL || 'https://localhost';
 
 /* Logikirje lisamise API võti */
-config.TARASTATUSER = 'changeit';
+config.TARASTATUSER = process.env.TARASTATUSER || 'changeit';
 config.TARASTATSECRET = process.env.TARASTATSECRET || 'changeit';
 
 module.exports = config;

@@ -22,14 +22,14 @@ const TARA_STAT_URL = config.TARASTATURL;
 
 /* Logiteenuse API kasutajanimi ja võti */
 const API_USER = config.TARASTATUSER;
-const API_KEY = config.TARASTATKEY;
+const API_KEY = config.TARASTATSECRET;
 
 /* Logikirjete vahemiku algus */
 var a = { y: 2018, m: 0, d: 1 };
 /* Logikirjete vahemiku lõpp */
 var b = { y: 2018, m: 4, d: 2 };
 /* Logikirjete arv */
-const N = 1;
+const N = 10;
 var klientrakendused = [
   'klientrakendus A',
   'klientrakendus B',

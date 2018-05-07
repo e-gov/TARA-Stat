@@ -449,7 +449,7 @@ Vajadusel vt [MongoDB Configuration](https://docs.mongodb.com/manual/administrat
 
 Edaspidi käivita MongoDB konfi-faili näitamisega: 
 
-`mongod --config /etc/mongod.conf`  
+`mongod --config /etc/mongod.conf &`  
 
 Logibaasi (MongoDB andmebaasi) ja selles kogumit (_collection_) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
 {: .note}
@@ -477,7 +477,7 @@ sudo chown -R priit /var/log/mongodb
 
 Käivita MongoDB:
 
-`mongod --config /etc/mongod.conf`
+`mongod --config /etc/mongod.conf &`
 
 Ava uus terminal ja ühendu CLI-ga andmebaasi külge: `mongo`. Seejärel:
 
@@ -634,7 +634,7 @@ Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concep
 
 1\. Käivita MongoDB:
 
-`mongod --config /etc/mongod.conf`
+`mongod --config /etc/mongod.conf &`
 
 MongoDB vastab diagnostiliste teadetega ja lõpuks:
 
@@ -772,11 +772,14 @@ npm install request --save
 7.\ Liigu kausta TARA-Stat. Käivita makettrakendus:
 
 ```
-TARASTATURL='https://192.168.56.101:5000' \ TARASTATUSER='changeit' \
+TARASTATURL='https://192.168.56.102:5000' \ TARASTATUSER='changeit' \
 TARASTATSECRET='changeit' \
-node mockup 
+nodejs TARA-Stat/mockup 
 ```
-Makettrakendus väljastab konsoolile teavet oma töö kohta.
+
+Makettrakendus väljastab konsoolile teavet logikirjete logibaasi saatmise edukuse kohta.
+
+Logikirjete genereerimise ja logibaasi saatmise järel lõpetab makettrakendus töö.
 
 ## 6 Joonised
 
