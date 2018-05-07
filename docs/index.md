@@ -1,9 +1,9 @@
-Kõik salasõnad (`changeit` jt) ja paigaldusparameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
+Mis asi on salasõna `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
 {: .adv}
 
 <!-- p style='margin: 1em 0 2em 1em;'><i class='ikoon material-icons'>memory</i></p -->
 
-# Mikroteenust TARA-Stat
+# Mikroteenus TARA-Stat
 {: .no_toc}
 
 4\. päev, 07.05.2018<br><br>
