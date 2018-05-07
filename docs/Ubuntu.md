@@ -110,6 +110,20 @@ Kasutajale sudo-õiguste andmine: `usermode -aG sudo <kasutaja>`.
 
 Vt [Ubuntu User Management](https://help.ubuntu.com/16.04/serverguide/user-management.html)
 
+## Protsessid
+
+`ps -af`
+
+Protsesside loetelu, vormingus: protsessiomaniku nimi (UID),  protsessi id (PID), vanemprotsessi id (PPID), "nice number" jm.
+
+`ps -ef | grep <username>`
+
+Kuva kõik protsessid, mille omanik on kasutaja `username`.
+
+`ps -15 <pid>`
+
+Lõpetab protsessi, saates signaali _terminate_ (15). 
+
 ## Võrguühendused
 
 VM-le võib seadistada ühe või mitu võrguadapterit. Seda tehakse virtuaalmasinahalduris: `Settings`, `Network`, valida adapter ja seadistada.
