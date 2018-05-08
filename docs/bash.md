@@ -69,3 +69,12 @@ permalink: Bash
 
 - **Skripti täitmine**
   - `./` - jooksvas kaustas oleva skripti täitmine
+
+- **Kasutaja sisend**
+  - `read NAME` (mitu muutujat eralda tühikutega)
+
+- **Aritmeetika**
+  - `echo $((1+1))` või `echo $[1+1]`
+
+  
+
