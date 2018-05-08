@@ -451,7 +451,7 @@ Paigalda ainult vajalikud MongoDB komponendid - andmebaasiserver `mongod` ja she
 
 Paigaldamisel luuakse kasutaja `mongodb` ja lisatakse ta kasutajate gruppi `mongodb`.
 
-Kontrolli paigaldust: `mongod --version`, `compgen -u`, `compgen -g`
+Kontrolli paigaldust: `mongod --version`
 
 Sea kasutajale `mongodb` parool: `sudo passwd mongodb`
 
@@ -644,7 +644,9 @@ Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concep
 
 3\. Paigalda API-võti TARA-Stat poole pöörduva rakenduse (TARA-Server) konf-i.
 
-### 3.9 Käivita
+## 4 Käitamine
+
+### 4.1 Käivita
 
 1\. Käivita MongoDB:
 
@@ -668,9 +670,9 @@ Veebirakendus teatab:
 
 `--- TARA-Stat kuulab pordil: 5000`
 
-### 3.10 Testi statistika väljastamise otspunkti
+### 4.2 Statistika väljastamise otspunkti töötamise test
 
-Pöördu teisest arvutist (kas Windows-host-st või teisest VM-st) veebirakenduse statistika väljastamise otspunkti poole. Järgnevas eeldame näitena, et masina, kuhu TARA-Stat paigaldati, IP-aadress on `192.168.56.101`. Ava sirvikus:
+Pöördu teisest arvutist (kas Windows-host-st või teisest VM-st) veebirakenduse statistika väljastamise otspunkti poole. Järgnevas eeldame näitena, et masina, kuhu TARA-Stat paigaldati, IP-aadress on `192.168.56.101` ja TARA-Stat veebiteenuse port on `5000`. Ava sirvikus:
 
 ```
 https://192.168.56.101:5000
@@ -684,9 +686,15 @@ Voilà!
 
 Miks tabelis ei ole statistikat? Sest logibaas on tühi.
 
-## 4 Käitamine
+### 4.3 Seiskamine
 
-### 4.11 Veateated
+Logibaasi seiskamine:
+
+`sudo service mongod stop`
+
+
+
+### 4.4 Veateated
 
 kood | veateade | vea lahendamise soovitus
 ERR-01 | Logibaasiga ühendumine ebaõnnestus | Kontrollida, kas MongoDB töötab
@@ -739,15 +747,15 @@ Node.JS paigaldamine
 
 `node index`.
 
-### 5.2 Testimine (käsitsi)
+### 5.2 Testimine (käsitsi, lokaalses masinas)
 
 Veebirakenduse käivitumise kontroll:
 
 `https://localhost`
 
-Logikirje lisamist saab testida nt [httpie](https://httpie.org/) abil:
+Logikirje lisamist saab testida nt [httpie](https://httpie.org/) abil (näites nii logikirje lisamise API kasutajanimi kui ka API-võti on `changeit`):
 
-`http -a taraserver:changeit POST :443 aeg=2018-04-29T00:00:30 klient=e-teenusA meetod=mobileID`
+`http -a changeit:changeit POST :443 aeg=2018-04-29T00:00:30 klient=e-teenusA meetod=mobileID`
 
 ### 5.3 Testimine maketrakendusega
 

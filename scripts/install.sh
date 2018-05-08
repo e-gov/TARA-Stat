@@ -12,9 +12,26 @@ case ${answer:0:1} in
     ;;
 esac
 
-# echo Paigaldan Node.JS
-# sudo apt-get install nodejs
-
-echo Paigalduse kontroll
-nodejs -v
-echo $?
+# echo Kontrollin, kas Node.js on paigaldatud
+# dpkg -s tagastab 0, kui pakett on paigaldatud; 1, kui ei ole
+dpkg -s nodejs &> /dev/null
+if [ "$?" = 0 ]; then 
+  echo Eemaldan Node.js
+  sudo apt-get remove nodejs
+  if [ "$?" = 0 ]; then 
+    echo "Node.js eemaldatud"
+  else
+    echo "Node.js eemaldamine ebaõnnestus"
+    exit
+  fi
+else
+  echo Paigaldan Node.js
+  sudo apt-get install nodejs
+  if [ "$?" = 0 ]; then 
+    echo "Node.js paigaldatud"
+    exit
+  else
+    echo "Node.js paigaldamine ebaõnnestus"
+    exit
+  fi
+fi
