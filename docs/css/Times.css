@@ -112,6 +112,7 @@ pre, code, samp {
   overflow-y: hidden; overflow-x: hidden;
   page-break-inside: avoid; hyphens: none;
   text-transform: none;
+  background-color: greenyellow;
 }
 /* pre code,
 code code {

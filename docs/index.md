@@ -441,6 +441,19 @@ Paigalda pakettide kontrollimise võtmed:
 
 `sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5`
 
+MongoDB paigaldamisel võib olla vajadus proovida üht järgmistest variantidest ja kui see ei tööta, siis teist.
+{: .adv}
+
+----
+
+Variant 1: proovi paigaldada käsuga
+
+`sudo apt-get install -y mongodb`
+
+----
+
+Variant 2: kui esimene variant ei tööta, siis proovi järgmist:
+
 Moodusta vajalik fail, et apt leiaks paketid üles:
 
 `echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list`
@@ -448,6 +461,8 @@ Moodusta vajalik fail, et apt leiaks paketid üles:
 Paigalda ainult vajalikud MongoDB komponendid - andmebaasiserver `mongod` ja shell `mongo`:
 
 `sudo apt-get install -y mongodb-org-server=3.6.4 mongodb-org-shell=3.6.4`
+
+----
 
 Paigaldamisel luuakse kasutaja `mongodb` ja lisatakse ta kasutajate gruppi `mongodb`.
 
