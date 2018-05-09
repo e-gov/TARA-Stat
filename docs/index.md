@@ -408,37 +408,53 @@ Vt ka: MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisal
 
 ### 3.1 Ülevaade
 
-TARA-Stat koosneb kahest komponendist (mõlemad paigaldatakse samasse masinasse): veebirakendus ja logibaas.
+TARA-Stat koosneb kahest komponendist:
+- veebirakendus
+- logibaas.
 
-TARA-Stat paigaldatakse Linux-i masinasse (Ubuntu 16 LTS). Veebirakendus vajab tööks Node.js paigaldamist. Logibaas vajab MongoDB paigaldamist.
+Mõlemad komponendid paigaldatakse samasse masinasse.
 
-TARA-Stat peab olema kättesaadav ainult organisatsiooni sisevõrgus, järgmistele inim- ja masinkasutajatele:
+**Alustarkvara**:
+- Ubuntu 16 LTS
+- Node.js (vajab veebirakendus)
+- MongoDB (vajab logibaas).
 
-- statistikakasutajale (tüüpiliselt teenusehaldur)
-- TARA-Server rakendusele.
+**Välisühendused**:
+- TARA-Stat peab olema kättesaadav ainult organisatsiooni sisevõrgus,
+- järgmistele inim- ja masinkasutajatele:
+  - statistikakasutajale (tüüpiliselt teenusehaldur)
+    - statistikakasutaja pöördub sirviku abil statistika väljastamise otspunkti
+  - TARA-Server rakendusele
+    - TARA-Server pöördub logikirje lisamise otspunkti.  
+  - lisaks on TARA-Stat vajadusel võimeline pakkuma elutukse otspunkti organisatsiooni monitooringulahendusele.
+  - TARA-Stat-le peab vajadusel olema juurdepääs ka andmehalduril, et kustutada aegunud logikirjed.
+    - andmehaldur kasutab tööriista `mongo` (MongoDB Shell)
+    - või MongoDB Compass - see on graafiline tööriist.
 
-Statistikakasutaja pöördub sirviku abil statistika väljastamise otspunkti. TARA-Server pöördub logikirje lisamise otspunkti.  
-
-Lisaks on TARA-Stat vajadusel võimeline pakkuma elutukse otspunkti organisatsiooni monitooringulahendusele.
-
-TARA-Stat-le peab vajadusel olema juurdepääs ka andmehalduril, et kustutada aegunud logikirjed. Andmehaldur vajab tööriistu MongoDB Compass ja/või `mongo` (MongoDB Shell) - need tuleks samuti paigaldada.
-
-Logibaas suhtleb ainult veebirakendusega; ei tohi suhelda masinast väljapoole.
-
-Saladuste kohta vt jaotis 3.9. Saladused.
+Logibaas suhtleb ainult veebirakendusega; ei suhtle masinast väljapoole.
 
 ### 3.2 VM ja op-süsteem
 
-1\.Valmista virtuaalmasin (VM).<br>
+1\.Valmista virtuaalmasin (VM).
+
 2\. Paigalda Ubuntu 16 LTS.
 
 ### 3.3 Node.js
 
 1\. Paigalda Node.js (viimane stabiilne versioon).
 
-`sudo apt-get install nodejs`
+Väldi Ubuntu Node.js paketi paigaldamist (`sudo apt-get install nodejs`). Vt ja järgi  [Installing Node.js Tutorial: Ubuntu](https://nodesource.com/blog/installing-node-js-tutorial-ubuntu/).
+{: .adv}
+
+`curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -`
+
+Seejärel:
+
+`sudo apt-get install -y nodejs`
 
 Kontrolli: `nodejs -v`
+
+Kontrolli, et ka Node.js paketihaldur npm on paigaldatud: `npm --version` 
 
 2\. Seadista Node.js. Ei ole vajalik.
 
@@ -649,8 +665,6 @@ Liigu kausta `TARA-Stat`
 
 Paigaldada tuleb järgmised moodulid: `body-parser`, `ejs`, `express`, `mongodb`, `request`, `basic-auth` ja `request-debug`.
 
-Kontroll: Veendu faili `package.json` sisu abil, et moodulid on paigaldatud.
-
 ### 3.6 Piira võrguavatus
 
 Sea pääsureeglid VM tulemüüris. Vaja on:
@@ -710,6 +724,7 @@ TARA-Stat-is kasutatakse järgmisi saladusi (võtmeid, paroole jms):
   - `mongodb` parool
   - `userAdmin` parool 
 
+TODO
 
 Lisaks, kui testimisel paigaldakse makett:
 
@@ -765,8 +780,6 @@ Miks tabelis ei ole statistikat? Sest logibaas on tühi.
 Logibaasi seiskamine:
 
 `sudo service mongod stop`
-
-
 
 ### 4.4 Veateated
 
@@ -847,27 +860,32 @@ makettrakendus. Makettrakendus genereerib logikirjeid ja lisab need logibaasi. M
 
 2\. Paigalda Node.js ja npm:
 
-```
-sudo apt-get install nodejs
-sudo apt install npm
-```
+Vt jaotis 3.3 Node.js.
 
-3\. Paigalda Node.js teegid
+3\. Paigalda TARA-Stat kood:
 
-```
-npm install request --save
+`git clone https://github.com/e-gov/TARA-Stat`
 
-```
+Järgnevas eeldame, et TARA-Stat asub kaustas `~/TARA-Stat`.
 
-4\. Paigalda TARA-Stat kood (nt tõmba git-ga). Järgnevas eeldame, et TARA-Stat asub kaustas `~/TARA-Stat`.
+4\. Paigalda Node.js teegid
+
+Liigu TARA-Stat juurkausta:
+
+`cd ~/TARA-Stat`
+
+Makettrakendus vajab ainult teeki `request`. Paigalda:
+
+`npm install request --save`
 
 5\. Selgita välja TARA-Stat logikirje lisamise otspunkti URL, API kasutajanimi ja salasõna.
 
-Testimisel VirtualBox VM-des arvesta, et VM-dele antakse IP-d dünaamiliselt (alates `192.168.56.101`-st). 
+Testimisel VirtualBox VM-des arvesta, et VM-dele antakse IP-d dünaamiliselt (alates `192.168.56.101`-st).
+{: .note} 
 
 6\. Veendu, et (teises masinas) TARA-Stat töötab.
 
-7\. Liigu kausta TARA-Stat. Käivita makettrakendus:
+7\. Liigu kausta TARA-Stat. Käivita makettrakendus (taristuparameetrid on näitlikud):
 
 ```
 TARASTATURL='https://192.168.56.102:5000' \
