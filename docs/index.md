@@ -284,7 +284,7 @@ TARA-Stat on kirjutatud Javascriptis. Täpsemalt, tehnoloogiapinu on järgmine (
 
  komponent                   | tehnoloogiad
 -----------------------------|--------------------------
-rakendus - serveripoolne osa | Node.JS, Express, MongoDB JS Driver
+rakendus - serveripoolne osa | Node.js, Express, MongoDB JS Driver
 rakendus - sirvikusse laetav osa | HTML5, CSS, Javascript, jQuery, Google Material Design ikoonid
 andmebaas | MongoDB
 avalik koodirepo | GitHub
@@ -300,13 +300,13 @@ Tehnoloogiad on valitud kasinuse põhimõttel. Kasutatud on (tehtud strateegilis
 Ühe µT sisetehnoloogiad ei tohi mõjutada teise µT sisetehnoloogiate valikut.
 {: .adv}
 
-Tehnoloogiate valimisel ei saa läbi katsetamiseta. Kulutasin omajagu aega [RESTHEart](http://restheart.org/) - MongoDB veebiliides s.o rakendus, mis ühendub MongoDB külge ja võimaldab REST API kaudu andmebaasi kasutada - uurimisele. Ühel hetkel sain aru, et lisalüli ei ole vaja ja lihtsam on  MongoDB veebiliides kirjutada ise, kasutades standardset MongoDB Node.JS draiverit. (See on väga tüüpiline. Internetis pakutakse palju raamistikke, vahendeid jms, mis on ehitatud teise vahendi peale ning nagu pakuksid lisaväärtust. Arvestades, et iga vahendit tuleb tundma õppida ja häälestada, on tihti kasulik sellistest kahtlast lisaväärtust pakkuvatest vahekihtidest loobuda ja programmeerida ise, standardsete vahenditega.)
+Tehnoloogiate valimisel ei saa läbi katsetamiseta. Kulutasin omajagu aega [RESTHEart](http://restheart.org/) - MongoDB veebiliides s.o rakendus, mis ühendub MongoDB külge ja võimaldab REST API kaudu andmebaasi kasutada - uurimisele. Ühel hetkel sain aru, et lisalüli ei ole vaja ja lihtsam on  MongoDB veebiliides kirjutada ise, kasutades standardset MongoDB Node.js draiverit. (See on väga tüüpiline. Internetis pakutakse palju raamistikke, vahendeid jms, mis on ehitatud teise vahendi peale ning nagu pakuksid lisaväärtust. Arvestades, et iga vahendit tuleb tundma õppida ja häälestada, on tihti kasulik sellistest kahtlast lisaväärtust pakkuvatest vahekihtidest loobuda ja programmeerida ise, standardsete vahenditega.)
 
 ### 2.5 Töö jätkamine teise arendaja poolt
 
-Kas teine arendaja saab tööd TARA-Stat-ga jätkata? Usun, et jah, saab - kui ta tunneb µT-ses kasutatud võtmetehnoloogiaid või on valmis neid õppima. Praegusel juhul MongoDB ja Node.JS. (HTTP REST tundmist eeldan.) Koodi maht on väike - 200 LOC. See on kindlasti endale selgeks tehtav. Kasutatud on standardseid, laialt tuntud teeke. 
+Kas teine arendaja saab tööd TARA-Stat-ga jätkata? Usun, et jah, saab - kui ta tunneb µT-ses kasutatud võtmetehnoloogiaid või on valmis neid õppima. Praegusel juhul MongoDB ja Node.js. (HTTP REST tundmist eeldan.) Koodi maht on väike - 200 LOC. See on kindlasti endale selgeks tehtav. Kasutatud on standardseid, laialt tuntud teeke. 
 
-Kui arendaja peaks MongoDB või Node.JS mitte tudnma ega soovi neid õppida, siis tuleb TARA-Stat kood ära visata ja rakendus ümber kirjutada. Näiteks PostgreSQL ja Java Spring kasutamisega. Koodi kirjutamiseks on kulutatud 1-2 päeva. Ümberkirjutamine teise keelde ei tohiks rohkem aega võtta.
+Kui arendaja peaks MongoDB või Node.js mitte tudnma ega soovi neid õppida, siis tuleb TARA-Stat kood ära visata ja rakendus ümber kirjutada. Näiteks PostgreSQL ja Java Spring kasutamisega. Koodi kirjutamiseks on kulutatud 1-2 päeva. Ümberkirjutamine teise keelde ei tohiks rohkem aega võtta.
 
 Äravisatavus ja ümberkirjutatavus on µT tähtsamate omaduste hulgas.
 {: .adv}
@@ -401,7 +401,7 @@ Rakendatakse järgmisi meetmeid:
 
 TARA-Stat paigaldatakse Linux-i masinasse (Ubuntu 16 LTS). TARA-Stat koosneb kahest komponendist (mõlemad paigaldatakse samasse masinasse): veebirakendus ja logibaas.
 
-Veebirakendus vajab tööks Node.JS paigaldamist. Logibaas vajab MongoDB paigaldamist.
+Veebirakendus vajab tööks Node.js paigaldamist. Logibaas vajab MongoDB paigaldamist.
 
 TARA-Stat peab olema kättesaadav ainult organisatsiooni sisevõrgus, järgmistele inim- ja masinkasutajatele:
 
@@ -421,15 +421,15 @@ Logibaas suhtleb ainult veebirakendusega; ei tohi suhelda masinast väljapoole.
 1\.Valmista virtuaalmasin (VM).<br>
 2\. Paigalda Ubuntu 16 LTS.
 
-### 3.3 Node.JS
+### 3.3 Node.js
 
-1\. Paigalda Node.JS (viimane stabiilne versioon).
+1\. Paigalda Node.js (viimane stabiilne versioon).
 
 `sudo apt-get install nodejs`
 
 Kontrolli: `nodejs -v`
 
-2\. Seadista Node.JS. Ei ole vajalik.
+2\. Seadista Node.js. Ei ole vajalik.
 
 ### 3.4 MongoDB
 
@@ -582,16 +582,18 @@ show users
 
 1\. Kopeeri veebirakendus ([https://github.com/e-gov/TARA-Stat](https://github.com/e-gov/TARA-Stat)) organisatsiooni sisereposse.
 
-2\. Paigalda veebirakendus siserepost VM-i.
+2\. Paigalda veebirakendus koodirepost VM-i:
+
+`git clone https://github.com/e-gov/TARA-Stat` (või kasutada vastavat organisatsiooni siserepot).
 
 Järgnevas eeldame, et TARA-Stat asub kaustas `~/TARA-Stat`. Toodangukeskkonnas võib asukoht olla teine.
 {: .adv}
 
 Kontrolli veebirakenduse konf-i: `config.js`. Seal ei tohiks olla vajadust midagi muuta.
 
-3\. Paigalda Node.JS teegid
+3\. Paigalda Node.js teegid
 
-Node.JS vajab tööks rida Javascipti teeke. Need on kirjeldatud failis `package.json`. Teegid tuleb paigaldada kausta `node_modules`. Kui repo ei sisalda teeke, siis tuleb need paigaldada eraldi, Node.js paketihalduri `npm` abil. (npm on paigaldatud koos Node.js-ga). 
+Node.js vajab tööks rida Javascipti teeke. Need on kirjeldatud failis `package.json`. Teegid tuleb paigaldada kausta `node_modules`. Kui repo ei sisalda teeke, siis tuleb need paigaldada eraldi, Node.js paketihalduri `npm` abil. (npm on paigaldatud koos Node.js-ga). 
 
 Alternatiiv on paigaldada teegid repo kaudu.
 {: .adv}
@@ -738,7 +740,7 @@ security:
    authorization: enabled
 ```   
 
-Node.JS paigaldamine
+Node.js paigaldamine
 
 - Lisada `C:\Program Files\nodejs\` Path-i
 - Paigalduse kontroll `node -v`
@@ -849,7 +851,7 @@ MongoDB Compass Community, "The GUI for MongoDB.", "The Easiest Way to Explore a
 
 - [juhend](https://docs.mongodb.com/compass/current/)
 
-MongoDB Node.JS Driver 
+MongoDB Node.js Driver 
 
 - [ülevaade](http://mongodb.github.io/node-mongodb-native/?jmp=docs&_ga=2.138292915.2088530382.1524857109-302204577.1524857109)
 - [dok-n](http://mongodb.github.io/node-mongodb-native/3.0/)

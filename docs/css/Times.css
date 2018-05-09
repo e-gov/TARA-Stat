@@ -33,6 +33,10 @@ body {
 /*#endregion */
 
 /*#region Pealkirjad */
+h1, h2, h3, h4 {
+  color: black !important;
+  text-decoration: underline;
+}
 h1 {
   font-size: 24px !important;
   margin-top: 1em;
