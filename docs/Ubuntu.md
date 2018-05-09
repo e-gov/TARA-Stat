@@ -120,9 +120,7 @@ Protsesside loetelu, vormingus: protsessiomaniku nimi (UID),  protsessi id (PID)
 
 Kuva kõik protsessid, mille omanik on kasutaja `username`.
 
-`ps -15 <pid>`
 
-Lõpetab protsessi, saates signaali _terminate_ (15). 
 
 ## Võrguühendused
 

@@ -6,7 +6,7 @@ Mis asi on salasõna `changeit`? -- Kõik salasõnad ja paigaldustaristu paramee
 # Mikroteenus TARA-Stat
 {: .no_toc}
 
-4\. päev, 07.05.2018<br><br>
+5\. päev, 09.05.2018<br><br>
 
 - TOC
 {:toc}
@@ -437,6 +437,9 @@ Kontrolli: `nodejs -v`
 
 1\. Paigalda MongoDB (viimane stabiilne versioon).
 
+Kui paigaldamine ebaõnnestus, siis võib olla vajalik andmefailide kustutamine kaustas `/var/lib/mongodb` enne uuesti paigaldamist.
+{: .adv}
+
 Vajadusel vt: [Install MongoDB Community Edition on Ubuntu](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/).
 
 Paigalda pakettide kontrollimise võtmed:
@@ -490,7 +493,7 @@ Logibaasi (MongoDB andmebaasi) ja selles kogumit (_collection_) ei ole vaja luua
 
 ### 3.5 Andmebaasi kasutajate loomine
 
-Lülita sisse logibaasi kasutajate autentimine, rollihaldus ja luua logibaasi kasutajad. Logibaasile tuleb luua kolm kasutajat:
+Logibaasile tuleb luua kolm kasutajat:
 
 - `userAdmin` - kasutajate haldur
 - `rakendus` - TARA-Stat veebirakendus
@@ -498,22 +501,25 @@ Lülita sisse logibaasi kasutajate autentimine, rollihaldus ja luua logibaasi ka
 
 Kasutajate eristamine on vajalik pigem tuleviku vajadusi arvestades. Protseduuri vt [Enable Auth](https://docs.mongodb.com/manual/tutorial/enable-authentication/).
 
-Kasutajakontosid hoitakse samuti MongoDB andmebaasides. Kasutame andmebaasi `admin` kasutajate halduri konto hoidmiseks. Teiste kasutajate kontosid hoiame andmebaasis `users`.
+Kasutajakontosid hoitakse samuti MongoDB andmebaasides. MongoDB standardpraktika kohaselt kasutajate halduri kontot hoiame andmebaasis `admin`. Teiste kasutajate kontosid hoiame andmebaasis `users`.
 
 Anna kasutajale, kes andmebaasi käivitab, õigused:
 
 ```
-sudo chown -R priit /var/lib/mongodb
-sudo chown -R priit /var/log/mongodb
+sudo chown -R kasutajanimi /var/lib/mongodb
+sudo chown -R kasutajanimi /var/log/mongodb
 ```
 
 Käivita MongoDB:
 
 `mongod --config /etc/mongodb.conf &`
 
-Veendu, et andmebaas on käivitunud, nt:
+Kasulik on meelde jätta andmebaasiserveri protsessinumber. Veendu, et andmebaas on käivitunud, nt: `ps aux` või `top`.
 
-`ps aux` või `top`
+MongoDB logi: `/var/log/mongodb/mongodb.log`.
+
+Taga, et andmete kaust, vaikimis `/var/lib/mongodb` on olemas ja andmebaasiserveril on õigused sinna kirjutada. Vajadusel korrigeeri failisüsteemi pääsuõigusi, nt: `sudo chmod -R ug+rw /var/lib/mongodb`.
+{: .note}
 
 Ühendu CLI-ga andmebaasi külge: `mongo`. Seejärel:
 
@@ -533,10 +539,7 @@ db.createUser(
 )
 ```
 
-Vajadusel korrigeeri failisüsteemi pääsuõigusi, nt: `sudo chmod -R ug+rw /var/lib/mongodb`.
-{: .note}
-
-2\. Lülita sisse rollihaldus. Sea andmebaasi konf-ifailis `/etc/mongodb.conf`:
+2\. Lülita sisse rollihaldus. Peata andmebaasiserver ja sea andmebaasi konf-ifailis `/etc/mongodb.conf`:
 
 ```
 security:
@@ -559,7 +562,7 @@ või pärast `mongo` käivitamist:
 
 ```
 use admin
-db.auth("userAdmin", "changeit" )
+db.auth( "userAdmin", "changeit" )
 ```
 
 Kontrolli, et konto on õigesti loodud:
@@ -570,8 +573,9 @@ show users
 
 4\. Loo kasutaja `rakendus`
 
+`use users`
+
 ```
-use users
 db.createUser(
   {
     user: "rakendus",
@@ -586,8 +590,9 @@ NB! Väärtused nagu `readWrite` on tõstutundlikud.
 
 5\. Loo kasutaja `andmehaldur`
 
+`use users`
+
 ```
-use users
 db.createUser(
   {
     user: "andmehaldur",
@@ -621,10 +626,15 @@ Kontrolli veebirakenduse konf-i: `config.js`. Seal ei tohiks olla vajadust midag
 
 3\. Paigalda Node.js teegid
 
-Node.js vajab tööks rida Javascipti teeke. Need on kirjeldatud failis `package.json`. Teegid tuleb paigaldada kausta `node_modules`. Kui repo ei sisalda teeke, siis tuleb need paigaldada eraldi, Node.js paketihalduri `npm` abil. (npm on paigaldatud koos Node.js-ga). 
+Node.js vajab tööks rida Javascipti teeke. Need on kirjeldatud failis `package.json`. Teegid tuleb paigaldada kausta `node_modules`. Kui repo ei sisalda teeke, siis tuleb need paigaldada eraldi, Node.js paketihalduri `npm` abil.
+
+Kui Node.js paigaldada Node.js ametlikult veebilehelt, siis npm paigaldatakse koos Node.js-ga. Kui Node.js paigaldada apt-get repo kaudu, siis tuleb npm eraldi paigaldada: `sudo apt-get install npm`.
+{: .note} 
 
 Alternatiiv on paigaldada teegid repo kaudu.
-{: .adv}
+{: .note}
+
+Liigu kausta `TARA-Stat`
 
 `npm install <moodul> --save`
 
@@ -659,7 +669,10 @@ Genereeri võtmed:
 
 Veendu, et failid `tara-stat.cert` ja `tara-stat.key` on veebirakenduse juurkausta alamkaustas `keys`.
 
-Ava fail `config.js` ja sea failide `tara-stat.cert` ja `tara-stat.key` asukohad. (Kommenteeri välja Windows-i seadistused).
+Ava kaustas `TARA-Stat` asuv fail TARA-Stat konf-ifail `config.js` ja sea vajadusel õigeks failide `tara-stat.cert` ja `tara-stat.key` asukohad. (Kui vaikimisi peaksid olema Windows-i failiteed, siis kommenteeri need välja).
+
+Arvesta, et Ubuntu server keskkonnas ei tarvitse kasutajate kaust `home` olla juurkausta, vaid nt `/opt` all.
+{: .adv}
 
 Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andma teadet "vigane turvasertifikaat". Teatest saab üle, kui kasutaja lisab erandi.
 {: .adv}
@@ -670,14 +683,17 @@ Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concep
 
 1\. Genereeri API-võti. Juhusõne pikkusega 20 tärki.
 
-2\. Paigalda API-võti TARA-Stat-i konf-i. Vt fail `config.js`; Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`process.env`).
+2\. Paigalda API-võti TARA-Stat-i konf-i. Ava fail `config.js` ja vaheta väärtus `changeit` õige vastu.
+
+Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`process.env`).
 
 3\. Paigalda API-võti TARA-Stat poole pöörduva rakenduse (TARA-Server) konf-i.
 
 ### 3.9 Tundlik taristuteave ja saladused
 
 TARA-Stat-is kasutatakse järgmist tundlikku (s.t mitteavalikku) taristuteavet:
--
+
+TODO
 
 TARA-Stat-is kasutatakse järgmisi saladusi (võtmeid, paroole jms):
 - VM kasutaja nimi ja parool
@@ -687,7 +703,8 @@ TARA-Stat-is kasutatakse järgmisi saladusi (võtmeid, paroole jms):
 
 
 Lisaks, kui testimisel paigaldakse makett:
-- 
+
+TODO 
 
 ## 4 Käitamine
 
@@ -706,13 +723,13 @@ MongoDB vastab diagnostiliste teadetega ja lõpuks:
 
 2\. Sea veebirakenduse port
 
-Kui pordil 443 töötab juba teine rakendus, siis ava fail `config.js` ja sea port (nt `5000`). 
+Kui pordil 443 töötab juba teine rakendus, siis ava kaustas `TARA-Stat` asuv veebirakenduse konf-ifail `config.js` ja vaheta pordi vaikeväärtus `443` õige vastu (nt `5000`). 
 
 3\. Käivita veebirakendus
 
 Veebirakenduse juurkaustas:
 
-`node index`
+`nodejs index &`
 
 Veebirakendus teatab:
 

@@ -73,6 +73,9 @@ permalink: Bash
 - **Kasutaja sisend**
   - `read NAME` (mitu muutujat eralda tühikutega)
 
+- **Kausta v faili kustutamine**
+  - `rm -R nimi` (rekursiivselt)
+
 - **Aritmeetika**
   - `echo $((1+1))` või `echo $[1+1]`
 
@@ -89,6 +92,7 @@ permalink: Bash
 - **nano, tekstiredaktor**
   - [koduleht](https://www.nano-editor.org/)
   - `sudo nano failinimi`
+  - `nano -Ynone failinimi` (käivita süntaksivärvimiseta)
 
 - **Otsimine**
   - `sudo find / -type f -name "failinimi" (otsib üle kogu ketta konkreetse nimega faile)
@@ -96,10 +100,13 @@ permalink: Bash
 - **Terminalist lahtisidumine**
   - ` &` (käsu lõpus, käivitatav protsess seotakse terminalist lahti ja hakkab jooksma taustal)
 
+- **Protsessi lõpetamine**
+  - `ps -15 <pid>` (lõpetab protsessi, saates signaali _terminate_ (15) 
+
 - **Protsesside seisund**
   - `ps` (jooksva kasutaja jooksva terminaliga seotud protsessid)
   - `ps aux` (kõik protsessid)
-  - `ps -ejH`
+  - `ps -ejH` (protsessipuu)
 
 - **Õigused failisüsteemis**
   - `chmod` (õiguste muutmine)
@@ -110,7 +117,8 @@ permalink: Bash
 - **sudo**
   - prefiks, millega saab käsu täita peakasutaja (_root_) õigustes (sudo õiguse olemasolul)
 
-
+- **Jooksev kaust**
+  - `pwd`
 
 ## Märkmed
 
