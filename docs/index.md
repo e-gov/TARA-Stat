@@ -399,9 +399,9 @@ Rakendatakse järgmisi meetmeid:
 
 ### 3.1 Ülevaade
 
-TARA-Stat paigaldatakse Linux-i masinasse (Ubuntu 16 LTS). TARA-Stat koosneb kahest komponendist (mõlemad paigaldatakse samasse masinasse): veebirakendus ja logibaas.
+TARA-Stat koosneb kahest komponendist (mõlemad paigaldatakse samasse masinasse): veebirakendus ja logibaas.
 
-Veebirakendus vajab tööks Node.js paigaldamist. Logibaas vajab MongoDB paigaldamist.
+TARA-Stat paigaldatakse Linux-i masinasse (Ubuntu 16 LTS). Veebirakendus vajab tööks Node.js paigaldamist. Logibaas vajab MongoDB paigaldamist.
 
 TARA-Stat peab olema kättesaadav ainult organisatsiooni sisevõrgus, järgmistele inim- ja masinkasutajatele:
 
@@ -415,6 +415,8 @@ Lisaks on TARA-Stat vajadusel võimeline pakkuma elutukse otspunkti organisatsio
 TARA-Stat-le peab vajadusel olema juurdepääs ka andmehalduril, et kustutada aegunud logikirjed. Andmehaldur vajab tööriistu MongoDB Compass ja/või `mongo` (MongoDB Shell) - need tuleks samuti paigaldada.
 
 Logibaas suhtleb ainult veebirakendusega; ei tohi suhelda masinast väljapoole.
+
+Saladuste kohta vt jaotis 3.9. Saladused.
 
 ### 3.2 VM ja op-süsteem
 
@@ -462,7 +464,8 @@ Paigalda ainult vajalikud MongoDB komponendid - andmebaasiserver `mongod` ja she
 
 `sudo apt-get install -y mongodb-org-server=3.6.4 mongodb-org-shell=3.6.4`
 
-----
+Alternatiiv: paigalda täiskomplekt (sisaldab ka serveris mittevajalikku MongoDB Compass tarkvara): `sudo apt-get install -y mongodb-org`.
+{: .note}
 
 Paigaldamisel luuakse kasutaja `mongodb` ja lisatakse ta kasutajate gruppi `mongodb`.
 
@@ -472,7 +475,9 @@ Sea kasutajale `mongodb` parool: `sudo passwd mongodb`
 
 2\. Seadista MongoDB.
 
-Leia konfi-fail (`/etc/mongod.conf`). Kontrolli seadistusi. Nt andmebaasi kaust on `/var/lib/mongodb`.
+Leia konfi-fail `/etc/mongodb.conf`
+
+Veendu, et seadistused sobivad. Vajadusel muuda. Autentimist (`auth=`) ei ole hetkel vaja veel sisse lülitada. Nt andmebaasi kaust on `/var/lib/mongodb`. 
 
 Vajadusel vt [MongoDB Configuration](https://docs.mongodb.com/manual/administration/configuration/).
 
@@ -502,18 +507,23 @@ sudo chown -R priit /var/lib/mongodb
 sudo chown -R priit /var/log/mongodb
 ```
 
-~~Ava uus terminal ja sisesta `$|# exec su - mongodb` (lülitumine kasutajale `mongodb`)~~
-
 Käivita MongoDB:
 
-`mongod --config /etc/mongod.conf &`
+`mongod --config /etc/mongodb.conf &`
 
-Ava uus terminal ja ühendu CLI-ga andmebaasi külge: `mongo`. Seejärel:
+Veendu, et andmebaas on käivitunud, nt:
+
+`ps aux` või `top`
+
+Ühendu CLI-ga andmebaasi külge: `mongo`. Seejärel:
 
 1\. Loo kasutajate haldur.
 
+Sisesta või kopeeri allolevad käsud `mongo` dialoogi, viiba `>` järele:
+
+`use admin`
+
 ```
-use admin
 db.createUser(
   {
     user: "userAdmin",
@@ -523,7 +533,10 @@ db.createUser(
 )
 ```
 
-2\. Lülita sisse rollihaldus. Sea andmebaasi konf-ifailis `mongod --config /etc/mongod.conf`:
+Vajadusel korrigeeri failisüsteemi pääsuõigusi, nt: `sudo chmod -R ug+rw /var/lib/mongodb`.
+{: .note}
+
+2\. Lülita sisse rollihaldus. Sea andmebaasi konf-ifailis `/etc/mongodb.conf`:
 
 ```
 security:
@@ -661,9 +674,27 @@ Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concep
 
 3\. Paigalda API-võti TARA-Stat poole pöörduva rakenduse (TARA-Server) konf-i.
 
+### 3.9 Tundlik taristuteave ja saladused
+
+TARA-Stat-is kasutatakse järgmist tundlikku (s.t mitteavalikku) taristuteavet:
+-
+
+TARA-Stat-is kasutatakse järgmisi saladusi (võtmeid, paroole jms):
+- VM kasutaja nimi ja parool
+- MongoDB kasutajad:
+  - `mongodb` parool
+  - `userAdmin` parool 
+
+
+Lisaks, kui testimisel paigaldakse makett:
+- 
+
 ## 4 Käitamine
 
 ### 4.1 Käivita
+
+Eeldus: Node.js ja MongoDB on paigaldatud ja seadistatud.
+{: .adv}
 
 1\. Käivita MongoDB:
 

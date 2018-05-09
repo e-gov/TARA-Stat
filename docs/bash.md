@@ -76,5 +76,48 @@ permalink: Bash
 - **Aritmeetika**
   - `echo $((1+1))` või `echo $[1+1]`
 
-  
+- **Faili allalaadimine internetist**
+  - `wget -O failinimi "URL"` (paneb jooksvasse kausta)  
+  - nt `wget -O code_1.23.0-1525361119_amd64.deb "https://go.microsoft.com/fwlink/?LinkID=760868"
+`
+- **Kontrolli, kas pakett on paigaldatud**
+  - `dpkg -l paketinimi`
+
+- **Paigaldatud paketi eemaldamine**
+  - `sudo apt-get remove rakendusenimi`
+
+- **nano, tekstiredaktor**
+  - [koduleht](https://www.nano-editor.org/)
+  - `sudo nano failinimi`
+
+- **Otsimine**
+  - `sudo find / -type f -name "failinimi" (otsib üle kogu ketta konkreetse nimega faile)
+
+- **Terminalist lahtisidumine**
+  - ` &` (käsu lõpus, käivitatav protsess seotakse terminalist lahti ja hakkab jooksma taustal)
+
+- **Protsesside seisund**
+  - `ps` (jooksva kasutaja jooksva terminaliga seotud protsessid)
+  - `ps aux` (kõik protsessid)
+  - `ps -ejH`
+
+- **Õigused failisüsteemis**
+  - `chmod` (õiguste muutmine)
+    - `-R` (rekursiivseltsud)
+    - `sudo chmod -R ug+rw /var/lib/mongodb` (user ja group-le lisada read ja write õigused)
+  - `chown` (omanduse muutmine)  
+
+- **sudo**
+  - prefiks, millega saab käsu täita peakasutaja (_root_) õigustes (sudo õiguse olemasolul)
+
+
+
+## Märkmed
+
+- `sudo apt-get install libxss1 libasound2`
+- `sudo apt-get install libgtk2.0-0`
+- vt https://github.com/Microsoft/vscode/issues/13089
+- [Ubuntu tekstiredaktorite ülevaade](http://www.informit.com/articles/article.aspx?p=1670957&seqNum=3)
+- `sudo apt-get install apt-transport-https`
+
 
