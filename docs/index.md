@@ -1,4 +1,4 @@
-Mis asi on salasõna `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
+Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
 {: .adv}
 
 <!-- p style='margin: 1em 0 2em 1em;'><i class='ikoon material-icons'>memory</i></p -->
@@ -198,7 +198,7 @@ Küpsusaste 1 - Arendaja masinas töötab
 
 <p style='text-align:center;'><img src='img/TEST-01.PNG' width= "500"></p>
 
-Arendaja on paigaldanud kõik arendatavad komponendid, nende käitamiseks vajaliku süsteemitarkvara (veebiserveri, andmebaasisüsteemi jms) ja testiprogrammid (maketid e _mock-up_-id jms) oma arvutisse. Tihti pannakse ka sidusteenused, millele arendaja masinast on raske juurde pääseda, arendaja arvutisse. Arvuti huugab. Arendaja masinas arendamine on efektiivne, kuna sidusteenuseid kas veel ei ole või asuvad need tulemüüride taga. Silumisvahendite (__debugger_-te) kasutamine on hõlbus. Veebiteenused suhtlevad lokaalse masina (`localhost`) kaudu. Imiteeritakse veebiliiklust ja põhimõtteliselt kõik nagu töötaks. _It works on my machine!_ Toodangukeskkonnas aga ollakse veel väga kaugel. Allpool tuleb juttu mikroteenusest TARA-Stat. TARA-Stat peab toodangus töötama eraldi masinas, Linux Ubuntu op-süsteemis. TARA-Stat peab suhtlema teises masinas töötava TARA-Serveriga (Java rakendus Ubuntu virtuaalmasinas) ja pakkuma statistikakasutajale veebiteenust. Arendaja masinas aga on kõik üheskoos, Windows-is. Kuigi tarkvara on testitud - TARA-Serveri asemel on makettrakendus `mockup`, on toodangusse siit veel pikk tee. 
+Arendaja on paigaldanud kõik arendatavad komponendid, nende käitamiseks vajaliku süsteemitarkvara (veebiserveri, andmebaasisüsteemi jms) ja testiprogrammid (maketid e _mock-up_-id jms) oma arvutisse. Tihti pannakse ka sidusteenused, millele arendaja masinast on raske juurde pääseda, arendaja arvutisse. Arvuti huugab. Arendaja masinas arendamine on efektiivne, kuna sidusteenuseid kas veel ei ole või asuvad need tulemüüride taga. Silumisvahendite (__debugger_-te) kasutamine on hõlbus. Veebiteenused suhtlevad lokaalse masina (`localhost`) kaudu. Imiteeritakse veebiliiklust ja põhimõtteliselt kõik nagu töötaks. _It works on my machine!_ Toodangukeskkonnas aga ollakse veel väga kaugel. Allpool tuleb juttu mikroteenusest TARA-Stat. TARA-Stat peab toodangus töötama eraldi masinas, Linux Ubuntu op-süsteemis. TARA-Stat peab suhtlema teises masinas töötava TARA-Serveriga (Java rakendus Ubuntu virtuaalmasinas (VM)) ja pakkuma statistikakasutajale veebiteenust. Arendaja masinas aga on kõik üheskoos, Windows-is. Kuigi tarkvara on testitud - TARA-Serveri asemel on makettrakendus `mockup`, on toodangusse siit veel pikk tee. 
 
 Küpsusaste 2 - Toodangulähedases keskkonnas paigaldatud, osa otspunkte käsitsi testitud
 
@@ -370,30 +370,39 @@ Andmehaldur saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI m
 
 ### 2.8 Turvamine
 
-Analüüsime võimalusi TARA-Stat-i turvamiseks. Eeldame, et kuigi µT-st kasutatakse organisatsiooni sisevõrgus, ei saa paigalduskeskkonna täielikku turvalisust eeldada ([MFN 19.4](https://e-gov.github.io/MFN/#19.4)). 
+Eeldame, et kuigi µT-st kasutatakse organisatsiooni sisevõrgus, ei saa paigalduskeskkonna täielikku turvalisust eeldada ([MFN 19.4](https://e-gov.github.io/MFN/#19.4)).
 
-#### 2.8.1 Andmebaasi turve
+TARA-Stat koosneb kahest komponendist: veebirakendusest ja logibaasist. Veebirakendusel on kasutaja sirvikusse laetav osa. Turve peab hõlmama kõiki komponente.
 
-MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega. 
+TARA-Stat-is on rakendatud järgmisi turvameetmeid.
 
- turvameede | rakendada?
-------------|:------------
- sisse lülitada andmebaasi poole pöördujate autentimine<br>- lihtsaim autentimismehhanism on MongoDB vaikimisi autentimismehhanism. See on soolaga salasõna põhine. | jah 
- rakendada rollipõhist pääsuhaldust | jah 
- rakendada TLS | ? (andmebaas suhtleb ainult samas masinas oleva rakendusega. Masinas ei ole teisi rakendusi) 
- andmebaasi krüpteerimine | ei (konfidentsiaalsusvajadus ei ole kõrge) 
- kaitsta andmebaasi failisüsteemi õigustega | ? 
- piirata võrgus nähtavust | jah 
- andmebaasi auditilogi | ei (terviklusvajadus ei ole nii kõrge) 
+**Omaette VM**. TARA-Stat paigaldatakse eraldi VM-i. VM-is ei ole teisi rakendusi. 
 
-#### 2.8.2 Veebirakenduse turve
+**Ainult sisevõrgus**. Mikroteenus on ligipääsetav ainult organisatsiooni sisevõrgus.
 
-Rakendatakse järgmisi meetmeid:
+**API kaitse võti**. Logikirje lisamise otspunkt kaitstakse API võtmega (salasõnaga). API võti paigaldatakse TARA-Serverisse ja pannakse kaasa igas päringus logikirje lisamise otspunkti poole.
 
-- Logikirje lisamise otspunkt kaitsta API võtmega (salasõnaga).
-- Statistika väljastamise otspunkt API võtmega kaitset ei vaja, kui tohib olla ligipääsetav ainult organisatsiooni sisevõrgus.
-- Elutukse otspunkt tohib olla ligipääsetav ainult organisatsiooni sisevõrgus.
-- Veebirakenduse API-s ainult HTTPS.
+Statistika väljastamise otspunkt API võtmega kaitset ei vaja, kuid on ligipääsetav ainult organisatsiooni sisevõrgus.
+
+Elutukse otspunkt on ligipääsetav ainult organisatsiooni sisevõrgus.
+
+**HTTPS**. Veebirakendus API-s ainult HTTPS.
+
+**Andmebaasikasutaja autentimine**. Veebirakendus pöördub MongoDB poole eraldi andmebaasikasutajana (`rakendus`). Andmebaasikasutaja autenditakse. Kasutusel on MongoDB vaikimisi autentimismehhanism - soolaga salasõna põhine.
+
+**Rollipõhine pääsuhaldus andmebaasis**. Admin on eraldi andmebaasikasutaja.
+
+Veebirakenduse ja MongoDB suhtluses ei rakendata TLS-i. Kuna andmebaas suhtleb ainult samas masinas oleva rakendusega ja masinas ei ole teisi rakendusi, ei ole TLS-i hädavajalik.
+
+Aandmebaasi ei krüpteerita, kuna onfidentsiaalsusvajadus ei ole kõrge.
+
+Andmebaasi kaitstakse failisüsteemi õigustega. TODO Kuidas?
+
+**Andmebaasi võrgus nähtavuse piiramine**. Andmebaas ei ole nähtav VM-st väljapoole. Andmebaasi kasutab ainult samas masinas asuv veebirakendus. 
+
+Andmebaasi auditilogi ei peeta, kuna terviklusvajadus ei ole nii kõrge.
+
+Vt ka: MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega. 
 
 ## 3 Paigaldamine (Ubuntu)
 
@@ -552,7 +561,7 @@ ja käivita andmebaas uuesti (`&` on käivitamine taustaprotsessina):
 
 Veendu protsessi tekkimises: `jobs`
 
-3\. Ühendu CLI `mongo` abil uuesti andmebaasi külge, seekord kasutajana `admin`:
+3\. Ühendu CLI `mongo` abil uuesti andmebaasi külge, seekord kasutajana `userAdmin`:
 
 ```
 mongo --port 27017 -u "userAdmin" -p "changeit" --authenticationDatabase "admin"
