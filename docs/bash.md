@@ -99,9 +99,10 @@ permalink: Bash
 
 - **Terminalist lahtisidumine**
   - ` &` (käsu lõpus, käivitatav protsess seotakse terminalist lahti ja hakkab jooksma taustal)
+  - `nohu käsk` (_no hangup_)
 
 - **Protsessi lõpetamine**
-  - `ps -15 <pid>` (lõpetab protsessi, saates signaali _terminate_ (15) 
+  - `kill -s -15 <pid>` (lõpetab protsessi, saates signaali _terminate_ (15) 
 
 - **Protsesside seisund**
   - `ps` (jooksva kasutaja jooksva terminaliga seotud protsessid)

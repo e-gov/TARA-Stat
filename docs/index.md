@@ -647,9 +647,11 @@ show users
 Järgnevas eeldame, et TARA-Stat asub kaustas `~/TARA-Stat`. Toodangukeskkonnas võib asukoht olla teine.
 {: .adv}
 
-Kontrolli veebirakenduse konf-i: `config.js`. Seal ei tohiks olla vajadust midagi muuta.
+3\. Sea veebirakenduse port (valikuline)
 
-3\. Paigalda Node.js teegid
+Ava kaustas `TARA-Stat` asuv veebirakenduse konf-ifail `config.js` ja vaheta pordi vaikeväärtus `443` õige vastu (nt `5000`). 
+
+4\. Paigalda Node.js teegid
 
 Node.js vajab tööks rida Javascipti teeke. Need on kirjeldatud failis `package.json`. Teegid tuleb paigaldada kausta `node_modules`. Kui repo ei sisalda teeke, siis tuleb need paigaldada eraldi, Node.js paketihalduri `npm` abil.
 
@@ -741,23 +743,22 @@ Eeldus: Node.js ja MongoDB on paigaldatud ja seadistatud.
 
 `mongod --config /etc/mongod.conf &`
 
-MongoDB vastab diagnostiliste teadetega ja lõpuks:
+Kui MongoDB käivitada terminaliga seotult (ilma &-ta), siis MongoDB vastab diagnostiliste teadetega ja lõpuks: `[initandlisten] waiting for connections on port 27017`.
+{: .note}
 
-`[initandlisten] waiting for connections on port 27017`
+2\. Käivita veebirakendus
 
-2\. Sea veebirakenduse port
-
-Kui pordil 443 töötab juba teine rakendus, siis ava kaustas `TARA-Stat` asuv veebirakenduse konf-ifail `config.js` ja vaheta pordi vaikeväärtus `443` õige vastu (nt `5000`). 
-
-3\. Käivita veebirakendus
-
-Veebirakenduse juurkaustas:
+Liigu veebirakenduse juurkausta `TARA-Stat` ja sisesta:
 
 `nodejs index &`
 
 Veebirakendus teatab:
 
 `--- TARA-Stat kuulab pordil: 5000`
+
+Kontrolli, et andmebaas ja veebirakendus töötavad:
+
+`ps`
 
 ### 4.2 Statistika väljastamise otspunkti töötamise test
 
@@ -885,18 +886,20 @@ Testimisel VirtualBox VM-des arvesta, et VM-dele antakse IP-d dünaamiliselt (al
 
 6\. Veendu, et (teises masinas) TARA-Stat töötab.
 
-7\. Liigu kausta TARA-Stat. Käivita makettrakendus (taristuparameetrid on näitlikud):
+7\. Liigu kausta `TARA-Stat`. Käivita makettrakendus (taristuparameetrid on näitlikud):
 
 ```
 TARASTATURL='https://192.168.56.102:5000' \
 TARASTATUSER='changeit' \
 TARASTATSECRET='changeit' \
-nodejs TARA-Stat/mockup 
+nodejs mockup 
 ```
 
-Makettrakendus väljastab konsoolile teavet logikirjete logibaasi saatmise edukuse kohta. TARA-Stat masinast võid konsoolilt kontrollida, et saadetud kirjed tõesti salvestati logibaasi.
+Makettrakendus genereerib logikirjeid ja saadab logibaasi. Jälgi teateid, mida makett konsoolile väljastab.
 
 Logikirjete genereerimise ja logibaasi saatmise järel lõpetab makettrakendus töö.
+
+TARA-Stat statistikakasutaja UI kaudu või TARA-Stat veebirakenduse logist saad kontrollida, et saadetud kirjed tõesti salvestati logibaasi.
 
 ## 6 Joonised
 
