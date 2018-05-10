@@ -838,6 +838,18 @@ ERR-02 | Viga logibaasist lugemisel | Kontrollida, kas MongoDB töötab
 ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Serveris
 ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
 
+### 4.5 Automatiseerimine
+
+Kustuta kaust `TARA-Stat`.
+
+Tõmba repost uuesti `TARA-Stat`:
+
+`git clone https://github.com/e-gov/TARA-Stat`
+
+Liigu kausta `TARA-Stat` ja ava fail `Paigaldusskriptijuhis.md`.
+
+Käivita paigaldusskript `Paigalda.sh` vastavalt juhistele.
+
 ## 5 Arendamine
 
 ### 5.1 Arendamine Windows-masinas
