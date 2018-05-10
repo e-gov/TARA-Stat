@@ -193,33 +193,35 @@ Monoliitrakenduses ei ole komponentidevahelise andmeedastuse turvamine probleem.
 
 #### 1.4.8 Tundliku taristuteabe ja saladuste kaitse
 
-Avaarenduse (_open source_) kasud on nii arvukad ja suured, et avaarendus peaks olema eelistatud arendusmudel. Siiski on ka avaarenduses teavet, millele juurdepääsu on vaja piirata.
+Avaarenduse (_open source_) kasud on nii arvukad ja suured, et tänapäeval avaarendus peaks olema eelistatud arendusmudel. Siiski on avaarenduses teavet, millele juurdepääsu on vaja piirata.
 
-**Tundlik taristuteave** hõlmab teavet organisatsiooni IT-taristu kohta, mida ründaja saaks kasutada taristusse sissemurdmiseks või taristus edasiliikumiseks. Mitmesugused parameetrid ja metateave, sh väljapoole mittepaistvad:
+**Tundlik taristuteave** on teave organisatsiooni IT-taristu kohta, mida ründaja saaks kasutada, võimalik, et ühitades muu teabe või võimekustega, IT-taristusse sissemurdmiseks või taristus edasiliikumiseks. Mõistega pean silmas eelkõige mitmesuguseid organisatsioonist **väljapoole mittepaistvaid** parameetreid, nt:
 - hosti- ja domeeninimed
 - IP-aadressid
 - pordid
 - kasutajanimed
 - tundlik dokumentatsioon, nt erilisi turvameetmeid konkreetselt kirjeldavad paigaldusjuhendid.
 
-Tundlikku taristuteavet on raske piiritleda, sest siin põrkuvad mitu üksteisega vastukäivat turvaprintsiipi.
+Tundlikuks taristuteabeks ei loe teavet, mida on kerge tuletada, mis ei oma ründe seisukohalt tähtsust või mis on niigi avalikult teada. Tundlikku taristuteavet on raske piiritleda, sest mõistes põrkuvad mitu üksteisega vastukäivat turvaprintsiipi:
 
-**Security by obscurity** ("turvalisus teadmatuse läbi") väidab, et parim turvalisus saavutatakse süsteemi siseehituse täieliku ärapeitmisega. Mida vähem välismaailm süsteemist teab, seda turvalisem. Mitmed eksperdid peavad antipattern-ks.
+**Security by obscurity** ("turvalisus teadmatuse läbi") väidab, et parim turvalisus saavutatakse süsteemi siseehituse täieliku ärapeitmisega. Mida vähem välismaailm süsteemist teab, seda turvalisem. Kuid mitmed eksperdid peavad security by obscurity-t mitte väga turvaliseks või isegi antipattern-ks.
 
-**Multi-level security** ("mitme kaitseliini" printsiip ütleb), et ei saa lootma jääda ühele kaitsele. Ükski kaitsemeede eraldivõetuna ei ole piisav. Turvameetme rakendaja võib eksida, valesti seadistada jne. Seetõttu on vaja mõelda ühest kaitsest läbimurdnud ründaja edasiliikumise takistamisele.
+**Multi-level security** ("mitme kaitseliini" printsiip) ütleb, et ei saa lootma jääda ühele kaitsele. Ükski kaitsemeede eraldivõetuna ei ole piisav. Turvameetme rakendaja võib eksida, meetme valesti seadistada. Meede võib tõrkuda jne. Seetõttu on vaja mõelda ühest kaitsest läbimurdnud ründaja edasiliikumise takistamisele.
 
-**Kerckhoffi printsiip** ütleb, et süsteemi turvalisus tuleb koondada väikesesse arvu saladustesse. Süsteemi ülesehitus ja algoritm võib ja peabki olema avalik. Ainult võti on salajane. Nii tagatakse parim kaitse.
+**Kerckhoffi printsiip** ütleb, et süsteemi turvalisus tuleb koondada väikesesse arvu saladustesse. Süsteemi ülesehitus ja algoritm võib ja peabki olema avalik. Ainult võti on salajane. Nii tagatavat parim kaitse.
 
 **Saladused** (_secrets_) on krüptograafilised võtmed, serdid, salasõnad, krüptograafiliste ja turvaprotokollide salajased parameetrid.
 
-Praktikas tuleb neid printsiipe ühitada. Eriti kui arvestada, et süsteem peab olema ka kasutatav ja turvameetmete rakendamise eelarve ei ole piiramatu.
-
-Soovitada võiks järgmisi elemente (vt illustreeriv joonis):
+Praktikas tuleb arvestada, et süsteem peab olema ka kasutatav. Samuti, turvameetmete rakendamise eelarve ei ole piiramatu. Soovitada võiks järgmisi elemente (vt illustreeriv joonis):
 
 <p style='text-align:center;'><img src='img/SALADUSED.PNG' width= "500"></p>
 
-- Avalikus koodis ja dokumentatsioonis on tundlikud taristuparameetrid ja saladused asendatud näiteväärtustega, nt `changeit`.
-- Näiteväärtusi ei kasutata toodangus
+- avalik kood ja dokumentatsioon, tundlik taristuteave ja saladused hoitakse eraldi
+- erinevate eesmärkidega paigaldusi (arendus, testimine, toodang) tehakse kombineerides avalikku koodi, tundlikku taristuteavet ja saladusi 
+- kõik ei saa olla tundlik; kõik ei saa olla salajane
+- tundlikust taristuteabest ja saladustest on selge ülevaade
+- avalikus koodis ja dokumentatsioonis on tundlikud taristuparameetrid ja saladused asendatud näiteväärtustega, nt `changeit`.
+- näiteväärtusi ei kasutata toodangus
 - tundlik taristuteave on organisatsiooni siserepos (dokumendi- v koodirepos või mõlemas)
 - saladuste hoidmiseks on oma kord ja tehniline lahendus.
 
