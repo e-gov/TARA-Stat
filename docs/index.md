@@ -191,6 +191,31 @@ Monoliitrakenduses ei ole komponentidevahelise andmeedastuse turvamine probleem.
 µT-l peaks olema HTTPS võimekus.
 {: .adv}
 
+### 1.4.8 Tundliku taristuteabe ja saladuste kaitse
+
+Avaarenduse (_open source_) kasud on nii arvukad ja suured, et avaarendus peaks olema eelistatud arendusmudel. Siiski on ka avaarenduses teavet, millele juurdepääsu on vaja piirata.
+
+**Tundlik taristuteave** hõlmab teavet organisatsiooni IT-taristu kohta, mida ründaja saaks kasutada taristusse sissemurdmiseks või taristus edasiliikumiseks. Mitmesugused parameetrid ja metateave, sh väljapoole mittepaistvad:
+- hosti- ja domeeninimed
+- IP-aadressid
+- pordid
+- kasutajanimed
+
+Tundlikku taristuteavet on raske piiritleda, sest siin põrkuvad mitu üksteisega vastukäivat turvaprintsiipi.
+
+**Security by obscurity** ("turvalisus teadmatuse läbi") väidab, et parim turvalisus saavutatakse süsteemi siseehituse täieliku ärapeitmisega. Mida vähem välismaailm süsteemist teab, seda turvalisem. Mitmed eksperdid peavad antipattern-ks.
+
+**Multi-level security** ("mitme kaitseliini" printsiip ütleb), et ei saa lootma jääda ühele kaitsele. Ükski kaitsemeede eraldivõetuna ei ole piisav. Turvameetme rakendaja võib eksida, valesti seadistada jne. Seetõttu on vaja mõelda ühest kaitsest läbimurdnud ründaja edasiliikumise takistamisele.
+
+**Kerckhoffi printsiip** ütleb, et süsteemi turvalisus tuleb koondada väikesesse arvu saladustesse. Süsteemi ülesehitus ja algoritm võib ja peabki olema avalik. Ainult võti on salajane. Nii tagatakse parim kaitse.
+
+**Saladused** (_secrets_) on krüptograafilised võtmed, serdid, salasõnad, krüptograafiliste ja turvaprotokollide salajased parameetrid.
+
+Praktikas tuleb neid printsiipe ühitada. Eriti kui arvestada, et süsteem peab olema ka kasutatav ja turvameetmete rakendamise eelarve ei ole piiramatu.
+
+<p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
+
+
 ### 1.5 "It works on my machine!"
 
 Küpsusaste 0 - Ei tööta veel üheski keskkonnas
