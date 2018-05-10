@@ -133,11 +133,15 @@ app.get('/stat', (req, res) => {
 
   /**
    * Leia autentimiste arv klienditi
+   * @param r - aja filtri regex
+   * @param db - andmebaasiühendus
+   * @param callback - funktsioon, millele edastatakse MongoDB
+   *   aggregation pipeline läbimise tulemusel saadud kirjed 
    */
   const leiaKlienditi = function (r, db, callback) {
     const collection = db.collection(COLLECTION);
     /**
-     * Lisada autentimine
+     * TODO Lisada autentimine
      */
     collection
       .aggregate([
@@ -148,8 +152,16 @@ app.get('/stat', (req, res) => {
         },
         {
           $group: {
-            _id: "$klient",
+            _id: {
+              "klient": "$klient",
+              "meetod": "$meetod"
+            },
             kirjeteArv: { $sum: 1 }
+          }
+        },
+        {
+          $sort: {
+            _id: 1
           }
         }
       ])

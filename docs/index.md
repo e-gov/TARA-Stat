@@ -272,6 +272,10 @@ TARA-Stat pakub:
 
 Eelkõige huvitab autentimiste arv klientrakenduste lõikes ajaperioodil.
 
+TARA-Stat kasutajaliides statistikakasutajale:
+
+<p style='text-align:center;'><img src='img/Capture.PNG' width= "650"></p>
+
 Ongi kõik. Kohe tekib küsimus, kas seda pole liiga vähe? See µT on spetsialiseeritud logi. Logimine on ulatuslik teema. Logitakse mitmel erineval eesmärgil - turvamine, kasutajate pöördumiste lahendamine, teenuse ülaloleku seiramine jm. Autentimisteenuses TARA on juba oma, keerukas logilahendus - mis on (potentsiaalselt) ühendatud võimsa keskse logisüsteemiga. Kas siis eraldi, spetsialiseeritud logilahendusel on mõtet? See on mittetriviaalne, kuid väga oluline küsimus. Eraldi logilahendusel puuduks mõte, kui olemasolev võimas, väga paindlik ja paljude omadustega, _out-of-the-box_ logisüsteem oleks seadistatav vajaduse lahendamiseks vähema ajaga kui kulub µT arendamiseks. Praktika näitab siiski, et võimsate universaallahenduste tundmaõppimine ja seadistamine võib olla väga töömahukas. Ise tehes saame teha täpselt selle mida vajame - täpselt nii nagu tahame. Küsimusele kumb on parem - kas ise tehtud µT või seadistatud võimas universaalne vahend - ei ole universaalset vastust. Ise põlve otsas tegemine nõuab oskusi ja on kahtlemata riskantne. Kuid reaalsed riskid on ka suurte universaalsete valmislahenduste puhul. Näeme ju praktikas ikka ja jälle, kuidas majja tuuakse ilus ja võimas raamistik, meetod või keel, kuid selle juurutamine võtab aastaid ning suur osa vahendi võimalustest jäävad kasutamata. Igal juhul oleme µT puhul oma kahjusid tõkestanud - äraviskamisel kaotame maksimaalselt ühe nädala töö. Kui arvestada õppimist, siis tõenäoliselt vähem.
 
 µT peab täitma ühtainust ülesannet (millel võib olla mitu tahku v osaülesannet).
@@ -838,46 +842,41 @@ ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API k
 
 ### 5.1 Arendamine Windows-masinas
 
-Kui arenduseks kasutada Windows-masinat, siis on järgmised erisused.
+Arendamisel Windows-masinas on järgmised erisused.
+
+Kõik komponendid (veebirakendus, logibaas, sirvik) on ühes masinas.
 
 MongoDB paigaldamine
 
-- Lisada `C:\Program Files\MongoDB\Server\3.6\bin` Path-i
-  - Search, `envir` -> `Edit environmental variables`
+- Lisada path-i `C:\Program Files\MongoDB\Server\3.6\bin`
+  - Vihje: `Search`, `envir` -> `Edit environmental variables`
 - Paigalduse kontroll: `mongod --version`.
 - MongoDB vajab kausta andmete hoidmiseks. Loo kaust `C:\data\db`.
 
 MongoDB käivitamine
 
 - `"C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe"`
-- path-i seadmise järel lihtsalt `mongod`
-- konfifaili loomise järel: `mongod --config C:\data\mongod.conf` 
+- path-i seadmise järel lihtsalt: `mongod`
 
 MongoDB seadistamine
-
-- (mittevajalik) loo konfifail `C:\data\mongod.conf`.
-
-````
-net:
-   bindIp: 127.0.0.1
-   port: 27017
-````  
-
-Hiljem lisa:
+- ei ole vajalik, kui andmebaasi poole pöördumisi mitte autentida
+- autentimise lisamiseks loo konfifail `C:\data\mongod.conf`.
+- lisa:
 
 ```
 security:
    authorization: enabled
 ```   
 
+- konfifaili loomise järel käivita: `mongod --config C:\data\mongod.conf` 
+
 Node.js paigaldamine
 
-- Lisada `C:\Program Files\nodejs\` Path-i
-- Paigalduse kontroll `node -v`
+- Lisa path-i: `C:\Program Files\nodejs\`
+- Konrolli paigaldust: `node -v`
 
-8\. Veebirakenduse käivitamine: veebirakenduse juurkaustas:
-
-`node index`.
+Veebirakenduse käivitamine
+- veebirakenduse juurkaustas: `node index`.
 
 ### 5.2 Testimine (käsitsi, lokaalses masinas)
 

@@ -1,17 +1,24 @@
 function alusta() {
 
+  /**
+   * Päri statistika serveripoolelt ja kuva
+   */
   $('#sooritaNupp').click(() => {
 
     function kuvaKirjed(kirjed) {
       var t = $('<table><tr>' +
       '<th>klientrakendus</th>' +
+      '<th>autentimismeetod</th>' +
       '<th>autentimisi</th>' +
       '</tr></table>');
       for (var i = 0; i < kirjed.length; i++) {
         var r = $('<tr></tr>');
         r.appendTo(t);
         $('<td></td>')
-        .text(kirjed[i]._id)
+        .text(kirjed[i]._id.klient)
+        .appendTo(r);
+        $('<td></td>')
+        .text(kirjed[i]._id.meetod)
         .appendTo(r);
         $('<td></td>')
         .text(kirjed[i].kirjeteArv)
@@ -27,7 +34,7 @@ function alusta() {
     if (perioodiMuster && perioodiMuster.length > 0) {
       url = url + '?p=' + perioodiMuster;
     }
-    console.log('url: ' + url);
+    // console.log('url: ' + url);
 
     // Puhasta eelmine tulem
     $('#Tulem').html('');
@@ -35,7 +42,18 @@ function alusta() {
     $.getJSON(url,
       (data, status, xhr) => {
         /* Saadud andmed on kujul
-          {"kirjed":[{"_id":"e-teenusB","kirjeteArv":1},{"_id":"e-teenusA","kirjeteArv":1}]}
+          { "kirjed":
+            [
+              {
+                "_id": {
+                  "klient": "klientrakendus A",
+                  "meetod": "eIDAS"
+                },
+                "kirjeteArv": 1
+              },
+              ...
+            ]
+          }
         */
         var kirjed = data.kirjed;
         kuvaKirjed(kirjed);

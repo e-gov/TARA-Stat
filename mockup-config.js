@@ -5,7 +5,7 @@
 var config = {};
 
 /* TARA-Stat logikirje lisamise otspunkti URL */
-config.TARASTATURL = process.env.TARASTATURL || 'https://localhost';
+config.TARASTATURL = process.env.TARASTATURL || 'https://localhost:5000';
 
 /* Logikirje lisamise API võti */
 config.TARASTATUSER = process.env.TARASTATUSER || 'changeit';
