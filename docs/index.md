@@ -212,7 +212,7 @@ Tundlikuks taristuteabeks ei loe teavet, mida on kerge tuletada, mis ei oma rün
 
 **Saladused** (_secrets_) on krüptograafilised võtmed, serdid, salasõnad, krüptograafiliste ja turvaprotokollide salajased parameetrid.
 
-Praktikas tuleb arvestada, et süsteem peab olema ka kasutatav. Samuti, turvameetmete rakendamise eelarve ei ole piiramatu. Soovitada võiks järgmisi elemente (vt illustreeriv joonis):
+Praktikas tuleb arvestada, et süsteem peab olema ka kasutatav. Samuti, turvameetmete rakendamise eelarve ei ole piiramatu. Olulised on järgmised elemendid (vt illustreeriv joonis):
 
 <p style='text-align:center;'><img src='img/SALADUSED.PNG' width= "500"></p>
 
