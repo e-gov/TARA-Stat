@@ -739,7 +739,14 @@ Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andm
 
 Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concepts); [Self-Signed, Trusted Certificates for Node.js & Express.js](https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/)
 
-### 3.8 Loo usaldus TARA-Serveri ja TARA-Stat-i vahel
+### 3.8 Loo VM kasutaja `tarastat`
+
+Kasutaja `tarastat` on piiratud õigustega kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus. Loo kasutja:
+
+`sudo adduser tarastat`
+
+
+### 3.9 Loo usaldus TARA-Serveri ja TARA-Stat-i vahel
 
 1\. Genereeri API-võti. Juhusõne pikkusega 20 tärki.
 
@@ -749,23 +756,19 @@ Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`proces
 
 3\. Paigalda API-võti TARA-Stat poole pöörduva rakenduse (TARA-Server) konf-i.
 
-### 3.9 Tundlik taristuteave ja saladused
+### 3.10 Õiguste plaan
 
-TARA-Stat-is kasutatakse järgmist tundlikku (s.t mitteavalikku) taristuteavet:
+µT suhtleb teiste masinatega, erinevate inimestega. Teenindab ja kasutab ise teenuseid. µT enda sees on üksteisega suhtlevad komponendid. Suhtlevaid osapooli on ka väikese rakenduse puhul paras hulk. Erinevatel osapooltel on erinevad õigused. Õigusi peab olema parasjagu: mitte liiga palju (ebaturvaline), mitte liiga vähe (ei pääse teenusele ligi). Osapooltel on **identiteedid** (nimed), mida tõendavad **kredentsiaalid** (paroolid, võtmed). Kõike seda on omajagu. Sellest peab olema ülevaade ja see peab olema tasakaalus. **Õiguste plaani** eesmärk on anda täpne pilt rakendusega seotud osapooltest, nende rollidest ja õigustest, samuti kredentsiaalidest.
 
-TODO
-
-TARA-Stat-is kasutatakse järgmisi saladusi (võtmeid, paroole jms):
-- VM kasutaja nimi ja parool
-- MongoDB kasutajad:
-  - `mongodb` parool
-  - `userAdmin` parool 
-
-TODO
-
-Lisaks, kui testimisel paigaldakse makett:
-
-TODO 
+| kasutaja vm õiguste subjekt (_principal_) | täpsem kirjeldus | õigused | kredentsiaalid |
+|:-----------------------------------------:|:--------:|:-------:|:--------------:|
+| `vmadmin` | Ubuntu kasutaja | haldab VM-i | salasõna |
+| `tarastat` | Ubuntu kasutaja | tema alt käivitatakse TARA-Stat veebirakendus | salasõna |
+| `mongodb` | Ubuntu kasutaja | tema alt käitatakse Mongo DB andmebaasi | 
+| `userAdmin` | MongoDB kasutaja | haldab MongoDB kasutajaid |
+| `rakendus` | MongoDB kasutaja | TARA-Stat veebirakendus, MongoDB poole pöördujana |
+| `andmehaldur` | MongoDB kasutaja | inimene, kes kustuta aegunud logikirjeid |
+| `https://<tara-stat>` | veebirakendus | | self-signed sert |
 
 ## 4 Käitamine
 

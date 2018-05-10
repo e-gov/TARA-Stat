@@ -4,21 +4,58 @@ permalink: Bash
 
 # Bash
 
-- **shebang**
-  - `#!/bin/bash` (näitab, millist programmi skripti täitmiseks kasutada)
+- **aritmeetika**
+  - `echo $((1+1))` või `echo $[1+1]`
+
+- **faili allalaadimine internetist**
+  - `wget -O failinimi "URL"` (paneb jooksvasse kausta)  
+  - nt `wget -O code_1.23.0-1525361119_amd64.deb "https://go.microsoft.com/fwlink/?LinkID=760868"
+`
+- **funktsioonid**
+  - `function nimi { kood }`
+  - parameetri poole pöördumine: `$1` - esimene parameeter
+  - väljakutsumine parameetriga: `fnimi param`
+
+- **jooksev kaust**
+  - `pwd`
+
+- **jutumärgid**
+  - _Single quotes will treat every character literally_
+  - Jutumärgid lubavad viiteid muutujatele
+
+- **kasutaja**
+  - `sudo adduser nimi` (lisamine)
+  - `sudo deluser nimi` (kustutamine)
+  - `sudo deluser --remove-home nimi` (kodukausta kustutamisega)
+
+- **kasutaja sisend**
+  - `read NAME` (mitu muutujat eralda tühikutega)
+
+- **kausta v faili kustutamine**
+  - `rm -R nimi` (rekursiivselt)
 
 - **kommentaar**
   - `#`
 
-- **Suunamine** - `>` failide ühendamine, nt `stdout` ühendada `stdin`-ga
-  - `stdout` suunamine faili: `ls -l > ls-1.txt`
-  - **failideskriptorid** - `stdin`, `stdout`, `stderr`
-  - `1` tähistab `stdout`, `2` tähistab `stderr`
+- **kontrolli, kas pakett on paigaldatud**
+  - `dpkg -l paketinimi`
 
-- **Toru**
-  - `|` - ühendus protsesside vahel
+- **käsu väljundi haaramine**
+  - `$(date +%Y%m%d)` - täidab käsu ja haarab väljundi
+  - väljundi saab omistada muutujale: `myvar=$( ls /etc | wc -l )` (failide arv kaustas)
 
-- **Muutujad**
+- **kuvamine terminalile**
+  - `echo`
+
+- **menüü**
+  - `OPTIONS="Hello Quit"
+      select opt in $OPTIONS; do
+        if [ "$opt" = "Quit" ]; then
+          echo done
+          exit
+        elif [ "$opt" = "Hello" ]; then`  
+
+- **muutujad**
   - defineerimine: `STR="Hello!"` (tühikuta! tõstutundlikud!)
   - kasutamine: `echo $STR`
   - võrdlustes: `if [ "$T1" = "$T2" ]; then`
@@ -37,89 +74,61 @@ permalink: Bash
     - `export var1
        ./script2.sh` (muutuja `var1` antakse skriptile parameetriks)       
 
-- **Käsu väljundi haaramine**
-  - `$(date +%Y%m%d)` - täidab käsu ja haarab väljundi
-  - väljundi saab omistada muutujale: `myvar=$( ls /etc | wc -l )` (failide arv kaustas)
-
-- **Tingimuslause**
-  - `if [ "foo" = "foo" ]; then
-       ...
-     fi`
-  - `else`, `else if`
-
-- **Funktsioonid**
-  - `function nimi { kood }`
-  - parameetri poole pöördumine: `$1` - esimene parameeter
-  - väljakutsumine parameetriga: `fnimi param`
-
-- **Menüü**
-  - `OPTIONS="Hello Quit"
-      select opt in $OPTIONS; do
-        if [ "$opt" = "Quit" ]; then
-          echo done
-          exit
-        elif [ "$opt" = "Hello" ]; then`  
-
-- **Sagelikasutatavad käsud**
-  - `echo`
-
-- **Jutumärgid**
-  - _Single quotes will treat every character literally_
-  - Jutumärgid lubavad viiteid muutujatele
-
-- **Skripti täitmine**
-  - `./` - jooksvas kaustas oleva skripti täitmine
-
-- **Kasutaja sisend**
-  - `read NAME` (mitu muutujat eralda tühikutega)
-
-- **Kausta v faili kustutamine**
-  - `rm -R nimi` (rekursiivselt)
-
-- **Aritmeetika**
-  - `echo $((1+1))` või `echo $[1+1]`
-
-- **Faili allalaadimine internetist**
-  - `wget -O failinimi "URL"` (paneb jooksvasse kausta)  
-  - nt `wget -O code_1.23.0-1525361119_amd64.deb "https://go.microsoft.com/fwlink/?LinkID=760868"
-`
-- **Kontrolli, kas pakett on paigaldatud**
-  - `dpkg -l paketinimi`
-
-- **Paigaldatud paketi eemaldamine**
-  - `sudo apt-get remove rakendusenimi`
-
 - **nano, tekstiredaktor**
   - [koduleht](https://www.nano-editor.org/)
   - `sudo nano failinimi`
   - `nano -Ynone failinimi` (käivita süntaksivärvimiseta)
 
-- **Otsimine**
+- **otsimine**
   - `sudo find / -type f -name "failinimi" (otsib üle kogu ketta konkreetse nimega faile)
 
-- **Terminalist lahtisidumine**
-  - ` &` (käsu lõpus, käivitatav protsess seotakse terminalist lahti ja hakkab jooksma taustal)
-  - `nohu käsk` (_no hangup_)
+- **paigaldatud paketi eemaldamine**
+  - `sudo apt-get remove rakendusenimi`
 
-- **Protsessi lõpetamine**
+- **parooli muutmine**
+  - `passwd`
+  - `/etc/passwd` [Vikipeedia](https://en.wikipedia.org/wiki/Passwd)  
+
+- **protsessi lõpetamine**
   - `kill -s -15 <pid>` (lõpetab protsessi, saates signaali _terminate_ (15) 
 
-- **Protsesside seisund**
+- **protsesside seisund**
   - `ps` (jooksva kasutaja jooksva terminaliga seotud protsessid)
   - `ps aux` (kõik protsessid)
   - `ps -ejH` (protsessipuu)
 
-- **Õigused failisüsteemis**
-  - `chmod` (õiguste muutmine)
-    - `-R` (rekursiivseltsud)
-    - `sudo chmod -R ug+rw /var/lib/mongodb` (user ja group-le lisada read ja write õigused)
-  - `chown` (omanduse muutmine)  
+- **shebang**
+  - `#!/bin/bash` (näitab, millist programmi skripti täitmiseks kasutada)
+
+- **skripti täitmine**
+  - `./` - jooksvas kaustas oleva skripti täitmine
 
 - **sudo**
   - prefiks, millega saab käsu täita peakasutaja (_root_) õigustes (sudo õiguse olemasolul)
 
-- **Jooksev kaust**
-  - `pwd`
+- **suunamine** - `>` failide ühendamine, nt `stdout` ühendada `stdin`-ga
+  - `stdout` suunamine faili: `ls -l > ls-1.txt`
+  - **failideskriptorid** - `stdin`, `stdout`, `stderr`
+  - `1` tähistab `stdout`, `2` tähistab `stderr`
+
+- **terminalist lahtisidumine**
+  - ` &` (käsu lõpus, käivitatav protsess seotakse terminalist lahti ja hakkab jooksma taustal)
+  - `nohu käsk` (_no hangup_)
+
+- **tingimuslause**
+  - `if [ "foo" = "foo" ]; then
+       ...
+     fi`
+  - `else`, `else if`
+
+- **toru**
+  - `|` - ühendus protsesside vahel
+
+- **õigused failisüsteemis**
+  - `chmod` (õiguste muutmine)
+    - `-R` (rekursiivseltsud)
+    - `sudo chmod -R ug+rw /var/lib/mongodb` (user ja group-le lisada read ja write õigused)
+  - `chown` (omanduse muutmine)  
 
 ## Märkmed
 
