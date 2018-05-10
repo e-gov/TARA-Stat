@@ -758,6 +758,9 @@ Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`proces
 
 ### 3.10 Õiguste plaan
 
+Nimed on illustratiivsed.
+{: .adv}
+
 µT suhtleb teiste masinatega, erinevate inimestega. Teenindab ja kasutab ise teenuseid. µT enda sees on üksteisega suhtlevad komponendid. Suhtlevaid osapooli on ka väikese rakenduse puhul paras hulk. Erinevatel osapooltel on erinevad õigused. Õigusi peab olema parasjagu: mitte liiga palju (ebaturvaline), mitte liiga vähe (ei pääse teenusele ligi). Osapooltel on **identiteedid** (nimed), mida tõendavad **kredentsiaalid** (paroolid, võtmed). Kõike seda on omajagu. Sellest peab olema ülevaade ja see peab olema tasakaalus. **Õiguste plaani** eesmärk on anda täpne pilt rakendusega seotud osapooltest, nende rollidest ja õigustest, samuti kredentsiaalidest.
 
 | kasutaja vm õiguste subjekt (_principal_) | täpsem kirjeldus | õigused | kredentsiaalid |
@@ -769,6 +772,8 @@ Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`proces
 | `rakendus` | MongoDB kasutaja | TARA-Stat veebirakendus, MongoDB poole pöördujana |
 | `andmehaldur` | MongoDB kasutaja | inimene, kes kustuta aegunud logikirjeid |
 | `https://<tara-stat>` | veebirakendus | | self-signed sert |
+| statistikakasutaja | | pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | - (ei autendita, juurdepääs piiratakse kontekstiga) |
+| `TARA-Server` |  | pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
 
 ## 4 Käitamine
 
