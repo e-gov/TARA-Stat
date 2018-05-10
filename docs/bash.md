@@ -137,5 +137,5 @@ permalink: Bash
 - vt https://github.com/Microsoft/vscode/issues/13089
 - [Ubuntu tekstiredaktorite ülevaade](http://www.informit.com/articles/article.aspx?p=1670957&seqNum=3)
 - `sudo apt-get install apt-transport-https`
-
-
+- https://stackoverflow.com/questions/15043606/change-user-mongod-is-running-under-in-ubuntu 
+- http://www.codexpedia.com/devops/mongodb-authentication-setting/ 

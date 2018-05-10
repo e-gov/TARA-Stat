@@ -768,9 +768,9 @@ Nimed on illustratiivsed.
 | `vmadmin` | Ubuntu kasutaja | haldab VM-i | salasõna |
 | `tarastat` | Ubuntu kasutaja | tema alt käivitatakse TARA-Stat veebirakendus | salasõna |
 | `mongodb` | Ubuntu kasutaja | tema alt käitatakse Mongo DB andmebaasi | 
-| `userAdmin` | MongoDB kasutaja | haldab MongoDB kasutajaid |
-| `rakendus` | MongoDB kasutaja | TARA-Stat veebirakendus, MongoDB poole pöördujana |
-| `andmehaldur` | MongoDB kasutaja | inimene, kes kustuta aegunud logikirjeid |
+| `userAdmin` | MongoDB kasutaja | haldab MongoDB kasutajaid | salasõna |
+| `rakendus` | MongoDB kasutaja | TARA-Stat veebirakendus, MongoDB poole pöördujana | salasõna |
+| `andmehaldur` | MongoDB kasutaja | inimene, kes kustuta aegunud logikirjeid | salasõna |
 | `https://<tara-stat>` | veebirakendus | | self-signed sert |
 | statistikakasutaja | | pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | - (ei autendita, juurdepääs piiratakse kontekstiga) |
 | `TARA-Server` |  | pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
