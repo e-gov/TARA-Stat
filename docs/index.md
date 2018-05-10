@@ -191,7 +191,7 @@ Monoliitrakenduses ei ole komponentidevahelise andmeedastuse turvamine probleem.
 µT-l peaks olema HTTPS võimekus.
 {: .adv}
 
-### 1.4.8 Tundliku taristuteabe ja saladuste kaitse
+#### 1.4.8 Tundliku taristuteabe ja saladuste kaitse
 
 Avaarenduse (_open source_) kasud on nii arvukad ja suured, et avaarendus peaks olema eelistatud arendusmudel. Siiski on ka avaarenduses teavet, millele juurdepääsu on vaja piirata.
 
@@ -200,6 +200,7 @@ Avaarenduse (_open source_) kasud on nii arvukad ja suured, et avaarendus peaks 
 - IP-aadressid
 - pordid
 - kasutajanimed
+- tundlik dokumentatsioon, nt erilisi turvameetmeid konkreetselt kirjeldavad paigaldusjuhendid.
 
 Tundlikku taristuteavet on raske piiritleda, sest siin põrkuvad mitu üksteisega vastukäivat turvaprintsiipi.
 
@@ -213,8 +214,14 @@ Tundlikku taristuteavet on raske piiritleda, sest siin põrkuvad mitu üksteiseg
 
 Praktikas tuleb neid printsiipe ühitada. Eriti kui arvestada, et süsteem peab olema ka kasutatav ja turvameetmete rakendamise eelarve ei ole piiramatu.
 
-<p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
+Soovitada võiks järgmisi elemente (vt illustreeriv joonis):
 
+<p style='text-align:center;'><img src='img/SALADUSED.PNG' width= "500"></p>
+
+- Avalikus koodis ja dokumentatsioonis on tundlikud taristuparameetrid ja saladused asendatud näiteväärtustega, nt `changeit`.
+- Näiteväärtusi ei kasutata toodangus
+- tundlik taristuteave on organisatsiooni siserepos (dokumendi- v koodirepos või mõlemas)
+- saladuste hoidmiseks on oma kord ja tehniline lahendus.
 
 ### 1.5 "It works on my machine!"
 
