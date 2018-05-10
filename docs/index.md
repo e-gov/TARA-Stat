@@ -405,6 +405,8 @@ Andmehaldur saab, kasutades MongoDB standardvahendeid - MongoDB Compass ja CLI m
 
 ### 2.8 Turvamine
 
+#### 2.8.1 Ülevaade
+
 Eeldame, et kuigi µT-st kasutatakse organisatsiooni sisevõrgus, ei saa paigalduskeskkonna täielikku turvalisust eeldada ([MFN 19.4](https://e-gov.github.io/MFN/#19.4)).
 
 TARA-Stat koosneb kahest komponendist: veebirakendusest ja logibaasist. Veebirakendusel on kasutaja sirvikusse laetav osa. Turve peab hõlmama kõiki komponente.
@@ -438,6 +440,25 @@ Andmebaasi kaitstakse failisüsteemi õigustega. TODO Kuidas?
 Andmebaasi auditilogi ei peeta, kuna terviklusvajadus ei ole nii kõrge.
 
 Vt ka: MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega. 
+
+### 2.8.1 Õiguste plaan
+
+Nimed on illustratiivsed.
+{: .adv}
+
+µT suhtleb teiste masinatega, erinevate inimestega. Teenindab ja kasutab ise teenuseid. µT enda sees on üksteisega suhtlevad komponendid. Suhtlevaid osapooli on ka väikese rakenduse puhul paras hulk. Erinevatel osapooltel on erinevad õigused. Õigusi peab olema parasjagu: mitte liiga palju (ebaturvaline), mitte liiga vähe (ei pääse teenusele ligi). Osapooltel on **identiteedid** (nimed), mida tõendavad **kredentsiaalid** (paroolid, võtmed). Kõike seda on omajagu. Sellest peab olema ülevaade ja see peab olema tasakaalus. **Õiguste plaani** eesmärk on anda täpne pilt rakendusega seotud osapooltest, nende rollidest ja õigustest, samuti kredentsiaalidest.
+
+| kasutaja vm õiguste subjekt (_principal_) | täpsem kirjeldus | õigused | kredentsiaalid |
+|:-----------------------------------------:|:--------:|:-------:|:--------------:|
+| `vmadmin` | Ubuntu kasutaja | haldab VM-i | salasõna |
+| `tarastat` | Ubuntu kasutaja | tema alt käivitatakse TARA-Stat veebirakendus | salasõna |
+| `mongodb` | Ubuntu kasutaja | tema alt käitatakse Mongo DB andmebaasi | 
+| `userAdmin` | MongoDB kasutaja | haldab MongoDB kasutajaid | salasõna |
+| `rakendus` | MongoDB kasutaja | TARA-Stat veebirakendus, MongoDB poole pöördujana | salasõna |
+| `andmehaldur` | MongoDB kasutaja | inimene, kes kustuta aegunud logikirjeid | salasõna |
+| `https://<tara-stat>` | veebirakendus | | self-signed sert |
+| statistikakasutaja | | pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | - (ei autendita, juurdepääs piiratakse kontekstiga) |
+| `TARA-Server` |  | pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
 
 ## 3 Paigaldamine (Ubuntu)
 
@@ -745,7 +766,6 @@ Kasutaja `tarastat` on piiratud õigustega kasutaja, kelle alt käivitatakse TAR
 
 `sudo adduser tarastat`
 
-
 ### 3.9 Loo usaldus TARA-Serveri ja TARA-Stat-i vahel
 
 1\. Genereeri API-võti. Juhusõne pikkusega 20 tärki.
@@ -755,25 +775,6 @@ Kasutaja `tarastat` on piiratud õigustega kasutaja, kelle alt käivitatakse TAR
 Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`process.env`).
 
 3\. Paigalda API-võti TARA-Stat poole pöörduva rakenduse (TARA-Server) konf-i.
-
-### 3.10 Õiguste plaan
-
-Nimed on illustratiivsed.
-{: .adv}
-
-µT suhtleb teiste masinatega, erinevate inimestega. Teenindab ja kasutab ise teenuseid. µT enda sees on üksteisega suhtlevad komponendid. Suhtlevaid osapooli on ka väikese rakenduse puhul paras hulk. Erinevatel osapooltel on erinevad õigused. Õigusi peab olema parasjagu: mitte liiga palju (ebaturvaline), mitte liiga vähe (ei pääse teenusele ligi). Osapooltel on **identiteedid** (nimed), mida tõendavad **kredentsiaalid** (paroolid, võtmed). Kõike seda on omajagu. Sellest peab olema ülevaade ja see peab olema tasakaalus. **Õiguste plaani** eesmärk on anda täpne pilt rakendusega seotud osapooltest, nende rollidest ja õigustest, samuti kredentsiaalidest.
-
-| kasutaja vm õiguste subjekt (_principal_) | täpsem kirjeldus | õigused | kredentsiaalid |
-|:-----------------------------------------:|:--------:|:-------:|:--------------:|
-| `vmadmin` | Ubuntu kasutaja | haldab VM-i | salasõna |
-| `tarastat` | Ubuntu kasutaja | tema alt käivitatakse TARA-Stat veebirakendus | salasõna |
-| `mongodb` | Ubuntu kasutaja | tema alt käitatakse Mongo DB andmebaasi | 
-| `userAdmin` | MongoDB kasutaja | haldab MongoDB kasutajaid | salasõna |
-| `rakendus` | MongoDB kasutaja | TARA-Stat veebirakendus, MongoDB poole pöördujana | salasõna |
-| `andmehaldur` | MongoDB kasutaja | inimene, kes kustuta aegunud logikirjeid | salasõna |
-| `https://<tara-stat>` | veebirakendus | | self-signed sert |
-| statistikakasutaja | | pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | - (ei autendita, juurdepääs piiratakse kontekstiga) |
-| `TARA-Server` |  | pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
 
 ## 4 Käitamine
 
