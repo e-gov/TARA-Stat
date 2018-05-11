@@ -89,6 +89,9 @@ permalink: Bash
   - `passwd`
   - `/etc/passwd` [Vikipeedia](https://en.wikipedia.org/wiki/Passwd)  
 
+- **programmi asukoha leidmine**
+  - `which nimi`
+
 - **protsessi lõpetamine**
   - `kill -s -15 <pid>` (lõpetab protsessi, saates signaali _terminate_ (15) 
 

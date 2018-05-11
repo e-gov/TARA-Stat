@@ -907,7 +907,7 @@ Logikirje lisamist saab testida nt [httpie](https://httpie.org/) abil (näites n
 
 `http -a changeit:changeit POST :443 aeg=2018-04-29T00:00:30 klient=e-teenusA meetod=mobileID`
 
-### 6.3 Testimine maketrakendusega
+### 6.3 Testimine makettrakendusega
 
 Tarkvara koosseisus on logikirjete lisamise otspunkti testimise
 makettrakendus. Makettrakendus genereerib logikirjeid ja lisab need logibaasi. Makettrakenduse kood asub TARA-Stat repos failis `mockup.js`. Makettrakendus vajab tööks Node.js-i.

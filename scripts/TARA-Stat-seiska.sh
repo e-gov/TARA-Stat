@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# seiska.sh seiskab logibaasi (MongoDB) ja
+# TARA-Stat-seiska.sh seiskab logibaasi (MongoDB) ja
 # TARA-Stat veebirakenduse (Node.js rakenduse)
 #
 
@@ -31,7 +31,7 @@ if [ -z "$NODEJS_PID" ]
 then
   echo TARA-Stat veebirakendus pole töös
 else
-  kill -s 15 $NODEJS
+  kill -s 15 $NODEJS_PID
   echo "TARA-Stat veebirakendus seisatud"
 fi
 
