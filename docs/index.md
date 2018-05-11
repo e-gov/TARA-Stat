@@ -853,7 +853,9 @@ ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API k
 
 Paigaldamisel ja haldamisel saab kasutada järgmisi Bash skripte. Skriptid asuvad kaustas `TARA-Stat/scripts`. Skripte käivita: `sudo bash nimi.sh` või `./nimi.sh`. Viimasel juhul anna eelnevalt käivitamisõigus: `chmod +x nimi.sh`.
 
-**Käivitamisskript** `kaivita.sh` laseb käima logibaasi (MongoDB) ja TARA-Stat veebirakenduse (Node.js).
+**Käivitamisskript** `TARA-Stat-kaivita.sh` laseb käima logibaasi (MongoDB) ja TARA-Stat veebirakenduse (Node.js).
+
+**Seiskamisskript** `TARA-Stat-seiska.sh` seiskab logibaasi (MongoDB) ja TARA-Stat veebirakenduse (Node.js).
 
 ## 6 Arendamine
 
