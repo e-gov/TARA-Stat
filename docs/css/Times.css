@@ -15,17 +15,22 @@ body {
   }
 
 /* Päis */
-.pais { font-family: 'Arial', sans-serif;
+.pais {
+  font-family: 'Arial', sans-serif;
   margin-bottom: 8px;
   background-color: #F6F9F8;
   padding: 1em 2em;
   max-width: 45rem;
 }
 
-#Tekst { width: 45rem; margin-left: 2em; }
+#Tekst {
+  width: 45rem; margin-left: 2em;
+}
 
 /* ---- Avalehe paigutus ---- */  
-#Container { display: flex; max-width: 60em; }
+#Container {
+  display: flex; max-width: 60em;
+}
 #Avatekst {
   flex-grow: 1; margin-left: 2rem;
   max-width: 63rem; /* Teksti loetavuse huvides */
@@ -102,25 +107,30 @@ th, td { padding: 8px; }
 th { font-weight: normal; font-style: italic; text-align: center; }
 /*#endregion */
 
-/*#region Kood; asciiflow joonised */
-pre, code, samp {
+/*#region Kood */
+code {
   font-family: monospace;
   font-size: 17px;
   color: black !important;
   background-color: #fcfcfb;
   border: 1px solid #e6e6de;
-  border-radius: 2px;
+  border-radius: 4px;
+  padding: 1px 4px;
   white-space:pre-wrap;
   overflow-y: hidden; overflow-x: hidden;
   page-break-inside: avoid; hyphens: none;
   text-transform: none;
 }
-/* pre code,
-code code {
-  font-size: 100%;
-} */
-pre { margin-top: 1em; margin-bottom: 1em; }
-p code { padding: 0.4em;}
+pre code {
+  border: none !important;
+}
+pre {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  background-color: #fcfcfb;
+  border: 1px solid #e6e6de;
+  border-radius: 4px;
+}
 /*#endregion */
 
 /*#region Lingid */

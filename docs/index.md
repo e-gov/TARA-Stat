@@ -319,7 +319,7 @@ TARA-Stat olek õnneks ei ole keerukas. Nõuded andmekvaliteedile ei ole ka väg
 
 ### 2.4 Programmeerimiskeel
 
-TARA-Stat on kirjutatud Javascriptis. Täpsemalt, tehnoloogiapinu on järgmine ( loetelus ei ole organisatsiooni IT-taristu turvaspetsiifilisi tehnoloogiad):
+TARA-Stat on kirjutatud Javascriptis. Täpsemalt, tehnoloogiapinu on järgmine (loetelus ei ole organisatsiooni IT-taristu turvaspetsiifilisi tehnoloogiaid):
 
  komponent                   | tehnoloogiad
 -----------------------------|--------------------------
@@ -994,10 +994,10 @@ mongo, "an interactive JavaScript shell interface to MongoDB"
 
 - [ülevaade](https://docs.mongodb.com/manual/mongo/)
 - [Reference](https://docs.mongodb.com/manual/reference/program/mongo/#bin.mongo)
-- käivitamine ja sisselogimine kasutajan `userAdmin`:
+- käivitamine ja sisselogimine kasutajana `userAdmin`:
 
 ```
-mongo`
+mongo
 use admin
 db.auth("userAdmin", "changeit")
 ```
