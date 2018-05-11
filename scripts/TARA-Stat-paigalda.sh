@@ -11,14 +11,6 @@
 echo
 echo " --- TARA-Stat paigaldamine"
 echo
-echo "     paigaldada logibaas (MongoDB)"
-echo "     ja TARA-Stat veebirakendus (Node.js rakendus)"
-echo
-read -p " --- Jätkata  (y/n)? " prompt
-if [[ $prompt != y && $prompt != Y ]]
-then
-  katkesta OK
-fi
 
 PS3='Vali toiming: '
 options=("paigalda Node.js" "paigalda MongoDB" "paigalda TARA-Stat veebirakendus" "Lõpeta")
@@ -208,7 +200,7 @@ function paigalda_MongoDB {
 
   echo " --- Sean kasutajale mongodb parooli"
   sudo passwd mongodb
-  
+
 }
 
 # ------------------------------
