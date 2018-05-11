@@ -784,13 +784,12 @@ Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`proces
 
 TARA-Stat tarkvara täiendamisel ei ole alati vaja paigaldust täies ulatuses korrata. Toimimisviis sõltub konkreetse täienduse olemusest. Kirjeldame mõned tüüpilised käsud, millest tarkvara uuendamisel võib kasu olla.
 
-**Värskenda koodirepot**. Lähteolukord: täiendatud kood on lähterepos (GitHub-is või organisatsiooni siserepos. Täiendused on vaja paigaldada VM-i. Liigu VM-s kausta `TARA-Stat`. Kontrolli, et VM git repo on seotud lähterepoga:
+**Värskenda koodirepot**. Lähteolukord: täiendatud kood on lähterepos (GitHub-is või organisatsiooni siserepos. Täiendused on vaja paigaldada VM-i.
 
-`git remote -v`
-
-Värskenda:
-
-`git pull origin master`
+- Liigu VM-s kausta `TARA-Stat`.
+- Kontrolli, et VM git repo on seotud lähterepoga: `git remote -v`
+- Kui muutsid VM repos midagi ja tahad, et lähterepost tulev kirjutab sinu muudatused üle, siis anna: `git checkout .`
+- Värskenda: `git pull origin master`
 
 ## 5 Käitamine
 
@@ -852,15 +851,9 @@ ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API k
 
 ### 5.5 Automatiseerimine
 
-Kustuta kaust `TARA-Stat`.
+Paigaldamisel ja haldamisel saab kasutada järgmisi Bash skripte. Skriptid asuvad kaustas `TARA-Stat/scripts`. Skripte käivita: `sudo bash nimi.sh` või `./nimi.sh`. Viimasel juhul anna eelnevalt käivitamisõigus: `chmod +x nimi.sh`.
 
-Tõmba repost uuesti `TARA-Stat`:
-
-`git clone https://github.com/e-gov/TARA-Stat`
-
-Liigu kausta `TARA-Stat` ja ava fail `Paigaldusskriptijuhis.md`.
-
-Käivita paigaldusskript `Paigalda.sh` vastavalt juhistele.
+**Käivitamisskript** `kaivita.sh` laseb käima logibaasi (MongoDB) ja TARA-Stat veebirakenduse (Node.js).
 
 ## 6 Arendamine
 

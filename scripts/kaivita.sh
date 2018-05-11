@@ -1,14 +1,19 @@
 #!/bin/bash
 
+# kaivita.sh käivitab logibaasi (MongoDB) ja
+# TARA-Stat veebirakenduse (Node.js rakendus)
+#
+
+echo
 echo --- TARA-Stat käivitamine
 echo
-echo "käivitada logibaas (MongoDB)"
-echo "ja veebirakendus (Node.js rakendus)"
+echo "  käivitada logibaas (MongoDB)"
+echo "  ja TARA-Stat veebirakendus (Node.js rakendus)"
 echo
 read -p "Jätkata  (y/n)? " prompt
 if [[ $prompt =~ [yY](es)* ]]
 then
-  echo OK
+  # echo OK
 else
   exit
 fi
@@ -23,7 +28,6 @@ else
     echo "MongoDB käivitatud"
     MONGO_PID=$(pidof mongod)
     ps -n $MONGO_PID
-    exit
   else
     echo "MongoDB käivitamine ebaõnnestus"
     exit
@@ -35,16 +39,17 @@ then
   echo Node.js juba käib
 else
   echo "Käivitan Node.js"
-  cd $home/TARA-Stat
+  cd $HOME/TARA-Stat
   nodejs index &
   if [ "$?" = 0 ]; then 
     echo "Node.js käivitatud"
     NODEJS_PID=$(pidof mongod)
     ps -n $NODEJS_PID
-    exit
   else
     echo "Node.js käivitamine ebaõnnestus"
     exit
   fi
 fi
 
+echo --- Lõpp
+echo
