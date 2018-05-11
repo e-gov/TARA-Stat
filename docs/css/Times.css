@@ -107,7 +107,9 @@ pre, code, samp {
   font-family: monospace;
   font-size: 17px;
   color: black !important;
-  background-color: Beige;
+  background-color: #fcfcfb;
+  border: 1px solid #e6e6de;
+  border-radius: 2px;
   white-space:pre-wrap;
   overflow-y: hidden; overflow-x: hidden;
   page-break-inside: avoid; hyphens: none;
