@@ -11,10 +11,9 @@ echo "  käivitada logibaas (MongoDB)"
 echo "  ja TARA-Stat veebirakendus (Node.js rakendus)"
 echo
 read -p "Jätkata  (y/n)? " prompt
-if [[ $prompt =~ [yY](es)* ]]
+if [[ $prompt != y && $prompt != Y ]]
 then
-  # echo OK
-else
+  echo OK
   exit
 fi
 
