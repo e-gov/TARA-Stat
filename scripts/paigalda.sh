@@ -2,15 +2,13 @@
 
 echo --- TARA-Stat paigaldamine
 
-read -p "Paigaldada (y/n)? " answer
-case ${answer:0:1} in
-    y|Y )
-        # echo Yes
-    ;;
-    * )
-        exit
-    ;;
-esac
+read -p "Paigaldada (y/n)? " prompt
+if [[ $prompt =~ [yY](es)* ]]
+then
+  # echo Yes
+else
+  exit
+fi
 
 # echo Kontrollin, kas Node.js on paigaldatud
 # dpkg -s tagastab 0, kui pakett on paigaldatud; 1, kui ei ole

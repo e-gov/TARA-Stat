@@ -464,7 +464,7 @@ Nimed on illustratiivsed.
 | statistikakasutaja | | pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | - (ei autendita, juurdepääs piiratakse kontekstiga) |
 | `TARA-Server` |  | pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
 
-## 3 Paigaldamine (Ubuntu)
+## 3 Esmakordne paigaldamine (Ubuntu)
 
 ### 3.1 Ülevaade
 
@@ -780,9 +780,21 @@ Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`proces
 
 3\. Paigalda API-võti TARA-Stat poole pöörduva rakenduse (TARA-Server) konf-i.
 
-## 4 Käitamine
+## 4 Tarkvara uuendamine
 
-### 4.1 Käivita
+TARA-Stat tarkvara täiendamisel ei ole alati vaja paigaldust täies ulatuses korrata. Toimimisviis sõltub konkreetse täienduse olemusest. Kirjeldame mõned tüüpilised käsud, millest tarkvara uuendamisel võib kasu olla.
+
+**Värskenda koodirepot**. Lähteolukord: täiendatud kood on lähterepos (GitHub-is või organisatsiooni siserepos. Täiendused on vaja paigaldada VM-i. Liigu VM-s kausta `TARA-Stat`. Kontrolli, et VM git repo on seotud lähterepoga:
+
+`git remote -v`
+
+Värskenda:
+
+`git pull origin master`
+
+## 5 Käitamine
+
+### 5.1 Käivita
 
 Eeldus: Node.js ja MongoDB on paigaldatud ja seadistatud.
 {: .adv}
@@ -808,7 +820,7 @@ Kontrolli, et andmebaas ja veebirakendus töötavad:
 
 `ps`
 
-### 4.2 Statistika väljastamise otspunkti töötamise test
+### 5.2 Statistika väljastamise otspunkti töötamise test
 
 Pöördu teisest arvutist (kas Windows-host-st või teisest VM-st) veebirakenduse statistika väljastamise otspunkti poole. Järgnevas eeldame näitena, et masina, kuhu TARA-Stat paigaldati, IP-aadress on `192.168.56.101` ja TARA-Stat veebiteenuse port on `5000`. Ava sirvikus:
 
@@ -824,13 +836,13 @@ Voilà!
 
 Miks tabelis ei ole statistikat? Sest logibaas on tühi.
 
-### 4.3 Seiskamine
+### 5.3 Seiskamine
 
 Logibaasi seiskamine:
 
 `sudo service mongod stop`
 
-### 4.4 Veateated
+### 5.4 Veateated
 
 kood | veateade | vea lahendamise soovitus
 ERR-01 | Logibaasiga ühendumine ebaõnnestus | Kontrollida, kas MongoDB töötab
@@ -838,7 +850,7 @@ ERR-02 | Viga logibaasist lugemisel | Kontrollida, kas MongoDB töötab
 ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Serveris
 ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
 
-### 4.5 Automatiseerimine
+### 5.5 Automatiseerimine
 
 Kustuta kaust `TARA-Stat`.
 
@@ -850,9 +862,9 @@ Liigu kausta `TARA-Stat` ja ava fail `Paigaldusskriptijuhis.md`.
 
 Käivita paigaldusskript `Paigalda.sh` vastavalt juhistele.
 
-## 5 Arendamine
+## 6 Arendamine
 
-### 5.1 Arendamine Windows-masinas
+### 6.1 Arendamine Windows-masinas
 
 Arendamisel Windows-masinas on järgmised erisused.
 
@@ -890,7 +902,7 @@ Node.js paigaldamine
 Veebirakenduse käivitamine
 - veebirakenduse juurkaustas: `node index`.
 
-### 5.2 Testimine (käsitsi, lokaalses masinas)
+### 6.2 Testimine (käsitsi, lokaalses masinas)
 
 Veebirakenduse käivitumise kontroll:
 
@@ -900,7 +912,7 @@ Logikirje lisamist saab testida nt [httpie](https://httpie.org/) abil (näites n
 
 `http -a changeit:changeit POST :443 aeg=2018-04-29T00:00:30 klient=e-teenusA meetod=mobileID`
 
-### 5.3 Testimine maketrakendusega
+### 6.3 Testimine maketrakendusega
 
 Tarkvara koosseisus on logikirjete lisamise otspunkti testimise
 makettrakendus. Makettrakendus genereerib logikirjeid ja lisab need logibaasi. Makettrakenduse kood asub TARA-Stat repos failis `mockup.js`. Makettrakendus vajab tööks Node.js-i.
@@ -956,21 +968,21 @@ Logikirjete genereerimise ja logibaasi saatmise järel lõpetab makettrakendus t
 
 TARA-Stat statistikakasutaja UI kaudu või TARA-Stat veebirakenduse logist saad kontrollida, et saadetud kirjed tõesti salvestati logibaasi.
 
-## 6 Joonised
+## 7 Joonised
 
-### 6.1 TARA-Stat üldistatud arhitektuur
+### 7.1 TARA-Stat üldistatud arhitektuur
 
 <p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
 
-### 6.2 Statistikakasutaja UI
+### 7.2 Statistikakasutaja UI
 
 <p style='text-align:center;'><img src='img/Capture.PNG' width= "650"></p>
 
-### 6.3 Testimine arendusmasinas
+### 7.3 Testimine arendusmasinas
 
 <p style='text-align:center;'><img src='img/TEST-01.PNG' width= "500"></p>
 
-## 7 Kasulikku
+## 8 Kasulikku
 
 MongoDB, "a document database with the scalability and flexibility that you want with the querying and indexing that you need"
 

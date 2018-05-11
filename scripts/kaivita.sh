@@ -2,15 +2,16 @@
 
 echo --- TARA-Stat käivitamine
 echo
-echo read -p "Käivitada logibaas (MongoDB) ja veebirakendus (Node.js rakendus) (y/n)? " answer
-case ${answer:0:1} in
-    y|Y )
-        # echo Yes
-    ;;
-    * )
-        exit
-    ;;
-esac
+echo "käivitada logibaas (MongoDB)"
+echo "ja veebirakendus (Node.js rakendus)"
+echo
+read -p "Jätkata  (y/n)? " prompt
+if [[ $prompt =~ [yY](es)* ]]
+then
+  echo OK
+else
+  exit
+fi
 
 if pgrep -x "mongod" > /dev/null
 then

@@ -101,7 +101,8 @@ permalink: Bash
   - `#!/bin/bash` (näitab, millist programmi skripti täitmiseks kasutada)
 
 - **skripti täitmine**
-  - `./` - jooksvas kaustas oleva skripti täitmine
+  - `./skript.sh` (täidab jooksvas kaustas oleva skripti)
+  - `sudo bash skript.sh` (täidab skripti root-na)
 
 - **sudo**
   - prefiks, millega saab käsu täita peakasutaja (_root_) õigustes (sudo õiguse olemasolul)
