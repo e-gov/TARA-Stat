@@ -35,3 +35,23 @@ else
     exit
   fi
 fi
+
+echo -n --- paigaldan Node.js teeke..
+cd $home/TARA-Stat
+npm install body-parser --save
+if [ "$?" != 0]; then
+  katkesta "Node.js teegi body-parser paigaldamine ebaõnnestus"
+fi
+npm install ejs --save
+npm install express --save
+npm install mongodb --save
+npm install request --save
+npm install basic-auth --save
+npm install request-debug --save
+echo OK
+
+function katkesta {
+  echo ERROR: $1
+  echo "--- Paigaldus katkestatud"
+  exit
+}
