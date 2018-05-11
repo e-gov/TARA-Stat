@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# TARA-Stat-kaivita.sh käivitab logibaasi (MongoDB) ja
+# TARA-Stat-kaivita.sh
+#
+# Käivitab logibaasi (MongoDB) ja
 # TARA-Stat veebirakenduse (Node.js rakendus)
 #
 

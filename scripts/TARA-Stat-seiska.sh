@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# TARA-Stat-seiska.sh seiskab logibaasi (MongoDB) ja
+# TARA-Stat-seiska.sh
+#
+# Seiskab logibaasi (MongoDB) ja
 # TARA-Stat veebirakenduse (Node.js rakenduse)
 #
 
