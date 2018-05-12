@@ -10,10 +10,13 @@ Käesolevast kirjutisest võiks saada mikroteenuste (µT) aabits (_primer_). Pra
 
 ## Sisukord
 
-- laiem ülevaade mikroteenustest: [1 Vajadus ja väljakutse](#1-vajadus-ja-v%C3%A4ljakutse)
-- TARA-Stat ülevaade: [2 TARA-Stat](#2-tara-stat)
-- paigaldajale ja käitajale: [3 Paigaldamine](#3-paigaldamine), [4 Käitamine](#4-k%C3%A4itamine)
-- arendajale: [5 Arendamine](#5-arendamine) |
+laiem ülevaade mikroteenustest: [1 Vajadus ja väljakutse](#1-vajadus-ja-v%C3%A4ljakutse)
+
+TARA-Stat ülevaade: [2 TARA-Stat](#2-tara-stat)
+
+paigaldajale ja käitajale: [3 Paigaldamine](#3-paigaldamine), [4 Käitamine](#4-k%C3%A4itamine)
+
+arendajale: [5 Arendamine](#5-arendamine)
 
 ## Detailne sisukord
 {: .no_toc}
@@ -103,11 +106,14 @@ TARA-Stat turvakonteksti võime sõnastada järgmiselt: kuna µT paigaldatakse t
 
 #### 1.4.2 Isoleerimine
 
-Organisatsiooni IT-taristu on suur ja keerukas. Taristu turbe üks tähtsamaid meetodeid on rakenduste **isoleerimine** e eraldihoidmine.
+Organisatsiooni IT-taristu on suur ja keerukas. Taristu turbe üks tähtsamaid eesmärke on rakenduste **isoleerimine** e eraldihoidmine.
 
 Isoleerimise mõiste on paremini arusaadav, kui mõtleme tavaliselt (veebi)sirvikust nagu Chrome või Firefox. Sirvikus jookseb mitmeid rakendusi ja sirviku ülesanne on need eraldi hoida. See tähendab, et rakendusel ei tohi olla mingit võimalust mõjutada teisel sakil või teises aknas töötavat teist rakendust - ega tohi teadagi teistest sirvikusse laetud veebilehtest. Ja uut lehte tohib laadida ainult lähtedomeenist (samaallikapoliitika, _same origin policy_).
 
 Rakendused isoleeritakse mitmel tasandil: masina, rakenduse, süsteemi, alamvõrgu, kogu IT-taristu tasandil.
+
+Pilve- ja µT kontekstis on kiiresti arenenud **konteineritehnoloogiad** (Docker, Kubernetes jm). Parimat viisi ei ole veel välja kujunenud.
+{: .note}
 
 Isoleerimine peaks olema lahendatud süsteemselt, kõiki taristukihte läbivalt. See on väljakutse igasuguste rakenduste, nii µT kui ka monoliitide puhul, sest ühel inimesel on raske tunda kõiki kihte. Kui aga erinevates taristukihtides lahendavad turvaprobleeme erinevad inimesed, siis terviku kokkusobitumiseks peavad nad tegema koostööd - ja selle eeldusena - olema võimelised üksteisest aru saama.
 
