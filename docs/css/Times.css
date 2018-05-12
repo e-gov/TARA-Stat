@@ -74,9 +74,8 @@ p { margin: 0 0 1em 0; }
 
 /*#region Loetelud */
 ul > li {
+  /* Ei toimi Chrome-s */
   list-style-type: '-  ' !important;
-  margin: -1em 0 1em 0 !important;
-  padding-left: 1em !important;
 }  
 
 ul ul {
