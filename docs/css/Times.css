@@ -38,7 +38,7 @@ body {
 /*#endregion */
 
 /*#region Pealkirjad */
-h1, h2, h3, h4 {
+h3, h4 {
   color: black !important;
   text-decoration: underline;
 }
@@ -73,10 +73,10 @@ p { margin: 0 0 1em 0; }
 /*#endregion */
 
 /*#region Loetelud */
-ul {
-  list-style-type: '-  ';
-  margin: -1em 0 1em 0;
-  padding-left: 1em;
+ul > li {
+  list-style-type: '-  ' !important;
+  margin: -1em 0 1em 0 !important;
+  padding-left: 1em !important;
 }  
 
 ul ul {
