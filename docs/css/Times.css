@@ -95,7 +95,7 @@ ol {
     margin-left: 0 !important;
 }    
 #markdown-toc li {
-  list-style-type: '   ' !important;
+  list-style-type: none !important;
 }  
 /*#endregion */
 
