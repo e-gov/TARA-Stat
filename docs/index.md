@@ -1,12 +1,14 @@
 Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
 {: .adv}
 
-# Mikroteenus TARA-Stat
+# Mikroteenuste aabits
 {: .no_toc}
 
 5\. päev, 09.05.2018<br><br>
 
-Käesolevast kirjutisest võiks saada mikroteenuste (µT) aabits (_primer_). Praegu on see aga kirjeldus ühe mikroteenuse tegemisest.
+Käesoleval kirjutisel on kaks osa. Esimeses osas käime läbi rea küsimusi, mis mikroteenuste (µT) arhitektuuri juurutamisel praktikas tõusetuvad. Peame tõdema, et paljudele küsimustele ei ole veel selgeid vastuseid.
+
+Teises osa moodustab ühe konkreetse mikroteenuse - TARA-Stat - kirjeldus.
 
 ## Sisukord
 
@@ -117,7 +119,7 @@ Pilve- ja µT kontekstis on kiiresti arenenud **konteineritehnoloogiad** (Docker
 
 Isoleerimine peaks olema lahendatud süsteemselt, kõiki taristukihte läbivalt. See on väljakutse igasuguste rakenduste, nii µT kui ka monoliitide puhul, sest ühel inimesel on raske tunda kõiki kihte. Kui aga erinevates taristukihtides lahendavad turvaprobleeme erinevad inimesed, siis terviku kokkusobitumiseks peavad nad tegema koostööd - ja selle eeldusena - olema võimelised üksteisest aru saama.
 
-Ei ole _overkill_ kasutada OSI kihimudelit, võib-olla valides sealt relevantsed kihid ja lisades vastavalt vajadusele lisakihte. Üldistatult on kaks kihti e tasandit: rakenduse tasand ja võrgu tasand. Detailsemalt võiks eristada nelja kihti:
+Ei ole _overkill_ kasutada **OSI kihimudelit**, võib-olla valides sealt relevantsed kihid ja lisades vastavalt vajadusele lisakihte. Üldistatult on kaks kihti e tasandit: rakenduse tasand ja võrgu tasand. Detailsemalt võiks eristada nelja kihti:
 - rakenduse kiht
 - protokolli kiht
 - võrgu kiht (OSI layer 3)
