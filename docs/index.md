@@ -24,8 +24,6 @@ arendajale: [5 Arendamine](#5-arendamine)
 ## Detailne sisukord
 {: .no_toc}
 
-&nbsp;
-
 - TOC
 {:toc}
 
