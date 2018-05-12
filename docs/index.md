@@ -79,7 +79,14 @@ päev    | töö                | tulemus  | edenemine   |
 6\.     | toodangusse paigaldamine, klientide teavitamine | µT on kasutusvalmis; klientidele on teenust esitletud | |
 7\.     | puhkus | |
 
-### 1.4 Mikroteenuste turvalisus
+### 1.4 Mikroteenuste tehnoloogiad
+
+Kas µT eeldab konkreetseid programmeerimiskeeli vm tehnoloogiaid? Arvan, et:
+- µT sees kasutatud tehnoloogia ei ole määrav.
+- µT peaks teiste µT-ga suhtlema üldlevinud võrguprotokollide kaudu. Tänapäeval on selleks HTTPS. (Kindlasti on ka erijuhte).
+- µT liidesed (API) üldjuhul peaks järgima REST stiili ja andmestruktuuride esituseks üldjuhul on JSON. Kuid ka siin on erijuhte.
+
+### 1.5 Mikroteenuste turvalisus
 
 Kõik olulised turvanõuded tuleb täita ka µT puhul. See on tõsine väljakutse, sest "vahemaa" µT-te vahel on suurem ja usalduse loomine ning kontrollimine nõuab lisameetmeid. Monoliitrakenduses pannakse kõik komponendid ühte patta kokku. "Ühes pajas" on komponentide identimine, autentimine ja ühenduste turvamine kas triviaalne või vähemalt palju lihtsam kui µT puhul. µT-d suhtlevad üle võrgu. Seetõttu on vaja võrguliiklust kaitsta.
 
@@ -87,7 +94,7 @@ Olukorda teeb ainult mõnevõrra lihtsamaks asjaolu, et µT-l võib puududa suht
 
 Keskendumegi siin järgmistele turvalisuse küsimustele: suhtlevate osapoolte autentimine, pääsuõiguste reguleerimine ja andmete transpordi kaitse.
 
-#### 1.4.1 Turvakontekst
+#### 1.5.1 Turvakontekst
 
 µT kaitsmisel on oluline selgitada välja µT tegutsemise **turvakontekst**. Turvakonteksti määratleme siin kui µT paigaldus- ja kasutusümbrusest tulenevaid nõudeid µT turvalisusele.
 
@@ -107,7 +114,7 @@ Hea näide on allpool käsitletav µT TARA-Stat. TARA-Stat on kasutusstatistika 
 
 TARA-Stat turvakonteksti võime sõnastada järgmiselt: kuna µT paigaldatakse taristusse, kus võivad töötada teised, väga olulised teenused ja süsteemid (nt Valimiste infosüsteem - me ei taha, et potentsiaalseltki ründaja saaks µT kaudu sellele ligi), siis tuleb µT hoolikalt isoleerida ja ühendada ainult vajalike teiste teenustega. Samuti peab ligipääs µT kasutajaliidesele olema ainult inimkasutajatele, kes teavet vajavad.
 
-#### 1.4.2 Isoleerimine
+#### 1.5.2 Isoleerimine
 
 Organisatsiooni IT-taristu on suur ja keerukas. Taristu turbe üks tähtsamaid eesmärke on rakenduste **isoleerimine** e eraldihoidmine.
 
@@ -126,7 +133,7 @@ Ei ole _overkill_ kasutada **OSI kihimudelit**, võib-olla valides sealt relevan
 - võrgu kiht (OSI layer 3)
 - andmeühenduse tasand (OSI layer 2).
 
-#### 1.4.3 Autentimine
+#### 1.5.3 Autentimine
 
 Rakenduse tasandil on suhtluse osapoolte autentimiseks mitu võimalust:
 
@@ -166,7 +173,7 @@ Võrgu tasandil saab samuti autentida, kontrollides teise osapoole IP-aadressi. 
 
 Kokkuvõttes, autentimine on alati kulu. Sellest kulust saab vabaneda ainult siis, kui autentimine pole vajalik s.t teenust saab osutada anonüümsele kasutajale. Pääsu piiramise vajadus võib siiski olla ka anonüümteenuse korral. Sellest järgmistes jaotistes.
 
-#### 1.4.4 Võrgule avatuse piiramine
+#### 1.5.4 Võrgule avatuse piiramine
 
 Üks peaeesmärke on **piirata võrgule avatust** (_Network Exposure_). Selleks tehakse seadistustoiminguid võrguseadmetes, võrku ühendatud masinates ja võrgutarkvaras.
 
@@ -187,18 +194,18 @@ Virtuaalse kohtvõrgu (_virtual LAN, VLAN_) tasandil määratakse, millised masi
 - millised riskitasemega tarkvara (tuntud v vähetuntud)?
 - kas võrguliiklust piiratakse juba mõnes teises kaitseliinis?
 
-#### 1.4.5 Pääsu jagamine
+#### 1.5.5 Pääsu jagamine
 
 Meeldib see meile või mitte, kuid oluliste tagajärgedega toiminguid saavad teha ainult vastavate volitustega isikud. Standardne mehhanism on rollipõhine pääsuhaldus (_role-based access control_, RBAC) ja sellest pääseme ainult siis, kui µT on tõeliselt _single purpose_ s.t ongi ainult üks toiming. µT-ses endas ei ole rollihalduse teostamine otstarbekas ega mõeldavgi. µT-ses endas peaks olema ainult autenditud kasutaja rolli kontrollimine. Rollide omistamine ja äravõtmine peaks käima väljaspool. 
 
 µT tavaliselt ei suuda ise teha rollihaldust, vaid vajab seda teenusena.
 {: .adv}
 
-#### 1.4.6 Ühendamine
+#### 1.5.6 Ühendamine
 
 Eraldamine ei ole siiski kunagi absoluutne. Veebisirviku näites oleksid veebilehed väga primitiivsed kui veebileht suhtleks ainult oma serveripoolega. **Ühendamine* on isoleerimise vastandprotsess. Koos moodustavad need dialektilise terviku, omamoodi yingi ja yangi. Samas sirvikus töötavate veebirakenduste ühendamiseks ongi loodud erinevaid võimalusi: allikavaheline ressursijagamine, _cross origin resouce sharing_ (_CORS_), `postMessage` API, vanematest JSONP.
 
-#### 1.4.7 Transpordi turvamine
+#### 1.5.7 Transpordi turvamine
 
 Monoliitrakenduses ei ole komponentidevahelise andmeedastuse turvamine probleem. Üks Java meetod kutsub välja teist. Kõik see toimub Java virtuaalmasina (JVM) sees. Eeldame, et JVM-s keegi pealt ei kuula ega vahele ei sekku. _That's it_. µT-sed aga on paigaldatud igaüks eraldi ja seetõttu peavad suhtlema üle vähem või rohkem ebaturvalise võrgu.
 
@@ -207,7 +214,7 @@ Monoliitrakenduses ei ole komponentidevahelise andmeedastuse turvamine probleem.
 µT-l peaks olema HTTPS võimekus.
 {: .adv}
 
-#### 1.4.8 Tundliku taristuteabe ja saladuste kaitse
+#### 1.5.8 Tundliku taristuteabe ja saladuste kaitse
 
 Avaarenduse (_open source_) kasud on nii arvukad ja suured, et tänapäeval avaarendus peaks olema eelistatud arendusmudel. Siiski on avaarenduses teavet, millele juurdepääsu on vaja piirata.
 
@@ -1041,4 +1048,5 @@ db.auth("userAdmin", "changeit")
 
 **Bash**, skriptikeel 
 
-- [teatmik](https://e-gov.github.io/TARA-Stat/Bash)
+- [Linux Shell Scripting Tutorial (LSST) v2.0](https://bash.cyberciti.biz/guide/Main_Page)
+- [väike teatmik](https://e-gov.github.io/TARA-Stat/Bash)
