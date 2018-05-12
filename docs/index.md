@@ -1,29 +1,24 @@
 Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
 {: .adv}
 
-<!-- p style='margin: 1em 0 2em 1em;'><i class='ikoon material-icons'>memory</i></p -->
-
 # Mikroteenus TARA-Stat
 {: .no_toc}
 
 5\. päev, 09.05.2018<br><br>
 
+Käesolevast kirjutisest võiks saada mikroteenuste () _primer_ (aabits). Praegu on see aga kirjeldus ühe mikroteenuse tegemisest.
+
+| sihtrühm |  |
+|----|-----|
+| Mikroteenustest üldiselt huvitujale | [1 Vajadus ja väljakutse](#1-vajadus-ja-v%C3%A4ljakutse) |
+| TARA-Stat-st huvitujale | [TARA-Stat](#2-tara-stat) |
+| Paigaldajale | [TARA-Stat](#2-tara-stat)<br>
+|   | [Paigaldamine](#3-paigaldamine) |
+| Käitajale | [Käitamine](#4-k%C3%A4itamine) |
+| Arendajale | [Arendamine](#5-arendamine) |
+
 - TOC
 {:toc}
-
-Käesolevast kirjutisest võiks saada mikroteenuste _primer_ (aabits). Praegu on see aga kirjeldus ühe mikroteenuse tegemisest.
-
-Esimeses jaotises analüüsin mikroteenuse (µT) vajadust ja üldisi omadusi.
-
-Ülejäänud jaotised spetsifitseerivad ja dokumenteerivad konkreetse µT-t - TARA-Stat:
-- jaotis 2 sisaldab TARA-Stat kirjelduse
-- jaotises 3 on juhised TARA-Stat paigaldamiseks
-- jaotises 4 on käitajale vajalik teave
-- jaotises 5 on (edasi)arendajale suunatud teave
-- joonised on jaotises 6
-- ja kasulikku teavet tehnoloogiate kohta leiab jaotisest 7.
-
-Kolmandas jaotises on viiteid kasutatud tehnoloogiate kohta.
 
 ## 1. Vajadus ja väljakutse
 
@@ -165,11 +160,22 @@ Kokkuvõttes, autentimine on alati kulu. Sellest kulust saab vabaneda ainult sii
 
 Üks peaeesmärke on **piirata võrgule avatust** (_Network Exposure_). Selleks tehakse seadistustoiminguid võrguseadmetes, võrku ühendatud masinates ja võrgutarkvaras.
 
-Masina tasandil piiratakse võrguliiklust masina ja välismaailma vahel. Seda tehakse Linux-i tulemüüri (iptables) seadistamisega (vt nt [Linux-i tulemüüri algaja juhend](https://www.howtogeek.com/177621/the-beginners-guide-to-iptables-the-linux-firewall/)). Windows-is on analoogiline võimalus (Netsh).
+Masina tasandil piiratakse võrguliiklust masina ja välismaailma vahel. Seda tehakse Linux-i tulemüüri (iptables) seadistamisega.
+
+Vt nt:
+- [Linux-i tulemüüri algaja juhend](https://www.howtogeek.com/177621/the-beginners-guide-to-iptables-the-linux-firewall/)).
+- [How to setup a UFW firewall on Ubuntu 16.04 LTS server](https://www.cyberciti.biz/faq/howto-configure-setup-firewall-with-ufw-on-ubuntu-linux/)
+
+Windows-is on analoogiline võimalus (Netsh).
 
 Ruuteri tasandil piiratakse võrgu piiril toimuvat liiklust.
 
 Virtuaalse kohtvõrgu (_virtual LAN, VLAN_) tasandil määratakse, millised masinad pannakse kokku ühte virtuaalsesse kohtvõrku.
+
+**Kas igal µT-l peab olema oma tulemüür?** Tulemüür pakub võrgukihi (ISO kihimudelis 3. kiht, _layer 3_) kaitset. Kuna µT on rakendus (ISO kihimudeli 7. e rakenduskiht). Kui iga µT puhul peab lisaks rakenduskihi turvamisele tegelema võrguturbega, siis lisab see kulu ja keerukust. Linuxi UFW (_Uncomplicated Firewall_) on täiesti peale pandav ja seadistatav. Kas see aga on alati vajalik? Tundub, et vastuse peab andma konkreetsest käitluskeskkonnast lähtuv ohu- ja mõjuanalüüs:
+- kes paigaldab µT masinasse tarkvara?
+- millised riskitasemega tarkvara (tuntud v vähetuntud)?
+- kas võrguliiklust piiratakse juba mõnes teises kaitseliinis?
 
 #### 1.4.5 Pääsu jagamine
 
@@ -214,7 +220,7 @@ Tundlikuks taristuteabeks ei loe teavet, mida on kerge tuletada, mis ei oma rün
 
 Praktikas tuleb arvestada, et süsteem peab olema ka kasutatav. Samuti, turvameetmete rakendamise eelarve ei ole piiramatu. Olulised on järgmised elemendid (vt illustreeriv joonis):
 
-<p style='text-align:center;'><img src='img/SALADUSED.PNG' width= "500"></p>
+<p style='text-align:center;'><img src='img/SALADUSED.PNG' width= "400"></p>
 
 - avalik kood ja dokumentatsioon, tundlik taristuteave ja saladused hoitakse eraldi
 - erinevate eesmärkidega paigaldusi (arendus, testimine, toodang) tehakse kombineerides avalikku koodi, tundlikku taristuteavet ja saladusi 
@@ -447,22 +453,25 @@ Vt ka: MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisal
 
 #### 2.8.1 Õiguste plaan
 
-Nimed on illustratiivsed.
+Nimed on illustratiivsed ja paigaldamisel muudetavad.
 {: .adv}
 
 µT suhtleb teiste masinatega, erinevate inimestega. Teenindab ja kasutab ise teenuseid. µT enda sees on üksteisega suhtlevad komponendid. Suhtlevaid osapooli on ka väikese rakenduse puhul paras hulk. Erinevatel osapooltel on erinevad õigused. Õigusi peab olema parasjagu: mitte liiga palju (ebaturvaline), mitte liiga vähe (ei pääse teenusele ligi). Osapooltel on **identiteedid** (nimed), mida tõendavad **kredentsiaalid** (paroolid, võtmed). Kõike seda on omajagu. Sellest peab olema ülevaade ja see peab olema tasakaalus. **Õiguste plaani** eesmärk on anda täpne pilt rakendusega seotud osapooltest, nende rollidest ja õigustest, samuti kredentsiaalidest.
 
-| kasutaja vm õiguste subjekt (_principal_) | täpsem kirjeldus | õigused | kredentsiaalid |
+TARA-Stat käitluskontekstis on 9 osapoolt (subjekti), kes vajavad identiteedi ja kredentsiaalide andmist ning õiguste seadmist:
+{: .note}
+
+| kasutaja vm õiguste subjekt (_principal_), inimloetav nimi | subjekti masinloetav nimi | subjekti liik ja kirjeldus | kredentsiaalid |
 |:-----------------------------------------:|:--------:|:-------:|:--------------:|
-| `vmadmin` | Ubuntu kasutaja | haldab VM-i | salasõna |
-| `tarastat` | Ubuntu kasutaja | tema alt käivitatakse TARA-Stat veebirakendus | salasõna |
-| `mongodb` | Ubuntu kasutaja | tema alt käitatakse Mongo DB andmebaasi | 
-| `userAdmin` | MongoDB kasutaja | haldab MongoDB kasutajaid | salasõna |
-| `rakendus` | MongoDB kasutaja | TARA-Stat veebirakendus, MongoDB poole pöördujana | salasõna |
-| `andmehaldur` | MongoDB kasutaja | inimene, kes kustuta aegunud logikirjeid | salasõna |
-| `https://<tara-stat>` | veebirakendus | | self-signed sert |
-| statistikakasutaja | | pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | - (ei autendita, juurdepääs piiratakse kontekstiga) |
-| `TARA-Server` |  | pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
+| **VM admin** | `vmadmin` | Ubuntu kasutaja, kes paigaldab tarkvara ja teeb muid haldustoiminguid | salasõna |
+| **TARA-Stat** | `tarastat` | Ubuntu kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus | salasõna |
+| **MongoDB** | `mongodb` | Ubuntu kasutaja, kelle alt käitatakse Mongo DB andmebaas | 
+| **MongoDB kasutajate haldur**| `userAdmin` | MongoDB kasutaja, kes haldab MongoDB kasutajaid. Seda rolli täidab VM admin | salasõna |
+| **Rakendus** | `rakendus` | TARA-Stat veebirakenduse konto MongoDB-s | salasõna |
+| **Andmehaldur** | `andmehaldur` | MongoDB konto, mille alt kustutatakse aegunud logikirjeid. Andmehalduri rolli täidab VM admin | salasõna |
+| **Veebirakendus** | `https://<tara-stat>` | TARA-Stat veebirakendus | _self-signed_ sert |
+| **Statistikakasutaja** | - | inimene, kes pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | - (ei autendita, juurdepääs piiratakse kontekstiga) |
+| **TARA server** | `TARA-Server` | pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
 
 ## 3 Esmakordne paigaldamine (Ubuntu)
 
@@ -780,7 +789,7 @@ Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`proces
 
 3\. Paigalda API-võti TARA-Stat poole pöörduva rakenduse (TARA-Server) konf-i.
 
-## 4 Tarkvara uuendamine
+### 3.10 Tarkvara uuendamine
 
 TARA-Stat tarkvara täiendamisel ei ole alati vaja paigaldust täies ulatuses korrata. Toimimisviis sõltub konkreetse täienduse olemusest. Kirjeldame mõned tüüpilised käsud, millest tarkvara uuendamisel võib kasu olla.
 
@@ -791,9 +800,9 @@ TARA-Stat tarkvara täiendamisel ei ole alati vaja paigaldust täies ulatuses ko
 - Kui muutsid VM repos midagi ja tahad, et lähterepost tulev kirjutab sinu muudatused üle, siis anna: `git checkout .`
 - Värskenda: `git pull origin master`
 
-## 5 Käitamine
+## 4 Käitamine
 
-### 5.1 Käivita
+### 4.1 Käivita
 
 Eeldus: Node.js ja MongoDB on paigaldatud ja seadistatud.
 {: .adv}
@@ -819,7 +828,7 @@ Kontrolli, et andmebaas ja veebirakendus töötavad:
 
 `ps`
 
-### 5.2 Statistika väljastamise otspunkti töötamise test
+### 4.2 Statistika väljastamise otspunkti töötamise test
 
 Pöördu teisest arvutist (kas Windows-host-st või teisest VM-st) veebirakenduse statistika väljastamise otspunkti poole. Järgnevas eeldame näitena, et masina, kuhu TARA-Stat paigaldati, IP-aadress on `192.168.56.101` ja TARA-Stat veebiteenuse port on `5000`. Ava sirvikus:
 
@@ -835,13 +844,13 @@ Voilà!
 
 Miks tabelis ei ole statistikat? Sest logibaas on tühi.
 
-### 5.3 Seiskamine
+### 4.3 Seiskamine
 
 Logibaasi seiskamine:
 
 `sudo service mongod stop`
 
-### 5.4 Veateated
+### 4.4 Veateated
 
 kood | veateade | vea lahendamise soovitus
 ERR-01 | Logibaasiga ühendumine ebaõnnestus | Kontrollida, kas MongoDB töötab
@@ -849,7 +858,7 @@ ERR-02 | Viga logibaasist lugemisel | Kontrollida, kas MongoDB töötab
 ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Serveris
 ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
 
-### 5.5 Automatiseerimine
+### 4.5 Automatiseerimine
 
 Paigaldamisel ja haldamisel saab kasutada järgmisi Bash skripte. Skriptid asuvad kaustas `TARA-Stat/scripts`. Skripte käivita: `sudo bash nimi.sh` või `./nimi.sh`. Viimasel juhul anna eelnevalt käivitamisõigus: `chmod +x nimi.sh`.
 
@@ -857,9 +866,9 @@ Paigaldamisel ja haldamisel saab kasutada järgmisi Bash skripte. Skriptid asuva
 
 **Seiskamisskript** `TARA-Stat-seiska.sh` seiskab logibaasi (MongoDB) ja TARA-Stat veebirakenduse (Node.js).
 
-## 6 Arendamine
+## 5 Arendamine
 
-### 6.1 Arendamine Windows-masinas
+### 5.1 Arendamine Windows-masinas
 
 Arendamisel Windows-masinas on järgmised erisused.
 
@@ -897,7 +906,7 @@ Node.js paigaldamine
 Veebirakenduse käivitamine
 - veebirakenduse juurkaustas: `node index`.
 
-### 6.2 Testimine (käsitsi, lokaalses masinas)
+### 5.2 Testimine (käsitsi, lokaalses masinas)
 
 Veebirakenduse käivitumise kontroll:
 
@@ -907,7 +916,7 @@ Logikirje lisamist saab testida nt [httpie](https://httpie.org/) abil (näites n
 
 `http -a changeit:changeit POST :443 aeg=2018-04-29T00:00:30 klient=e-teenusA meetod=mobileID`
 
-### 6.3 Testimine makettrakendusega
+### 5.3 Testimine makettrakendusega
 
 Tarkvara koosseisus on logikirjete lisamise otspunkti testimise
 makettrakendus. Makettrakendus genereerib logikirjeid ja lisab need logibaasi. Makettrakenduse kood asub TARA-Stat repos failis `mockup.js`. Makettrakendus vajab tööks Node.js-i.
@@ -963,34 +972,34 @@ Logikirjete genereerimise ja logibaasi saatmise järel lõpetab makettrakendus t
 
 TARA-Stat statistikakasutaja UI kaudu või TARA-Stat veebirakenduse logist saad kontrollida, et saadetud kirjed tõesti salvestati logibaasi.
 
-## 7 Joonised
+## 6 Joonised
 
-### 7.1 TARA-Stat üldistatud arhitektuur
+### 6.1 TARA-Stat üldistatud arhitektuur
 
 <p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
 
-### 7.2 Statistikakasutaja UI
+### 6.2 Statistikakasutaja UI
 
 <p style='text-align:center;'><img src='img/Capture.PNG' width= "650"></p>
 
-### 7.3 Testimine arendusmasinas
+### 6.3 Testimine arendusmasinas
 
 <p style='text-align:center;'><img src='img/TEST-01.PNG' width= "500"></p>
 
-## 8 Kasulikku
+## 7 Kasulikku
 
-MongoDB, "a document database with the scalability and flexibility that you want with the querying and indexing that you need"
+**MongoDB**, "a document database with the scalability and flexibility that you want with the querying and indexing that you need"
 
 - [docs](https://docs.mongodb.com/)
 
-MongoDB server
+**MongoDB server**
 
 - käivitamine: `mongod`
 - vaikimisi teenindab pordil `27017`.
 - rakendus suhtleb MongoDB-ga TCP/IP socket-i põhise [MongoDB wire protocol](https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/)-iga.
 - MongoDB standardne pääsumehhanism - [Salted Challenge Response Authentication Mechanism](https://docs.mongodb.com/manual/core/authentication-mechanisms/).
 
-mongo, "an interactive JavaScript shell interface to MongoDB"
+**mongo**, "an interactive JavaScript shell interface to MongoDB"
 
 - [ülevaade](https://docs.mongodb.com/manual/mongo/)
 - [Reference](https://docs.mongodb.com/manual/reference/program/mongo/#bin.mongo)
@@ -1002,21 +1011,24 @@ use admin
 db.auth("userAdmin", "changeit")
 ```
 
-MongoDB Compass Community, "The GUI for MongoDB.", "The Easiest Way to Explore and Manipulate Your MongoDB Data."
+**MongoDB Compass**, "The GUI for MongoDB.", "The Easiest Way to Explore and Manipulate Your MongoDB Data."
 
 - [juhend](https://docs.mongodb.com/compass/current/)
 
-MongoDB Node.js Driver 
+**MongoDB Node.js Driver**
 
 - [ülevaade](http://mongodb.github.io/node-mongodb-native/?jmp=docs&_ga=2.138292915.2088530382.1524857109-302204577.1524857109)
 - [dok-n](http://mongodb.github.io/node-mongodb-native/3.0/)
 - [Aggregation Pipeline](https://docs.mongodb.com/manual/core/aggregation-pipeline/)
 - [Using the Aggregation Framework](http://mongodb.github.io/node-mongodb-native/2.0/tutorials/aggregation/)
 
-ejs, "Effective JavaScript templating"
+**ejs**, "Effective JavaScript templating"
 
 - [docs](http://ejs.co/)
 - [Syntax Reference](https://github.com/mde/ejs/blob/master/docs/syntax.md)
 
 [httpie](https://httpie.org/), "a command line HTTP client with an intuitive UI, JSON support, syntax highlighting"
 
+**Bash**, skriptikeel 
+
+- [teatmik](https://e-gov.github.io/TARA-Stat/Bash)

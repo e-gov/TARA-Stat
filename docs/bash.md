@@ -27,9 +27,17 @@ permalink: Bash
   - `sudo adduser nimi` (lisamine)
   - `sudo deluser nimi` (kustutamine)
   - `sudo deluser --remove-home nimi` (kodukausta kustutamisega)
+  - **vahetamine**
+    - `su nimi` (vaheta kasutajat, vahetamata kausta)
+    - `su - nimi` (vaheta kasutajat, liigud uue kodukausta)
+    - `exit` (tagasilülitumine eelmisele kasutajale)
+  - **superuser**, peakasutaja
+    - `sudo käsk` (käsu täitmine peakasutajana)
+    - konf-ifail `/etc/sudoers`  
 
 - **kasutaja sisend**
   - `read NAME` (mitu muutujat eralda tühikutega)
+  - `read -p "Paigaldada (y/n)? " answer`
 
 - **kausta v faili kustutamine**
   - `rm -R nimi` (rekursiivselt)
@@ -74,7 +82,7 @@ permalink: Bash
     - `export var1
        ./script2.sh` (muutuja `var1` antakse skriptile parameetriks)       
 
-- **nano, tekstiredaktor**
+- **nano**, tekstiredaktor
   - [koduleht](https://www.nano-editor.org/)
   - `sudo nano failinimi`
   - `nano -Ynone failinimi` (käivita süntaksivärvimiseta)
@@ -132,6 +140,7 @@ permalink: Bash
   - `chmod` (õiguste muutmine)
     - `-R` (rekursiivseltsud)
     - `sudo chmod -R ug+rw /var/lib/mongodb` (user ja group-le lisada read ja write õigused)
+    - `sudo chmod +x kaivita.sh` (käivitusõiguse andmine failile)
   - `chown` (omanduse muutmine)  
 
 ## Märkmed
