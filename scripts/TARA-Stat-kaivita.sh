@@ -24,7 +24,9 @@ then
   echo MongoDB juba käib
 else
   echo Käivitan MongoDB
-  mongod --config /etc/mongod.conf &
+  # Käivita MongoDB konf-ifaili äranäitamisega ja kasutaja `mongodb` alt:
+  su -c 'mongod --config /etc/mongod.conf &' - mongodb
+
   if [ "$?" = 0 ]; then 
     echo "MongoDB käivitatud"
     MONGO_PID=$(pidof mongod)

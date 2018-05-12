@@ -6,6 +6,8 @@ Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (host
 
 5\. päev, 09.05.2018<br><br>
 
+<p style='text-align:right;'><i>Do one thing and do it well</i> &mdash; <a href='https://en.wikipedia.org/wiki/Unix_philosophy' target='_new'>Unix_philosophy</a></p>
+
 Käesoleval kirjutisel on kaks osa. Esimeses osas käime läbi rea küsimusi, mis mikroteenuste (µT) arhitektuuri juurutamisel praktikas tõusetuvad. Peame tõdema, et paljudele küsimustele ei ole veel selgeid vastuseid.
 
 Teises osa moodustab ühe konkreetse mikroteenuse - TARA-Stat - kirjeldus.
@@ -248,7 +250,7 @@ Praktikas tuleb arvestada, et süsteem peab olema ka kasutatav. Samuti, turvamee
 - tundlik taristuteave on organisatsiooni siserepos (dokumendi- v koodirepos või mõlemas)
 - saladuste hoidmiseks on oma kord ja tehniline lahendus.
 
-### 1.5 "It works on my machine!"
+### 1.6 "It works on my machine!"
 
 Küpsusaste 0 - Ei tööta veel üheski keskkonnas
 
@@ -281,6 +283,29 @@ Küpsusaste 5 - (lõpp-eesmärk) Toodangus töötab
 <p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
 
 Reaalsed kasutaja, reaalsed andmed, reaalsed teenused.
+
+### 1.7 Konfigureerimine
+
+Konfigureerimine e seadistamine täidab mitut eesmärki:
+
+- **Rakenduse kasutusvõimaluste laiendamine**. Tahetakse pakkuda palju variante, kuid konkreetses paigalduses tuleb valida neist sobivad. 
+
+- **Erinevatesse keskkondadesse paigaldamise kergendamine**. See tähendab kõigi keskkonnaspetsiifiliste väärtuste (nt Windows versus Linux) parameetritena väljatoomist.
+
+- **Tundliku teabe ja saladuste (paroolide, võtmete) eraldihoidmine**. Paroolidel on koodi omast erinev elukaar. Paroole ei ole mõtet rakenduse koodi sisse kirjutada kasvõi sellepärast, et koodi võib olla avalik.
+
+Konfigureerimisviisid erinevad keerukuselt:
+- konfigureerimine otse koodis (nt konf-iparameetrid faili alguses)
+- konf-ifail(id)
+- käivitamiskäsu parameetritena
+- haldusliideses.
+
+Konfigureerimine on tihti **mitmeastmeline**. Rakenduse juurde käib ikka eraldi konfiguratsioonifail. Käivitamisel loetakse konfiparameetrid (nende väärtused) konf-ifailist rakendusse. Sageli antakse "kõige viimase hetke" konfiguratsioon rakendusele käivituskäsu parameetritega. Käivituskäsu parameetrid on tugevamad kui konf-ifaili parameetrid.
+
+Allpool kirjeldatud µT-s TARA-Stat on valitud konfigureerimine konf-ifailide abil. Konf-ifaile on kolm:
+- veebirakenduse konf-ifail
+- logibaasi konf-ifail
+- testimisel kasutatava makettrakenduse konf-ifail.
 
 ## 2. TARA-Stat
 
@@ -492,6 +517,14 @@ TARA-Stat käitluskontekstis on 9 osapoolt (subjekti), kes vajavad identiteedi j
 
 ## 3 Paigaldamine
 
+Jaotises 3.1 on ülevaade.
+
+Jaotises 3.2 on instruktsioonid **automaatpaigaldamiseks** (skriptide abil).
+
+Jaotis 3.3 kirjeldavad **käsitsi paigaldamist**.
+
+Jaotis 3.4 käsitleb tarkvara uuendamist.
+
 ### 3.1 Ülevaade
 
 TARA-Stat koosneb kahest komponendist:
@@ -519,15 +552,29 @@ Mõlemad komponendid paigaldatakse samasse masinasse.
 
 Logibaas suhtleb ainult veebirakendusega; ei suhtle masinast väljapoole.
 
-### 3.2 VM ja op-süsteem
+**Olulised asukohad**:
+
+- MongoDB
+  - `/etc/mongodb.conf` - konf-ifail
+  - `/var/log/mongodb` - andmebaasilogi
+  - `/var/lib/mongodb` - andmebaasifailid
+  - `/etc/init.d/mongodb` - automaatkäivitusskript
+
+Täpsemalt TARA-Stat omaduste ja ehituses kohta vt jaotis 2. 
+
+### 3.2 Automaatpaigaldamine
+
+### 3.3 Käsitsi paigaldamine
+
+#### 3.3.1 VM ja op-süsteem
 
 1\.Valmista virtuaalmasin (VM).
 
 2\. Paigalda Ubuntu 16 LTS.
 
-### 3.3 Node.js
+#### 3.3.2 Node.js
 
-1\. Paigalda Node.js (viimane stabiilne versioon).
+Paigalda Node.js (viimane stabiilne versioon).
 
 Väldi Ubuntu Node.js paketi paigaldamist (`sudo apt-get install nodejs`). Vt ja järgi  [Installing Node.js Tutorial: Ubuntu](https://nodesource.com/blog/installing-node-js-tutorial-ubuntu/).
 {: .adv}
@@ -542,16 +589,16 @@ Kontrolli: `nodejs -v`
 
 Kontrolli, et ka Node.js paketihaldur npm on paigaldatud: `npm --version` 
 
-2\. Seadista Node.js. Ei ole vajalik.
+#### 3.3.3 MongoDB
 
-### 3.4 MongoDB
+Vajadusel vt:
+- [How to Install MongoDB on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
+- [Install MongoDB Community Edition on Ubuntu](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/).
 
 1\. Paigalda MongoDB (viimane stabiilne versioon).
 
 Kui paigaldamine ebaõnnestus, siis võib olla vajalik andmefailide kustutamine kaustas `/var/lib/mongodb` enne uuesti paigaldamist.
 {: .adv}
-
-Vajadusel vt: [Install MongoDB Community Edition on Ubuntu](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/).
 
 Paigalda pakettide kontrollimise võtmed:
 
@@ -559,16 +606,6 @@ Paigalda pakettide kontrollimise võtmed:
 
 MongoDB paigaldamisel võib olla vajadus proovida üht järgmistest variantidest ja kui see ei tööta, siis teist.
 {: .adv}
-
-----
-
-Variant 1: proovi paigaldada käsuga
-
-`sudo apt-get install -y mongodb`
-
-----
-
-Variant 2: kui esimene variant ei tööta, siis proovi järgmist:
 
 Moodusta vajalik fail, et apt leiaks paketid üles:
 
@@ -595,14 +632,20 @@ Veendu, et seadistused sobivad. Vajadusel muuda. Autentimist (`auth=`) ei ole he
 
 Vajadusel vt [MongoDB Configuration](https://docs.mongodb.com/manual/administration/configuration/).
 
-Edaspidi käivita MongoDB konfi-faili näitamisega: 
+Käivita MongoDB (teenusena, `systemctl` abil):
 
-`mongod --config /etc/mongod.conf &`  
+`sudo systemctl start mongod`
+
+Kontrolli, et andmebaas käivitus: `sudo systemctl status mongod`
+
+_Alternatiiv: MongoDB käivitamine taustaprotsessina, konfi-faili näitamisega:_
+
+`mongod --config /etc/mongod.conf &`
 
 Logibaasi (MongoDB andmebaasi) ja selles kogumit (_collection_) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
 {: .note}
 
-### 3.5 Andmebaasi kasutajate loomine
+#### 3.3.4 Andmebaasi kasutajate loomine
 
 Logibaasile tuleb luua kolm kasutajat:
 
@@ -614,16 +657,22 @@ Kasutajate eristamine on vajalik pigem tuleviku vajadusi arvestades. Protseduuri
 
 Kasutajakontosid hoitakse samuti MongoDB andmebaasides. MongoDB standardpraktika kohaselt kasutajate halduri kontot hoiame andmebaasis `admin`. Teiste kasutajate kontosid hoiame andmebaasis `users`.
 
-Anna kasutajale, kes andmebaasi käivitab, õigused:
+Käivita MongoDB konf-ifaili äranäitamisega ja kasutaja `mongodb` alt:
+
+`su -c 'mongod --config /etc/mongod.conf &' - mongodb`
+
+_Kui soovid MongoDB käima lasta teise kasutaja alt, siis anna kasutajale, kes andmebaasi käivitab, õigused andmebaasifailidele ja andmebaasilogile:_
 
 ```
 sudo chown -R kasutajanimi /var/lib/mongodb
 sudo chown -R kasutajanimi /var/log/mongodb
 ```
 
-Käivita MongoDB:
+_Seejärel käivita MongoDB (taustaprotsessina):_
 
 `mongod --config /etc/mongodb.conf &`
+
+----
 
 Kasulik on meelde jätta andmebaasiserveri protsessinumber. Veendu, et andmebaas on käivitunud, nt: `ps aux` või `top`.
 
@@ -722,7 +771,7 @@ use users
 show users
 ```
 
-### 3.5 Veebirakendus
+#### 3.3.5 Veebirakendus
 
 1\. Kopeeri veebirakendus ([https://github.com/e-gov/TARA-Stat](https://github.com/e-gov/TARA-Stat)) organisatsiooni sisereposse.
 
@@ -753,7 +802,7 @@ Liigu kausta `TARA-Stat`
 
 Paigaldada tuleb järgmised moodulid: `body-parser`, `ejs`, `express`, `mongodb`, `request`, `basic-auth` ja `request-debug`.
 
-### 3.6 Piira võrguavatus
+#### 3.3.6 Piira võrguavatus
 
 Sea pääsureeglid VM tulemüüris. Vaja on:
 
@@ -761,9 +810,11 @@ Sea pääsureeglid VM tulemüüris. Vaja on:
 - HTTPS päringud Statistikakasutajalt (pöördub sirvikuga)
 - HTTPS päringud monitooringulahenduselt (kui kasutatakse).
 
+MongoDB osas vt: [How to Install MongoDB on Ubuntu 16.04] (https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04), Step 3.
+
 Sea pääsureeglid VLAN-is ja/või sisevõrgu ruuteri(te)s).
 
-### 3.7 Genereeri ja paigalda veebirakenduse HTTPS võtmed
+#### 3.3.7 Genereeri ja paigalda veebirakenduse HTTPS võtmed
 
 Moodusta kausta `TARA-Stat` alla alamkaust `keys`:
 
@@ -790,13 +841,13 @@ Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andm
 
 Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concepts); [Self-Signed, Trusted Certificates for Node.js & Express.js](https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/)
 
-### 3.8 Loo VM kasutaja `tarastat`
+#### 3.3.8 Loo VM kasutaja `tarastat`
 
 Kasutaja `tarastat` on piiratud õigustega kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus. Loo kasutja:
 
 `sudo adduser tarastat`
 
-### 3.9 Loo usaldus TARA-Serveri ja TARA-Stat-i vahel
+#### 3.3.9 Loo usaldus TARA-Serveri ja TARA-Stat-i vahel
 
 1\. Genereeri API-võti. Juhusõne pikkusega 20 tärki.
 
@@ -806,7 +857,7 @@ Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`proces
 
 3\. Paigalda API-võti TARA-Stat poole pöörduva rakenduse (TARA-Server) konf-i.
 
-### 3.10 Tarkvara uuendamine
+### 3.4 Tarkvara uuendamine
 
 TARA-Stat tarkvara täiendamisel ei ole alati vaja paigaldust täies ulatuses korrata. Toimimisviis sõltub konkreetse täienduse olemusest. Kirjeldame mõned tüüpilised käsud, millest tarkvara uuendamisel võib kasu olla.
 
@@ -819,7 +870,7 @@ TARA-Stat tarkvara täiendamisel ei ole alati vaja paigaldust täies ulatuses ko
 
 ## 4 Käitamine
 
-### 4.1 Käivita
+### 4.1 Käsitsi käivitamine
 
 Eeldus: Node.js ja MongoDB on paigaldatud ja seadistatud.
 {: .adv}
@@ -875,9 +926,7 @@ ERR-02 | Viga logibaasist lugemisel | Kontrollida, kas MongoDB töötab
 ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Serveris
 ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
 
-### 4.5 Automatiseerimine
-
-Paigaldamisel ja haldamisel saab kasutada järgmisi Bash skripte. Skriptid asuvad kaustas `TARA-Stat/scripts`. Skripte käivita: `sudo bash nimi.sh` või `./nimi.sh`. Viimasel juhul anna eelnevalt käivitamisõigus: `chmod +x nimi.sh`.
+### 4.5 Käivitamine ja seiskamine skriptiga
 
 **Käivitamisskript** `TARA-Stat-kaivita.sh` laseb käima logibaasi (MongoDB) ja TARA-Stat veebirakenduse (Node.js).
 
@@ -1050,3 +1099,4 @@ db.auth("userAdmin", "changeit")
 
 - [Linux Shell Scripting Tutorial (LSST) v2.0](https://bash.cyberciti.biz/guide/Main_Page)
 - [väike teatmik](https://e-gov.github.io/TARA-Stat/Bash)
+- [Index of Linux Commands](http://www.linfo.org/command_index.html)

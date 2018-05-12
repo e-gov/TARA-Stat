@@ -31,6 +31,9 @@ permalink: Bash
     - `su nimi` (vaheta kasutajat, vahetamata kausta)
     - `su - nimi` (vaheta kasutajat, liigud uue kodukausta)
     - `exit` (tagasilülitumine eelmisele kasutajale)
+  - **kasutaja nimel käsu täitmine**
+    - `su -c 'mongod --config /etc/mongod.conf &' - mongodb`
+    - vt [su kirjeldus](http://www.linfo.org/su.html)
   - **superuser**, peakasutaja
     - `sudo käsk` (käsu täitmine peakasutajana)
     - konf-ifail `/etc/sudoers`
