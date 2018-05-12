@@ -191,11 +191,10 @@ a.nupp:hover {
 }
 
 .adv {
-  border-color: orange;
+  border-color: Darkgray;
   border-style: none solid;
-  background: #FFEECC;
+  background: Ghostwhite;
 }
-
 
 .ikoon {
   font-family: 'Material Icons';

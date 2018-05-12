@@ -33,7 +33,10 @@ permalink: Bash
     - `exit` (tagasilülitumine eelmisele kasutajale)
   - **superuser**, peakasutaja
     - `sudo käsk` (käsu täitmine peakasutajana)
-    - konf-ifail `/etc/sudoers`  
+    - konf-ifail `/etc/sudoers`
+  - **omandis failid**
+    - `find /var -user nimi` (kasutaja `nimi` failid kaustas `/var`)
+    - `find /data/project -group ftpusers -name "*.c` (grupile kuuluvad failid kaustas, mustri järgi)
 
 - **kasutaja sisend**
   - `read NAME` (mitu muutujat eralda tühikutega)
