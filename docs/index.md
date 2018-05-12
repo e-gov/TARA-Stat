@@ -11,6 +11,7 @@ Käesoleval kirjutisel on kaks osa. Esimeses osas käime läbi rea küsimusi, mi
 Teises osa moodustab ühe konkreetse mikroteenuse - TARA-Stat - kirjeldus.
 
 ## Sisukord
+{: .no_toc}
 
 laiem ülevaade mikroteenustest: [1 Vajadus ja väljakutse](#1-vajadus-ja-v%C3%A4ljakutse)
 
@@ -22,6 +23,8 @@ arendajale: [5 Arendamine](#5-arendamine)
 
 ## Detailne sisukord
 {: .no_toc}
+
+&nbsp;
 
 - TOC
 {:toc}
