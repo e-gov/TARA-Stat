@@ -877,6 +877,10 @@ Eeldus: Node.js ja MongoDB on paigaldatud ja seadistatud.
 
 1\. Käivita MongoDB:
 
+`systemctl enable mongod.service`
+
+`(sudo) systemctl start mongod`
+
 `mongod --config /etc/mongod.conf &`
 
 Kui MongoDB käivitada terminaliga seotult (ilma &-ta), siis MongoDB vastab diagnostiliste teadetega ja lõpuks: `[initandlisten] waiting for connections on port 27017`.
