@@ -6,16 +6,17 @@ Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (host
 
 5\. päev, 09.05.2018<br><br>
 
-Käesolevast kirjutisest võiks saada mikroteenuste () _primer_ (aabits). Praegu on see aga kirjeldus ühe mikroteenuse tegemisest.
+Käesolevast kirjutisest võiks saada mikroteenuste (µT) aabits (_primer_). Praegu on see aga kirjeldus ühe mikroteenuse tegemisest.
 
-| sihtrühm |  |
-|----|-----|
-| Mikroteenustest üldiselt huvitujale | [1 Vajadus ja väljakutse](#1-vajadus-ja-v%C3%A4ljakutse) |
-| TARA-Stat-st huvitujale | [TARA-Stat](#2-tara-stat) |
-| Paigaldajale | [TARA-Stat](#2-tara-stat)<br>
-|   | [Paigaldamine](#3-paigaldamine) |
-| Käitajale | [Käitamine](#4-k%C3%A4itamine) |
-| Arendajale | [Arendamine](#5-arendamine) |
+## Sisukord
+
+- laiem ülevaade mikroteenustest: [1 Vajadus ja väljakutse](#1-vajadus-ja-v%C3%A4ljakutse)
+- TARA-Stat ülevaade: [2 TARA-Stat](#2-tara-stat)
+- paigaldajale ja käitajale: [3 Paigaldamine](#3-paigaldamine), [4 Käitamine](#4-k%C3%A4itamine)
+- arendajale: [5 Arendamine](#5-arendamine) |
+
+## Detailne sisukord
+{: .no_toc}
 
 - TOC
 {:toc}
@@ -473,7 +474,7 @@ TARA-Stat käitluskontekstis on 9 osapoolt (subjekti), kes vajavad identiteedi j
 | **Statistikakasutaja** | - | inimene, kes pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | - (ei autendita, juurdepääs piiratakse kontekstiga) |
 | **TARA server** | `TARA-Server` | pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
 
-## 3 Esmakordne paigaldamine (Ubuntu)
+## 3 Paigaldamine
 
 ### 3.1 Ülevaade
 
