@@ -24,11 +24,7 @@ echo
 # 12. Väljasta lõputeade
 
 # 1. Kaitse eksliku käivitamise vastu
-read -p " --- Paigaldada MongoDB (y/n)? " prompt
-if [[ $prompt != y && $prompt != Y ]]
-then
-  exit
-fi
+kasJatkan
 
 # 2. Kontrolli, kas MongoDB töötab. Kui töötab, siis seiska
 sudo systemctl is-active --quiet  mongod
@@ -46,7 +42,7 @@ if [ "$?" = 0 ]; then
   read -p " --- Kas paigaldada MongoDB uuesti (y/n)? " prompt
   if [[ $prompt != y && $prompt != Y ]]
   then
-    exit
+    lopeta
   else
     echo " --- Eemaldan MongoDB"
     sudo apt-get remove mongodb
@@ -141,9 +137,16 @@ db.createUser(
 EOF
 
 # 12. Väljasta lõputeade
-echo
-echo " --- MongoDB paigaldamise LÕPP"
-echo
+
+# ------------------------------
+# Abistaja: Väljasta lõputeade ja välju
+#
+function lopeta {
+  echo
+  echo " --- MongoDB paigaldamise LÕPP"
+  echo
+  exit
+}
 
 # ------------------------------
 # Abistaja: Kontrolli käsu õnnestumist
@@ -154,6 +157,18 @@ function kontrolli {
     echo "$2 OK"
   else  
     echo "$2 ebaõnnestus"
-    exit
+    lopeta
   fi 
+}
+
+# ------------------------------
+# Abistaja: Küsin kasutajalt kas jätkata
+#
+function kasJatkan {
+  read -p " --- Jätkata (y/n)? " prompt
+  if [[ $prompt != y && $prompt != Y ]]
+  then
+    lopeta
+  fi
+
 }
