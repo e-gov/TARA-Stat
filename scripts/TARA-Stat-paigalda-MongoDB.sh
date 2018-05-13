@@ -165,6 +165,7 @@ function kontrolli {
 # Abistaja: Küsin kasutajalt kas jätkata
 #
 function kasJatkan {
+  echo " "
   read -p " --- Jätkata (y/n)? " prompt
   if [[ $prompt != y && $prompt != Y ]]
   then
