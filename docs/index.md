@@ -926,7 +926,9 @@ Kui VM ei tunnista git repo serti, siis kontrolli, kas VM kell on õige: `date`.
 Eeldus: Node.js ja MongoDB on paigaldatud ja seadistatud.
 {: .adv}
 
-**MongoDB käivitamine**. MongoDB tuleks käivitada teenusena (deemonina). Selleks määra MongoDB VM-i käivitamisel automaatselt käivitatavaks:
+#### 4.1.1 MongoDB käivitamine
+
+MongoDB tuleks käivitada teenusena (deemonina). Selleks määra MongoDB VM-i käivitamisel automaatselt käivitatavaks:
 
 `sudo systemctl enable mongod`
 
@@ -940,7 +942,16 @@ _Testimise eesmärgil võib MongoDB käivitada ka terminalist lahtiseotud tausta
 
 _MongoDB võib käivitada ka terminaliga seotult (ilma &-ta), siis MongoDB vastab diagnostiliste teadetega ja lõpuks: `[initandlisten] waiting for connections on port 27017`._
 
-**TARA-Stat veebirakenduse käivitamine**. Liigu veebirakenduse juurkausta `TARA-Stat` ja sisesta:
+#### 4.1.2 TARA-Stat veebirakenduse käivitamine
+
+Käivita enne logibaas (MongoDB). Muidu teatab veebirakendus, et logibaasiga ei saa ühendust.
+{: .adv}
+
+**Käivitamine protsessihalduri pm2 abil**. Liigu veebirakenduse juurkausta `TARA-Stat` ja sisesta:
+
+pm2 start index.js
+
+**Testimise eesmärgil** võib TARA-Stat veebirakenduse käivitada ka terminalist lahtiseotud taustaprotsessina. Liigu veebirakenduse juurkausta `TARA-Stat` ja sisesta:
 
 `nodejs index &`
 
@@ -972,7 +983,11 @@ Miks tabelis ei ole statistikat? Sest logibaas on tühi.
 
 Logibaasi seiskamine:
 
-`sudo service mongod stop`
+`sudo systemctl stop mongod`
+
+Veebirakenduse seiskamine:
+
+`pm2 stop index`
 
 ### 4.4 Veateated
 
