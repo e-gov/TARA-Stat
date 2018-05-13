@@ -132,6 +132,7 @@ permalink: Bash
     - [kirjeldus](https://superuser.com/questions/1003760/what-does-eof-do)
 
 - **striimiredaktor**
+  - `sed -i 's/authorization: disabled/authorization: enabled/' /etc/mongod.conf`
   - [sed juhend](https://www.gnu.org/software/sed/manual/sed.html)
 
 - **systemctl**
@@ -147,7 +148,6 @@ permalink: Bash
   - `is-active`, `is-enabled`, `is-failed`
   - `list-units`
   - `systemctl list-units --type=service` (aktiivsed teenused)
-  
 
 - **terminalist lahtisidumine**
   - ` &` (käsu lõpus, käivitatav protsess seotakse terminalist lahti ja hakkab jooksma taustal)

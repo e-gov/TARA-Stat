@@ -38,7 +38,7 @@ config.mongouser = 'rakendus';
 config.mongouserpwd = process.env.MONGOUSERPWD || 'changeit';
 
 /* Logikirje lisamise API võti */
-config.tarastatuser = 'changeit';
-config.tarastatsecret = process.env.TARASTATSECRET || 'changeit';
+config.tarastatuser = 'APIUSER-changeit';
+config.tarastatsecret = process.env.TARASTATSECRET || 'APIKEY-changeit';
 
 module.exports = config;

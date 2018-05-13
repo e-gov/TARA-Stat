@@ -843,6 +843,8 @@ Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concep
 
 `sudo adduser tarastat`
 
+TODO Õiguste andmine ja määramine Node.js protsessiomanikuks.
+
 **Loo usaldus TARA-Serveri ja TARA-Stat-i vahel**.
 
 1\. Genereeri API-võti. Juhusõne pikkusega 20 tärki.
@@ -861,7 +863,7 @@ Sea pääsureeglid VM tulemüüris. Vaja on:
 - HTTPS päringud Statistikakasutajalt (pöördub sirvikuga)
 - HTTPS päringud monitooringulahenduselt (kui kasutatakse).
 
-MongoDB osas vt: [How to Install MongoDB on Ubuntu 16.04] (https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04), Step 3.
+MongoDB osas vt: [How to Install MongoDB on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04), Step 3.
 
 Sea pääsureeglid VLAN-is ja/või sisevõrgu ruuteri(te)s).
 
