@@ -31,10 +31,9 @@ then
 fi
 
 # 2. Kontrolli, kas MongoDB töötab. Kui töötab, siis seiska
-MONGO_PID=$(pidof mongod)
-if [ ! -z "$MONGO_PID" ]
-then
-  kill -s 15 $MONGO_PID
+sudo systemctl is-active --quiet  mongod
+if [ "$?" = 0 ]; then
+  sudo systemctl stop mongod
   echo " --- Logibaas seisatud"
 fi
 
