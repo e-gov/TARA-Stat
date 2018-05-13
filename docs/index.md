@@ -4,7 +4,7 @@ Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (host
 # µ-teenuste arhitektuurist (koos töötava näitega)
 {: .no_toc}
 
-5\. päev, 09.05.2018<br><br>
+6\. päev, 14.05.2018<br><br>
 
 <p style='text-align:right;'><i>Do one thing and do it well</i> &mdash; <a href='https://en.wikipedia.org/wiki/Unix_philosophy' target='_new'>Unix_philosophy</a></p>
 
