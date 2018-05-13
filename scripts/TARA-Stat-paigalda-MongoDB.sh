@@ -133,13 +133,26 @@ sudo passwd mongodb
 # su -c 'mongod --config /etc/mongod.conf &' - mongodb
 echo " --- Käivitan MongoDB"
 sudo systemctl start mongod
-kontrolli $? " OK" " --- MongoDB käivitamine ebaõnnestus" 
+kontrolli $? " --- MongoDB käivitamine ebaõnnestus" 
 
 # 7. Loo MongoDB kasutaja userAdmin
 # Vt https://docs.mongodb.com/manual/tutorial/write-scripts-for-the-mongo-shell/ 
 echo " --- Loon MongoDB kasutaja userAdmin"
 read -p " --- Sisesta parool userAdmin-le: " PASSWORD
-mongo admin --eval "db.createUser({user: "userAdmin",pwd: $PASSWORD, roles: [ { role: userAdminAnyDatabase", db: "admin" } ] } )""
+mongo <<EOF
+use admin
+db.createUser(
+  { user: "userAdmin",
+    pwd: $PASSWORD,
+    roles: [
+      {
+        role: userAdminAnyDatabase",
+        db: "admin"
+      }
+    ]
+  }
+)
+EOF
 
 # 8. Peata MongoDB
 echo " --- Peatan MongoDB"
