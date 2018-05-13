@@ -144,6 +144,10 @@ permalink: Bash
   - `enable` (määrab VM käivitamisel automaatselt käivitatavaks)
   - `disable`
   - `status`
+  - `is-active`, `is-enabled`, `is-failed`
+  - `list-units`
+  - `systemctl list-units --type=service` (aktiivsed teenused)
+  
 
 - **terminalist lahtisidumine**
   - ` &` (käsu lõpus, käivitatav protsess seotakse terminalist lahti ja hakkab jooksma taustal)
@@ -158,7 +162,8 @@ permalink: Bash
 - **toru**
   - `|` - ühendus protsesside vahel
 
-- **võrguliiklus**
+- **võrguühendused**
+  - [iproute2](https://en.wikipedia.org/wiki/Iproute2)
   - `netstat -plntu` (loetelu kuulajatest: protokoll, IP, port)
 
 - **õigused failisüsteemis**

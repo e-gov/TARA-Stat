@@ -2,7 +2,7 @@
 
 # TARA-Stat-paigalda-MongoDB.sh
 #
-# Paigalda logibaasi (MongoDB), sh loo vajalikud andmebaasikasutajad
+# Paigalda logibaas (MongoDB), sh loo vajalikud andmebaasikasutajad
 #
 
 echo
@@ -95,8 +95,8 @@ kontrolli $? " OK" " --- MongoDB käivitamine ebaõnnestus"
 # 7. Loo MongoDB kasutaja userAdmin
 # Vt https://docs.mongodb.com/manual/tutorial/write-scripts-for-the-mongo-shell/ 
 echo " --- Loon MongoDB kasutaja userAdmin"
-echo "     Parool: changeit. Vaheta hiljem parool ära"
-mongo admin --eval 'db.createUser({user: "userAdmin",pwd: "changeit", roles: [ { role: userAdminAnyDatabase", db: "admin" } ] } )'
+read -p " --- Sisesta parool userAdmin-le: " PASSWORD
+mongo admin --eval "db.createUser({user: "userAdmin",pwd: $PASSWORD, roles: [ { role: userAdminAnyDatabase", db: "admin" } ] } )""
 
 # 8. Peata MongoDB
 echo " --- Peatan MongoDB"
@@ -117,24 +117,28 @@ kontrolli $? " OK" " --- MongoDB käivitamine ebaõnnestus"
 # 11. Loo kasutajad rakendus ja andmehaldur
 # ühendudes andmebaasi külge kasutajana userAdmin
 echo " --- Loon MongoDB kasutajad rakendus ja andmehaldur"
-echo "     Paroolid: changeit. Vaheta hiljem paroolid"
+read -p " --- Sisesta parool rakendusele: " PWD_RAKENDUS
+read -p " --- Sisesta parool andmehaldurile: " PWD_RAKENDUS
 mongo -u "userAdmin" -p "changeit" --authenticationDatabase "admin" <<EOF
 use users
 db.createUser(
   {
     user: "rakendus",
-    pwd: "changeit",
+    pwd: $PWD_RAKENDUS,
     roles: [ { role: "readWrite", db: "logibaas" } ]
   }
 )
 db.createUser(
   {
     user: "andmehaldur",
-    pwd: "changeit",
+    pwd: $PWD_ANDMEHALDUR,
     roles: [ { role: "readWrite", db: "logibaas" } ]
   }
 )
 EOF
+
+# Muutujate kasutamise kohta heredoc-is vt:
+# https://unix.stackexchange.com/questions/405250/passing-and-setting-variables-in-a-heredoc 
 
 # 12. Väljasta lõputeade
 

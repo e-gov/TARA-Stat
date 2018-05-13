@@ -517,14 +517,6 @@ TARA-Stat käitluskontekstis on 9 osapoolt (subjekti), kes vajavad identiteedi j
 
 ## 3 Paigaldamine
 
-Jaotises 3.1 on ülevaade.
-
-Jaotises 3.2 on instruktsioonid **automaatpaigaldamiseks** (skriptide abil).
-
-Jaotis 3.3 kirjeldavad **käsitsi paigaldamist**.
-
-Jaotis 3.4 käsitleb tarkvara uuendamist.
-
 ### 3.1 Ülevaade
 
 TARA-Stat koosneb kahest komponendist:
@@ -565,34 +557,44 @@ Täpsemalt TARA-Stat omaduste ja ehituses kohta vt jaotis 2.
 Vajadusel vt:
 - [How to Install and Configure MongoDB on Ubuntu 16.04 LTS](https://www.howtoforge.com/tutorial/install-mongodb-on-ubuntu-16.04/) (HowtoForge)
 
-### 3.2 Automaatpaigaldamine
+### 3.2 Paigaldusjärjekord
 
-### 3.3 Käsitsi paigaldamine
+Automaatpaigaldamiseks on kaks skripti:
+- `TARA-Stat-paigalda-MongoDB.sh` paigaldab logibaasi (MongoDB), sh moodustab andmebaasikasutajad
+- `TARA-Stat-paigalda-Nodejs.sh` paigaldab Node.js, TARA-Stat veebirakenduse ja Node.js protsessihalduri pm2.
 
-#### 3.3.1 VM ja op-süsteem
+Osa toiminguid tuleb siiski teha käsitsi. Tee toimingud järgmiselt:
 
-1\.Valmista virtuaalmasin (VM).
+| toiming                            | käsitsi      | skriptiga  |
+|------------------------------------|--------------|------------|
+| paigalda VM ja op-süsteem (Ubuntu) |              |            |
+| paigalda TARA-Stat veebirakendus   | jaotis 3.3   |            |
+| paigalda MongoDB                   | jaotis 3.4   | `TARA-Stat-paigalda-MongoDB.sh` |
+| paigalda Node.js                   | jaotis 3.5   | `TARA-Stat-paigalda-Nodejs.sh` |
+| seadista TARA-Stat veebirakendus   | jaotis 3.6   | `TARA-Stat-paigalda-Nodejs.sh` |
+| seadista VM tulemüür               | jaotis 3.7   |            |
+| paigalda protsessihaldur pm2       | jaotis 3.8   | `TARA-Stat-paigalda-Nodejs.sh` |
 
-2\. Paigalda Ubuntu 16 LTS.
+### 3.3 Veebirakenduse paigaldamine
 
-#### 3.3.2 Node.js
+1\. Kopeeri veebirakendus ([https://github.com/e-gov/TARA-Stat](https://github.com/e-gov/TARA-Stat)) organisatsiooni sisereposse.
 
-Paigalda Node.js (viimane stabiilne versioon).
+_Alternatiiv: paigalda otse GitHub-i repost._
 
-Väldi Ubuntu Node.js paketi paigaldamist (`sudo apt-get install nodejs`). Vt ja järgi  [Installing Node.js Tutorial: Ubuntu](https://nodesource.com/blog/installing-node-js-tutorial-ubuntu/).
+2\. Paigalda veebirakendus koodirepost VM-i:
+
+`git clone https://github.com/e-gov/TARA-Stat` (või kasutada vastavat organisatsiooni siserepot).
+
+Järgnevas eeldame, et TARA-Stat asub kaustas `~/TARA-Stat`. Toodangukeskkonnas võib asukoht olla teine.
 {: .adv}
 
-`curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -`
+3\. Sea veebirakenduse port (valikuline)
 
-Seejärel:
+Ava kaustas `TARA-Stat` asuv veebirakenduse konf-ifail `config.js` ja vaheta pordi vaikeväärtus `443` õige vastu (nt `5000`).
 
-`sudo apt-get install -y nodejs`
+Järgnevas eeldame, et port on `5000`.
 
-Kontrolli: `nodejs -v`
-
-Kontrolli, et ka Node.js paketihaldur npm on paigaldatud: `npm --version` 
-
-#### 3.3.3 MongoDB
+### 3.4 Paigalda MongoDB
 
 Vajadusel vt:
 - [How to Install MongoDB on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
@@ -656,8 +658,6 @@ _Alternatiiv: MongoDB käivitamine taustaprotsessina, konfi-faili näitamisega:_
 Logibaasi (MongoDB andmebaasi) ja selles kogumit (_collection_) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
 {: .note}
 
-#### 3.3.4 Andmebaasi kasutajate loomine
-
 Logibaasile tuleb luua kolm kasutajat:
 
 - `userAdmin` - kasutajate haldur
@@ -694,7 +694,7 @@ Taga, et andmete kaust, vaikimisi `/var/lib/mongodb` on olemas ja andmebaasiserv
 
 Ühendu CLI-ga andmebaasi külge: `mongo`. Seejärel:
 
-1\. Loo kasutajate haldur.
+Loo kasutajate haldur.
 
 Sisesta või kopeeri allolevad käsud `mongo` dialoogi, viiba `>` järele:
 
@@ -710,7 +710,7 @@ db.createUser(
 )
 ```
 
-2\. Lülita sisse rollihaldus. Peata andmebaasiserver ja sea andmebaasi konf-ifailis `/etc/mongodb.conf`:
+Lülita sisse rollihaldus. Peata andmebaasiserver ja sea andmebaasi konf-ifailis `/etc/mongodb.conf`:
 
 ```
 security:
@@ -723,7 +723,7 @@ ja käivita andmebaas uuesti (`&` on käivitamine taustaprotsessina):
 
 Veendu protsessi tekkimises: `jobs`
 
-3\. Ühendu CLI `mongo` abil uuesti andmebaasi külge, seekord kasutajana `userAdmin`:
+Ühendu CLI `mongo` abil uuesti andmebaasi külge, seekord kasutajana `userAdmin`:
 
 ```
 mongo --port 27017 -u "userAdmin" -p "changeit" --authenticationDatabase "admin"
@@ -742,7 +742,7 @@ Kontrolli, et konto on õigesti loodud:
 show users
 ```
 
-4\. Loo kasutaja `rakendus`
+Loo kasutaja `rakendus`
 
 `use users`
 
@@ -759,7 +759,7 @@ db.createUser(
 NB! Väärtused nagu `readWrite` on tõstutundlikud.
 {: .adv}
 
-5\. Loo kasutaja `andmehaldur`
+Loo kasutaja `andmehaldur`
 
 `use users`
 
@@ -773,33 +773,32 @@ db.createUser(
 )
 ```
 
-6\. Kontrolli loodut
-
 Kontrolli, et kontod on õigesti loodud:
 
 ```
 use users
 show users
 ```
+### 3.5 Paigalda Node.js
 
-#### 3.3.5 Veebirakendus
+Paigalda Node.js (viimane stabiilne versioon).
 
-1\. Kopeeri veebirakendus ([https://github.com/e-gov/TARA-Stat](https://github.com/e-gov/TARA-Stat)) organisatsiooni sisereposse.
+Vajadusel vt: [How To Set Up a Node.js Application for Production on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04)
 
-2\. Paigalda veebirakendus koodirepost VM-i:
-
-`git clone https://github.com/e-gov/TARA-Stat` (või kasutada vastavat organisatsiooni siserepot).
-
-Järgnevas eeldame, et TARA-Stat asub kaustas `~/TARA-Stat`. Toodangukeskkonnas võib asukoht olla teine.
+Väldi Ubuntu Node.js paketi paigaldamist (`sudo apt-get install nodejs`). Vt ja järgi  [Installing Node.js Tutorial: Ubuntu](https://nodesource.com/blog/installing-node-js-tutorial-ubuntu/).
 {: .adv}
 
-3\. Sea veebirakenduse port (valikuline)
+`curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -`
 
-Ava kaustas `TARA-Stat` asuv veebirakenduse konf-ifail `config.js` ja vaheta pordi vaikeväärtus `443` õige vastu (nt `5000`). 
+Seejärel:
 
-4\. Paigalda Node.js teegid
+`sudo apt-get install -y nodejs`
 
-Node.js vajab tööks rida Javascipti teeke. Need on kirjeldatud failis `package.json`. Teegid tuleb paigaldada kausta `node_modules`. Kui repo ei sisalda teeke, siis tuleb need paigaldada eraldi, Node.js paketihalduri `npm` abil.
+Kontrolli: `nodejs -v`
+
+Kontrolli, et ka Node.js paketihaldur npm on paigaldatud: `npm --version` 
+
+**Paigalda Node.js teegid**. Node.js vajab tööks rida Javascipti teeke. Need on kirjeldatud failis `package.json`. Teegid tuleb paigaldada kausta `node_modules`. Kui repo ei sisalda teeke, siis tuleb need paigaldada eraldi, Node.js paketihalduri `npm` abil.
 
 Kui Node.js paigaldada Node.js ametlikult veebilehelt, siis npm paigaldatakse koos Node.js-ga. Kui Node.js paigaldada apt-get repo kaudu, siis tuleb npm eraldi paigaldada: `sudo apt-get install npm`.
 {: .note} 
@@ -813,21 +812,9 @@ Liigu kausta `TARA-Stat`
 
 Paigaldada tuleb järgmised moodulid: `body-parser`, `ejs`, `express`, `mongodb`, `request`, `basic-auth` ja `request-debug`.
 
-#### 3.3.6 Piira võrguavatus
+### 3.6 Seadista TARA-Stat veebirakendus
 
-Sea pääsureeglid VM tulemüüris. Vaja on:
-
-- HTTPS päringud TARA-Server-lt
-- HTTPS päringud Statistikakasutajalt (pöördub sirvikuga)
-- HTTPS päringud monitooringulahenduselt (kui kasutatakse).
-
-MongoDB osas vt: [How to Install MongoDB on Ubuntu 16.04] (https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04), Step 3.
-
-Sea pääsureeglid VLAN-is ja/või sisevõrgu ruuteri(te)s).
-
-#### 3.3.7 Genereeri ja paigalda veebirakenduse HTTPS võtmed
-
-Moodusta kausta `TARA-Stat` alla alamkaust `keys`:
+**Genereeri ja paigalda veebirakenduse HTTPS võtmed**. Moodusta kausta `TARA-Stat` alla alamkaust `keys`:
 
 ```
 mkdir keys
@@ -852,13 +839,11 @@ Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andm
 
 Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concepts); [Self-Signed, Trusted Certificates for Node.js & Express.js](https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/)
 
-#### 3.3.8 Loo VM kasutaja `tarastat`
-
-Kasutaja `tarastat` on piiratud õigustega kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus. Loo kasutja:
+**Loo VM kasutaja `tarastat`**. Kasutaja `tarastat` on piiratud õigustega kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus. Loo kasutaja:
 
 `sudo adduser tarastat`
 
-#### 3.3.9 Loo usaldus TARA-Serveri ja TARA-Stat-i vahel
+**Loo usaldus TARA-Serveri ja TARA-Stat-i vahel**.
 
 1\. Genereeri API-võti. Juhusõne pikkusega 20 tärki.
 
@@ -868,7 +853,45 @@ Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`proces
 
 3\. Paigalda API-võti TARA-Stat poole pöörduva rakenduse (TARA-Server) konf-i.
 
-### 3.4 Tarkvara uuendamine
+### 3.7 Seadista VM tulemüür
+
+Sea pääsureeglid VM tulemüüris. Vaja on:
+
+- HTTPS päringud TARA-Server-lt
+- HTTPS päringud Statistikakasutajalt (pöördub sirvikuga)
+- HTTPS päringud monitooringulahenduselt (kui kasutatakse).
+
+MongoDB osas vt: [How to Install MongoDB on Ubuntu 16.04] (https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04), Step 3.
+
+Sea pääsureeglid VLAN-is ja/või sisevõrgu ruuteri(te)s).
+
+### 3.8 Paigalda Node.js protsessihaldur PM2
+
+Node.js toodangukeskkonnas haldamiseks on hea praktika kasutada protsessihaldurit PM2
+
+Vt:
+- [PM2](https://www.npmjs.com/package/pm2) (npm)
+- [How To Set Up a Node.js Application for Production on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04)
+
+Paigalda pm2:
+
+`sudo npm install -g pm2`
+
+Genereeri pm2 automaatkäivituse skript:
+
+`pm2 startup systemd`
+
+Täida eelmise käsu väljundi viimane rida (sellega luuakse systemd unit, millega pm2 automaatkäivitatakse).
+
+Rakenduse käivitamine:
+
+`pm2 start index`
+
+Vaata pm2-ga hallatavate rakenduste nimekirja:
+
+`pm2 list`
+
+### 3.9 Tarkvara uuendamine
 
 TARA-Stat tarkvara täiendamisel ei ole alati vaja paigaldust täies ulatuses korrata. Toimimisviis sõltub konkreetse täienduse olemusest. Kirjeldame mõned tüüpilised käsud, millest tarkvara uuendamisel võib kasu olla.
 
