@@ -1,7 +1,7 @@
 Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
 {: .adv}
 
-# µ-teenuste arhitektuurist (koos töötava näitega)
+# µ-teenuste arhitektuurist + töötav näide
 {: .no_toc}
 
 6\. päev, 14.05.2018<br><br>
