@@ -133,7 +133,7 @@ sudo passwd mongodb
 # su -c 'mongod --config /etc/mongod.conf &' - mongodb
 echo " --- Käivitan MongoDB"
 sudo systemctl start mongod
-kontrolli $? " --- MongoDB käivitamine ebaõnnestus" 
+kontrolli $? " --- MongoDB käivitamine" 
 
 # 7. Loo MongoDB kasutaja userAdmin
 # Vt https://docs.mongodb.com/manual/tutorial/write-scripts-for-the-mongo-shell/ 
@@ -143,7 +143,7 @@ mongo <<EOF
 use admin
 db.createUser(
   { user: "userAdmin",
-    pwd: $PASSWORD,
+    pwd: "$PASSWORD",
     roles: [
       {
         role: userAdminAnyDatabase",
@@ -157,18 +157,18 @@ EOF
 # 8. Peata MongoDB
 echo " --- Peatan MongoDB"
 sudo systemctl stop mongod
-kontrolli $? " OK" " --- MongoDB peatamine ebaõnnestus" 
+kontrolli $? " --- MongoDB peatamine"
 
 # 9. Lülita autentimine sisse
 # Failis /etc/mongod.conf muuda authorization: disabled -> enabled
 echo " --- Lülitan sisse autentimise"
 sed -i 's/authorization: disabled/authorization: enabled/' /etc/mongod.conf
-kontrolli $? " OK" " --- MongoDB konf-ifaili muutmine ebaõnnestus" 
+kontrolli $? " --- MongoDB konf-ifaili muutmine" 
 
 # 10. Käivita andmebaas uuesti
 echo " --- Käivitan MongoDB uuesti"
 sudo systemctl start mongod
-kontrolli $? " OK" " --- MongoDB käivitamine ebaõnnestus" 
+kontrolli $? " --- MongoDB käivitamine" 
 
 # 11. Loo kasutajad rakendus ja andmehaldur
 # ühendudes andmebaasi külge kasutajana userAdmin
@@ -180,14 +180,14 @@ use users
 db.createUser(
   {
     user: "rakendus",
-    pwd: $PWD_RAKENDUS,
+    pwd: "$PWD_RAKENDUS",
     roles: [ { role: "readWrite", db: "logibaas" } ]
   }
 )
 db.createUser(
   {
     user: "andmehaldur",
-    pwd: $PWD_ANDMEHALDUR,
+    pwd: "$PWD_ANDMEHALDUR",
     roles: [ { role: "readWrite", db: "logibaas" } ]
   }
 )
