@@ -11,17 +11,15 @@ echo
 
 # 1. Kaitse eksliku käivitamise vastu
 # 2. Kontrolli, kas MongoDB töötab. Kui töötab, siis seiska
-# 3. Kontrolli, kas MongoDB on juba paigaldatud.
-#    Vajadusel eemalda. Küsi, kas ka andmefailid
-# 4. Paigalda MongoDB
-# 5. Sea kasutajale mongodb parool (algselt tal pole parooli)
-# 6. Käivita MongoDB
-# 7. Loo MongoDB kasutaja userAdmin
-# 8. Peata MongoDB
-# 9. Lülita autentimine sisse
-# 10. Käivita andmebaas uuesti
-# 11. Loo kasutajad rakendus ja andmehaldur
-# 12. Väljasta lõputeade
+# 3. Paigalda MongoDB
+# 4. Sea kasutajale mongodb parool (algselt tal pole parooli)
+# 5. Käivita MongoDB
+# 6. Loo MongoDB kasutaja userAdmin
+# 7. Peata MongoDB
+# 8. Lülita autentimine sisse
+# 9. Käivita andmebaas uuesti
+# 10. Loo kasutajad rakendus ja andmehaldur
+# 11. Väljasta lõputeade
 
 # ------------------------------
 # Abistaja: Väljasta lõputeade ja välju
@@ -61,46 +59,30 @@ function kasJatkan {
   fi
 }
 
+# ------------------------------
 # 1. Kaitse eksliku käivitamise vastu
 kasJatkan
 
+# ------------------------------
 # 2. Kontrolli, kas MongoDB töötab. Kui töötab, siis seiska
 sudo systemctl is-active --quiet  mongod
 if [ "$?" = 0 ]; then
   sudo systemctl stop mongod
   echo " --- Logibaas seisatud"
+  echo
 fi
 
-# 3. Kontrolli, kas MongoDB on juba paigaldatud.
-# Vajadusel eemalda. Küsi, kas ka andmefailid
-# dpkg -s tagastab 0, kui pakett on paigaldatud; 1, kui ei ole
-dpkg -s mongodb &> /dev/null
-if [ "$?" = 0 ]; then 
-  echo " --- MongoDB on juba paigaldatud"
-  read -p " --- Kas paigaldada MongoDB uuesti (y/n)? " prompt
-  if [[ $prompt != y && $prompt != Y ]]
-  then
-    lopeta
-  else
-    echo " --- Eemaldan MongoDB"
-    sudo apt-get remove mongodb
-    kontrolli $? " OK" " --- MongoDB eemaldamine ebaõnnestus"
-  fi
-  read -p " --- Kas eemaldada ka andmefailid (y/n)? " prompt
-  if [[ $prompt = y || $prompt = Y ]]
-  then
-    sudo rm -R /var/lib/mongodb
-    kontrolli $? " OK" " --- Andmefailide (/var/lib/mongodb) eemaldamine ebaõnnestus"
-  fi
-fi
-
-# 4. Paigalda MongoDB
+# ------------------------------
+# 3. Paigalda MongoDB
+echo
 echo " --- Paigaldan MongoDB"
+echo
 echo " --- Paigaldamise 1. samm: paigaldan paketikontrolli võtmed"
 echo
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
 kontrolli $? " --- Paigaldamise 1. samm"
 
+echo
 echo " --- Paigaldamise 2. samm"
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list
 kontrolli $? " --- Paigaldamise 2. samm"
@@ -108,16 +90,19 @@ kontrolli $? " --- Paigaldamise 2. samm"
 # Uuenda paketinimekirja:
 sudo apt-get update
 
+echo
 echo " --- Paigaldamise 3. samm"
 sudo apt-get install -y mongodb-org-server=3.6.4 mongodb-org-shell=3.6.4
 # sudo apt-get install -y mongodb-org
 kontrolli $? " --- Paigaldamise 3. samm"
 
 # Kontrolli MongoDB paigaldust
+echo
 echo " --- Paigalduse kontroll: "
 mongod --version
 
-# 5. Sea kasutajale mongodb parool (algselt tal pole parooli)
+# ------------------------------
+# 4. Sea kasutajale mongodb parool (algselt tal pole parooli)
 echo " --- Sean kasutajale mongodb parooli"
 sudo passwd mongodb
 
@@ -127,16 +112,20 @@ sudo passwd mongodb
 # cd /var/lib/mongodb
 # sudo chown -R mongodb:mongodb *
 
-# 6. Käivita MongoDB
+# ------------------------------
+# 5. Käivita MongoDB
 # kasutaja mongodb alt, teenusena (deemonina)
 # Alternatiiv: käivitada taustaprotsessina
 # su -c 'mongod --config /etc/mongod.conf &' - mongodb
+echo
 echo " --- Käivitan MongoDB"
 sudo systemctl start mongod
 kontrolli $? " --- MongoDB käivitamine" 
 
-# 7. Loo MongoDB kasutaja userAdmin
-# Vt https://docs.mongodb.com/manual/tutorial/write-scripts-for-the-mongo-shell/ 
+# ------------------------------
+# 6. Loo MongoDB kasutaja userAdmin
+# Vt https://docs.mongodb.com/manual/tutorial/write-scripts-for-the-mongo-shell/
+echo
 echo " --- Loon MongoDB kasutaja userAdmin"
 read -p " --- Sisesta parool userAdmin-le: " PWD_USERADMIN
 mongo <<EOF
@@ -154,27 +143,35 @@ db.createUser(
 )
 EOF
 
-# 8. Peata MongoDB
+# ------------------------------
+# 7. Peata MongoDB
+echo
 echo " --- Peatan MongoDB"
 sudo systemctl stop mongod
 kontrolli $? " --- MongoDB peatamine"
 
-# 9. Lülita autentimine sisse
+# ------------------------------
+# 8. Lülita autentimine sisse
 # Failis /etc/mongod.conf muuda authorization: disabled -> enabled
+echo
 echo " --- Lülitan sisse autentimise"
 sed -i 's/authorization: disabled/authorization: enabled/' /etc/mongod.conf
 kontrolli $? " --- MongoDB konf-ifaili muutmine" 
 
-# 10. Käivita andmebaas uuesti
+# ------------------------------
+# 9. Käivita andmebaas uuesti
+echo
 echo " --- Käivitan MongoDB uuesti"
 sudo systemctl start mongod
 kontrolli $? " --- MongoDB käivitamine" 
 
-# 11. Loo kasutajad rakendus ja andmehaldur
+# ------------------------------
+# 10. Loo kasutajad rakendus ja andmehaldur
 # ühendudes andmebaasi külge kasutajana userAdmin
+echo
 echo " --- Loon MongoDB kasutajad rakendus ja andmehaldur"
 read -p " --- Sisesta parool rakendusele: " PWD_RAKENDUS
-read -p " --- Sisesta parool andmehaldurile: " PWD_RAKENDUS
+read -p " --- Sisesta parool andmehaldurile: " PWD_ANDMEHALDUR
 mongo -u "userAdmin" -p "$PWD_USERADMIN" --authenticationDatabase "admin" <<EOF
 use users
 db.createUser(
@@ -196,7 +193,7 @@ EOF
 # Muutujate kasutamise kohta heredoc-is vt:
 # https://unix.stackexchange.com/questions/405250/passing-and-setting-variables-in-a-heredoc 
 
-# 12. Väljasta lõputeade
+# 11. Väljasta lõputeade
 
 lopeta
 

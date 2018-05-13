@@ -12,9 +12,6 @@ kasJatkan
 
 # 1. Paigalda Node.js
 
-# ------------------------------
-# 1. Kontrollin, kas Node.js on paigaldatud
-
 # 1. Paigaldan Node.js
 # 2. Paigaldan curl-i
 # 3. Paigaldan Node.js
@@ -67,7 +64,7 @@ function kasJatkan {
 #
 function paigalda_Nodejs_teek {
   npm install $1 --save
-  kontrolli "$?" "Node.js teegi paigaldamine ebaõnnestus"
+  kontrolli "$?" "Node.js teegi paigaldamine"
 }
 
 # ------------------------------
@@ -88,7 +85,7 @@ dpkg -s nodejs &> /dev/null
 if [ "$?" = 0 ]; then 
   echo " --- Eemaldan Node.js"
   sudo apt-get remove nodejs
-  kontrolli "$?" " --- Node.js eemaldamine ebaõnnestus"
+  kontrolli "$?" " --- Node.js eemaldamine"
 fi
 
 # ------------------------------
@@ -96,17 +93,17 @@ fi
 #
 echo " --- Paigaldan curl-i"
 sudo apt-get install curl
-kontrolli "$?" " --- curl-i paigaldamine ebaõnnestus"
+kontrolli "$?" " --- curl-i paigaldamine"
 
 # ------------------------------
 # 3. Paigaldan Node.js
 #
 echo Paigaldan Node.js
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-kontrolli "$?" " --- Node.js paigaldamise 1. samm ebaõnnestus"
+kontrolli "$?" " --- Node.js paigaldamise 1. samm"
 
 sudo apt-get install -y nodejs
-kontrolli "$?" " --- Node.js paigaldamine ebaõnnestus"
+kontrolli "$?" " --- Node.js paigaldamine"
 
 echo " --- Kontrolli Node.js paigaldust:"
 nodejs -v
@@ -168,7 +165,7 @@ kasJatkan
 #
 echo " --- Loon kasutaja tarastat"
 sudo adduser tarastat
-kontrolli "$?" " --- Kasutaja tarastat loomine ebaõnnestus"
+kontrolli "$?" " --- Kasutaja tarastat loomine"
 kasJatkan
 
 # TODO õiguste andmine
@@ -196,7 +193,7 @@ kasJatkan
 #
 echo "Paigaldan Node.js protsessihalduri pm2"
 sudo npm install -g pm2
-kontrolli "$?" "Protsessihalduri pm2 paigaldamine ebaõnnestus"
+kontrolli "$?" "Protsessihalduri pm2 paigaldamine"
 
 echo "Genereerin pm2 automaatkäivituse skripti"
 pm2 startup systemd
