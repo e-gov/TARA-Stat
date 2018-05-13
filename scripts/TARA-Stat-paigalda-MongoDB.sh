@@ -138,15 +138,15 @@ kontrolli $? " --- MongoDB käivitamine"
 # 7. Loo MongoDB kasutaja userAdmin
 # Vt https://docs.mongodb.com/manual/tutorial/write-scripts-for-the-mongo-shell/ 
 echo " --- Loon MongoDB kasutaja userAdmin"
-read -p " --- Sisesta parool userAdmin-le: " PASSWORD
+read -p " --- Sisesta parool userAdmin-le: " PWD_USERADMIN
 mongo <<EOF
 use admin
 db.createUser(
   { user: "userAdmin",
-    pwd: "$PASSWORD",
+    pwd: "$PWD_USERADMIN",
     roles: [
       {
-        role: userAdminAnyDatabase",
+        role: "userAdminAnyDatabase",
         db: "admin"
       }
     ]
@@ -175,7 +175,7 @@ kontrolli $? " --- MongoDB käivitamine"
 echo " --- Loon MongoDB kasutajad rakendus ja andmehaldur"
 read -p " --- Sisesta parool rakendusele: " PWD_RAKENDUS
 read -p " --- Sisesta parool andmehaldurile: " PWD_RAKENDUS
-mongo -u "userAdmin" -p "changeit" --authenticationDatabase "admin" <<EOF
+mongo -u "userAdmin" -p "$PWD_USERADMIN" --authenticationDatabase "admin" <<EOF
 use users
 db.createUser(
   {
