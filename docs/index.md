@@ -559,11 +559,19 @@ Vajadusel vt:
 
 ### 3.2 Paigaldusjärjekord
 
-Automaatpaigaldamiseks on kaks skripti:
+Automaatpaigaldamiseks on kaustas `TARA-Stat/scripts` kaks skripti:
 - `TARA-Stat-paigalda-MongoDB.sh` paigaldab logibaasi (MongoDB), sh moodustab andmebaasikasutajad
 - `TARA-Stat-paigalda-Nodejs.sh` paigaldab Node.js, TARA-Stat veebirakenduse ja Node.js protsessihalduri pm2.
 
-Osa toiminguid tuleb siiski teha käsitsi. Tee toimingud järgmiselt:
+Skripti käivitamine:
+
+```
+cd $HOME/Tara-Stat/scripts
+sudo bash TARA-Stat-paigalda-MongoDB.sh
+sudo bash TARA-Stat-paigalda-Nodejs.sh
+```
+
+Skripte ei pea kasutama. Võib paigaldada käsitsi. Kuid ka skriptide kasutamisel tuleb osa toiminguid siiski teha käsitsi. Tee toimingud järgmiselt:
 
 | toiming                            | käsitsi      | skriptiga  |
 |------------------------------------|--------------|------------|

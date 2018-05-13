@@ -23,6 +23,41 @@ echo
 # 11. Loo kasutajad rakendus ja andmehaldur
 # 12. Väljasta lõputeade
 
+# ------------------------------
+# Abistaja: Väljasta lõputeade ja välju
+#
+function lopeta {
+  echo
+  echo " --- MongoDB paigaldamise LÕPP"
+  echo
+  exit
+}
+
+# ------------------------------
+# Abistaja: Kontrolli käsu õnnestumist
+#
+function kontrolli {
+  if [ "$1" = 0 ]
+  then
+    echo "$2 OK"
+  else  
+    echo "$2 ebaõnnestus"
+    lopeta
+  fi 
+}
+
+# ------------------------------
+# Abistaja: Küsin kasutajalt kas jätkata
+#
+function kasJatkan {
+  echo " "
+  read -p " --- Jätkata (y/n)? " prompt
+  if [[ $prompt != y && $prompt != Y ]]
+  then
+    lopeta
+  fi
+}
+
 # 1. Kaitse eksliku käivitamise vastu
 kasJatkan
 
@@ -142,38 +177,5 @@ EOF
 
 # 12. Väljasta lõputeade
 
-# ------------------------------
-# Abistaja: Väljasta lõputeade ja välju
-#
-function lopeta {
-  echo
-  echo " --- MongoDB paigaldamise LÕPP"
-  echo
-  exit
-}
+lopeta
 
-# ------------------------------
-# Abistaja: Kontrolli käsu õnnestumist
-#
-function kontrolli {
-  if [ "$1" = 0 ]
-  then
-    echo "$2 OK"
-  else  
-    echo "$2 ebaõnnestus"
-    lopeta
-  fi 
-}
-
-# ------------------------------
-# Abistaja: Küsin kasutajalt kas jätkata
-#
-function kasJatkan {
-  echo " "
-  read -p " --- Jätkata (y/n)? " prompt
-  if [[ $prompt != y && $prompt != Y ]]
-  then
-    lopeta
-  fi
-
-}

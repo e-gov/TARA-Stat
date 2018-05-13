@@ -25,6 +25,49 @@ kasJatkan
 # 8. Paigaldan Node.js protsessihalduri pm2
 
 # ------------------------------
+# Abistaja: Väljasta lõputeade ja välju
+#
+function lopeta {
+  echo
+  echo " --- MongoDB paigaldamise LÕPP"
+  echo
+  exit
+}
+
+# ------------------------------
+# Abistaja: Kontrolli käsu õnnestumist
+#
+function kontrolli {
+  if [ "$1" = 0 ]
+  then
+    echo "$2 OK"
+  else  
+    echo "$2 ebaõnnestus"
+    lopeta
+  fi 
+}
+
+# ------------------------------
+# Abistaja: Küsin kasutajalt kas jätkata
+#
+function kasJatkan {
+  echo " "
+  read -p " --- Jätkata (y/n)? " prompt
+  if [[ $prompt != y && $prompt != Y ]]
+  then
+    lopeta
+  fi
+}
+
+# ------------------------------
+# Abistaja: Paigalda Node.js teek
+#
+function paigalda_Nodejs_teek {
+  npm install $1 --save
+  kontrolli "$?" "Node.js teegi paigaldamine ebaõnnestus"
+}
+
+# ------------------------------
 # Kontrollin, kas Node.js töötab. Kui töötab, siis seiskan
 # NODEJS_PID=$(pidof nodejs)
 # if [ ! -z "$NODEJS_PID" ]
@@ -161,46 +204,3 @@ echo "Seejärel pm2 start index käivitab TARA-Stat veebirakenduse"
 
 lopeta
 
-# ------------------------------
-# Abistaja: Paigalda Node.js teek
-#
-function paigalda_Nodejs_teek {
-  npm install $1 --save
-  kontrolli "$?" "Node.js teegi paigaldamine ebaõnnestus"
-}
-
-# ------------------------------
-# Abistaja: Väljasta lõputeade ja välju
-#
-function lopeta {
-  echo
-  echo " --- MongoDB paigaldamise LÕPP"
-  echo
-  exit
-}
-
-# ------------------------------
-# Abistaja: Kontrolli käsu õnnestumist
-#
-function kontrolli {
-  if [ "$1" = 0 ]
-  then
-    echo "$2 OK"
-  else  
-    echo "$2 ebaõnnestus"
-    lopeta
-  fi 
-}
-
-# ------------------------------
-# Abistaja: Küsin kasutajalt kas jätkata
-#
-function kasJatkan {
-  echo " "
-  read -p " --- Jätkata (y/n)? " prompt
-  if [[ $prompt != y && $prompt != Y ]]
-  then
-    lopeta
-  fi
-
-}
