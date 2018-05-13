@@ -621,6 +621,10 @@ Moodusta vajalik fail, et apt leiaks paketid üles:
 
 `echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list`
 
+Uuenda paketinimekirja:
+
+`sudo apt-get update`
+
 Paigalda ainult vajalikud MongoDB komponendid - andmebaasiserver `mongod` ja shell `mongo`:
 
 `sudo apt-get install -y mongodb-org-server=3.6.4 mongodb-org-shell=3.6.4`
