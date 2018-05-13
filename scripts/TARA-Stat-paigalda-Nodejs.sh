@@ -8,18 +8,16 @@
 echo
 echo " --- TARA-Stat: Paigaldan Node.js ja TARA-Stat veebirakendus"
 echo
-kasJatkan
 
-# 1. Paigalda Node.js
-
-# 1. Paigaldan Node.js
-# 2. Paigaldan curl-i
-# 3. Paigaldan Node.js
-# 4. Paigaldan rakendusele vajalikud Node.js teegid
-# 5. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
-# 6. Loon kasutaja tarastat
-# 7. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
-# 8. Paigaldan Node.js protsessihalduri pm2
+# 1. Kaitse eksliku käivitamise vastu
+# 2. Paigaldan Node.js
+# 3. Paigaldan curl-i
+# 4. Paigaldan Node.js
+# 5. Paigaldan rakendusele vajalikud Node.js teegid
+# 6. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
+# 7. Loon kasutaja tarastat
+# 8. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
+# 9. Paigaldan Node.js protsessihalduri pm2
 
 # ------------------------------
 # Abistaja: Väljasta lõputeade ja välju
@@ -68,6 +66,10 @@ function paigalda_Nodejs_teek {
 }
 
 # ------------------------------
+# 1. Kaitse eksliku käivitamise vastu
+kasJatkan
+
+# ------------------------------
 # Kontrollin, kas Node.js töötab. Kui töötab, siis seiskan
 # NODEJS_PID=$(pidof nodejs)
 # if [ ! -z "$NODEJS_PID" ]
@@ -77,7 +79,7 @@ function paigalda_Nodejs_teek {
 # fi
 
 # ------------------------------
-# 1. Kontrollin, kas Node.js on paigaldatud
+# 2. Kontrollin, kas Node.js on paigaldatud
 #
 echo Kontrollin, kas Node.js on paigaldatud
 # dpkg -s tagastab 0, kui pakett on paigaldatud; 1, kui ei ole
@@ -89,14 +91,14 @@ if [ "$?" = 0 ]; then
 fi
 
 # ------------------------------
-# 2. Paigaldan curl-i
+# 3. Paigaldan curl-i
 #
 echo " --- Paigaldan curl-i"
 sudo apt-get install curl
 kontrolli "$?" " --- curl-i paigaldamine"
 
 # ------------------------------
-# 3. Paigaldan Node.js
+# 4. Paigaldan Node.js
 #
 echo Paigaldan Node.js
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
@@ -113,7 +115,7 @@ echo
 kasJatkan
 
 # ------------------------------
-# 4. Paigaldan rakendusele vajalikud Node.js teegid
+# 5. Paigaldan rakendusele vajalikud Node.js teegid
 #
 echo " --- Paigaldan Node.js teegid"
 cd $HOME/TARA-Stat
@@ -136,7 +138,7 @@ echo
 kasJatkan
 
 # ------------------------------
-# 5. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
+# 6. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
 #
 cd $HOME/TARA-Stat
 mkdir keys
@@ -161,7 +163,7 @@ echo
 kasJatkan
 
 # ------------------------------
-# 6. Loon kasutaja tarastat
+# 7. Loon kasutaja tarastat
 #
 echo " --- Loon kasutaja tarastat"
 sudo adduser tarastat
@@ -171,7 +173,7 @@ kasJatkan
 # TODO õiguste andmine
 
 # ------------------------------
-# 7. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
+# 8. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
 #
 read -p "Anna API-kasutajanimi" APIUSER
 read -p "Anna API-võti (juhusõne pikkusega vähemalt 20 tähemärki)" APIKEY
@@ -189,7 +191,7 @@ echo
 kasJatkan
 
 # ------------------------------
-# 8. Paigaldan Node.js protsessihalduri pm2
+# 9. Paigaldan Node.js protsessihalduri pm2
 #
 echo "Paigaldan Node.js protsessihalduri pm2"
 sudo npm install -g pm2
