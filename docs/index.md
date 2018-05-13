@@ -1,16 +1,16 @@
 Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
 {: .adv}
 
-# Mikroteenuste aabits
+# Mikroteenuste A & O (koos töötava näitega)
 {: .no_toc}
 
 5\. päev, 09.05.2018<br><br>
 
 <p style='text-align:right;'><i>Do one thing and do it well</i> &mdash; <a href='https://en.wikipedia.org/wiki/Unix_philosophy' target='_new'>Unix_philosophy</a></p>
 
-Käesoleval kirjutisel on kaks osa. Esimeses osas käime läbi rea küsimusi, mis mikroteenuste (µT) arhitektuuri juurutamisel praktikas tõusetuvad. Peame tõdema, et paljudele küsimustele ei ole veel selgeid vastuseid.
+Käesoleval kirjutisel on kaks osa. Esimeses osas arutlen küsimuste üle, mis mikroteenuste (µT) arhitektuuris praktikas olulised. Tuleb tõdeda, et paljudele küsimustele ei ole veel selgeid vastuseid.
 
-Teises osa moodustab ühe konkreetse mikroteenuse - TARA-Stat - kirjeldus.
+Teise osa moodustab ühe konkreetse mikroteenuse - TARA-Stat - kirjeldus.
 
 ## Sisukord
 {: .no_toc}
@@ -556,11 +556,14 @@ Logibaas suhtleb ainult veebirakendusega; ei suhtle masinast väljapoole.
 
 - MongoDB
   - `/etc/mongodb.conf` - konf-ifail
-  - `/var/log/mongodb` - andmebaasilogi
+  - `/var/log/mongodb/mongod.log` - andmebaasilogi
   - `/var/lib/mongodb` - andmebaasifailid
   - `/etc/init.d/mongodb` - automaatkäivitusskript
 
 Täpsemalt TARA-Stat omaduste ja ehituses kohta vt jaotis 2. 
+
+Vajadusel vt:
+- [How to Install and Configure MongoDB on Ubuntu 16.04 LTS](https://www.howtoforge.com/tutorial/install-mongodb-on-ubuntu-16.04/) (HowtoForge)
 
 ### 3.2 Automaatpaigaldamine
 
@@ -595,7 +598,7 @@ Vajadusel vt:
 - [How to Install MongoDB on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
 - [Install MongoDB Community Edition on Ubuntu](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/).
 
-1\. Paigalda MongoDB (viimane stabiilne versioon).
+Paigalda MongoDB viimane stabiilne versioon.
 
 Kui paigaldamine ebaõnnestus, siis võib olla vajalik andmefailide kustutamine kaustas `/var/lib/mongodb` enne uuesti paigaldamist.
 {: .adv}
@@ -603,9 +606,6 @@ Kui paigaldamine ebaõnnestus, siis võib olla vajalik andmefailide kustutamine 
 Paigalda pakettide kontrollimise võtmed:
 
 `sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5`
-
-MongoDB paigaldamisel võib olla vajadus proovida üht järgmistest variantidest ja kui see ei tööta, siis teist.
-{: .adv}
 
 Moodusta vajalik fail, et apt leiaks paketid üles:
 
@@ -620,23 +620,34 @@ Alternatiiv: paigalda täiskomplekt (sisaldab ka serveris mittevajalikku MongoDB
 
 Paigaldamisel luuakse kasutaja `mongodb` ja lisatakse ta kasutajate gruppi `mongodb`.
 
+MongoDB lastakse käima kasutaja `mongodb´ alt. Seetõttu `mongodb` vajab kirjutusõigusi MongoDB logifaili ja andmebaasifailidele. Kui oled neid muutnud (määranud omanikuks teise kasutaja), siis saad `mongodb` uuesti omanikuks seada järgmiselt:
+{: .adv}
+
+```
+sudo chown mongodb /var/log/mongodb/mongod.log
+cd /var/lib/mongodb
+sudo chown -R mongodb:mongodb *
+```
+
 Kontrolli paigaldust: `mongod --version`
 
 Sea kasutajale `mongodb` parool: `sudo passwd mongodb`
 
-2\. Seadista MongoDB.
-
-Leia konfi-fail `/etc/mongodb.conf`
-
-Veendu, et seadistused sobivad. Vajadusel muuda. Autentimist (`auth=`) ei ole hetkel vaja veel sisse lülitada. Nt andmebaasi kaust on `/var/lib/mongodb`. 
+Seadista MongoDB. Leia konfi-fail `/etc/mongodb.conf`. Veendu, et seadistused sobivad. Vajadusel muuda. Autentimist (`auth=`) ei ole hetkel vaja veel sisse lülitada. Nt andmebaasi kaust on `/var/lib/mongodb`. 
 
 Vajadusel vt [MongoDB Configuration](https://docs.mongodb.com/manual/administration/configuration/).
 
-Käivita MongoDB (teenusena, `systemctl` abil):
+Käivita MongoDB (teenusena, `systemctl` abil, kasutaja `mongodb` all):
 
 `sudo systemctl start mongod`
 
 Kontrolli, et andmebaas käivitus: `sudo systemctl status mongod`
+
+_Alternatiiv: MongoDB käivitamine käsu `service` abil:_
+
+`sudo service start mongodb`
+
+_Vajadusel vt: [systemctl ja service seletus](https://askubuntu.com/questions/903354/difference-between-systemctl-and-service)_
 
 _Alternatiiv: MongoDB käivitamine taustaprotsessina, konfi-faili näitamisega:_
 
@@ -678,7 +689,7 @@ Kasulik on meelde jätta andmebaasiserveri protsessinumber. Veendu, et andmebaas
 
 MongoDB logi: `/var/log/mongodb/mongodb.log`.
 
-Taga, et andmete kaust, vaikimis `/var/lib/mongodb` on olemas ja andmebaasiserveril on õigused sinna kirjutada. Vajadusel korrigeeri failisüsteemi pääsuõigusi, nt: `sudo chmod -R ug+rw /var/lib/mongodb`.
+Taga, et andmete kaust, vaikimisi `/var/lib/mongodb` on olemas ja andmebaasiserveril on õigused sinna kirjutada. Vajadusel korrigeeri failisüsteemi pääsuõigusi, nt: `sudo chmod -R ug+rw /var/lib/mongodb`.
 {: .note}
 
 Ühendu CLI-ga andmebaasi külge: `mongo`. Seejärel:
@@ -868,27 +879,31 @@ TARA-Stat tarkvara täiendamisel ei ole alati vaja paigaldust täies ulatuses ko
 - Kui muutsid VM repos midagi ja tahad, et lähterepost tulev kirjutab sinu muudatused üle, siis anna: `git checkout .`
 - Värskenda: `git pull origin master`
 
+Kui VM ei tunnista git repo serti, siis kontrolli, kas VM kell on õige: `date`. Põhjus võib olla see, et NTP pole sees. Vajadusel paigalda NTP: `sudo apt-get install ntp`.
+{: .adv}
+
 ## 4 Käitamine
 
-### 4.1 Käsitsi käivitamine
+### 4.1 Käivitamine
 
 Eeldus: Node.js ja MongoDB on paigaldatud ja seadistatud.
 {: .adv}
 
-1\. Käivita MongoDB:
+**MongoDB käivitamine**. MongoDB tuleks käivitada teenusena (deemonina). Selleks määra MongoDB VM-i käivitamisel automaatselt käivitatavaks:
 
-`systemctl enable mongod.service`
+`sudo systemctl enable mongod`
 
-`(sudo) systemctl start mongod`
+Käivita teenus:
+
+`sudo systemctl start mongod`
+
+_Testimise eesmärgil võib MongoDB käivitada ka terminalist lahtiseotud taustaprotsessina. Vajalik on näidata konf-ifail:_
 
 `mongod --config /etc/mongod.conf &`
 
-Kui MongoDB käivitada terminaliga seotult (ilma &-ta), siis MongoDB vastab diagnostiliste teadetega ja lõpuks: `[initandlisten] waiting for connections on port 27017`.
-{: .note}
+_MongoDB võib käivitada ka terminaliga seotult (ilma &-ta), siis MongoDB vastab diagnostiliste teadetega ja lõpuks: `[initandlisten] waiting for connections on port 27017`._
 
-2\. Käivita veebirakendus
-
-Liigu veebirakenduse juurkausta `TARA-Stat` ja sisesta:
+**TARA-Stat veebirakenduse käivitamine**. Liigu veebirakenduse juurkausta `TARA-Stat` ja sisesta:
 
 `nodejs index &`
 

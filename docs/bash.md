@@ -128,6 +128,22 @@ permalink: Bash
   - `stdout` suunamine faili: `ls -l > ls-1.txt`
   - **failideskriptorid** - `stdin`, `stdout`, `stderr`
   - `1` tähistab `stdout`, `2` tähistab `stderr`
+  - **<<EOF** (sisendi suunamine käsule)
+    - [kirjeldus](https://superuser.com/questions/1003760/what-does-eof-do)
+
+- **striimiredaktor**
+  - [sed juhend](https://www.gnu.org/software/sed/manual/sed.html)
+
+- **systemctl**
+  - teenuste haldusvahend, osa systemd haldussüsteemist
+  - [How To Use Systemctl to Manage Systemd Services and Units](https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units)
+  - `sudo systemctl start nimi` (käivita teenus `nimi`)
+  - `stop`, `restart`
+  - `reload` (loeb uuesti konf-ifail, kui on suuteline)
+  - `reload-or-restart` (emb-kumb)
+  - `enable` (määrab VM käivitamisel automaatselt käivitatavaks)
+  - `disable`
+  - `status`
 
 - **terminalist lahtisidumine**
   - ` &` (käsu lõpus, käivitatav protsess seotakse terminalist lahti ja hakkab jooksma taustal)
@@ -142,14 +158,19 @@ permalink: Bash
 - **toru**
   - `|` - ühendus protsesside vahel
 
+- **võrguliiklus**
+  - `netstat -plntu` (loetelu kuulajatest: protokoll, IP, port)
+
 - **õigused failisüsteemis**
   - `chmod` (õiguste muutmine)
     - `-R` (rekursiivseltsud)
     - `sudo chmod -R ug+rw /var/lib/mongodb` (user ja group-le lisada read ja write õigused)
     - `sudo chmod +x kaivita.sh` (käivitusõiguse andmine failile)
-  - `chown` (omanduse muutmine)  
+  - `sudo chown kasutaja fail` (seab kasutaja faili omanikuks)  
 
 ## Märkmed
+
+- [Manual Work is a Bug](https://queue.acm.org/detail.cfm?id=3197520)
 
 - `sudo apt-get install libxss1 libasound2`
 - `sudo apt-get install libgtk2.0-0`
