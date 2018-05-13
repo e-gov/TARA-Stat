@@ -81,31 +81,34 @@ kasJatkan
 # ------------------------------
 # 2. Kontrollin, kas Node.js on paigaldatud
 #
+echo
 echo Kontrollin, kas Node.js on paigaldatud
 # dpkg -s tagastab 0, kui pakett on paigaldatud; 1, kui ei ole
 dpkg -s nodejs &> /dev/null
 if [ "$?" = 0 ]; then 
   echo " --- Eemaldan Node.js"
   sudo apt-get remove nodejs
-  kontrolli "$?" " --- Node.js eemaldamine"
+  kontrolli "$?" "Node.js eemaldamine"
 fi
 
 # ------------------------------
 # 3. Paigaldan curl-i
 #
+echo
 echo " --- Paigaldan curl-i"
 sudo apt-get install curl
-kontrolli "$?" " --- curl-i paigaldamine"
+kontrolli "$?" "curl-i paigaldamine"
 
 # ------------------------------
 # 4. Paigaldan Node.js
 #
-echo Paigaldan Node.js
+echo
+echo " --- Paigaldan Node.js"
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-kontrolli "$?" " --- Node.js paigaldamise 1. samm"
+kontrolli "$?" "Node.js paigaldamise 1. samm"
 
 sudo apt-get install -y nodejs
-kontrolli "$?" " --- Node.js paigaldamine"
+kontrolli "$?" "Node.js paigaldamine"
 
 echo " --- Kontrolli Node.js paigaldust:"
 nodejs -v
@@ -117,6 +120,7 @@ kasJatkan
 # ------------------------------
 # 5. Paigaldan rakendusele vajalikud Node.js teegid
 #
+echo
 echo " --- Paigaldan Node.js teegid"
 cd $HOME/TARA-Stat
 
@@ -140,6 +144,8 @@ kasJatkan
 # ------------------------------
 # 6. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
 #
+echo
+echo " --- Genereerin ja paigaldan veebirakenduse HTTPS võtmed"
 cd $HOME/TARA-Stat
 mkdir keys
 cd keys
@@ -151,13 +157,6 @@ openssl req -new -x509 -key tara-stat.key -out tara-stat.cert -days 3650 -subj /
 echo Veendu, et failid tara-stat.cert ja tara-stat.key moodustati
 echo
 ls -l
-
-echo
-kasJatkan
-
-echo Veendu, et TARA-Stat konf-ifailis failidele tara-stat.cert ja tara-stat.key õigesti viidatud
-echo
-grep -i 'tara-stat' $HOME/TARA-Stat/config.js
 
 echo
 kasJatkan
@@ -175,9 +174,10 @@ kasJatkan
 # ------------------------------
 # 8. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
 #
-read -p "Anna API-kasutajanimi" APIUSER
-read -p "Anna API-võti (juhusõne pikkusega vähemalt 20 tähemärki)" APIKEY
+read -p "Anna API-kasutajanimi: " APIUSER
+read -p "Anna API-võti (juhusõne pikkusega vähemalt 20 tähemärki): " APIKEY
 
+echo
 echo " --- Paigaldan API kasutajanime ja võtme TARA-Stat konf-i"
 
 sed -i "s/APIUSER-changeit/$APIUSER" $HOME/TARA-Stat/config.js
@@ -193,13 +193,16 @@ kasJatkan
 # ------------------------------
 # 9. Paigaldan Node.js protsessihalduri pm2
 #
+echo
 echo "Paigaldan Node.js protsessihalduri pm2"
 sudo npm install -g pm2
 kontrolli "$?" "Protsessihalduri pm2 paigaldamine"
 
+echo
 echo "Genereerin pm2 automaatkäivituse skripti"
 pm2 startup systemd
 
+echo
 echo "Täida eelmise käsu väljundi viimane rida (sellega luuakse systemd unit, millega pm2 automaatkäivitatakse)"
 
 echo "Seejärel pm2 start index käivitab TARA-Stat veebirakenduse"

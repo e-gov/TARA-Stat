@@ -10,20 +10,11 @@ var config = {};
 config.port = process.env.PORT || 5000;
 
 /**
- * HTTPS privaatvõtme ja serdi failide asukohad
- * Kommenteeri mittevajalik välja (Windows v Ubuntu)
+ * HTTPS privaatvõtme ja serdi failide nimed
+ * failid peavad olema kaustas TARA-Stat/keys
  */
-
-/**
- * Windows
- * Oluline: Backslash escape \\
- */
-config.key = "keys\\tara-stat.key";
-config.cert = 'keys\\tara-stat.cert';
-
-/* Ubuntu */
-// config.key = '/home/priit/TARA-Stat/keys/tara-stat.key';
-// config.cert = '/home/priit/TARA-Stat/keys/tara-stat.cert';
+config.key = 'tara-stat.key';
+config.cert = 'tara-stat.cert';
 
 /* Andmebaasi nimi */
 config.logibaas = 'logibaas';

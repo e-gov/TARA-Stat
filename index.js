@@ -22,6 +22,7 @@ var https = require('https');
 
 /* Sertide laadimiseks */
 var fs = require('fs');
+var path = require('path');
 
 /* Veebiraamistik Express */
 const express = require('express');
@@ -61,10 +62,15 @@ app.set('view engine', 'ejs');
 parsimiseks */
 app.use(bodyParser.json());
 
-/* HTTPS suvandid */
+/**
+ * HTTPS suvandid
+ * Vt: https://stackoverflow.com/questions/32705219/nodejs-accessing-file-with-relative-path 
+ */
+var keyPath = path.join(__dirname, 'keys', config.key);
+var certPath = path.join(__dirname, 'keys', config.cert);
 var options = {
-  key: fs.readFileSync(config.key),
-  cert: fs.readFileSync(config.cert),
+  key: fs.readFileSync(keyPath, 'utf8'),
+  cert: fs.readFileSync(certPath, 'utf8'),
   requestCert: false,
   rejectUnauthorized: false
 };
