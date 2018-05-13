@@ -29,7 +29,7 @@ kasJatkan
 #
 function lopeta {
   echo
-  echo " --- MongoDB paigaldamise LÕPP"
+  echo " --- Node.js paigaldamise LÕPP"
   echo
   exit
 }
@@ -38,11 +38,14 @@ function lopeta {
 # Abistaja: Kontrolli käsu õnnestumist
 #
 function kontrolli {
+  echo
   if [ "$1" = 0 ]
   then
-    echo "$2 OK"
+    echo " --- $2 -> OK"
+    echo
   else  
-    echo "$2 ebaõnnestus"
+    echo " --- $2 -> EBAÕNNESTUS"
+    echo
     lopeta
   fi 
 }

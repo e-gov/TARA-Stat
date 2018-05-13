@@ -37,11 +37,14 @@ function lopeta {
 # Abistaja: Kontrolli käsu õnnestumist
 #
 function kontrolli {
+  echo
   if [ "$1" = 0 ]
   then
-    echo "$2 OK"
+    echo " --- $2 -> OK"
+    echo
   else  
-    echo "$2 ebaõnnestus"
+    echo " --- $2 -> EBAÕNNESTUS"
+    echo
     lopeta
   fi 
 }
@@ -94,16 +97,18 @@ fi
 # 4. Paigalda MongoDB
 echo " --- Paigaldan MongoDB"
 echo " --- Paigaldamise 1. samm: paigaldan paketikontrolli võtmed"
+echo
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
-kontrolli $? " OK" " --- Paigaldamise 1. samm ebaõnnestus"
+kontrolli $? " --- Paigaldamise 1. samm"
 
 echo " --- Paigaldamise 2. samm"
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list
-kontrolli $? " OK" " --- Paigaldamise 2. samm ebaõnnestus"
+kontrolli $? " --- Paigaldamise 2. samm"
 
 echo " --- Paigaldamise 3. samm"
-sudo apt-get install -y mongodb-org-server=3.6.4 mongodb-org-shell=3.6.4
-kontrolli $? " OK" " --- Paigaldamise 3. samm ebaõnnestus"
+# sudo apt-get install -y mongodb-org-server=3.6.4 mongodb-org-shell=3.6.4
+sudo apt-get install -y mongodb-org
+kontrolli $? " --- Paigaldamise 3. samm"
 
 # Kontrolli MongoDB paigaldust
 echo " --- Paigalduse kontroll: "
