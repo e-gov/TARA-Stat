@@ -1,7 +1,7 @@
 Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
 {: .adv}
 
-# Mikroteenuste A & O (koos töötava näitega)
+# Mikroteenuste arhitektuurist (koos töötava näitega)
 {: .no_toc}
 
 5\. päev, 09.05.2018<br><br>
@@ -10,7 +10,7 @@ Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (host
 
 Käesoleval kirjutisel on kaks osa. Esimeses osas arutlen küsimuste üle, mis mikroteenuste (µT) arhitektuuris praktikas olulised. Tuleb tõdeda, et paljudele küsimustele ei ole veel selgeid vastuseid.
 
-Teise osa moodustab ühe konkreetse mikroteenuse - TARA-Stat - kirjeldus.
+Teises osas on ühe konkreetse mikroteenuse - TARA-Stat - kirjeldus.
 
 ## Sisukord
 {: .no_toc}
