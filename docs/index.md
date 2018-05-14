@@ -1,7 +1,7 @@
 Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
 {: .adv}
 
-# µ-teenuste arhitektuurist + töötav näide
+# Mikroteenuse arhitektuur (arutelu + töötav näide)
 {: .no_toc}
 
 6\. päev, 14.05.2018<br><br>
@@ -218,7 +218,11 @@ Monoliitrakenduses ei ole komponentidevahelise andmeedastuse turvamine probleem.
 
 #### 1.5.8 Tundliku taristuteabe ja saladuste kaitse
 
-Avaarenduse (_open source_) kasud on nii arvukad ja suured, et tänapäeval avaarendus peaks olema eelistatud arendusmudel. Siiski on avaarenduses teavet, millele juurdepääsu on vaja piirata.
+Avaarenduse (_open source_) kasud on nii arvukad ja suured, et tänapäeval avaarendus peaks olema eelistatud arendusmudel. Siiski on avaarenduses teavet, millele juurdepääsu on vaja piirata. Teavet võib liigitada:
+
+- avalik arendusteave
+- tundlik arendusteave (siin seotud taristu kaitse vajadustega)
+- salajane arendusteave (saladused).
 
 **Tundlik taristuteave** on teave organisatsiooni IT-taristu kohta, mida ründaja saaks kasutada, võimalik, et ühitades muu teabe või võimekustega, IT-taristusse sissemurdmiseks või taristus edasiliikumiseks. Mõistega pean silmas eelkõige mitmesuguseid organisatsioonist **väljapoole mittepaistvaid** parameetreid, nt:
 - hosti- ja domeeninimed
@@ -237,9 +241,7 @@ Tundlikuks taristuteabeks ei loe teavet, mida on kerge tuletada, mis ei oma rün
 
 **Saladused** (_secrets_) on krüptograafilised võtmed, serdid, salasõnad, krüptograafiliste ja turvaprotokollide salajased parameetrid.
 
-Praktikas tuleb arvestada, et süsteem peab olema ka kasutatav. Samuti, turvameetmete rakendamise eelarve ei ole piiramatu. Olulised on järgmised elemendid (vt illustreeriv joonis):
-
-<p style='text-align:center;'><img src='img/SALADUSED.PNG' width= "400"></p>
+Praktikas tuleb arvestada, et süsteem peab olema ka kasutatav. Samuti, turvameetmete rakendamise eelarve ei ole piiramatu. Olulised on järgmised elemendid:
 
 - avalik kood ja dokumentatsioon, tundlik taristuteave ja saladused hoitakse eraldi
 - erinevate eesmärkidega paigaldusi (arendus, testimine, toodang) tehakse kombineerides avalikku koodi, tundlikku taristuteavet ja saladusi 
@@ -249,6 +251,12 @@ Praktikas tuleb arvestada, et süsteem peab olema ka kasutatav. Samuti, turvamee
 - näiteväärtusi ei kasutata toodangus
 - tundlik taristuteave on organisatsiooni siserepos (dokumendi- v koodirepos või mõlemas)
 - saladuste hoidmiseks on oma kord ja tehniline lahendus.
+
+| samm             | avaliku, tundliku ja salajase teabe kasutus |
+|------------------|-----------------------------------------|
+| avalik testimine | avalik kood (GitHub), sh näiteväärtused |
+| sisemine testimine | avalik kood, konf-tud tundlike taristuparameetritega; saladusteks näiteväärtused |
+| toodang | avalik kood (siserepost), konfitud tundlike taristuparameetritega ja saladustega |
 
 ### 1.6 "It works on my machine!"
 
