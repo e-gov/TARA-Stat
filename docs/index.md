@@ -330,7 +330,7 @@ Eelkõige huvitab autentimiste arv klientrakenduste lõikes ajaperioodil.
 
 TARA-Stat kasutajaliides statistikakasutajale:
 
-<p style='text-align:center;'><img src='img/Capture.PNG' width= "650"></p>
+<p style='text-align:center;'><img src='img/Capture.PNG' width= "650" style='border: 1px solid black;'></p>
 
 Ongi kõik. Kohe tekib küsimus, kas seda pole liiga vähe? See µT on spetsialiseeritud logi. Logimine on ulatuslik teema. Logitakse mitmel erineval eesmärgil - turvamine, kasutajate pöördumiste lahendamine, teenuse ülaloleku seiramine jm. Autentimisteenuses TARA on juba oma, keerukas logilahendus - mis on (potentsiaalselt) ühendatud võimsa keskse logisüsteemiga. Kas siis eraldi, spetsialiseeritud logilahendusel on mõtet? See on mittetriviaalne, kuid väga oluline küsimus. Eraldi logilahendusel puuduks mõte, kui olemasolev võimas, väga paindlik ja paljude omadustega, _out-of-the-box_ logisüsteem oleks seadistatav vajaduse lahendamiseks vähema ajaga kui kulub µT arendamiseks. Praktika näitab siiski, et võimsate universaallahenduste tundmaõppimine ja seadistamine võib olla väga töömahukas. Ise tehes saame teha täpselt selle mida vajame - täpselt nii nagu tahame. Küsimusele kumb on parem - kas ise tehtud µT või seadistatud võimas universaalne vahend - ei ole universaalset vastust. Ise põlve otsas tegemine nõuab oskusi ja on kahtlemata riskantne. Kuid reaalsed riskid on ka suurte universaalsete valmislahenduste puhul. Näeme ju praktikas ikka ja jälle, kuidas majja tuuakse ilus ja võimas raamistik, meetod või keel, kuid selle juurutamine võtab aastaid ning suur osa vahendi võimalustest jäävad kasutamata. Igal juhul oleme µT puhul oma kahjusid tõkestanud - äraviskamisel kaotame maksimaalselt ühe nädala töö. Kui arvestada õppimist, siis tõenäoliselt vähem.
 
@@ -1046,7 +1046,7 @@ Sirvik ütleb, et `Your connection is not secure`. See on selle tõttu,et veebir
 
 Voilà!
 
-<p style='text-align:center;'><img src='img/VOILA.PNG' width= "650"></p>
+<p style='text-align:center;'><img src='img/VOILA.PNG' width= "650" style='border: 1px solid black;'></p>
 
 Miks tabelis ei ole statistikat? Sest logibaas on tühi.
 
