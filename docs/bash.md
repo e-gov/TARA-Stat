@@ -45,8 +45,9 @@ permalink: Bash
   - `read NAME` (mitu muutujat eralda tühikutega)
   - `read -p "Paigaldada (y/n)? " answer`
 
-- **kausta v faili kustutamine**
-  - `rm -R nimi` (rekursiivselt)
+- **kausta v faili**
+  - `ls -a -l` (sisu, sh peidetud failide kuvamine)
+  - `rm -R nimi` (kustutamine, rekursiivselt)
 
 - **kommentaar**
   - `#`
