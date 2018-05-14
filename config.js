@@ -30,6 +30,6 @@ config.mongouserpwd = process.env.MONGOUSERPWD || 'MONGOUSERPWD-changeit';
 
 /* Logikirje lisamise API võti */
 config.tarastatuser = 'tara-server';
-config.tarastatsecret = process.env.TARASTATSECRET || 'APIKEY-changeit';
+config.tarastatsecret = process.env.TARASTATSECRET || 'TARASTATSECRET-changeit';
 
 module.exports = config;

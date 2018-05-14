@@ -15,7 +15,7 @@ echo
 # 4. Paigaldan Node.js
 # 5. Paigaldan rakendusele vajalikud Node.js teegid
 # 6. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
-# 7. Loon kasutaja tarastat
+# NB! Praegu mitte tehtud -> 7. Loon kasutaja tarastat
 # 8. Paigaldan MongoDB kasutamise salasõna
 # 9. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
 # Praegu välja lülitatud:
@@ -165,13 +165,13 @@ kasJatkan
 
 # ------------------------------
 # 7. Loon kasutaja tarastat
-#
-echo " --- Loon kasutaja tarastat"
-sudo adduser tarastat
-kontrolli "$?" " --- Kasutaja tarastat loomine"
-kasJatkan
+# NB! Praegu mitte tehtud
+# echo " --- Loon kasutaja tarastat"
+# sudo adduser tarastat
+# kontrolli "$?" " --- Kasutaja tarastat loomine"
+# TODO õiguste andmine tarastat-le
+# kasJatkan
 
-# TODO õiguste andmine
 
 # ------------------------------
 # 8. Paigaldan MongoDB kasutamise salasõna
@@ -186,9 +186,9 @@ sed -i "s/MONGOUSERPWD-changeit/$MONGOUSERPWD/" $HOME/TARA-Stat/config.js
 #
 echo
 echo " --- Paigaldan API võtme TARA-Stat konf-i"
-read -p "Anna API võti (juhusõne pikkusega vähemalt 20 tähemärki): " APIKEY
 
-sed -i "s/APIKEY-changeit/$APIKEY" $HOME/TARA-Stat/config.js
+read -p "Anna API võti: (juhusõne pikkusega vähemalt 20 tähemärki): " TARASTATSECRET
+sed -i "s/TARASTATSECRET-changeit/$TARASTATSECRET/" $HOME/TARA-Stat/config.js
 
 echo "Veendu, et $MONGOUSERPWD ja $APIKEY said paigaldatud: "
 echo

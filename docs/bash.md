@@ -108,12 +108,17 @@ permalink: Bash
   - `which nimi`
 
 - **protsessi lõpetamine**
-  - `kill -s -15 <pid>` (lõpetab protsessi, saates signaali _terminate_ (15) 
+  - `kill -s 15 <pid>` (lõpetab protsessi, saates signaali _terminate_ (15) 
 
 - **protsesside seisund**
   - `ps` (jooksva kasutaja jooksva terminaliga seotud protsessid)
   - `ps aux` (kõik protsessid)
   - `ps -ejH` (protsessipuu)
+
+- **seisundi väljaselgitamine**
+  - `netstat --listen` (kes millist porti kuulab)
+  - `sudo netstat -peanut | grep ":5000"` (protsess, mis kuulab porti 5000)
+  - `ps aux | grep "mongo"` (protsess)  
 
 - **shebang**
   - `#!/bin/bash` (näitab, millist programmi skripti täitmiseks kasutada)

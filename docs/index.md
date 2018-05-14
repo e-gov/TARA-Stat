@@ -584,15 +584,22 @@ Skripte ei pea kasutama. Võib paigaldada käsitsi. Kuid ka skriptide kasutamise
 | paigalda Node.js                   | jaotis 3.5   | `TARA-Stat-paigalda-Nodejs.sh` |
 | seadista TARA-Stat veebirakendus   | jaotis 3.6   | `TARA-Stat-paigalda-Nodejs.sh` |
 | seadista VM tulemüür               | jaotis 3.7   |            |
-| paigalda protsessihaldur pm2       | jaotis 3.8   | `TARA-Stat-paigalda-Nodejs.sh` |
+| paigalda protsessihaldur pm2       | jaotis 3.8   | ~~`TARA-Stat-paigalda-Nodejs.sh`~~ |
 
 ### 3.3 Veebirakenduse paigaldamine
+
+Kui rakendus on juba paigaldatud, siis vt jaotis "Tarkvara uuendamine".
+{: .adv}
 
 1\. Kopeeri veebirakendus ([https://github.com/e-gov/TARA-Stat](https://github.com/e-gov/TARA-Stat)) organisatsiooni sisereposse.
 
 _Alternatiiv: paigalda otse GitHub-i repost._
 
 2\. Paigalda veebirakendus koodirepost VM-i:
+
+Paigalda git:
+
+`sudo apt install git`
 
 `git clone https://github.com/e-gov/TARA-Stat` (või kasutada vastavat organisatsiooni siserepot).
 
@@ -601,7 +608,7 @@ Järgnevas eeldame, et TARA-Stat asub kaustas `~/TARA-Stat`. Toodangukeskkonnas 
 
 3\. Sea veebirakenduse port (valikuline)
 
-Ava kaustas `TARA-Stat` asuv veebirakenduse konf-ifail `config.js` ja vaheta pordi vaikeväärtus `443` õige vastu (nt `5000`).
+Vajadusel ava kaustas `TARA-Stat` asuv veebirakenduse konf-ifail `config.js` ja vaheta pordi vaikeväärtus `5000` õige vastu (nt sea standardne HTTPS port `443`).
 
 Järgnevas eeldame, et port on `5000`.
 
@@ -794,6 +801,27 @@ Kontrolli, et kontod on õigesti loodud:
 use users
 show users
 ```
+
+"== VEA KORRAL:============================================="
+Kui mongod käivitamine ei õnnestu, siis põhjuseks võib olla õiguste vähesus kasutajal `mongodb` (kelle all mongod jookseb). Õiguste andmiseks tee:
+
+`sudo chown -R mongodb /var/lib/mongodb`
+`sudo chown -R mongodb /var/log/mongodb`
+
+Ja siin kirjeldatud: [](https://medium.com/@gabrielpires/mongodb-ubuntu-16-04-code-exited-status-14-aws-lightsail-problem-417ffc78cb11)
+
+`cd /tmp`
+`sudo chown mongodb:mongodb *.sock`
+
+Seejärel proovi uuesti:
+
+`sudo systemctl start mongod`
+`sudo service mongo status`
+
+"========================================================="
+
+
+
 ### 3.5 Paigalda Node.js
 
 Paigalda Node.js (viimane stabiilne versioon).
@@ -909,7 +937,7 @@ või veel parem - tagasipöördumine varasema tõmmise juurde.
 **Paigalda pm2**:
 
 Eeldus: paigaldatud on Node.js, koos selle koosseisus oleva npm-ga.
-su
+
 `sudo npm install -g pm2`
 
 **pm2 automaatkäivitamine**.
@@ -983,7 +1011,7 @@ Käivita enne logibaas (MongoDB). Muidu teatab veebirakendus, et logibaasiga ei 
 
 **Käivitamine protsessihalduri pm2 abil**. Liigu veebirakenduse juurkausta `TARA-Stat` ja sisesta:
 
-pm2 start index.js
+`pm2 start index.js`
 
 **Testimise eesmärgil** võib TARA-Stat veebirakenduse käivitada ka terminalist lahtiseotud taustaprotsessina. Liigu veebirakenduse juurkausta `TARA-Stat` ja sisesta:
 
@@ -997,13 +1025,14 @@ Kontrolli, et andmebaas ja veebirakendus töötavad:
 
 `ps`
 
+Virtualbox-is testimisel kasuta `ifconfig -a`, et välja selgitada dünaamiline IP-aadress, millega veebirakendus VM-st välja paistab.
+{: .adv}
+
 ### 4.2 Statistika väljastamise otspunkti töötamise test
 
 Pöördu teisest arvutist (kas Windows-host-st või teisest VM-st) veebirakenduse statistika väljastamise otspunkti poole. Järgnevas eeldame näitena, et masina, kuhu TARA-Stat paigaldati, IP-aadress on `192.168.56.101` ja TARA-Stat veebiteenuse port on `5000`. Ava sirvikus:
 
-```
-https://192.168.56.101:5000
-```
+`https://192.168.56.101:5000`
 
 Sirvik ütleb, et `Your connection is not secure`. See on selle tõttu,et veebirakendusel on _self-signed_ sert. Aktsepteeri erand.
 
@@ -1094,7 +1123,7 @@ makettrakendus. Makettrakendus genereerib logikirjeid ja lisab need logibaasi. M
 
 **Seadistamine**. Seadista makettrakendust parameetrite muutmisega failis `mockup-config` või parameetrite andmisega käivitamise käsurealt (`process.env`). Seadistada tuleb:
 - TARA-Stat logikirje lisamise otspunkti URL
-- nimetatud otspunkti pääsemiseks vajalik API kasutajanimi
+- nimetatud otspunkti pääsemiseks vajalik API kasutajanimi (vaikimisi `tara-server`)
 - ja salasõna (API võti).
 
 **Paigaldamine**. Makettrakendust võib käitada ka TARA-Stat-ga ühes masinas, eraldi Node.js instantsis. Kindlam on siiski testida paigaldamisega eraldi masinasse:
