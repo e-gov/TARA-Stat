@@ -857,6 +857,10 @@ Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concep
 
 TODO Õiguste andmine ja määramine Node.js protsessiomanikuks.
 
+**Paigalda MongoDB kasutamise salasõna**. 
+
+See on kasutajakonto, millega TARA-Stat veebirakendus pöördub MongoDB poole. Ava fail `config.js` ja vaheta parameetri `config.mongouserpwd` väärtus õige vastu. 
+
 **Loo usaldus TARA-Serveri ja TARA-Stat-i vahel**.
 
 1\. Genereeri API-võti. Juhusõne pikkusega 20 tärki.
@@ -881,29 +885,39 @@ Sea pääsureeglid VLAN-is ja/või sisevõrgu ruuteri(te)s).
 
 ### 3.8 Paigalda Node.js protsessihaldur PM2
 
-Node.js toodangukeskkonnas haldamiseks on hea praktika kasutada protsessihaldurit PM2
+Node.js toodangukeskkonnas haldamiseks on hea praktika kasutada protsessihaldurit pm2.
 
 Vt:
 - [PM2](https://www.npmjs.com/package/pm2) (npm)
 - [How To Set Up a Node.js Application for Production on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04)
 
-Paigalda pm2:
+Protsessihaldurit täida sudo-ga.
+
+**pm2 eemaldamine, juhul, kui midagi läks valesti**:
+
+```
+sudo pm2 kill
+sudo npm remove pm2 -g
+which pm2
+```
+
+**Paigalda pm2**:
 
 `sudo npm install -g pm2`
 
 Genereeri pm2 automaatkäivituse skript:
 
-`pm2 startup systemd`
+`sudo pm2 startup systemd`
 
 Täida eelmise käsu väljundi viimane rida (sellega luuakse systemd unit, millega pm2 automaatkäivitatakse).
 
 Rakenduse käivitamine:
 
-`pm2 start index`
+`sudo pm2 start index`
 
 Vaata pm2-ga hallatavate rakenduste nimekirja:
 
-`pm2 list`
+`sudo pm2 list`
 
 ### 3.9 Tarkvara uuendamine
 

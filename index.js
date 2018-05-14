@@ -146,9 +146,8 @@ app.get('/stat', (req, res) => {
    */
   const leiaKlienditi = function (r, db, callback) {
     const collection = db.collection(COLLECTION);
-    /**
-     * TODO Lisada autentimine
-     */
+    /* Autentimine sisaldub juba andmebaasiga ühendumise URL-is 
+      (MONGODB_URL) */
     collection
       .aggregate([
         {

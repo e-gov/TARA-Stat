@@ -16,8 +16,10 @@ echo
 # 5. Paigaldan rakendusele vajalikud Node.js teegid
 # 6. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
 # 7. Loon kasutaja tarastat
-# 8. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
-# 9. Paigaldan Node.js protsessihalduri pm2
+# 8. Paigaldan MongoDB kasutamise salasõna
+# 9. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
+# Praegu välja lülitatud:
+# 10. Paigaldan Node.js protsessihalduri pm2
 
 # ------------------------------
 # Abistaja: Väljasta lõputeade ja välju
@@ -172,27 +174,36 @@ kasJatkan
 # TODO õiguste andmine
 
 # ------------------------------
-# 8. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
+# 8. Paigaldan MongoDB kasutamise salasõna
 #
-read -p "Anna API-kasutajanimi: " APIUSER
-read -p "Anna API-võti (juhusõne pikkusega vähemalt 20 tähemärki): " APIKEY
-
 echo
-echo " --- Paigaldan API kasutajanime ja võtme TARA-Stat konf-i"
+echo " --- Paigaldan MongoDB kasutamise salasõna TARA-Stat konf-i"
+read -p "Anna MongoDB kasutaja 'rakendus' salasõna: " MONGOUSERPWD
+sed -i "s/MONGOUSERPWD-changeit/$MONGOUSERPWD/" $HOME/TARA-Stat/config.js
 
-sed -i "s/APIUSER-changeit/$APIUSER" $HOME/TARA-Stat/config.js
+# ------------------------------
+# 9. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
+#
+echo
+echo " --- Paigaldan API võtme TARA-Stat konf-i"
+read -p "Anna API võti (juhusõne pikkusega vähemalt 20 tähemärki): " APIKEY
+
 sed -i "s/APIKEY-changeit/$APIKEY" $HOME/TARA-Stat/config.js
 
-echo "Veendu, et $APIUSER ja $APIKEY said paigaldatud:"
+echo "Veendu, et $MONGOUSERPWD ja $APIKEY said paigaldatud: "
 echo
-grep -i 'config.tarastat' $HOME/TARA-Stat/config.js
+grep -i 'config.' $HOME/TARA-Stat/config.js
 echo
 
 kasJatkan
 
 # ------------------------------
-# 9. Paigaldan Node.js protsessihalduri pm2
+# 10. Paigaldan Node.js protsessihalduri pm2
 #
+# Praegu välja lülitatud
+
+lopeta
+
 echo
 echo "Paigaldan Node.js protsessihalduri pm2"
 sudo npm install -g pm2

@@ -26,10 +26,10 @@ config.mongodb_url = 'mongodb://localhost:27017';
 
 /* Kasutajakonto MongoDB-s */
 config.mongouser = 'rakendus';
-config.mongouserpwd = process.env.MONGOUSERPWD || 'changeit';
+config.mongouserpwd = process.env.MONGOUSERPWD || 'MONGOUSERPWD-changeit';
 
 /* Logikirje lisamise API võti */
-config.tarastatuser = 'APIUSER-changeit';
+config.tarastatuser = 'tara-server';
 config.tarastatsecret = process.env.TARASTATSECRET || 'APIKEY-changeit';
 
 module.exports = config;

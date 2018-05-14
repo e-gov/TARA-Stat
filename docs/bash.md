@@ -144,9 +144,9 @@ permalink: Bash
   - `reload-or-restart` (emb-kumb)
   - `enable` (määrab VM käivitamisel automaatselt käivitatavaks)
   - `disable`
-  - `status`
+  - `systemctl status pm2` (kuva üksuse staatus)
   - `is-active`, `is-enabled`, `is-failed`
-  - `list-units`
+  - `list-units *pm2*.service` (kuva üksused mustri järgi)
   - `systemctl list-units --type=service` (aktiivsed teenused)
 
 - **terminalist lahtisidumine**
