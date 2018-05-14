@@ -1,8 +1,10 @@
 Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
 {: .adv}
 
-# Mikroteenuse arhitektuur (arutelu + töötav näide)
+# Mikroteenuse arhitektuur
 {: .no_toc}
+
+arutelu + töötav näide
 
 6\. päev, 14.05.2018<br><br>
 
