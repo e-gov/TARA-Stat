@@ -47,6 +47,7 @@ permalink: Bash
 
 - **kausta v faili**
   - `ls -a -l` (sisu, sh peidetud failide kuvamine)
+  - `ll` (eelmise alias)
   - `rm -R nimi` (kustutamine, rekursiivselt)
 
 - **kommentaar**
@@ -92,7 +93,9 @@ permalink: Bash
 - **nano**, tekstiredaktor
   - [koduleht](https://www.nano-editor.org/)
   - `sudo nano failinimi`
-  - `nano -Ynone failinimi` (käivita süntaksivärvimiseta)
+  - `nano -Ynone -m failinimi` (käivita süntaksivärvimiseta ja hiire toega)
+  - `Alt+A` ... `Ctrl+K` -> `Ctrl+U` (lõika ja aseta)
+  - `Alt+A` ... `Alt+6` (kopeeri)
 
 - **otsimine**
   - `sudo find / -type f -name "failinimi" (otsib üle kogu ketta konkreetse nimega faile)
@@ -120,6 +123,9 @@ permalink: Bash
   - `sudo netstat -peanut | grep ":5000"` (protsess, mis kuulab porti 5000)
   - `ps aux | grep "mongo"` (protsess)  
 
+- **secure copy**
+  - `scp kasutaja@host:/opt/kasutaja/tee/failini C:/TÖÖS (faili kopeerimine lokaalsesse masinass SSH abil)
+
 - **shebang**
   - `#!/bin/bash` (näitab, millist programmi skripti täitmiseks kasutada)
 
@@ -140,20 +146,6 @@ permalink: Bash
 - **striimiredaktor**
   - `sed -i 's/authorization: disabled/authorization: enabled/' /etc/mongod.conf`
   - [sed juhend](https://www.gnu.org/software/sed/manual/sed.html)
-
-- **systemctl**
-  - teenuste haldusvahend, osa systemd haldussüsteemist
-  - [How To Use Systemctl to Manage Systemd Services and Units](https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units)
-  - `sudo systemctl start nimi` (käivita teenus `nimi`)
-  - `stop`, `restart`
-  - `reload` (loeb uuesti konf-ifail, kui on suuteline)
-  - `reload-or-restart` (emb-kumb)
-  - `enable` (määrab VM käivitamisel automaatselt käivitatavaks)
-  - `disable`
-  - `systemctl status pm2` (kuva üksuse staatus)
-  - `is-active`, `is-enabled`, `is-failed`
-  - `list-units *pm2*.service` (kuva üksused mustri järgi)
-  - `systemctl list-units --type=service` (aktiivsed teenused)
 
 - **terminalist lahtisidumine**
   - ` &` (käsu lõpus, käivitatav protsess seotakse terminalist lahti ja hakkab jooksma taustal)
@@ -178,6 +170,25 @@ permalink: Bash
     - `sudo chmod -R ug+rw /var/lib/mongodb` (user ja group-le lisada read ja write õigused)
     - `sudo chmod +x kaivita.sh` (käivitusõiguse andmine failile)
   - `sudo chown kasutaja fail` (seab kasutaja faili omanikuks)  
+
+## systemd alustamissüsteem
+
+- **systemctl**
+  - teenuste haldusvahend, osa systemd haldussüsteemist
+  - [How To Use Systemctl to Manage Systemd Services and Units](https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units)
+  - `sudo systemctl start nimi` (käivita teenus `nimi`)
+  - `stop`, `restart`
+  - `reload` (loeb uuesti konf-ifail, kui on suuteline)
+  - `reload-or-restart` (emb-kumb)
+  - `enable` (määrab VM käivitamisel automaatselt käivitatavaks)
+  - `disable`
+  - `systemctl status pm2` (kuva üksuse staatus)
+  - `is-active`, `is-enabled`, `is-failed`
+  - **haldusüksus (unit)**
+    - v.o installed -> loaded -> active -> running
+    - `list-units *pm2*.service` (kuva üksused mustri järgi)
+    - `systemctl list-units --type=service` (aktiivsed teenused)
+    - `/lib/systemd/system` (haldusüksuste kirjeldusfailide kaust)
 
 ## Märkmed
 

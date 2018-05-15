@@ -563,6 +563,7 @@ Logibaas suhtleb ainult veebirakendusega; ei suhtle masinast väljapoole.
   - `/etc/mongodb.conf` - konf-ifail
   - `/var/log/mongodb/mongod.log` - andmebaasilogi
   - `/var/lib/mongodb` - andmebaasifailid
+  - `/lib/systemd/system/mongod.service` - systemd haldusüksuse kirjeldusfail
   - `/etc/init.d/mongodb` - automaatkäivitusskript
 
 Täpsemalt TARA-Stat omaduste ja ehituses kohta vt jaotis 2. 
