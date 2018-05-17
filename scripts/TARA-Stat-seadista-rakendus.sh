@@ -147,9 +147,9 @@ echo " --- Paigaldan API võtme TARA-Stat konf-i"
 read -p "Anna API võti: (juhusõne pikkusega vähemalt 20 tähemärki): " TARASTATSECRET
 sed -i "s/TARASTATSECRET-changeit/$TARASTATSECRET/" $HOME/TARA-Stat/config.js
 
-echo "Veendu, et $MONGOUSERPWD ja $APIKEY said paigaldatud: "
+echo "Veendu, et $MONGOUSERPWD ja $TARASTATSECRET said paigaldatud: "
 echo
-grep -i 'config.' $HOME/TARA-Stat/config.js
+grep -i 'config.' /opt/TARA-Stat/config.js
 echo
 
 kasJatkan
@@ -176,7 +176,7 @@ After=network.target
 # (kui sooviks vaikimisi porti 5000 muuta)
 User=tarastat
 Group=tarastat
-ExecStart=/usr/bin/node /opt/Tara-Stat/index.js
+ExecStart=/usr/bin/node /opt/TARA-Stat/index.js
 
 [Install]
 WantedBy=multi-user.target

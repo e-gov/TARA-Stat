@@ -33,7 +33,6 @@ echo
 echo "                  TARA-Stat                           "
 echo "| konf-ifail  | /opt/TARA-Stat/config.js             |"
 echo "| logi        | /opt/TARA-Stat/log.txt               |"
-echo "| baasifailid | var/lib/mongodb                      |"
 echo "| haldusüksus | /lib/systemd/system/tarastat.service |"
 echo " ---------------------------------------------------- "
 echo 
