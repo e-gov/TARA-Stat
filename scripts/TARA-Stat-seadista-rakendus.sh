@@ -91,7 +91,7 @@ kasJatkan
 #
 echo
 echo " --- Paigaldan Node.js teegid"
-cd $HOME/TARA-Stat
+cd /opt/TARA-Stat
 
 # Eemaldan Node.js vanad teegid, kuid neid peaks olema
 if [ -d "$node_modules" ]; then
@@ -115,7 +115,7 @@ kasJatkan
 #
 echo
 echo " --- Genereerin ja paigaldan veebirakenduse HTTPS võtmed"
-cd $HOME/TARA-Stat
+cd /opt/TARA-Stat
 mkdir keys
 cd keys
 
@@ -136,7 +136,7 @@ kasJatkan
 echo
 echo " --- Paigaldan MongoDB kasutamise salasõna TARA-Stat konf-i"
 read -p "Anna MongoDB kasutaja 'rakendus' salasõna: " MONGOUSERPWD
-sed -i "s/MONGOUSERPWD-changeit/$MONGOUSERPWD/" $HOME/TARA-Stat/config.js
+sed -i "s/MONGOUSERPWD-changeit/$MONGOUSERPWD/" /opt/TARA-Stat/config.js
 
 # ------------------------------
 # 5. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
@@ -145,7 +145,7 @@ echo
 echo " --- Paigaldan API võtme TARA-Stat konf-i"
 
 read -p "Anna API võti: (juhusõne pikkusega vähemalt 20 tähemärki): " TARASTATSECRET
-sed -i "s/TARASTATSECRET-changeit/$TARASTATSECRET/" $HOME/TARA-Stat/config.js
+sed -i "s/TARASTATSECRET-changeit/$TARASTATSECRET/" /opt/TARA-Stat/config.js
 
 echo "Veendu, et $MONGOUSERPWD ja $TARASTATSECRET said paigaldatud: "
 echo
