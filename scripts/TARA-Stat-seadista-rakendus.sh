@@ -183,9 +183,10 @@ WantedBy=multi-user.target
 EOF
 
 echo " --- Väljastan kontrolliks systemd haldusüksuse kirjeldusfaili"
-echo
-kasJatkan
+echo " --------------------------------------------"
 cat /lib/systemd/system/tarastat.service
+echo " --------------------------------------------"
+echo
 
 # ------------------------------
 # 8. Laen deemoni
@@ -200,6 +201,6 @@ sudo systemctl daemon-reload
 echo " --- Käivitan TARA-Stat veebirakenduse"
 echo
 kasJatkan
-sudo systemctl start tara_stat
+sudo systemctl start tarastat
 
 lopeta
