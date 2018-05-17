@@ -45,6 +45,22 @@ function kasJatkan {
 }
 
 # ------------------------------
+# Abistaja: Kontrolli käsu õnnestumist
+#
+function kontrolli {
+  echo
+  if [ "$1" = 0 ]
+  then
+    echo " --- $2 -> OK"
+    echo
+  else  
+    echo " --- $2 -> EBAÕNNESTUS"
+    echo
+    lopeta
+  fi 
+}
+
+# ------------------------------
 # Abistaja: Paigalda Node.js teek
 #
 function paigalda_Nodejs_teek {
@@ -166,17 +182,16 @@ ExecStart=/usr/bin/node $HOME/Tara-Stat/index.js
 WantedBy=multi-user.target
 EOF
 
-# ------------------------------
-# 8. Laen deemoni
-#
 echo " --- Väljastan kontrolliks systemd haldusüksuse kirjeldusfaili"
 echo
 kasJatkan
 cat /lib/systemd/system/tarastat.service
 
+# ------------------------------
+# 8. Laen deemoni
+#
 echo " --- Laen deemoni"
 echo
-kasJatkan
 sudo systemctl daemon-reload
 
 # ------------------------------
