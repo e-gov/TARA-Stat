@@ -164,16 +164,6 @@ echo
 kasJatkan
 
 # ------------------------------
-# 7. Loon kasutaja tarastat
-# NB! Praegu mitte tehtud
-# echo " --- Loon kasutaja tarastat"
-# sudo adduser tarastat
-# kontrolli "$?" " --- Kasutaja tarastat loomine"
-# TODO õiguste andmine tarastat-le
-# kasJatkan
-
-
-# ------------------------------
 # 8. Paigaldan MongoDB kasutamise salasõna
 #
 echo

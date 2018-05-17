@@ -4,7 +4,15 @@
 #
 # TARA-Stat veebirakenduse seadistamine systemd-ga käitatavaks
 #
-# vt https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-1/
+# 1) Loon käitluskasutaja (run user)
+# 2) Loon systemd haldusüksuse kirjeldusfaili
+# 3) Laen deemoni
+# 4) (valikuline) Käivitan veebirakenduse (koos logibaasiga)
+#
+# Vt:
+# - https://blog.nodeswat.com/set-up-a-secure-node-js-web-application-9256b8790f11
+# - https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-1/
+# - https://www.computerhope.com/unix/useradd.htm (useradd)
 #
 
 # ------------------------------
@@ -30,22 +38,23 @@ function kasJatkan {
   echo
 }
 
+# 0) Kontrollküsimus
 echo
 echo " --- TARA-Stat veebirakenduse seadistamine systemd-ga käitatavaks"
 echo
 kasJatkan
 
+# 1) Loon käitluskasutaja (run user)
 echo " --- Loon kasutaja tarastat, kui see ei ole juba olemas"
 echo
 sudo deluser tarastat
-sudo adduser --no-create-home tarastat
-
-
+sudo useradd -r -s /bin/false --home opt/TARA-Stat tarastat
 echo " --- Väljastan kontrolliks teabe kasutaja tarastat kohta"
 echo
 id tarastat
 kasJatkan
 
+# 2) Loon systemd haldusüksuse kirjeldusfaili
 echo " --- Loon systemd haldusüksuse kirjeldusfaili"
 echo
 sudo dd of=/lib/systemd/system/tara_stat.service << EOF
@@ -65,9 +74,21 @@ ExecStart=/usr/bin/node $HOME/Tara-Stat/index.js
 WantedBy=multi-user.target
 EOF
 
+# 3) Laen deemoni
 echo " --- Väljastan kontrolliks systemd haldusüksuse kirjeldusfaili"
 echo
 kasJatkan
 cat /lib/systemd/system/tara_stat.service
+
+echo " --- Laen deemoni"
+echo
+kasJatkan
+sudo systemctl daemon-reload
+
+# 4) (valikuline) Käivitan veebirakenduse (koos logibaasiga)
+echo " --- Käivitan TARA-Stat veebirakenduse"
+echo
+kasJatkan
+sudo systemctl start tara_stat
 
 lopeta
