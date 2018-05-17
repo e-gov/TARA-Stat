@@ -26,6 +26,16 @@ Paigaldamisel kasuta skripte:
 
 **Tarkvarauuenduse paigaldamine**. Kui tarkvarauuendus ei puuduta Node.js ega MongoDB-d, siis piisab 1. ja 4. sammu läbitegemisest. Täpne juhis, kas võimalik on osaline uuestipaigaldamine, peab kaasas olema konkreetse tarkvarauuendusega.
 
+Väikese tarkvarauuenduse puhul on võimalik ka värskenduste tõmbamine repot üle kirjutamata:
+
+`git pull origin master` (kaustas `TARA-Stat`)
+
+Enne seda tuleb aga teha
+
+`git checkout .`
+
+sest kuna rakenduse seadistamisel on `config.js` muudetud, siis pull-i tegemisel tekib muidu konflikt.
+
 ### Käivitamine, staatus ja seiskamine
 
 Nii TARA-Stat veebirakendus kui ka MongoDB käitatakse systemd hallatavate teenustena`. 
@@ -57,4 +67,3 @@ Teenuste käivitamise järjekord ei ole oluline.
 - Node.js- endal logi ei ole
 - Veebirakendus logib faili, mille asukoht vaikimisi on `/opt/TARA-Stat/log.txt`. Logifaili asukoht on veebirakenduse konf-ifailis seatav.
 
- 

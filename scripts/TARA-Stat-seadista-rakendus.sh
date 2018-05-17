@@ -5,15 +5,14 @@
 # Paigaldan TARA-Stat veebirakenduse (systemd-ga käitatavaks)
 #
 # 1. Loon Node.js käitluskasutaja (run user)
-# 2. Laen veebirakenduse GitHub-i repost kausta /opt/TARA-Stat
-# 3. Paigaldan rakendusele vajalikud Node.js teegid
-# 4. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
-# 5. Paigaldan MongoDB kasutamise salasõna
-# 6. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
-# 7. Annan tarastat-le õigused kodukaustale (TARA-Stat)
-# 8. Loon systemd haldusüksuse kirjeldusfaili
-# 9. Laen deemoni
-# 10. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
+# 2. Paigaldan rakendusele vajalikud Node.js teegid
+# 3. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
+# 4. Paigaldan MongoDB kasutamise salasõna
+# 5. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
+# 6. Annan tarastat-le õigused kodukaustale (TARA-Stat)
+# 7. Loon systemd haldusüksuse kirjeldusfaili
+# 8. Laen deemoni
+# 9. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
 #
 # Vt:
 # - https://blog.nodeswat.com/set-up-a-secure-node-js-web-application-9256b8790f11
@@ -71,12 +70,8 @@ echo
 id tarastat
 kasJatkan
 
-# 2. Laen veebirakenduse GitHub-i repost kausta /opt/TARA-Stat
-cd /opt
-sudo git clone https://github.com/e-gov/TARA-Stat
-
 # ------------------------------
-# 3. Paigaldan rakendusele vajalikud Node.js teegid
+# 2. Paigaldan rakendusele vajalikud Node.js teegid
 #
 echo
 echo " --- Paigaldan Node.js teegid"
@@ -100,7 +95,7 @@ echo
 kasJatkan
 
 # ------------------------------
-# 4. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
+# 3. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
 #
 echo
 echo " --- Genereerin ja paigaldan veebirakenduse HTTPS võtmed"
@@ -120,7 +115,7 @@ echo
 kasJatkan
 
 # ------------------------------
-# 5. Paigaldan MongoDB kasutamise salasõna
+# 4. Paigaldan MongoDB kasutamise salasõna
 #
 echo
 echo " --- Paigaldan MongoDB kasutamise salasõna TARA-Stat konf-i"
@@ -128,7 +123,7 @@ read -p "Anna MongoDB kasutaja 'rakendus' salasõna: " MONGOUSERPWD
 sed -i "s/MONGOUSERPWD-changeit/$MONGOUSERPWD/" $HOME/TARA-Stat/config.js
 
 # ------------------------------
-# 6. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
+# 5. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
 #
 echo
 echo " --- Paigaldan API võtme TARA-Stat konf-i"
@@ -144,13 +139,13 @@ echo
 kasJatkan
 
 # ------------------------------
-# 7. Annan tarastat-le õigused kodukaustale (TARA-Stat)
+# 6. Annan tarastat-le õigused kodukaustale (TARA-Stat)
 #
 sudo chown -R tarastat:tarastat /opt/TARA-Stat
-cd TARA-Stat
+cd /opt/TARA-Stat
 
 # ------------------------------
-# 8. Loon systemd haldusüksuse kirjeldusfaili
+# 7. Loon systemd haldusüksuse kirjeldusfaili
 #
 echo " --- Loon systemd haldusüksuse kirjeldusfaili"
 echo
@@ -172,7 +167,7 @@ WantedBy=multi-user.target
 EOF
 
 # ------------------------------
-# 9. Laen deemoni
+# 8. Laen deemoni
 #
 echo " --- Väljastan kontrolliks systemd haldusüksuse kirjeldusfaili"
 echo
@@ -185,7 +180,7 @@ kasJatkan
 sudo systemctl daemon-reload
 
 # ------------------------------
-# 10. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
+# 9. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
 #
 echo " --- Käivitan TARA-Stat veebirakenduse"
 echo
