@@ -107,7 +107,7 @@ permalink: Bash
 - **parooli muutmine**
   - `passwd` (oma parooli vahetamine)
   - `sudo passwd kasutaja` (teise kasutaja parooli vahetamine) 
-  - `/etc/passwd` [Vikipeedia](https://en.wikipedia.org/wiki/Passwd)  
+  - `cat /etc/passwd | grep tarastat` (kasutaja kirje)   
 
 - **programmi asukoha leidmine**
   - `which nimi`
