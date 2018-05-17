@@ -35,10 +35,17 @@ echo " --- TARA-Stat veebirakenduse seadistamine systemd-ga käitatavaks"
 echo
 kasJatkan
 
-echo " --- Loon kasutaja tara-stat, kui see ei ole juba olemas"
+echo " --- Loon kasutaja tarastat, kui see ei ole juba olemas"
 echo
-sudo addgroup tara-stat
-sudo adduser --no-create-home tara-stat tara-stat
+sudo deluser tarastat
+sudo groupdel tarastat
+sudo addgroup tarastat
+sudo adduser --no-create-home tarastat tarastat
+
+echo " --- Väljastan kontrolliks teabe kasutaja tarastat kohta"
+echo
+id tarastat
+kasJatkan
 
 echo " --- Loon systemd haldusüksuse kirjeldusfaili"
 echo
@@ -51,8 +58,8 @@ After=network.target
 [Service]
 # Environment=PORT=5000
 # (kui sooviks vaikimisi porti 5000 muuta)
-User=tara-stat
-Group=tara-stat
+User=tarastat
+Group=tarastat
 ExecStart=/usr/bin/node $HOME/Tara-Stat/index.js
 
 [Install]
@@ -61,4 +68,7 @@ EOF
 
 echo " --- Väljastan kontrolliks systemd haldusüksuse kirjeldusfaili"
 echo
+kasJatkan
 cat /lib/systemd/system/tara_stat.service
+
+lopeta
