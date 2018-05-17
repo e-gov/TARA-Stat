@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# TARA-Stat-systemd.sh
+# TARA-Stat-paigalda-rakendus.sh
 #
-# TARA-Stat veebirakenduse seadistamine systemd-ga käitatavaks
+# Paigaldan TARA-Stat veebirakenduse (systemd-ga käitatavaks)
 #
 # 1. Loon Node.js käitluskasutaja (run user)
 # 2. Laen veebirakenduse GitHub-i repost kausta /opt/TARA-Stat

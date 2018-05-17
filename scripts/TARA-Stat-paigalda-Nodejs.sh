@@ -2,11 +2,11 @@
 
 # TARA-Stat-paigalda-Rakendus.sh
 #
-# Paigaldan Node.js ja seadistan TARA-Stat veebirakenduse
+# Paigaldan Node.js
 #
 
 echo
-echo " --- TARA-Stat: Paigaldan Node.js ja TARA-Stat veebirakendus"
+echo " --- TARA-Stat: Paigaldan Node.js"
 echo
 
 # 0. Kontrollküsimus eksliku käivitamise vastu
