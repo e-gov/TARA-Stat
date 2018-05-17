@@ -6,6 +6,9 @@
 
 var config = {};
 
+/* Logifaili asukoht */
+config.logifail = process.env.LOGIFAIL || '/opt/TARA-Stat/log.txt';
+
 /* HTTPS Serveri port*/
 config.port = process.env.PORT || 5000;
 

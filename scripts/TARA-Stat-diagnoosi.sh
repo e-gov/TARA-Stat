@@ -2,11 +2,11 @@
 
 # TARA-Stat-diagnoosi.sh
 #
-# Selgita välja paigalduse olukord
+# Annan teavet paigalduse olukorra kohta
 #
 
 echo
-echo " --- TARA-Stat: Selgita välja paigaldise olukord"
+echo " --- TARA-Stat: Annan teavet paigalduse olukorra kohta"
 echo
 echo "1) kuva MongoDB konf-ifail (/etc/mongodb.conf)"
 echo "2) kuva MongoDB andmebaasilogi (/var/log/mongodb/mongod.log)"

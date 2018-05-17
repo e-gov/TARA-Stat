@@ -154,7 +154,7 @@ cd TARA-Stat
 #
 echo " --- Loon systemd haldusüksuse kirjeldusfaili"
 echo
-sudo dd of=/lib/systemd/system/tara_stat.service << EOF
+sudo dd of=/lib/systemd/system/tarastat.service << EOF
 [Unit]
 Description=TARA-Stat veebirakendus (Node.js-l)
 Documentation=https://e-gov.github.io/TARA-Stat/
@@ -177,7 +177,7 @@ EOF
 echo " --- Väljastan kontrolliks systemd haldusüksuse kirjeldusfaili"
 echo
 kasJatkan
-cat /lib/systemd/system/tara_stat.service
+cat /lib/systemd/system/tarastat.service
 
 echo " --- Laen deemoni"
 echo

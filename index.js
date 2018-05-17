@@ -24,10 +24,13 @@ var https = require('https');
 var fs = require('fs');
 var path = require('path');
 
+/* Logimiseks */
+var util = require('util');
+
 /* Veebiraamistik Express */
 const express = require('express');
 
-/*Ä
+/*
  * HTTP päringu parsimisvahend
  * NB! AInult application/JSON
  *  */
@@ -41,6 +44,18 @@ const f = require('util').format;
 
 /* MongoDB */
 const MongoClient = require('mongodb').MongoClient;
+
+/* Logimise sisseseadmine */
+const LOGIFAIL = config.logifail;
+var logFile = fs.createWriteStream(LOGIFAIL, { flags: 'a' });
+  // Või 'w' faili uuesti alustamiseks
+var logStdout = process.stdout;
+
+console.log = function () {
+  logFile.write(util.format.apply(null, arguments) + '\n');
+  logStdout.write(util.format.apply(null, arguments) + '\n');
+}
+console.error = console.log;
 
 /* Veebiserveri ettevalmistamine */
 const app = express();
