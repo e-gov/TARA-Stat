@@ -4,7 +4,7 @@
 #
 # TARA-Stat veebirakenduse seadistamine systemd-ga käitatavaks
 #
-# 1) Loon käitluskasutaja (run user)
+# 1) Loon Node.js käitluskasutaja (run user)
 # 2) Loon systemd haldusüksuse kirjeldusfaili
 # 3) Laen deemoni
 # 4) (valikuline) Käivitan veebirakenduse (koos logibaasiga)
@@ -13,6 +13,7 @@
 # - https://blog.nodeswat.com/set-up-a-secure-node-js-web-application-9256b8790f11
 # - https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-1/
 # - https://www.computerhope.com/unix/useradd.htm (useradd)
+# - https://stackoverflow.com/questions/26944841/what-is-the-lowest-privileged-user-that-node-js-can-run-as-on-ubuntu?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa (minimaalsed õigused Node.js käitamiseks)
 #
 
 # ------------------------------
@@ -48,7 +49,7 @@ kasJatkan
 echo " --- Loon kasutaja tarastat, kui see ei ole juba olemas"
 echo
 sudo deluser tarastat
-sudo useradd -r -s /bin/false --home opt/TARA-Stat tarastat
+sudo useradd -r -s /bin/false --home /opt/TARA-Stat tarastat
 echo " --- Väljastan kontrolliks teabe kasutaja tarastat kohta"
 echo
 id tarastat

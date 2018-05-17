@@ -100,8 +100,9 @@ permalink: Bash
 - **otsimine**
   - `sudo find / -type f -name "failinimi" (otsib üle kogu ketta konkreetse nimega faile)
 
-- **paigaldatud paketi eemaldamine**
-  - `sudo apt-get remove rakendusenimi`
+- **paketi v rakenduse**
+  - `sudo apt-get remove rakendusenimi` (paigaldatud paketi eemaldamine)
+  - `which nodejs` (paketi asukoha otsimine)
 
 - **parooli muutmine**
   - `passwd`
