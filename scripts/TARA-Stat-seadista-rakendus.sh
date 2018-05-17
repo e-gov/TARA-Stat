@@ -167,7 +167,7 @@ echo " --- Loon systemd haldusüksuse kirjeldusfaili"
 echo
 sudo dd of=/lib/systemd/system/tarastat.service << EOF
 [Unit]
-Description=TARA-Stat veebirakendus (Node.js-l)
+Description= --- TARA-Stat veebirakendus (Node.js-l) ---
 Documentation=https://e-gov.github.io/TARA-Stat/
 After=network.target
 
@@ -176,7 +176,7 @@ After=network.target
 # (kui sooviks vaikimisi porti 5000 muuta)
 User=tarastat
 Group=tarastat
-ExecStart=/usr/bin/node $HOME/Tara-Stat/index.js
+ExecStart=/usr/bin/node /opt/Tara-Stat/index.js
 
 [Install]
 WantedBy=multi-user.target
