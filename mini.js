@@ -22,8 +22,9 @@ http.createServer(function (req, res) {
   res.end('TARA-Stat - Minimaalne test OK'); 
 }).listen(5001);
 
-/* HTTPS serveri loomine */
+/* HTTPS serveri loomine 
 https.createServer(options, (req, res) => {
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.end('TARA-Stat - Minimaalne test OK');
 }).listen(5000);
+*/
