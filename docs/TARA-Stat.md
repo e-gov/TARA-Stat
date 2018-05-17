@@ -2,12 +2,29 @@
 permalink: Juhend
 ---
 
-### Paigaldusskriptid
-Paigaldamisel kasuta skripte:
+## Paigaldamine
+
+
+TARA-Stat kood paiguta kausta paigaldusskriptidega. Seejuures on vaja ka käsitsi tegevusi.
+
+Järgnevas eeldame, et:
+- virtuaalmasin (VM) on loodud
+- Ubuntu 16 LTS on paigaldatud
+- paigaldaja (admin) on sudo-õigustega kasutajana sisse loginud. 
+
+Alusta paigaldamist TARA-Stat koodi paigaldamisega koodirepost VM-i. Järgnevas eeldame, et TARA-Stat kood asub GitHub-is, kuid võib olla ka siserepos.
+
+Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`.
+
+`sudo rm -R TARA-Stat` (kustuta vana) (valikuline)
+`sudo git clone https://github.com/e-gov/TARA-Stat` 
+
+Seejärel leiad koodirepo kaustast `/opt/TARA-Stat/scripts` paigaldusskripte, millega saad edasist tööd automatiseerida. 
+
+**Paigaldusskriptid**. Paigaldamisel saad kasutada järgmisi skripte:
 
 | skript | ülesanne |
 |--------|----------|
-| `TARA-Stat-paigalda-kood.sh` | paigaldab rakenduse koodi git repost VM-i |
 | `TARA-Stat-paigalda-Nodejs.sh` | paigaldab Node.js |
 | `TARA-Stat-paigalda-MongoDB.sh` | paigaldab MongoDB ja seadistab logibaasi |
 | `TARA-Stat-seadista-rakendus.sh` | seadistab veebirakenduse |
@@ -55,7 +72,17 @@ Teenuste käivitamise järjekord ei ole oluline.
 
 **TARA-Stat ülevaloleku lõppkontroll**. Ava sirvikus `https://tara-stat-<site>:5000`. Rakendus teatab, et ühendus ei ole turvaline. See on tingitud self-signed serdist. Aktsepteeri turvaerind. Ilmub rakenduse avaleht.
 
-### Veadiagnostika
+***Olulised asukohad***
+
+|            | MongoDB   | TARA-Stat |
+|------------|-----------|-----------|
+| konf-ifail | `/etc/mongodb.conf` | `/opt/TARA-Stat/config.js` |
+| logi       | `/var/log/mongodb/mongod.log` | `/opt/TARA-Stat/log.txt` |
+| andmebaasifailid | `var/lib/mongodb` |  |
+| systemd haldusüksuse kirjeldusfail | `/lib/systemd/system/mongod.service` | `/lib/systemd/system/tarastat.service` |
+| automaatkäivitusskript | `/etc/init.d/mongodb` | |
+
+***Veadiagnostika***
 
 | teade v käitumine | võimalik põhjus |
 |--------------|------------------|
