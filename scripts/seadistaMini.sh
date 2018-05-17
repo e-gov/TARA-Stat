@@ -7,9 +7,11 @@
 # 2. Annan mini-le õigused kodukaustale (mini)
 # 3. Kopeerin faili mini.js kausta mini
 # 4. Loon systemd haldusüksuse kirjeldusfaili mini.service
-# 5. Laen deemoni
-# 6. Käivitan teenuse mini
+# 5. Genereerin võtmed
+# 6. Laen deemoni
+# 7. Käivitan teenuse mini
 #
+echo " ----------------------------------------------------"
 echo " --- Seadistan TARA-Stat minimaalse testi - mini.js -"
 echo "     systemd-ga käitatavaks"
 
@@ -48,9 +50,19 @@ ExecStart=/usr/bin/node /opt/mini/mini.js
 WantedBy=multi-user.target
 EOF
 
-# 5. Laen deemoni
+# 5. Genereerin võtmed
+cd /opt/mini
+mkdir keys
+cd keys
+openssl genrsa -out tara-stat.key 2048
+openssl req -new -x509 -key tara-stat.key -out tara-stat.cert -days 3650 -subj /CN=tara-stat
+cd /opt/mini
+
+# 6. Laen deemoni
 sudo systemctl daemon-reload
 
-# 6. Käivitan veebirakenduse (koos logibaasiga)
+# 7. Käivitan veebirakenduse (koos logibaasiga)
 sudo systemctl start mini
 sudo systemctl status mini
+
+echo " ----------------------------------------------------"
