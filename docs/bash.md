@@ -105,7 +105,8 @@ permalink: Bash
   - `which nodejs` (paketi asukoha otsimine)
 
 - **parooli muutmine**
-  - `passwd`
+  - `passwd` (oma parooli vahetamine)
+  - `sudo passwd kasutaja` (teise kasutaja parooli vahetamine) 
   - `/etc/passwd` [Vikipeedia](https://en.wikipedia.org/wiki/Passwd)  
 
 - **programmi asukoha leidmine**
