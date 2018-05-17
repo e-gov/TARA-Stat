@@ -38,10 +38,8 @@ kasJatkan
 echo " --- Loon kasutaja tarastat, kui see ei ole juba olemas"
 echo
 sudo deluser tarastat
-sudo groupdel tarastat
-sudo addgroup tarastat
 sudo adduser --no-create-home tarastat
-sudo usermod -a -G tarastat tarastat
+
 
 echo " --- Väljastan kontrolliks teabe kasutaja tarastat kohta"
 echo
