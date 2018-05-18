@@ -16,6 +16,8 @@ Dokument on m천eldud TARA-Stat paigaldajale, k채itajale ja kasutajale. Samuti v�
 
 K천ik viited salas천nadele ja tundlikele taristuparameetritele (nt hostinimed, pordid, kasutajanimed) siin dokumendis on illustratiivsed ja kuuluvad toodangupaigalduses muutmisele.
 
+TARA-Stat-i on arendanud Riigi Infos체steemi Amet.
+
 ## Sisukord
 {: .no_toc}
 
