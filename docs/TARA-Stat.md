@@ -14,7 +14,7 @@ Käesolev dokument spetsifitseerib kogu teabe, mis on vajalik teenuse paigaldami
 
 Dokument on mõeldud TARA-Stat paigaldajale, käitajale ja kasutajale. Samuti võib dokument pakkuda huvi mikroteenuste arhitektuurist huvitujatele  - näitena või võrdlusmaterjalina - muudes arendustes.
 
-Kõik viited salasõnadele ja tundlikele taristuparameetritele (nt hostinimed, pordid, kasutajanimed) siin dokumendis on illustratiivsed ja kuuluvad toodangupaigalduses muutmisele.
+Kõik viited salasõnadele ja tundlikele taristuparameetritele (nt hostinimed, pordid, kasutajanimed) siin dokumendis on illustratiivsed ja kuuluvad toodangupaigalduses ümbervaatamisele, salasõnade osas aga kindlasti asendamisega turvalistega.
 
 TARA-Stat-i on arendanud Riigi Infosüsteemi Amet.
 
