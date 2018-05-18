@@ -1,5 +1,6 @@
 ---
 permalink: Dokumentatsioon
+layout: TARA
 ---
 
 # Mikroteenus TARA-Stat
