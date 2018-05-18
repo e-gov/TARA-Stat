@@ -6,8 +6,6 @@ layout: TARA
 # Mikroteenus TARA-Stat
 {: .no_toc}
 
-18.05.2018
-
 ## Ülevaade
 {: .no_toc}
 
