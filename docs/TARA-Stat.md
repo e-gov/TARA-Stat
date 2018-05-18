@@ -39,10 +39,39 @@ TARA-Stat koosneb kahest komponendist ja neljast liidesest.
 
 | liides    | otstarve |
 |-----------|----------|
-| logikirje lisamise liides | HTTPS REST JSON otspunkt, mille kaudu TARA-Stat võtab TARA-Server-lt vastu logikirjeid |
-| statistika väljastamise liides | HTTPS veebiliides, mille kaudu statistikakasutaja tutvub kasutusstatistikaga |
+| logikirje lisamise liides (otspunkt) | HTTPS REST JSON otspunkt, mille kaudu TARA-Stat võtab TARA-Server-lt vastu logikirjeid |
+| statistika väljastamise  (otspunkt) | HTTPS veebiliides, mille kaudu statistikakasutaja tutvub kasutusstatistikaga |
 | logibaasi haldamise liides | MongoDB käsureaklient, millega aeg-ajalt puhastatakse logibaasi aegunud kirjetest |
 | elutukse liides | HTTPS otspunkt, millelt saab pärida kinnitust TARA-Stat elusoleku kohta |
+
+### Logikirje lisamise otspunkt
+
+Saata `POST` päring `https://<tara-stat>` (kus `<tara-stat>` on TARA-Stat-i domeeninimi), mille kehas on JSON kujul
+
+```
+{ 
+  "aeg": <ISO date>,
+  "klient": <klientrakenduse nimi>,
+  "meetod": <MobileID,  ID_CARD, eIDAS vm meetod>
+}
+```
+
+`ISO date` on ajatempel kujul `2018-04-28`, millele võib järgneda kellaaja osa.
+
+#### Statistika väljastamise otspunkt (statistikakasutaja UI)
+
+Statistikakasutaja sirvikus avada leht `https://<tara-stat>` (kus `<tara-stat>` on TARA-Stat-i domeeninimi).
+
+Määrata periood (võib jääda ka tühjaks)
+- sisestades regulaaravaldise
+- nt `2018-04` valib 2018. a aprilli logikirjed
+- vajutada nupule
+- kuvatakse autentimiste arv perioodi jooksul klientrakenduste lõikes
+
+#### Elutukse otspunkt
+
+Päringu `https://<tara-stat>/status` saamisel kontrollib TARA-Stat oma logibaasi ülevalolekut. Kui logibaas on üleval, siis tagastatakse HTTP vastus `200` `OK`,
+- vastasel korral `500` `Internal Server Error`.
 
 ## Suhtluse osapooled
 
@@ -109,7 +138,7 @@ Enne seda tuleb aga teha
 
 sest kuna rakenduse seadistamisel on `config.js` muudetud, siis pull-i tegemisel tekib muidu konflikt.
 
-### Käivitamine, staatus ja seiskamine
+## Käivitamine, staatus ja seiskamine
 
 Nii TARA-Stat veebirakendus kui ka MongoDB käitatakse systemd hallatavate teenustena`. 
 
@@ -198,3 +227,43 @@ Konfigureeritakse järgmiste failidega:
 |------|-----------------------|
 | `config.js` | veebirakenduse konf-n |
 | 
+
+## Turvamine
+
+TARA-Stat-is on rakendatud järgmised turvevalikud.
+
+- Omaette VM. TARA-Stat paigaldatakse eraldi VM-i. VM-is ei ole teisi rakendusi. 
+- Ainult sisevõrgus. Mikroteenus on ligipääsetav ainult organisatsiooni sisevõrgus.
+- API kaitse võti. Logikirje lisamise otspunkt kaitstakse API võtmega (salasõnaga). API võti paigaldatakse TARA-Serverisse ja pannakse kaasa igas päringus logikirje lisamise otspunkti poole. Statistika väljastamise otspunkt API võtmega kaitset ei vaja, kuid on ligipääsetav ainult organisatsiooni sisevõrgus. Elutukse otspunkt on ligipääsetav ainult organisatsiooni sisevõrgus.
+- HTTPS. Veebirakendus API-s ainult HTTPS.
+- Andmebaasikasutaja autentimine. Veebirakendus pöördub MongoDB poole eraldi andmebaasikasutajana (`rakendus`). Andmebaasikasutaja autenditakse. Kasutusel on MongoDB vaikimisi autentimismehhanism - soolaga salasõna põhine.
+- Rollipõhine pääsuhaldus andmebaasis. Admin on eraldi andmebaasikasutaja.
+- Veebirakenduse ja MongoDB suhtluses ei rakendata TLS-i. Kuna andmebaas suhtleb ainult samas masinas oleva rakendusega ja masinas ei ole teisi rakendusi, ei ole TLS-i hädavajalik.
+- Aandmebaasi ei krüpteerita, kuna konfidentsiaalsusvajadus ei ole kõrge.
+- Nii veebirakendus kui ka MongoDB käitatakse eraldi, spetsiaalsete kasutajate alt (`tarastat` ja ´mongodb´).
+- Ligipääs andmebaasile (kirjutamine) on kaitstud ka failisüsteemi õiguste tasemel.
+- Andmebaasi võrgus nähtavuse piiramine. Andmebaas ei ole nähtav VM-st väljapoole. Andmebaasi kasutab ainult samas masinas asuv veebirakendus. 
+- Andmebaasi auditilogi ei peeta, kuna terviklusvajadus ei ole nii kõrge.
+
+Vajadusel vt taustaks:
+- MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega.
+
+## Identiteedid ja kredentsiaalid
+
+Osapooltel on identiteedid (nimed), mida tõendavad kredentsiaalid (paroolid, võtmed).
+
+TARA-Stat käitluskontekstis on 9 osapoolt (subjekti), kes vajavad identiteedi ja kredentsiaalide andmist ning õiguste seadmist.
+
+| kasutaja vm õiguste subjekt (_principal_), masinloetava nimega | subjekti liik ja kirjeldus | kredentsiaalid |
+|:--------:|:-------:|:--------------:|
+| `admin` | Ubuntu kasutaja, kes paigaldab tarkvara ja teeb muid haldustoiminguid | salasõna |
+| `tarastat` | Ubuntu kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus | salasõna |
+| `mongodb` | Ubuntu kasutaja, kelle alt käitatakse Mongo DB andmebaas | 
+| `userAdmin` | MongoDB kasutaja, kes haldab MongoDB kasutajaid. Seda rolli täidab VM admin | salasõna |
+| `rakendus` | TARA-Stat veebirakenduse konto MongoDB-s | salasõna |
+| `andmehaldur` | MongoDB konto, mille alt kustutatakse aegunud logikirjeid. Andmehalduri rolli täidab VM admin | salasõna |
+| `https://tara-stat.site` | TARA-Stat veebirakendus | _self-signed_ sert |
+| - | statistikakasutaja - anonüümne inimene, kes pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | - (ei autendita, juurdepääs piiratakse kontekstiga) |
+| `tara-server` | TARA-Server, pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
+
+<p style='text-align:center;'><img src='img/IDENTITEET.PNG' width= "500"></p>
