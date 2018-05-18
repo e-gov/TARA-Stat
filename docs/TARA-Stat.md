@@ -2,13 +2,16 @@
 permalink: Dokumentatsioon
 ---
 
-Mikroteenus TARA-Stat
+# Mikroteenus TARA-Stat
 {: .no_toc}
 
 dokumentatsioon
 
 ## Sisukord
 {: .no_toc}
+
+- TOC
+{:toc}
 
 ## Ülevaade
 
@@ -31,13 +34,13 @@ TARA-Stat koosneb kahest komponendist ja neljast liidesest.
 
 | komponent | otstarve |
 |-----------|----------|
-| **veebirakendus** | Node.js rakendus, mis ühelt poolt võtab vastu logikirjed ja salvestab need logibaasi. Teiselt poolt arvutab kasutusstatistika ja esitab seda statistikakasutajale. Koosneb omakorda serveripoolsest osast ja  kasutaja sirvikusse laetavast osast |
-| **logibaas** | MongoDB andmebaas, kus salvestatakse logikirjeid |
+| veebirakendus | Node.js rakendus, mis ühelt poolt võtab vastu logikirjed ja salvestab need logibaasi. Teiselt poolt arvutab kasutusstatistika ja esitab seda statistikakasutajale. Koosneb omakorda serveripoolsest osast ja  kasutaja sirvikusse laetavast osast |
+| logibaas | MongoDB andmebaas, kus salvestatakse logikirjeid |
 
 | liides    | otstarve |
 |-----------|----------|
-| **logikirje lisamise liides** | HTTPS REST JSON otspunkt, mille kaudu TARA-Stat võtab TARA-Server-lt vastu logikirjeid |
-| **statistika väljastamise liides** | HTTPS veebiliides, mille kaudu statistikakasutaja tutvub kasutusstatistikaga |
+| logikirje lisamise liides | HTTPS REST JSON otspunkt, mille kaudu TARA-Stat võtab TARA-Server-lt vastu logikirjeid |
+| statistika väljastamise liides | HTTPS veebiliides, mille kaudu statistikakasutaja tutvub kasutusstatistikaga |
 | logibaasi haldamise liides | MongoDB käsureaklient, millega aeg-ajalt puhastatakse logibaasi aegunud kirjetest |
 | elutukse liides | HTTPS otspunkt, millelt saab pärida kinnitust TARA-Stat elusoleku kohta |
 
@@ -47,14 +50,13 @@ TARA-Stat suhtleb 5 välise osapoolega.
 
 | väline osapool | selgitus |
 |----------------|----------|
-| **statistikakasutaja** | autentimisteenust TARA käitava organisatsiooni teenistuja - teenusehaldur või tootejuht- kes vajab teavet teenuse kasutamise mahu, sh trendide kohta. Statistikakasutajale tuleb pakkuda statistikat. Eriti vajalik on teave teenuse tarbimismahtudest klientrakenduste lõikes. Statistikakasutajal peab olema võimalik ette anda periood, mille kohta statistika arvutatakse. Statistikakasutajal ei tohi olla võimalust logi muuta.<br><br>Kuna statistika on üldistatud ega sisalda isikuandmeid, lähtume statistika otspunkti turvamisel, et otspunkt on avatud organisatsiooni sisevõrgus, kõigile töötajatele. |
-| **TARA-Server** | saadab TARA-Stat-i logikirjeid. TARA-Server võib olla paigaldatud mitmes instantsis. |
-| **andmehaldur** | inimene, kes, kasutades MongoDB standardvahendeid - käsurealiidest `mongo` - kustutab logibaasist aegunud kirjeid. (Kasutusstatistika pakub huvi u aasta jooksul). See on harv tegevus. |
-| **admin** on inimene, kes paigaldab tarkvara, loob andmebaasi kasutajatele (TARA-Server, andmehaldur) kontod ja annab pääsuõigused. |
-| **monitooringusüsteem** saab TARA-Stat-le saata "elutuksepäringu". TARA-Stat vastab, kas ta toimib. |
+| statistikakasutaja | autentimisteenust TARA käitava organisatsiooni teenistuja - teenusehaldur või tootejuht- kes vajab teavet teenuse kasutamise mahu, sh trendide kohta. Statistikakasutajale tuleb pakkuda statistikat. Eriti vajalik on teave teenuse tarbimismahtudest klientrakenduste lõikes. Statistikakasutajal peab olema võimalik ette anda periood, mille kohta statistika arvutatakse. Statistikakasutajal ei tohi olla võimalust logi muuta.<br><br>Kuna statistika on üldistatud ega sisalda isikuandmeid, lähtume statistika otspunkti turvamisel, et otspunkt on avatud organisatsiooni sisevõrgus, kõigile töötajatele. |
+| TARA-Server | saadab TARA-Stat-i logikirjeid. TARA-Server võib olla paigaldatud mitmes instantsis. |
+| andmehaldur | inimene, kes, kasutades MongoDB standardvahendeid - käsurealiidest `mongo` - kustutab logibaasist aegunud kirjeid. (Kasutusstatistika pakub huvi u aasta jooksul). See on harv tegevus. |
+| admin on inimene, kes paigaldab tarkvara, loob andmebaasi kasutajatele (TARA-Server, andmehaldur) kontod ja annab pääsuõigused. |
+| monitooringusüsteem saab TARA-Stat-le saata "elutuksepäringu". TARA-Stat vastab, kas ta toimib. |
 
 ## Paigaldamine
-
 
 TARA-Stat kood paiguta kausta paigaldusskriptidega. Seejuures on vaja ka käsitsi tegevusi.
 
@@ -75,9 +77,9 @@ Seejärel leiad koodirepo kaustast `/opt/TARA-Stat/scripts` paigaldusskripte, mi
 Edasiarendusvõimalusena võib kaaluda paigaldusskriptide põhjal Jenkinsi paigalduskonveieri ehitamist.
 {: .adv}
 
-**Paigaldusskriptid**. Paigaldamisel saad kasutada järgmisi skripte:
+Paigaldusskriptid. Paigaldamisel saad kasutada järgmisi skripte:
 
-| skript | ülesanne |
+| paigaldusskript | ülesanne |
 |--------|----------|
 | `TARA-Stat-paigalda-Nodejs.sh` | paigaldab Node.js |
 | `TARA-Stat-paigalda-MongoDB.sh` | paigaldab MongoDB ja seadistab logibaasi |
@@ -86,9 +88,7 @@ Edasiarendusvõimalusena võib kaaluda paigaldusskriptide põhjal Jenkinsi paiga
 
 Skriptid asuvad koodirepo kaustas `/opt/TARA-Stat/scripts`.
 
-### Paigaldusjärjekord
-
-**Esmakordne paigaldamine**. Valmista VM ja paigalda Ubuntu (16 LTS server).
+Esmakordne paigaldamine. Valmista VM ja paigalda Ubuntu (16 LTS server).
 
 1\. täida `TARA-Stat-paigalda-kood.sh`
 2\. täida `TARA-Stat-paigalda-Nodejs.sh`
@@ -97,7 +97,7 @@ Skriptid asuvad koodirepo kaustas `/opt/TARA-Stat/scripts`.
 
 `TARA-Stat-diagnoosi.sh` võib käivitada igal ajal; see skript ei muuda paigaldust.
 
-**Tarkvarauuenduse paigaldamine**. Kui tarkvarauuendus ei puuduta Node.js ega MongoDB-d, siis piisab 1. ja 4. sammu läbitegemisest. Täpne juhis, kas võimalik on osaline uuestipaigaldamine, peab kaasas olema konkreetse tarkvarauuendusega.
+Tarkvarauuenduse paigaldamine. Kui tarkvarauuendus ei puuduta Node.js ega MongoDB-d, siis piisab 1. ja 4. sammu läbitegemisest. Täpne juhis, kas võimalik on osaline uuestipaigaldamine, peab kaasas olema konkreetse tarkvarauuendusega.
 
 Väikese tarkvarauuenduse puhul on võimalik ka värskenduste tõmbamine repot üle kirjutamata:
 
@@ -128,7 +128,7 @@ Teenuste käivitamise järjekord ei ole oluline.
 
 **TARA-Stat ülevaloleku lõppkontroll**. Ava sirvikus `https://tara-stat-<site>:5000`. Rakendus teatab, et ühendus ei ole turvaline. See on tingitud self-signed serdist. Aktsepteeri turvaerind. Ilmub rakenduse avaleht.
 
-***Olulised asukohad***
+## Olulised asukohad
 
 |            | MongoDB   | TARA-Stat |
 |------------|-----------|-----------|
@@ -138,19 +138,20 @@ Teenuste käivitamise järjekord ei ole oluline.
 | systemd haldusüksuse kirjeldusfail | `/lib/systemd/system/mongod.service` | `/lib/systemd/system/tarastat.service` |
 | automaatkäivitusskript | `/etc/init.d/mongodb` | |
 
-***Veadiagnostika***
+## Diagnostika
 
 | teade v käitumine | võimalik põhjus |
 |--------------|------------------|
 |  `connection refused` | rakendus on maas |
 | `Logibaasiga ühendumine ebaõnnestus' | MongoDB on maas |
 
-**Rakenduse logi**.
+## Logi
+
 - MongoDB andmebaasilogi asub: `/var/log/mongodb/mongod.log`
 - Node.js- endal logi ei ole
 - Veebirakendus logib faili, mille asukoht vaikimisi on `/opt/TARA-Stat/log.txt`. Logifaili asukoht on veebirakenduse konf-ifailis seatav.
 
-## Testimisvahendid
+## Testimine
 
 **mini.js**. Tarkvara koosseisus on lihtne vahend HTTP ja HTTPS ühenduste testimiseks:
 - `mini.js` - loob minimaalse HTTP ja HTTPS serverid, mis kuulavad portidelt 5001 ja 5000.
@@ -160,15 +161,13 @@ Teenuste käivitamise järjekord ei ole oluline.
 
 Testimisvahendeid toodangus ei kasutata. Neid võib repos sisuga koos tootmismasinasse kopeerida, kuid neid ei ole vaja (ega tohigi) skriptidega ega muul viisil aktiveerida.
 
-## Olulised asukohad
-
 ## Sõltuvused
 
-**Tootmissõltuvused**
+Tootmissõltuvused:
 
 | sõltuvus | versioon | selgitus, sh milleks vajalik |
 |----------|----------|-----------------|
-| **backend** | | |
+| backend: | | |
 | Ubuntu   | 16 LTS   | suure tõenäosusega sobib ka hilisem |
 | Node.js  | 6.x      | veebirakendus   |
 | body-parser | standardne | veebirakendus |
@@ -179,12 +178,12 @@ Testimisvahendeid toodangus ei kasutata. Neid võib repos sisuga koos tootmismas
 | basic-auth | standardne | veebirakendus |
 | request-debug | standardne | veebirakendus |
 | MongoDB  | 3.6.4 | logibaas |
-| **frontend** | | |
+| frontend: | | |
 | HTML5, Css3, Javascript | | |
 | jQuery | | |
 | Material Design ikoonid | | |
 
-**Arendussõltuvused**
+Arendussõltuvused
 | GitHub | | avalik koodirepo |
 | Jekyll | | avaliku dok-ni publitseerimine |
 
