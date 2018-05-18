@@ -12,7 +12,7 @@ TARA-Stat on mikroteenus [autentimisteenuse TARA](https://e-gov.github.io/TARA-D
 
 Käesolev dokument spetsifitseerib kogu teabe, mis on vajalik teenuse paigaldamiseks, käitamiseks ja kasutamiseks. 
 
-Dokument on mõeldud TARA-Stat paigaldajatele, käitajatele ja kasutajatele. Samuti võib dokument pakkuda huvi mikroteenuste arhitektuuri kasumisel - näitena või võrdlusmaterjalina - muudes arendustes.
+Dokument on mõeldud TARA-Stat paigaldajale, käitajale ja kasutajale. Samuti võib dokument pakkuda huvi mikroteenuste arhitektuurist huvitujatele  - näitena või võrdlusmaterjalina - muudes arendustes.
 
 Kõik viited salasõnadele ja tundlikele taristuparameetritele (nt hostinimed, pordid, kasutajanimed) siin dokumendis on illustratiivsed ja kuuluvad toodangupaigalduses muutmisele.
 
@@ -28,8 +28,8 @@ TARA-Stat on mikroteenus [autentimisteenuse TARA](https://e-gov.github.io/TARA-D
 
 TARA-Stat pakub:
 
-- võimalust autentimisteenuses fikseeritud autentimistoimingute logimiseks, hilisema statistikaarvutamise tarbeks
-- võimalust logi põhjal lihtsa - kuid autentimisteenuse haldamiseks vajaliku - statistika arvutamiseks ja vaatamiseks
+- võimalust autentimisteenuses fikseeritud autentimistoimingute logimiseks
+- võimalust logi põhjal lihtsa - kuid autentimisteenuse haldamiseks vajaliku statistika arvutamiseks ja vaatamiseks
 
 Eelkõige huvitab autentimiste arv klientrakenduste lõikes ajaperioodil.
 
@@ -110,7 +110,7 @@ TARA-Stat-is on rakendatud järgmised turvavalikud.
 1. Rollipõhine pääsuhaldus andmebaasis. Admin on eraldi andmebaasikasutaja.
 1. Veebirakenduse ja MongoDB suhtluses ei rakendata TLS-i. Kuna andmebaas suhtleb ainult samas masinas oleva rakendusega ja masinas ei ole teisi rakendusi, ei ole TLS-i hädavajalik.
 1. Aandmebaasi ei krüpteerita, kuna konfidentsiaalsusvajadus ei ole kõrge.
-1. Nii veebirakendus kui ka MongoDB käitatakse eraldi, spetsiaalsete kasutajate alt (`tarastat` ja ´mongodb´).
+1. Nii veebirakendus kui ka MongoDB käitatakse eraldi, spetsiaalsete kasutajate alt (`tarastat` ja `mongodb`).
 1. Ligipääs andmebaasile (kirjutamine) on kaitstud ka failisüsteemi õiguste tasemel.
 1. Andmebaasi võrgus nähtavuse piiramine. Andmebaas ei ole nähtav VM-st väljapoole. Andmebaasi kasutab ainult samas masinas asuv veebirakendus. 
 1. Andmebaasi auditilogi ei peeta, kuna terviklusvajadus ei ole nii kõrge.
@@ -133,7 +133,7 @@ TARA-Stat käitluskontekstis on 9 osapoolt (subjekti), kes vajavad identiteedi j
 | `rakendus` | TARA-Stat veebirakenduse konto MongoDB-s | salasõna |
 | `andmehaldur` | MongoDB konto, mille alt kustutatakse aegunud logikirjeid. Andmehalduri rolli täidab VM admin | salasõna |
 | `https://tara-stat.site` | TARA-Stat veebirakendus | _self-signed_ sert |
-| - | statistikakasutaja - anonüümne inimene, kes pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | - (ei autendita, juurdepääs piiratakse kontekstiga) |
+| - | statistikakasutaja - anonüümne inimene, kes pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | ei autendita, juurdepääs piiratakse kontekstiga |
 | `tara-server` | TARA-Server, pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
 
 <p style='text-align:center;'><img src='img/IDENTITEET.PNG' width= "500"></p>
@@ -171,7 +171,7 @@ Märkus. "Standardne" tähendab laialt kasutatavat, stabiilset teeki, millest `n
 
 ## 7 Paigaldamine
 
-TARA-Stat paigaldatakse põhiosas paigaldusskriptidega, kuid seejuures on vaja ka käsitsi tegevusi.
+TARA-Stat paigaldatakse põhiosas paigaldusskriptidega, seejuures on vaja ka käsitsi tegevusi.
 
 Järgnevas eeldame, et:
 - virtuaalmasin (VM) on loodud
@@ -191,7 +191,7 @@ Paigaldamisel saab kasutada järgmisi skripte:
 
 Skriptid asuvad koodirepo kaustas `/opt/TARA-Stat/scripts`.
 
-Skriptid on kommenteeritud - igas skripti päises on kirjeldatud täidetavad sammud. Enne paigaldamist vaata skriptitekstid läbi.
+Skriptid on kommenteeritud - igas skripti päises on kirjeldatud täidetavad sammud. Enne paigaldamist tutvu skriptitekstidega.
 
 ### 7.2 Konfigureerimine
 
@@ -199,10 +199,10 @@ Konfigureeritakse järgmiste failidega:
 
 | fail        | eesmärk ja kasutamine |
 |-------------|-----------------------|
-| `/opt/TARA-Stat/config.js` | veebirakenduse konf-n. Konfigureeritakse paigaldusskriptiga `TARA-Stat-paigalda-rakendus.sh` |
-| `/etc/mongodb.conf`        | MongoDB konf-n. Kasutatakse vaikimis konf-i |
+| `/opt/TARA-Stat/config.js` | veebirakenduse konf-n. Konfigureeritakse paigaldusskriptiga `TARA-Stat-paigalda-rakendus.sh`. Käsitsi konf-mine on vajalik siis, kui tahetakse muuta tundlike taristuparameetrite vaikeväärtusi (nt porti). |
+| `/etc/mongodb.conf`        | MongoDB konf-n. Kasutatakse vaikimis konf-i. Käsitsi konf-mine on vajalik siis, kui tahetakse muuta tundlike taristuparameetrite vaikeväärtusi (nt porti). |
 
-Veebirakenduse konfi-failis seatud väärtusi saab vajadusel üle määrata teenuse käivitamiskäsus (`process.env` mehhanism).
+Veebirakenduse konfi-failis seatud väärtusi saab vajadusel üle määrata teenuse käivitamiskäsus (`process.env` mehhanismiga).
 
 ### 7.3 Esmakordne paigaldamine
 
@@ -222,16 +222,16 @@ Märkus. Edasiarendusvõimalusena võib kaaluda paigaldusskriptide põhjal Jenki
 
 Täida skriptid järgmises järjekorras:
 
-1\. `TARA-Stat-paigalda-kood.sh`
-2\. `TARA-Stat-paigalda-Nodejs.sh`
-3.\ `TARA-Stat-paigalda-MongoDB.sh` (2. ja 3. järjekord ei ole oluline)
-4\. `TARA-Stat-seadista-rakendus.sh`
+1. `TARA-Stat-paigalda-kood.sh`
+2. `TARA-Stat-paigalda-Nodejs.sh`
+3. `TARA-Stat-paigalda-MongoDB.sh` (2. ja 3. järjekord ei ole oluline)
+4. `TARA-Stat-seadista-rakendus.sh`
 
-`TARA-Stat-diagnoosi.sh` võib käivitada igal ajal; see skript ei muuda paigaldust.
+`TARA-Stat-diagnoosi.sh` väljastab diagnostilist teavet - selle skripti võib käivitada igal ajal; see skript ei muuda paigaldust.
 
 ### 7.4 Tarkvarauuenduse paigaldamine
 
-Kui tarkvarauuendus ei puuduta Node.js ega MongoDB-d, siis piisab 1. ja 4. sammu läbitegemisest. Täpne juhis, kas võimalik on osaline uuestipaigaldamine, peab kaasas olema konkreetse tarkvarauuendusega.
+Kui tarkvarauuendus ei puuduta Node.js ega MongoDB-d, siis piisab 1. ja 4. sammu läbitegemisest. Täpne juhis, kas vajalik on täielik uuestipaigaldamine või on võimalik osaline uuestipaigaldamine, peab arendaja poolt kaasas olema konkreetse tarkvarauuendusega.
 
 Väikese tarkvarauuenduse puhul on võimalik ka värskenduste tõmbamine repot üle kirjutamata:
 
@@ -245,7 +245,7 @@ sest kuna rakenduse seadistamisel on `config.js` muudetud, siis pull-i tegemisel
 
 ### 7.5 VM tulemüüri seadistamine
 
-Pääsureeglite seadmiseks VM tulemüüris pakume siin lähteandmed. Vaja on tagada:
+Pääsureeglite seadmiseks VM tulemüüris pakume siin lähteandmed, kuid (kahjuks) mitte konkreetseid juhiseid. Vaja on tagada:
 
 - TARA-Server-lt tulevate HTTPS päringute teenindamine
 - statistikakasutajalt (pöördub sirvikuga) tulevate HTTPS päringute (sh AJAX) teenindamine
@@ -265,7 +265,7 @@ Nii TARA-Stat veebirakendus kui ka MongoDB käitatakse systemd hallatavate teenu
 |    | TARA-Stat veebiteenus | MongoDB (logibaas) |
 |----|-----------------------|--------------------|
 | systemd teenusenimi | `tarastat` |  `mongodb`  |
-| käitav Ubuntu kasutaja | `tarastat` | ´mongodb` |
+| käitav Ubuntu kasutaja | `tarastat` | `mongodb` |
 
 Teenused käivitatakse ja seisatakse standardsete `systemctl` käskudega, nt:
 
@@ -275,11 +275,13 @@ Teenused käivitatakse ja seisatakse standardsete `systemctl` käskudega, nt:
 
 `systemctl stop mongodb` (peata teenus `mongodb`)
 
-Teenuste käivitamise järjekord ei ole oluline, kuid peab arvestama, et `tarastat` sõltub `mongodb`-st - kui logibaas ei ole üleval, siis ei saa logikirjeid salvestada ega statistikat väljastada.
+Ülalolevates näidetes saab siis `mongodb` asemel kasutada `tarastat`.
 
-TARA-Stat ülevalolekut saab lõppkasutaja seisukohast kontrollida nii, et:
-- lülitada tööarvutiga organisatsiooni sisevõrku (VPN)
-- sirvikus avada `https://tara-stat-<site>:5000`. Rakendus teatab, et ühendus ei ole turvaline. See on tingitud _self-signed_ serdist. Aktsepteeri turvaerind. Ilmub rakenduse avaleht.
+Teenuste `tarastat` ja `mongodb` käivitamise järjekord ei ole oluline. Kuid peab arvestama, et `tarastat` sõltub `mongodb`-st - kui logibaas ei ole üleval, siis ei saa logikirjeid salvestada ega statistikat väljastada.
+
+TARA-Stat ülevalolekut saab lõppkasutaja seisukohast kontrollida nii:
+- lülitu tööarvutiga organisatsiooni sisevõrku (VPN)
+- sirvikus ava `https://tara-stat-<site>:5000`. Rakendus teatab, et ühendus ei ole turvaline. See on tingitud _self-signed_ serdist. Aktsepteeri turvaerind. Ilmub rakenduse avaleht.
 
 ## 9 Olulised asukohad
 
@@ -287,7 +289,7 @@ Koodirepo `https://github.com/e-gov/TARA-Stat`:
 
 | kaust v fail | otstarve     |
 |--------------|--------------|
-| `index.js'   | veebirakendus |
+| `index.js`   | veebirakendus |
 | `scripts`    | paigaldusskriptid |
 | `docs`       | dokumentatsioon |
 
@@ -309,10 +311,11 @@ MongoDB (paigaldus):
 
 ## 10 Diagnostika
 
+Sirviku teated:
+
 | teade v käitumine | võimalik põhjus |
 |--------------|------------------|
 |  `connection refused` | rakendus on maas |
-| `Logibaasiga ühendumine ebaõnnestus' | MongoDB on maas |
 
 Veebirakenduse veateated:
 
@@ -330,10 +333,13 @@ ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API k
 
 ## 12 Testimine
 
-`mini.js`. Tarkvara koosseisus on lihtne vahend HTTP ja HTTPS ühenduste testimiseks:
+`mini.js`
+- tarkvara koosseisus olev lihtne vahend HTTP ja HTTPS ühenduste testimiseks:
 - `mini.js` - loob minimaalse HTTP ja HTTPS serverid, mis kuulavad portidelt 5001 ja 5000.
 - `scripts/seadistaMini.sh` - paigaldab ´mini.js` systemd veebiteenusena.
 
-`mockup.js` on eraldi VM-i paigaldatav lihtne Node.js rakendus, mis etendab logikirjeid TARA-Stat logibaasi saatvat TARA-Server-it. Programmi juurde kuulub konf-ifail `mockup-config.js`.
+`mockup.js`
+-  on eraldi VM-i paigaldatav lihtne Node.js rakendus, mis etendab logikirjeid TARA-Stat logibaasi saatvat TARA-Server-it.
+- programmi juurde kuulub konf-ifail `mockup-config.js`.
 
 Testimisvahendeid toodangus ei kasutata. Neid võib repos sisuga koos tootmismasinasse kopeerida, kuid neid ei ole vaja (ega tohigi) skriptidega ega muul viisil aktiveerida.
