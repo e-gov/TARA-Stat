@@ -925,59 +925,6 @@ MongoDB osas vt: [How to Install MongoDB on Ubuntu 16.04](https://www.digitaloce
 
 Sea pääsureeglid VLAN-is ja/või sisevõrgu ruuteri(te)s).
 
-### 3.8 Paigalda Node.js protsessihaldur PM2
-
-Node.js toodangukeskkonnas haldamiseks on hea praktika kasutada protsessihaldurit pm2.
-
-Vt:
-- [PM2](https://www.npmjs.com/package/pm2) (npm)
-- [How To Set Up a Node.js Application for Production on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04)
-
-Protsessihalduri käske anna sudo-ga.
-{: .adv}
-
-**pm2 eemaldamine, juhul, kui midagi läks valesti**:
-
-```
-sudo pm2 kill
-sudo npm remove pm2 -g
-which pm2
-```
-või veel parem - tagasipöördumine varasema tõmmise juurde.
-
-**Paigalda pm2**:
-
-Eeldus: paigaldatud on Node.js, koos selle koosseisus oleva npm-ga.
-
-`sudo npm install -g pm2`
-
-**pm2 automaatkäivitamine**.
-
-NB! pm2 automaatkäivitamist ei ole käima saanud.
-{: .adv}
-
-Genereeri pm2 automaatkäivituse skript:
-
-`sudo pm2 startup systemd`
-
-Täida eelmise käsu väljundi viimane rida (sellega luuakse systemd unit, millega pm2 automaatkäivitatakse).
-
-**Rakenduse käivitamine**:
-
-`sudo pm2 start index`
-
-Vaata pm2-ga hallatavate rakenduste nimekirja:
-
-`sudo pm2 list`
-
-Peata rakendus (protsess):
-
-`sudo pm2 stop <rakenduse nimi>`
-
-Rohkem teavet protsessi kohta:
-
-`sudo pm2 describe <rakenduse nimi>`
-
 ### 3.9 Tarkvara uuendamine
 
 TARA-Stat tarkvara täiendamisel ei ole alati vaja paigaldust täies ulatuses korrata. Toimimisviis sõltub konkreetse täienduse olemusest. Kirjeldame mõned tüüpilised käsud, millest tarkvara uuendamisel võib kasu olla.
