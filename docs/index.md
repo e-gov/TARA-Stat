@@ -1,31 +1,10 @@
-Mis asi on `changeit`? -- Kõik salasõnad ja paigaldustaristu parameetrid (hostinimed, pordinumbrid jms) tekstis ja repo koodis on näitlikud.
-{: .adv}
 
 <p style='text-align:right;'><i>Do one thing and do it well</i> &mdash; <a href='https://en.wikipedia.org/wiki/Unix_philosophy' target='_new'>Unix_philosophy</a></p>
 
-# Mikroteenuse arhitektuur
+# Mikroteenusarhitektuurist
 {: .no_toc}
-
-arutelu + töötav näide
-
-6\. päev, 14.05.2018<br><br>
-
-Käesoleval kirjutisel on kaks osa. Esimeses osas arutlen küsimuste üle, mis mikroteenuste (µT) arhitektuuris praktikas olulised. Tuleb tõdeda, et paljudele küsimustele ei ole veel selgeid vastuseid.
-
-Teises osas on ühe konkreetse mikroteenuse - TARA-Stat - kirjeldus.
 
 ## Sisukord
-{: .no_toc}
-
-laiem ülevaade mikroteenustest: [1 Vajadus ja väljakutse](#1-vajadus-ja-v%C3%A4ljakutse)
-
-TARA-Stat ülevaade: [2 TARA-Stat](#2-tara-stat)
-
-paigaldajale ja käitajale: [3 Paigaldamine](#3-paigaldamine), [4 Käitamine](#4-k%C3%A4itamine)
-
-arendajale: [5 Arendamine](#5-arendamine)
-
-## Detailne sisukord
 {: .no_toc}
 
 - TOC
@@ -57,10 +36,10 @@ Mikroteenus (µT) on iseseisva elutsükliga, kiiresti arendatav, selgepiiriliste
 **Iseseisev**. Iseseisvus tähendab võimalikult väheseid sõltuvusi (_dependencies_). Mitte ainult sõltuvused teistest (mikro)teenustest, vaid ka kasutatavatest teekidest, raamistikest jm tehnoloogiatest. 
 
 µT sõltuvuste arv peab olema väike. Iga liides on sõltuvus. Iga kasutatav teek, tehnoloogia või arendusvahend on samuti sõltuvus.
-{: .adv}
+{: .note}
 
 Sõltuvuseks võib olla ka liiga keerukas arendusprotsess.
-{: .adv}
+{: .note}
 
 Miks see on oluline? Kuigi µT on äravisatavad ja ümberkirjutatavad, on siiski kasulik neid aeg-ajalt täiendada. µT arendus ei tohiks olla pidev. Kergem on meelde tuletada ja muuta koodi, mis on kirjutatud laialt levinud keeles.
 
@@ -69,7 +48,7 @@ Miks see on oluline? Kuigi µT on äravisatavad ja ümberkirjutatavad, on siiski
 ### 1.3 7 päeva
 
 µT peaks olema (ümber-)kirjutatav u nädalaga.
-{: .adv}
+{: .note}
 
 Milliste tööde ja toimingute vahel see aeg jaguneb? Koodi kirjutamine on ainult osa arendusest. Arendust mõistame siin DevOps vaatenurgast. S.t arendus on kõik see, mis ei ole teenuse käitamine. Arendamine on ka tarkvara paigaldamine. Planeerin järgmise ajakava:
 
@@ -104,15 +83,15 @@ Keskendumegi siin järgmistele turvalisuse küsimustele: suhtlevate osapoolte au
 
 Turvakontekst ja sellest tulenevad turvaeesmärgid ning -nõuded on olulised mitte sellepärast, et keegi tahaks - mingist abstraktsest ühtlustamise ideest lähtudes - kehtestada nõudeid nõuete pärast.
 
-Eespool sai märgitud, et isoleerimine ei saa kunagi olla täielik. (Krüptograafia terrminites - mingi kõrvalkanal (_side channel_) jääb alati). Seetõttu tuleb arvestada, et ka suhteliselt madala ohuprofiiliga µT, olles IT-taristu üks osa, võib potentsiaalselt - kui turve jäetakse hooletusse - mõjutada teisi, hoopis tähtsamaid süsteeme.
+Eespool sai märgitud, et isoleerimine ei saa kunagi olla täielik. (Krüptograafia terminites - mingi kõrvalkanal (_side channel_) jääb alati). Seetõttu tuleb arvestada, et ka suhteliselt madala ohuprofiiliga µT, olles IT-taristu üks osa, võib potentsiaalselt - kui turve jäetakse hooletusse - mõjutada teisi, hoopis tähtsamaid süsteeme.
 
 Peamised põhjused on vajadus takistada võimaliku ründaja edasipääs teistesse süsteemidesse, samuti takistada tõrgete levik taristu teistesse osadesse.
 
 Ründajal ei tohi olla võimalus kasutada rakendust lävepakuna IT-taristu teistesse osadesse.
-{: .adv}
+{: .note}
 
 Rakenduse võimalike tõrgete levik IT-taristu teistesse osadesse peab olema tõkestatud.
-{: .adv}
+{: .note}
 
 Hea näide on allpool käsitletav µT TARA-Stat. TARA-Stat on kasutusstatistika kogumise ja esitamise rakendus. TARA-Stat turvanõuded ei ole eriti kõrged. Isikuandmeid ei töödelda ja juhtimisotsuste tegemiseks - milleks TARA statistikat vaja on - ei ole statistika täpsus eriti oluline. Kuid see ei tähenda, et TARA-Stat turvamine oleks väheoluline. TARA-Stat paigaldatakse organisatsiooni IT-taristusse (arvutivõrku).
 
@@ -171,7 +150,7 @@ Võtmeküsimus (_pun intended_) on kes kannab võtmehalduse kulu või sertifitse
 µT puhul, mis pakub masinliidest väikesele arvule, kindlatele partneritele, võiks kasutada sümmeetrilist API võtit.
 
 Turvalisust ei saa tasuta. Juurdepääsu piiramist vajava API korral ei pääse võtmehaldusest või välise autentimis- või sertifitseerimisteenuse ostmisest.
-{: .adv}
+{: .note}
 
 Võrgu tasandil saab samuti autentida, kontrollides teise osapoole IP-aadressi. Kuid  tavaliselt ei loeta seda piisavaks. Osapoole (siis rakenduse) IP ei tarvise olla piisavalt püsiv. Samuti peetakse IP-aadresside võltsimist (_IP spoofing_) teatavaks ohuks.
 
@@ -179,7 +158,7 @@ Kokkuvõttes, autentimine on alati kulu. Sellest kulust saab vabaneda ainult sii
 
 #### 1.5.4 Võrgule avatuse piiramine
 
-Üks peaeesmärke on **piirata võrgule avatust** (_Network Exposure_). Selleks tehakse seadistustoiminguid võrguseadmetes, võrku ühendatud masinates ja võrgutarkvaras.
+Üks peaeesmärke on **piirata võrgule avatust** (_network exposure_). Selleks tehakse seadistustoiminguid võrguseadmetes, võrku ühendatud masinates ja võrgutarkvaras.
 
 Masina tasandil piiratakse võrguliiklust masina ja välismaailma vahel. Seda tehakse Linux-i tulemüüri (iptables) seadistamisega.
 
@@ -203,7 +182,7 @@ Virtuaalse kohtvõrgu (_virtual LAN, VLAN_) tasandil määratakse, millised masi
 Meeldib see meile või mitte, kuid oluliste tagajärgedega toiminguid saavad teha ainult vastavate volitustega isikud. Standardne mehhanism on rollipõhine pääsuhaldus (_role-based access control_, RBAC) ja sellest pääseme ainult siis, kui µT on tõeliselt _single purpose_ s.t ongi ainult üks toiming. µT-ses endas ei ole rollihalduse teostamine otstarbekas ega mõeldavgi. µT-ses endas peaks olema ainult autenditud kasutaja rolli kontrollimine. Rollide omistamine ja äravõtmine peaks käima väljaspool. 
 
 µT tavaliselt ei suuda ise teha rollihaldust, vaid vajab seda teenusena.
-{: .adv}
+{: .note}
 
 #### 1.5.6 Ühendamine
 
@@ -216,7 +195,7 @@ Monoliitrakenduses ei ole komponentidevahelise andmeedastuse turvamine probleem.
 µT peaks suhtlema turvatud protokolli kaudu. Levinuim protokolli selles suhtluses on HTTP. 
 
 µT-l peaks olema HTTPS võimekus.
-{: .adv}
+{: .note}
 
 #### 1.5.8 Tundliku taristuteabe ja saladuste kaitse
 
@@ -312,11 +291,6 @@ Konfigureerimisviisid erinevad keerukuselt:
 
 Konfigureerimine on tihti **mitmeastmeline**. Rakenduse juurde käib ikka eraldi konfiguratsioonifail. Käivitamisel loetakse konfiparameetrid (nende väärtused) konf-ifailist rakendusse. Sageli antakse "kõige viimase hetke" konfiguratsioon rakendusele käivituskäsu parameetritega. Käivituskäsu parameetrid on tugevamad kui konf-ifaili parameetrid.
 
-Allpool kirjeldatud µT-s TARA-Stat on valitud konfigureerimine konf-ifailide abil. Konf-ifaile on kolm:
-- veebirakenduse konf-ifail
-- logibaasi konf-ifail
-- testimisel kasutatava makettrakenduse konf-ifail.
-
 ## 2. TARA-Stat
 
 ### 2.1 Funktsioon
@@ -337,7 +311,7 @@ TARA-Stat kasutajaliides statistikakasutajale:
 Ongi kõik. Kohe tekib küsimus, kas seda pole liiga vähe? See µT on spetsialiseeritud logi. Logimine on ulatuslik teema. Logitakse mitmel erineval eesmärgil - turvamine, kasutajate pöördumiste lahendamine, teenuse ülaloleku seiramine jm. Autentimisteenuses TARA on juba oma, keerukas logilahendus - mis on (potentsiaalselt) ühendatud võimsa keskse logisüsteemiga. Kas siis eraldi, spetsialiseeritud logilahendusel on mõtet? See on mittetriviaalne, kuid väga oluline küsimus. Eraldi logilahendusel puuduks mõte, kui olemasolev võimas, väga paindlik ja paljude omadustega, _out-of-the-box_ logisüsteem oleks seadistatav vajaduse lahendamiseks vähema ajaga kui kulub µT arendamiseks. Praktika näitab siiski, et võimsate universaallahenduste tundmaõppimine ja seadistamine võib olla väga töömahukas. Ise tehes saame teha täpselt selle mida vajame - täpselt nii nagu tahame. Küsimusele kumb on parem - kas ise tehtud µT või seadistatud võimas universaalne vahend - ei ole universaalset vastust. Ise põlve otsas tegemine nõuab oskusi ja on kahtlemata riskantne. Kuid reaalsed riskid on ka suurte universaalsete valmislahenduste puhul. Näeme ju praktikas ikka ja jälle, kuidas majja tuuakse ilus ja võimas raamistik, meetod või keel, kuid selle juurutamine võtab aastaid ning suur osa vahendi võimalustest jäävad kasutamata. Igal juhul oleme µT puhul oma kahjusid tõkestanud - äraviskamisel kaotame maksimaalselt ühe nädala töö. Kui arvestada õppimist, siis tõenäoliselt vähem.
 
 µT peab täitma ühtainust ülesannet (millel võib olla mitu tahku v osaülesannet).
-{: .adv}
+{: .note}
 
 ### 2.2 Komponendid
 
@@ -392,10 +366,10 @@ testimine | Visual Studion Code Debugger, [httpie](https://httpie.org/) - (HTTP 
 Tehnoloogiad on valitud kasinuse põhimõttel. Kasutatud on (tehtud strateegiliste valikute raames) võimalikult standardseid vahendeid.
 
 Ühes µT-s kasutatavate tehnoloogiate (teekide, keelte jms) hulka tuleb hoida kontrolli all. Valida tuleb ainult vajalikud, soovitavalt üldlevinud vahendid. Vahendid ei tohi olla lahendatava ülesande suhtes liiga "võimsad".
-{: .adv}
+{: .note}
 
 Ühe µT sisetehnoloogiad ei tohi mõjutada teise µT sisetehnoloogiate valikut.
-{: .adv}
+{: .note}
 
 Tehnoloogiate valimisel ei saa läbi katsetamiseta. Kulutasin omajagu aega [RESTHEart](http://restheart.org/) - MongoDB veebiliides s.o rakendus, mis ühendub MongoDB külge ja võimaldab REST API kaudu andmebaasi kasutada - uurimisele. Ühel hetkel sain aru, et lisalüli ei ole vaja ja lihtsam on  MongoDB veebiliides kirjutada ise, kasutades standardset MongoDB Node.js draiverit. (See on väga tüüpiline. Internetis pakutakse palju raamistikke, vahendeid jms, mis on ehitatud teise vahendi peale ning nagu pakuksid lisaväärtust. Arvestades, et iga vahendit tuleb tundma õppida ja häälestada, on tihti kasulik sellistest kahtlast lisaväärtust pakkuvatest vahekihtidest loobuda ja programmeerida ise, standardsete vahenditega.)
 
@@ -406,7 +380,7 @@ Kas teine arendaja saab tööd TARA-Stat-ga jätkata? Usun, et jah, saab - kui t
 Kui arendaja peaks MongoDB või Node.js mitte tudnma ega soovi neid õppida, siis tuleb TARA-Stat kood ära visata ja rakendus ümber kirjutada. Näiteks PostgreSQL ja Java Spring kasutamisega. Koodi kirjutamiseks on kulutatud 1-2 päeva. Ümberkirjutamine teise keelde ei tohiks rohkem aega võtta.
 
 Äravisatavus ja ümberkirjutatavus on µT tähtsamate omaduste hulgas.
-{: .adv}
+{: .note}
 
 ### 2.6 Kasutajad
 
@@ -506,7 +480,7 @@ Vt ka: MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisal
 #### 2.8.1 Õiguste plaan
 
 Nimed on illustratiivsed ja paigaldamisel muudetavad.
-{: .adv}
+{: .note}
 
 µT suhtleb teiste masinatega, erinevate inimestega. Teenindab ja kasutab ise teenuseid. µT enda sees on üksteisega suhtlevad komponendid. Suhtlevaid osapooli on ka väikese rakenduse puhul paras hulk. Erinevatel osapooltel on erinevad õigused. Õigusi peab olema parasjagu: mitte liiga palju (ebaturvaline), mitte liiga vähe (ei pääse teenusele ligi). Osapooltel on **identiteedid** (nimed), mida tõendavad **kredentsiaalid** (paroolid, võtmed). Kõike seda on omajagu. Sellest peab olema ülevaade ja see peab olema tasakaalus. **Õiguste plaani** eesmärk on anda täpne pilt rakendusega seotud osapooltest, nende rollidest ja õigustest, samuti kredentsiaalidest.
 
@@ -526,669 +500,3 @@ TARA-Stat käitluskontekstis on 9 osapoolt (subjekti), kes vajavad identiteedi j
 | **TARA server** | - | pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
 
 <p style='text-align:center;'><img src='img/IDENTITEET.PNG' width= "500"></p>
-
-
-## 3 Paigaldamine
-
-### 3.1 Ülevaade
-
-TARA-Stat koosneb kahest komponendist:
-- veebirakendus
-- logibaas.
-
-Mõlemad komponendid paigaldatakse samasse masinasse.
-
-**Alustarkvara**:
-- Ubuntu 16 LTS
-- Node.js (vajab veebirakendus)
-- MongoDB (vajab logibaas).
-
-**Välisühendused**:
-- TARA-Stat peab olema kättesaadav ainult organisatsiooni sisevõrgus,
-- järgmistele inim- ja masinkasutajatele:
-  - statistikakasutajale (tüüpiliselt teenusehaldur)
-    - statistikakasutaja pöördub sirviku abil statistika väljastamise otspunkti
-  - TARA-Server rakendusele
-    - TARA-Server pöördub logikirje lisamise otspunkti.  
-  - lisaks on TARA-Stat vajadusel võimeline pakkuma elutukse otspunkti organisatsiooni monitooringulahendusele.
-  - TARA-Stat-le peab vajadusel olema juurdepääs ka andmehalduril, et kustutada aegunud logikirjed.
-    - andmehaldur kasutab tööriista `mongo` (MongoDB Shell)
-    - või MongoDB Compass - see on graafiline tööriist.
-
-Logibaas suhtleb ainult veebirakendusega; ei suhtle masinast väljapoole.
-
-**Olulised asukohad**:
-
-- MongoDB
-  - `/etc/mongodb.conf` - konf-ifail
-  - `/var/log/mongodb/mongod.log` - andmebaasilogi
-  - `/var/lib/mongodb` - andmebaasifailid
-  - `/lib/systemd/system/mongod.service` - systemd haldusüksuse kirjeldusfail
-  - `/etc/init.d/mongodb` - automaatkäivitusskript
-
-Täpsemalt TARA-Stat omaduste ja ehituses kohta vt jaotis 2. 
-
-Vajadusel vt:
-- [How to Install and Configure MongoDB on Ubuntu 16.04 LTS](https://www.howtoforge.com/tutorial/install-mongodb-on-ubuntu-16.04/) (HowtoForge)
-
-### 3.2 Paigaldusjärjekord
-
-Automaatpaigaldamiseks on kaustas `TARA-Stat/scripts` kaks skripti:
-- `TARA-Stat-paigalda-MongoDB.sh` paigaldab logibaasi (MongoDB), sh moodustab andmebaasikasutajad
-- `TARA-Stat-paigalda-Nodejs.sh` paigaldab Node.js, TARA-Stat veebirakenduse ja Node.js protsessihalduri pm2.
-
-Skripti käivitamine:
-
-```
-cd $HOME/Tara-Stat/scripts
-sudo bash TARA-Stat-paigalda-MongoDB.sh
-sudo bash TARA-Stat-paigalda-Nodejs.sh
-```
-
-Skripte ei pea kasutama. Võib paigaldada käsitsi. Kuid ka skriptide kasutamisel tuleb osa toiminguid siiski teha käsitsi. Tee toimingud järgmiselt:
-
-| toiming                            | käsitsi      | skriptiga  |
-|------------------------------------|--------------|------------|
-| paigalda VM ja op-süsteem (Ubuntu) |              |            |
-| paigalda TARA-Stat veebirakendus   | jaotis 3.3   |            |
-| paigalda MongoDB                   | jaotis 3.4   | `TARA-Stat-paigalda-MongoDB.sh` |
-| paigalda Node.js                   | jaotis 3.5   | `TARA-Stat-paigalda-Nodejs.sh` |
-| seadista TARA-Stat veebirakendus   | jaotis 3.6   | `TARA-Stat-paigalda-Nodejs.sh` |
-| seadista VM tulemüür               | jaotis 3.7   |            |
-| paigalda protsessihaldur pm2       | jaotis 3.8   | ~~`TARA-Stat-paigalda-Nodejs.sh`~~ |
-
-### 3.3 Veebirakenduse paigaldamine
-
-Kui rakendus on juba paigaldatud, siis vt jaotis "Tarkvara uuendamine".
-{: .adv}
-
-1\. Kopeeri veebirakendus ([https://github.com/e-gov/TARA-Stat](https://github.com/e-gov/TARA-Stat)) organisatsiooni sisereposse.
-
-_Alternatiiv: paigalda otse GitHub-i repost._
-
-2\. Paigalda veebirakendus koodirepost VM-i:
-
-Paigalda git:
-
-`sudo apt install git`
-
-`git clone https://github.com/e-gov/TARA-Stat` (või kasutada vastavat organisatsiooni siserepot).
-
-Järgnevas eeldame, et TARA-Stat asub kaustas `~/TARA-Stat`. Toodangukeskkonnas võib asukoht olla teine.
-{: .adv}
-
-3\. Sea veebirakenduse port (valikuline)
-
-Vajadusel ava kaustas `TARA-Stat` asuv veebirakenduse konf-ifail `config.js` ja vaheta pordi vaikeväärtus `5000` õige vastu (nt sea standardne HTTPS port `443`).
-
-Järgnevas eeldame, et port on `5000`.
-
-### 3.4 Paigalda MongoDB
-
-Vajadusel vt:
-- [How to Install MongoDB on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
-- [Install MongoDB Community Edition on Ubuntu](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/).
-
-Paigalda MongoDB viimane stabiilne versioon.
-
-Kui paigaldamine ebaõnnestus, siis võib olla vajalik andmefailide kustutamine kaustas `/var/lib/mongodb` enne uuesti paigaldamist.
-{: .adv}
-
-Paigalda pakettide kontrollimise võtmed:
-
-`sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5`
-
-Moodusta vajalik fail, et apt leiaks paketid üles:
-
-`echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list`
-
-Uuenda paketinimekirja:
-
-`sudo apt-get update`
-
-Paigalda ainult vajalikud MongoDB komponendid - andmebaasiserver `mongod` ja shell `mongo`:
-
-`sudo apt-get install -y mongodb-org-server=3.6.4 mongodb-org-shell=3.6.4`
-
-Alternatiiv: paigalda täiskomplekt (sisaldab ka serveris mittevajalikku MongoDB Compass tarkvara): `sudo apt-get install -y mongodb-org`.
-{: .note}
-
-Paigaldamisel luuakse kasutaja `mongodb` ja lisatakse ta kasutajate gruppi `mongodb`.
-
-MongoDB lastakse käima kasutaja `mongodb´ alt. Seetõttu `mongodb` vajab kirjutusõigusi MongoDB logifaili ja andmebaasifailidele. Kui oled neid muutnud (määranud omanikuks teise kasutaja), siis saad `mongodb` uuesti omanikuks seada järgmiselt:
-{: .adv}
-
-```
-sudo chown mongodb /var/log/mongodb/mongod.log
-cd /var/lib/mongodb
-sudo chown -R mongodb:mongodb *
-```
-
-Kontrolli paigaldust: `mongod --version`
-
-Sea kasutajale `mongodb` parool: `sudo passwd mongodb`
-
-Seadista MongoDB. Leia konfi-fail `/etc/mongodb.conf`. Veendu, et seadistused sobivad. Vajadusel muuda. Autentimist (`auth=`) ei ole hetkel vaja veel sisse lülitada. Nt andmebaasi kaust on `/var/lib/mongodb`. 
-
-Vajadusel vt [MongoDB Configuration](https://docs.mongodb.com/manual/administration/configuration/).
-
-Käivita MongoDB (teenusena, `systemctl` abil, kasutaja `mongodb` all):
-
-`sudo systemctl start mongod`
-
-Kontrolli, et andmebaas käivitus: `sudo systemctl status mongod`
-
-_Alternatiiv: MongoDB käivitamine käsu `service` abil:_
-
-`sudo service start mongodb`
-
-_Vajadusel vt: [systemctl ja service seletus](https://askubuntu.com/questions/903354/difference-between-systemctl-and-service)_
-
-_Alternatiiv: MongoDB käivitamine taustaprotsessina, konfi-faili näitamisega:_
-
-`mongod --config /etc/mongod.conf &`
-
-Logibaasi (MongoDB andmebaasi) ja selles kogumit (_collection_) ei ole vaja luua. Need luuakse esimese logikirje salvestamisel.
-{: .note}
-
-Logibaasile tuleb luua kolm kasutajat:
-
-- `userAdmin` - kasutajate haldur
-- `rakendus` - TARA-Stat veebirakendus
-- `andmehaldur` - haldur, kes saab aegunud logikirjeid kustutada
-
-Kasutajate eristamine on vajalik pigem tuleviku vajadusi arvestades. Protseduuri vt [Enable Auth](https://docs.mongodb.com/manual/tutorial/enable-authentication/).
-
-Kasutajakontosid hoitakse samuti MongoDB andmebaasides. MongoDB standardpraktika kohaselt kasutajate halduri kontot hoiame andmebaasis `admin`. Teiste kasutajate kontosid hoiame andmebaasis `users`.
-
-Käivita MongoDB konf-ifaili äranäitamisega ja kasutaja `mongodb` alt:
-
-`su -c 'mongod --config /etc/mongod.conf &' - mongodb`
-
-_Kui soovid MongoDB käima lasta teise kasutaja alt, siis anna kasutajale, kes andmebaasi käivitab, õigused andmebaasifailidele ja andmebaasilogile:_
-
-```
-sudo chown -R kasutajanimi /var/lib/mongodb
-sudo chown -R kasutajanimi /var/log/mongodb
-```
-
-_Seejärel käivita MongoDB (taustaprotsessina):_
-
-`mongod --config /etc/mongodb.conf &`
-
-----
-
-Kasulik on meelde jätta andmebaasiserveri protsessinumber. Veendu, et andmebaas on käivitunud, nt: `ps aux` või `top`.
-
-MongoDB logi: `/var/log/mongodb/mongodb.log`.
-
-Taga, et andmete kaust, vaikimisi `/var/lib/mongodb` on olemas ja andmebaasiserveril on õigused sinna kirjutada. Vajadusel korrigeeri failisüsteemi pääsuõigusi, nt: `sudo chmod -R ug+rw /var/lib/mongodb`.
-{: .note}
-
-Ühendu CLI-ga andmebaasi külge: `mongo`. Seejärel:
-
-Loo kasutajate haldur.
-
-Sisesta või kopeeri allolevad käsud `mongo` dialoogi, viiba `>` järele:
-
-`use admin`
-
-```
-db.createUser(
-  {
-    user: "userAdmin",
-    pwd: "changeit",
-    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
-  }
-)
-```
-
-Lülita sisse rollihaldus. Peata andmebaasiserver ja sea andmebaasi konf-ifailis `/etc/mongodb.conf`:
-
-```
-security:
-   authorization: enabled
-``` 
-
-ja käivita andmebaas uuesti (`&` on käivitamine taustaprotsessina):
-
-`mongod --config /etc/mongod.conf &`
-
-Veendu protsessi tekkimises: `jobs`
-
-Ühendu CLI `mongo` abil uuesti andmebaasi külge, seekord kasutajana `userAdmin`:
-
-```
-mongo --port 27017 -u "userAdmin" -p "changeit" --authenticationDatabase "admin"
-```
-
-või pärast `mongo` käivitamist:
-
-```
-use admin
-db.auth( "userAdmin", "changeit" )
-```
-
-Kontrolli, et konto on õigesti loodud:
-
-```
-show users
-```
-
-Loo kasutaja `rakendus`
-
-`use users`
-
-```
-db.createUser(
-  {
-    user: "rakendus",
-    pwd: "changeit",
-    roles: [ { role: "readWrite", db: "logibaas" } ]
-  }
-)
-```
-
-NB! Väärtused nagu `readWrite` on tõstutundlikud.
-{: .adv}
-
-Loo kasutaja `andmehaldur`
-
-`use users`
-
-```
-db.createUser(
-  {
-    user: "andmehaldur",
-    pwd: "changeit",
-    roles: [ { role: "readWrite", db: "logibaas" } ]
-  }
-)
-```
-
-Kontrolli, et kontod on õigesti loodud:
-
-```
-use users
-show users
-```
-
-"== VEA KORRAL:============================================="
-Kui mongod käivitamine ei õnnestu, siis põhjuseks võib olla õiguste vähesus kasutajal `mongodb` (kelle all mongod jookseb). Õiguste andmiseks tee:
-
-`sudo chown -R mongodb /var/lib/mongodb`
-`sudo chown -R mongodb /var/log/mongodb`
-
-Ja siin kirjeldatud: [](https://medium.com/@gabrielpires/mongodb-ubuntu-16-04-code-exited-status-14-aws-lightsail-problem-417ffc78cb11)
-
-`cd /tmp`
-`sudo chown mongodb:mongodb *.sock`
-
-Seejärel proovi uuesti:
-
-`sudo systemctl start mongod`
-`sudo service mongo status`
-
-"========================================================="
-
-
-
-### 3.5 Paigalda Node.js
-
-Paigalda Node.js (viimane stabiilne versioon).
-
-Vajadusel vt: [How To Set Up a Node.js Application for Production on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04)
-
-Väldi Ubuntu Node.js paketi paigaldamist (`sudo apt-get install nodejs`). Vt ja järgi  [Installing Node.js Tutorial: Ubuntu](https://nodesource.com/blog/installing-node-js-tutorial-ubuntu/).
-{: .adv}
-
-`curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -`
-
-Seejärel:
-
-`sudo apt-get install -y nodejs`
-
-Kontrolli: `nodejs -v`
-
-Kontrolli, et ka Node.js paketihaldur npm on paigaldatud: `npm --version` 
-
-**Paigalda Node.js teegid**. Node.js vajab tööks rida Javascipti teeke. Need on kirjeldatud failis `package.json`. Teegid tuleb paigaldada kausta `node_modules`. Kui repo ei sisalda teeke, siis tuleb need paigaldada eraldi, Node.js paketihalduri `npm` abil.
-
-Kui Node.js paigaldada Node.js ametlikult veebilehelt, siis npm paigaldatakse koos Node.js-ga. Kui Node.js paigaldada apt-get repo kaudu, siis tuleb npm eraldi paigaldada: `sudo apt-get install npm`.
-{: .note} 
-
-Alternatiiv on paigaldada teegid repo kaudu.
-{: .note}
-
-Liigu kausta `TARA-Stat`
-
-`npm install <moodul> --save`
-
-Paigaldada tuleb järgmised moodulid: `body-parser`, `ejs`, `express`, `mongodb`, `request`, `basic-auth` ja `request-debug`.
-
-### 3.6 Seadista TARA-Stat veebirakendus
-
-**Genereeri ja paigalda veebirakenduse HTTPS võtmed**. Moodusta kausta `TARA-Stat` alla alamkaust `keys`:
-
-```
-mkdir keys
-cd keys
-```
-
-Genereeri võtmed:
-
-`openssl genrsa -out tara-stat.key 2048`
-
-`openssl req -new -x509 -key tara-stat.key -out tara-stat.cert -days 3650 -subj /CN=tara-stat`
-
-Veendu, et failid `tara-stat.cert` ja `tara-stat.key` on veebirakenduse juurkausta alamkaustas `keys`.
-
-Ava kaustas `TARA-Stat` asuv fail TARA-Stat konf-ifail `config.js` ja sea vajadusel õigeks failide `tara-stat.cert` ja `tara-stat.key` asukohad. (Kui vaikimisi peaksid olema Windows-i failiteed, siis kommenteeri need välja).
-
-Arvesta, et Ubuntu server keskkonnas ei tarvitse kasutajate kaust `home` olla juurkausta, vaid nt `/opt` all.
-{: .adv}
-
-Kui veebirakenduses kasutada self-signed serti, siis hakkab kasutaja sirvik andma teadet "vigane turvasertifikaat". Teatest saab üle, kui kasutaja lisab erandi.
-{: .adv}
-
-Vajadusel vt: [Node 10.0 TLS](https://nodejs.org/api/tls.html#tls_tls_ssl_concepts); [Self-Signed, Trusted Certificates for Node.js & Express.js](https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/)
-
-**Loo VM kasutaja `tarastat`**. Kasutaja `tarastat` on piiratud õigustega kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus. Loo kasutaja:
-
-`sudo adduser tarastat`
-
-TODO Õiguste andmine ja määramine Node.js protsessiomanikuks.
-
-**Paigalda MongoDB kasutamise salasõna**. 
-
-See on kasutajakonto, millega TARA-Stat veebirakendus pöördub MongoDB poole. Ava fail `config.js` ja vaheta parameetri `config.mongouserpwd` väärtus õige vastu. 
-
-**Loo usaldus TARA-Serveri ja TARA-Stat-i vahel**.
-
-1\. Genereeri API-võti. Juhusõne pikkusega 20 tärki.
-
-2\. Paigalda API-võti TARA-Stat-i konf-i. Ava fail `config.js` ja vaheta väärtus `changeit` õige vastu.
-
-Alternatiiv on API-võti anda veebirakenduse käivitamisel parameetrina (`process.env`).
-
-3\. Paigalda API-võti TARA-Stat poole pöörduva rakenduse (TARA-Server) konf-i.
-
-### 3.7 Seadista VM tulemüür
-
-Sea pääsureeglid VM tulemüüris. Vaja on:
-
-- HTTPS päringud TARA-Server-lt
-- HTTPS päringud Statistikakasutajalt (pöördub sirvikuga)
-- HTTPS päringud monitooringulahenduselt (kui kasutatakse).
-
-MongoDB osas vt: [How to Install MongoDB on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04), Step 3.
-
-Sea pääsureeglid VLAN-is ja/või sisevõrgu ruuteri(te)s).
-
-### 3.9 Tarkvara uuendamine
-
-TARA-Stat tarkvara täiendamisel ei ole alati vaja paigaldust täies ulatuses korrata. Toimimisviis sõltub konkreetse täienduse olemusest. Kirjeldame mõned tüüpilised käsud, millest tarkvara uuendamisel võib kasu olla.
-
-**Värskenda koodirepot**. Lähteolukord: täiendatud kood on lähterepos (GitHub-is või organisatsiooni siserepos. Täiendused on vaja paigaldada VM-i.
-
-- Liigu VM-s kausta `TARA-Stat`.
-- Kontrolli, et VM git repo on seotud lähterepoga: `git remote -v`
-- Kui muutsid VM repos midagi ja tahad, et lähterepost tulev kirjutab sinu muudatused üle, siis anna: `git checkout .`
-- Värskenda: `git pull origin master`
-
-Kui VM ei tunnista git repo serti, siis kontrolli, kas VM kell on õige: `date`. Põhjus võib olla see, et NTP pole sees. Vajadusel paigalda NTP: `sudo apt-get install ntp`.
-{: .adv}
-
-## 4 Käitamine
-
-### 4.1 Käivitamine
-
-Eeldus: Node.js ja MongoDB on paigaldatud ja seadistatud.
-{: .adv}
-
-#### 4.1.1 MongoDB käivitamine
-
-MongoDB tuleks käivitada teenusena (deemonina). Selleks määra MongoDB VM-i käivitamisel automaatselt käivitatavaks:
-
-`sudo systemctl enable mongod`
-
-Käivita teenus:
-
-`sudo systemctl start mongod`
-
-_Testimise eesmärgil võib MongoDB käivitada ka terminalist lahtiseotud taustaprotsessina. Vajalik on näidata konf-ifail:_
-
-`mongod --config /etc/mongod.conf &`
-
-_MongoDB võib käivitada ka terminaliga seotult (ilma &-ta), siis MongoDB vastab diagnostiliste teadetega ja lõpuks: `[initandlisten] waiting for connections on port 27017`._
-
-#### 4.1.2 TARA-Stat veebirakenduse käivitamine
-
-Käivita enne logibaas (MongoDB). Muidu teatab veebirakendus, et logibaasiga ei saa ühendust.
-{: .adv}
-
-**Käivitamine protsessihalduri pm2 abil**. Liigu veebirakenduse juurkausta `TARA-Stat` ja sisesta:
-
-`pm2 start index.js`
-
-**Testimise eesmärgil** võib TARA-Stat veebirakenduse käivitada ka terminalist lahtiseotud taustaprotsessina. Liigu veebirakenduse juurkausta `TARA-Stat` ja sisesta:
-
-`nodejs index &`
-
-Veebirakendus teatab:
-
-`--- TARA-Stat kuulab pordil: 5000`
-
-Kontrolli, et andmebaas ja veebirakendus töötavad:
-
-`ps`
-
-Virtualbox-is testimisel kasuta `ifconfig -a`, et välja selgitada dünaamiline IP-aadress, millega veebirakendus VM-st välja paistab.
-{: .adv}
-
-### 4.2 Statistika väljastamise otspunkti töötamise test
-
-Pöördu teisest arvutist (kas Windows-host-st või teisest VM-st) veebirakenduse statistika väljastamise otspunkti poole. Järgnevas eeldame näitena, et masina, kuhu TARA-Stat paigaldati, IP-aadress on `192.168.56.101` ja TARA-Stat veebiteenuse port on `5000`. Ava sirvikus:
-
-`https://192.168.56.101:5000`
-
-Sirvik ütleb, et `Your connection is not secure`. See on selle tõttu,et veebirakendusel on _self-signed_ sert. Aktsepteeri erand.
-
-Voilà!
-
-<p style='text-align:center;'><img src='img/VOILA.PNG' width= "650" style='border: 1px solid black;'></p>
-
-Miks tabelis ei ole statistikat? Sest logibaas on tühi.
-
-### 4.3 Seiskamine
-
-Logibaasi seiskamine:
-
-`sudo systemctl stop mongod`
-
-Veebirakenduse seiskamine:
-
-`pm2 stop index`
-
-### 4.4 Veateated
-
-kood | veateade | vea lahendamise soovitus
-ERR-01 | Logibaasiga ühendumine ebaõnnestus | Kontrollida, kas MongoDB töötab
-ERR-02 | Viga logibaasist lugemisel | Kontrollida, kas MongoDB töötab
-ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Serveris
-ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
-
-### 4.5 Käivitamine ja seiskamine skriptiga
-
-**Käivitamisskript** `TARA-Stat-kaivita.sh` laseb käima logibaasi (MongoDB) ja TARA-Stat veebirakenduse (Node.js).
-
-**Seiskamisskript** `TARA-Stat-seiska.sh` seiskab logibaasi (MongoDB) ja TARA-Stat veebirakenduse (Node.js).
-
-## 5 Arendamine
-
-### 5.1 Arendamine Windows-masinas
-
-Arendamisel Windows-masinas on järgmised erisused.
-
-Kõik komponendid (veebirakendus, logibaas, sirvik) on ühes masinas.
-
-MongoDB paigaldamine
-
-- Lisada path-i `C:\Program Files\MongoDB\Server\3.6\bin`
-  - Vihje: `Search`, `envir` -> `Edit environmental variables`
-- Paigalduse kontroll: `mongod --version`.
-- MongoDB vajab kausta andmete hoidmiseks. Loo kaust `C:\data\db`.
-
-MongoDB käivitamine
-
-- `"C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe"`
-- path-i seadmise järel lihtsalt: `mongod`
-
-MongoDB seadistamine
-- ei ole vajalik, kui andmebaasi poole pöördumisi mitte autentida
-- autentimise lisamiseks loo konfifail `C:\data\mongod.conf`.
-- lisa:
-
-```
-security:
-   authorization: enabled
-```   
-
-- konfifaili loomise järel käivita: `mongod --config C:\data\mongod.conf` 
-
-Node.js paigaldamine
-
-- Lisa path-i: `C:\Program Files\nodejs\`
-- Konrolli paigaldust: `node -v`
-
-Veebirakenduse käivitamine
-- veebirakenduse juurkaustas: `node index`.
-
-### 5.2 Testimine (käsitsi, lokaalses masinas)
-
-Veebirakenduse käivitumise kontroll:
-
-`https://localhost`
-
-Logikirje lisamist saab testida nt [httpie](https://httpie.org/) abil (näites nii logikirje lisamise API kasutajanimi kui ka API-võti on `changeit`):
-
-`http -a changeit:changeit POST :443 aeg=2018-04-29T00:00:30 klient=e-teenusA meetod=mobileID`
-
-### 5.3 Testimine makettrakendusega
-
-Tarkvara koosseisus on logikirjete lisamise otspunkti testimise
-makettrakendus. Makettrakendus genereerib logikirjeid ja lisab need logibaasi. Makettrakenduse kood asub TARA-Stat repos failis `mockup.js`. Makettrakendus vajab tööks Node.js-i.
-
-**Seadistamine**. Seadista makettrakendust parameetrite muutmisega failis `mockup-config` või parameetrite andmisega käivitamise käsurealt (`process.env`). Seadistada tuleb:
-- TARA-Stat logikirje lisamise otspunkti URL
-- nimetatud otspunkti pääsemiseks vajalik API kasutajanimi (vaikimisi `tara-server`)
-- ja salasõna (API võti).
-
-**Paigaldamine**. Makettrakendust võib käitada ka TARA-Stat-ga ühes masinas, eraldi Node.js instantsis. Kindlam on siiski testida paigaldamisega eraldi masinasse:
-
-1\. Valmista VM ja paigalda Ubuntu.
-
-2\. Paigalda Node.js ja npm:
-
-Vt jaotis 3.3 Node.js.
-
-3\. Paigalda TARA-Stat kood:
-
-`git clone https://github.com/e-gov/TARA-Stat`
-
-Järgnevas eeldame, et TARA-Stat asub kaustas `~/TARA-Stat`.
-
-4\. Paigalda Node.js teegid
-
-Liigu TARA-Stat juurkausta:
-
-`cd ~/TARA-Stat`
-
-Makettrakendus vajab ainult teeki `request`. Paigalda:
-
-`npm install request --save`
-
-5\. Selgita välja TARA-Stat logikirje lisamise otspunkti URL, API kasutajanimi ja salasõna.
-
-Testimisel VirtualBox VM-des arvesta, et VM-dele antakse IP-d dünaamiliselt (alates `192.168.56.101`-st).
-{: .note} 
-
-6\. Veendu, et (teises masinas) TARA-Stat töötab.
-
-7\. Liigu kausta `TARA-Stat`. Käivita makettrakendus (taristuparameetrid on näitlikud):
-
-```
-TARASTATURL='https://192.168.56.102:5000' \
-TARASTATUSER='changeit' \
-TARASTATSECRET='changeit' \
-nodejs mockup 
-```
-
-Makettrakendus genereerib logikirjeid ja saadab logibaasi. Jälgi teateid, mida makett konsoolile väljastab.
-
-Logikirjete genereerimise ja logibaasi saatmise järel lõpetab makettrakendus töö.
-
-TARA-Stat statistikakasutaja UI kaudu või TARA-Stat veebirakenduse logist saad kontrollida, et saadetud kirjed tõesti salvestati logibaasi.
-
-## 6 Joonised
-
-### 6.1 TARA-Stat üldistatud arhitektuur
-
-<p style='text-align:center;'><img src='img/Arhi.PNG' width= "500"></p>
-
-### 6.2 Statistikakasutaja UI
-
-<p style='text-align:center;'><img src='img/Capture.PNG' width= "650"></p>
-
-### 6.3 Testimine arendusmasinas
-
-<p style='text-align:center;'><img src='img/TEST-01.PNG' width= "500"></p>
-
-## 7 Kasulikku
-
-**MongoDB**, "a document database with the scalability and flexibility that you want with the querying and indexing that you need"
-
-- [docs](https://docs.mongodb.com/)
-
-**MongoDB server**
-
-- käivitamine: `mongod`
-- vaikimisi teenindab pordil `27017`.
-- rakendus suhtleb MongoDB-ga TCP/IP socket-i põhise [MongoDB wire protocol](https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/)-iga.
-- MongoDB standardne pääsumehhanism - [Salted Challenge Response Authentication Mechanism](https://docs.mongodb.com/manual/core/authentication-mechanisms/).
-
-**mongo**, "an interactive JavaScript shell interface to MongoDB"
-
-- [ülevaade](https://docs.mongodb.com/manual/mongo/)
-- [Reference](https://docs.mongodb.com/manual/reference/program/mongo/#bin.mongo)
-- käivitamine ja sisselogimine kasutajana `userAdmin`:
-
-```
-mongo
-use admin
-db.auth("userAdmin", "changeit")
-```
-
-**MongoDB Compass**, "The GUI for MongoDB.", "The Easiest Way to Explore and Manipulate Your MongoDB Data."
-
-- [juhend](https://docs.mongodb.com/compass/current/)
-
-**MongoDB Node.js Driver**
-
-- [ülevaade](http://mongodb.github.io/node-mongodb-native/?jmp=docs&_ga=2.138292915.2088530382.1524857109-302204577.1524857109)
-- [dok-n](http://mongodb.github.io/node-mongodb-native/3.0/)
-- [Aggregation Pipeline](https://docs.mongodb.com/manual/core/aggregation-pipeline/)
-- [Using the Aggregation Framework](http://mongodb.github.io/node-mongodb-native/2.0/tutorials/aggregation/)
-
-**ejs**, "Effective JavaScript templating"
-
-- [docs](http://ejs.co/)
-- [Syntax Reference](https://github.com/mde/ejs/blob/master/docs/syntax.md)
-
-[httpie](https://httpie.org/), "a command line HTTP client with an intuitive UI, JSON support, syntax highlighting"
-
-**Bash**, skriptikeel 
-
-- [Linux Shell Scripting Tutorial (LSST) v2.0](https://bash.cyberciti.biz/guide/Main_Page)
-- [väike teatmik](https://e-gov.github.io/TARA-Stat/Bash)
-- [Index of Linux Commands](http://www.linfo.org/command_index.html)
