@@ -4,6 +4,16 @@
 # Mikroteenusarhitektuurist
 {: .no_toc}
 
+Priit Parmakson
+
+Käesoleval kirjutisel on kolm osa. Esimeses osas arutlen küsimuste üle, mis mikroteenuste (µT) arhitektuuris praktikas olulised. Tuleb tõdeda, et paljudele küsimustele ei ole veel selgeid vastuseid.
+
+Teises osas on ühe konkreetse mikroteenuse kirjeldus.
+
+Kolmandas osas püüan kinni püüda ideid mikroteenusarhitektuuri juurutamiseks.
+
+Lisas pakun välja µT dokumentatsioonimalli. 
+
 ## Sisukord
 {: .no_toc}
 
@@ -59,7 +69,7 @@ päev    | töö                | tulemus  | edenemine   |
 3\.     | API spetsifikatsiooni jm dokumentatsiooni kirjutamine | µT API ja muu dok-n koostatud ja rahuldavas seisus | OK |
 4\.     | paigaldusprotsessi ja -plaani koostamine, paralleelselt tarkvara viimistlemine, eriti turvalisuse tõstmise seisukohalt (_hardening_) | paigaldusplaan | OK |
 5\.     | testpaigalduse läbitegemine; paralleelselt tarkvara viimistlemine, eriti turvalisuse tõstmise seisukohalt (_hardening_) | paigaldamine läbi mängitud | OK |
-6\.     | toodangusse paigaldamine, klientide teavitamine | µT on kasutusvalmis; klientidele on teenust esitletud | |
+6\.     | toodangusse paigaldamine, klientide teavitamine | µT on kasutusvalmis; klientidele on teenust esitletud | OK |
 7\.     | puhkus | |
 
 ### 1.4 Mikroteenuste tehnoloogiad
@@ -293,9 +303,11 @@ Konfigureerimine on tihti **mitmeastmeline**. Rakenduse juurde käib ikka eraldi
 
 ## 2. TARA-Stat
 
-### 2.1 Funktsioon
+TARA-Stat on eksperimentaalne µT [autentimisteenuse TARA](https://e-gov.github.io/TARA-Doku) kasutusstatistika tootmiseks ja vaatamiseks.
 
-TARA-Stat on eksperimentaalne µT [autentimisteenuse TARA](https://e-gov.github.io/TARA-Doku) kasutusstatistika tootmiseks ja vaatamiseks. Olemas on varem koostatud spetsifikatsioon: [TARA kasutusstatistika](https://e-gov.github.io/TARA-Doku/Statistika).
+TARA-Stat tootmisdokumentatsiooniga saab tutvuda: [https://e-gov.github.io/TARA-Stat/Dokumentatsioon](https://e-gov.github.io/TARA-Stat/Dokumentatsioon).
+
+### 2.1 Funktsioon
 
 TARA-Stat pakub:
 
@@ -487,16 +499,44 @@ Nimed on illustratiivsed ja paigaldamisel muudetavad.
 TARA-Stat käitluskontekstis on 9 osapoolt (subjekti), kes vajavad identiteedi ja kredentsiaalide andmist ning õiguste seadmist:
 {: .note}
 
-| kasutaja vm õiguste subjekt (_principal_), inimloetav nimi | subjekti masinloetav nimi | subjekti liik ja kirjeldus | kredentsiaalid |
-|:-----------------------------------------:|:--------:|:-------:|:--------------:|
-| **VM admin** | `vm-admin` | Ubuntu kasutaja, kes paigaldab tarkvara ja teeb muid haldustoiminguid | salasõna |
-| ~~**TARA-Stat**~~ | ~~`tarastat`~~ | ~~Ubuntu kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus~~ | ~~salasõna~~ |
-| **MongoDB** | `mongodb` | Ubuntu kasutaja, kelle alt käitatakse Mongo DB andmebaas | 
-| **MongoDB kasutajate haldur**| `userAdmin` | MongoDB kasutaja, kes haldab MongoDB kasutajaid. Seda rolli täidab VM admin | salasõna |
-| **Rakendus** | `rakendus` | TARA-Stat veebirakenduse konto MongoDB-s | salasõna |
-| **Andmehaldur** | `andmehaldur` | MongoDB konto, mille alt kustutatakse aegunud logikirjeid. Andmehalduri rolli täidab VM admin | salasõna |
-| **Veebirakendus** | `https://tara-stat.site` | TARA-Stat veebirakendus | _self-signed_ sert |
-| **Statistikakasutaja** | - | inimene, kes pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | - (ei autendita, juurdepääs piiratakse kontekstiga) |
-| **TARA server** | - | pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
+TARA-Stat käitluskontekstis on 9 osapoolt (subjekti), kes vajavad identiteedi ja kredentsiaalide andmist ning õiguste seadmist.
+
+| kasutaja vm õiguste subjekt (_principal_), masinloetava nimega | subjekti liik ja kirjeldus | kredentsiaalid |
+|:--------:|:-------:|:--------------:|
+| `admin` | Ubuntu kasutaja, kes paigaldab tarkvara ja teeb muid haldustoiminguid | salasõna |
+| `tarastat` | Ubuntu kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus | salasõna |
+| `mongodb` | Ubuntu kasutaja, kelle alt käitatakse Mongo DB andmebaas | 
+| `userAdmin` | MongoDB kasutaja, kes haldab MongoDB kasutajaid. Seda rolli täidab VM admin | salasõna |
+| `rakendus` | TARA-Stat veebirakenduse konto MongoDB-s | salasõna |
+| `andmehaldur` | MongoDB konto, mille alt kustutatakse aegunud logikirjeid. Andmehalduri rolli täidab VM admin | salasõna |
+| `https://tara-stat.site` | TARA-Stat veebirakendus | _self-signed_ sert |
+| - | statistikakasutaja - anonüümne inimene, kes pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | ei autendita, juurdepääs piiratakse kontekstiga |
+| `tara-server` | TARA-Server, pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
 
 <p style='text-align:center;'><img src='img/IDENTITEET.PNG' width= "500"></p>
+
+## 3 Liikumine mikroteenusarhitektuuri poole
+
+**Sõltuvuste vähendamine** on tõenäoliselt perspektiivseim tee. Eespool (jaotises 1.2) oli juttu sõltuvustest - ja iseseisvusest kui µT määravast omadusest. Iseseisvus ja sõltuvus on vastandid.
+
+## LISA. Mikroteenuse dokumentatsioonimall
+
+Mikroteenuse dokumentatsioon peaks:
+•	mahtuma ühte dokumenti
+•	olema orieteeritud toodangusse viimisele ja käitamisele
+•	olema kõigi jõududega hoitud ajakohane
+•	ja sisaldama (teatud +/- -ga) järgmisi teemasid:
+
+1. Funktsioon (soovitavalt 1-2, mitte rohkem)
+2. Komponendid ja liidesed (sh ülevaatlik arhitektuurijoonis)
+  sh liideste (API-de) spekid
+3. Suhtluse osapooled (kõik, ka paigaldav süsadmin)
+4. Turvamine (loetelu turvaotsustest. NB! Mitte ainult rakendatud meetmetest, vaid ka teadlikest valikutest mingit meedet mitte rakendada – põhjendusega)
+5. Identiteedid ja kredentsiaalid (avalikus dokumendid näiteväärtused)
+6. Sõltuvused (kõik olulised, päris detailselt; toodangu- ja arendussõltuvused eraldi)
+7. Paigaldamine (juhised nii alg- kui uuenduspaigaldamisele, sh konfi-misest, paigaldusskriptide tutvustus)
+8. Käivitamine, staatus ja seiskamine (kompaktne teave käitluse nende aspektide kohta)
+9. Olulised asukohad (teatmikteave admin-le vm käitlejale)
+10. Diagnostika (veateadete tabel koos soovitustega)
+11. Logi (logide asukohad ja eesmärgid)
+12. Testimine (fookusega sellele, et testiasjad ei läheks toodanguga segamini)
