@@ -1,5 +1,12 @@
 /*
   TARA-Stat - Minimaalne test
+
+  Loob:
+  1) minimaalse HTTP serveri, mis kuulab pordilt 5001;
+  2) minimaalse HTTPS serveri, mis kasutab võtit
+  keys/tara-stat.key ja serti keys/tara-stat.cert
+  ning kuulab pordilt 5000.
+   
 */
 
 'use strict'; 
@@ -17,12 +24,11 @@ var options = {
   rejectUnauthorized: false
 };
 
-/*
+/* HTTP serveri loomine */ 
 http.createServer(function (req, res) { 
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.end('TARA-Stat - Minimaalne test OK'); 
-}).listen(443);
-*/
+}).listen(5001);
 
 /* HTTPS serveri loomine */ 
 https.createServer(options, (req, res) => {
