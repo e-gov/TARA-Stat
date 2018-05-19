@@ -19,8 +19,8 @@ Kõik viited salasõnadele ja tundlikele taristuparameetritele (nt hostinimed, p
 
 TARA-Stat-i on arendanud Riigi Infosüsteemi Amet.
 
-Märkus. Mikroteenusarhitektuuri põhimõtetest vt: [https://e-gov.github.io/TARA-Stat/](https://e-gov.github.io/TARA-Stat/)
-{: .note}
+(Mikroteenusarhitektuuri ideoloogiast, kui huvitud, on eraldi _write-up_: [https://e-gov.github.io/TARA-Stat/](https://e-gov.github.io/TARA-Stat/)
+
 
 ## Sisukord
 {: .no_toc}
