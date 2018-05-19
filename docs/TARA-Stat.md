@@ -341,11 +341,11 @@ ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API k
 
 `mini.js`
 - tarkvara koosseisus olev lihtne vahend HTTP ja HTTPS ühenduste testimiseks:
-- `mini.js` - loob minimaalse HTTP ja HTTPS serverid, mis kuulavad portidelt 5001 ja 5000.
+- `mini.js` - loob minimaalsed HTTP ja HTTPS serverid, mis kuulavad vastavalt portidelt `5001` ja `5000`.
 - `scripts/seadistaMini.sh` - paigaldab ´mini.js` systemd veebiteenusena.
 
 `mockup.js`
 -  on eraldi VM-i paigaldatav lihtne Node.js rakendus, mis etendab logikirjeid TARA-Stat logibaasi saatvat TARA-Server-it.
 - programmi juurde kuulub konf-ifail `mockup-config.js`.
 
-Testimisvahendeid toodangus ei kasutata. Neid võib repos sisuga koos tootmismasinasse kopeerida, kuid neid ei ole vaja (ega tohigi) skriptidega ega muul viisil aktiveerida.
+Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasinasse kopeerida, kuid neid ei ole vaja (ega tohigi) skriptidega ega muul viisil aktiveerida.
