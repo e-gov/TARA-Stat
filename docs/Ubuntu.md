@@ -132,6 +132,6 @@ VM-le võib seadistada ühe või mitu võrguadapterit. Seda tehakse virtuaalmasi
 
 Vt. [Accessing your Virtualbox Guest from your Host OS](https://gist.github.com/odan/48fc744434ec6566ca9f7a993f4a7ffb).
 
-## Pöördumine host-i kaustada poole
+## Pöördumine host-i kaustade poole
 
 Virtuaalmasinahalduris: `Settings`, `Shared folders`, `Machine folders`, `+` ja vali host-i kaust.
