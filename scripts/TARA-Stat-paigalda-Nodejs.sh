@@ -53,14 +53,6 @@ function kasJatkan {
 }
 
 # ------------------------------
-# Abistaja: Paigalda Node.js teek
-#
-function paigalda_Nodejs_teek {
-  npm install $1 --save
-  kontrolli "$?" "Node.js teegi paigaldamine"
-}
-
-# ------------------------------
 # 0. Kontrollküsimus eksliku käivitamise vastu
 #
 kasJatkan

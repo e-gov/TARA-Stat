@@ -48,7 +48,7 @@ const MongoClient = require('mongodb').MongoClient;
 /* Logimise sisseseadmine */
 const LOGIFAIL = config.logifail;
 var logFile = fs.createWriteStream(LOGIFAIL, { flags: 'a' });
-  // Või 'w' faili uuesti alustamiseks
+// Või 'w' faili uuesti alustamiseks
 var logStdout = process.stdout;
 
 console.log = function () {
@@ -100,6 +100,7 @@ var server = https.createServer(options, app);
 /* Andmebaasi nimi */
 const LOGIBAAS = config.logibaas;
 const COLLECTION = config.collection;
+const ELUTUKSETABEL = config.heartbeathelpertable;
 
 /* Andmebaasiga ühendumise kredentsiaalid */
 const MONGO_USER = config.mongouser;
@@ -248,7 +249,7 @@ function check(name, pass) {
  */
 app.post('/',
   /* Kontrolli kredentsiaale */
-  (req, res, next) => { 
+  (req, res, next) => {
     var credentials = auth(req);
     if (!credentials || !check(credentials.name, credentials.pass)) {
       res.statusCode = 401;
@@ -274,19 +275,25 @@ app.post('/',
       if (err === null) {
         // console.log("--- Logibaasiga ühendumine õnnestus");
         const db = client.db(LOGIBAAS);
-        db.collection(COLLECTION)
+        // WriteResult objekt
+        var lisamiseTulemus;
+        lisamiseTulemus = db.collection(COLLECTION)
           .insert({
             aeg: aeg,
             klient: klient,
             meetod: meetod
           });
         client.close();
+        if (lisamiseTulemus.writeError) {
+          console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");
+          res.status(500).send('ERR-05: Kirjutamine logibaasi ebaõnnestus')
+        }
         console.log('--- Kirje lisatud');
         res.status(200).send('OK');
       }
       else {
         console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-        res.status(500).send('Internal Server Error')
+        res.status(500).send('ERR-01: Logibaasiga ühendumine ebaõnnestus')
       }
     });
 
@@ -299,12 +306,23 @@ app.get('/status', function (req, res) {
   // Kontrolli andmebaasiühendust
   MongoClient.connect(MONGODB_URL, (err, client) => {
     if (err === null) {
+      const db = client.db(LOGIBAAS);
+      // WriteResult objekt
+      var lisamiseTulemus;
+      lisamiseTulemus = db.collection(ELUTUKSETABEL)
+        .insert({
+          kirjeldus: 'elutukse'
+        });
+      if (lisamiseTulemus.writeError) {
+        console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");
+        res.status(500).send('ERR-05: Kirjutamine logibaasi ebaõnnestus')
+      }
       client.close();
       res.status(200).send('OK');
     }
     else {
       console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-      res.status(500).send('Internal Server Error')
+      res.status(500).send('ERR-01: Logibaasiga ühendumine ebaõnnestus')
     }
   });
 });

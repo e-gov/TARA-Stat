@@ -23,6 +23,8 @@ config.cert = 'tara-stat.cert';
 config.logibaas = 'logibaas';
 /* Collection-i (andmetabeli) nimi */
 config.collection = 'autentimised';
+/* Elusolekukontrolli abitabel */
+config.heartbeathelpertable = 'elutukse';
 
 /* MongoDB URL */
 config.mongodb_url = 'mongodb://localhost:27017';

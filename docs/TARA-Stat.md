@@ -228,10 +228,9 @@ Märkus. Edasiarendusvõimalusena võib kaaluda paigaldusskriptide põhjal Jenki
 
 Täida skriptid järgmises järjekorras:
 
-1. `TARA-Stat-paigalda-kood.sh`
-2. `TARA-Stat-paigalda-Nodejs.sh`
-3. `TARA-Stat-paigalda-MongoDB.sh` (2. ja 3. järjekord ei ole oluline)
-4. `TARA-Stat-seadista-rakendus.sh`
+1. `TARA-Stat-paigalda-Nodejs.sh`
+2. `TARA-Stat-paigalda-MongoDB.sh` (1. ja 2. järjekord ei ole oluline)
+3. `TARA-Stat-seadista-rakendus.sh`
 
 `TARA-Stat-diagnoosi.sh` väljastab diagnostilist teavet - selle skripti võib käivitada igal ajal; see skript ei muuda paigaldust.
 
@@ -330,6 +329,7 @@ ERR-01 | Logibaasiga ühendumine ebaõnnestus | Kontrollida, kas MongoDB tööta
 ERR-02 | Viga logibaasist lugemisel | Kontrollida, kas MongoDB töötab
 ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Serveris
 ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
+ERR-05 | Kirjutamine logibaasi ebaõnnestus | Kontrollida kettamahtu ja kirjutamisõigusi
 
 ## 11 Logi
 
