@@ -126,7 +126,7 @@ permalink: Bash
   - `ps aux | grep "mongo"` (protsess)  
 
 - **secure copy**
-  - `scp kasutaja@host:/opt/kasutaja/tee/failini C:/TÖÖS (faili kopeerimine lokaalsesse masinass SSH abil)
+  - `scp kasutaja@host:/opt/kasutaja/tee/failini C:/TÖÖS` (faili kopeerimine lokaalsesse masinass SSH abil)
 
 - **shebang**
   - `#!/bin/bash` (näitab, millist programmi skripti täitmiseks kasutada)

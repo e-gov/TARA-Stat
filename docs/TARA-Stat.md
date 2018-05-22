@@ -218,11 +218,15 @@ Koodirepo paigaldamine. Alusta paigaldamist TARA-Stat koodi paigaldamisega koodi
 
 Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`.
 
-`sudo rm -R TARA-Stat` (kustuta vana; valikuline)
+`sudo rm -R /opt/TARA-Stat` (kustuta vana; valikuline)
+
+`cd /opt`
 
 `sudo git clone https://github.com/e-gov/TARA-Stat` 
 
 Seejärel leiad koodirepo kaustast `/opt/TARA-Stat/scripts` paigaldusskriptid, millega saad edasist tööd automatiseerida.
+
+`cd /opt/TARA-Stat/scripts`
 
 Märkus. Edasiarendusvõimalusena võib kaaluda paigaldusskriptide põhjal Jenkinsi paigalduskonveieri ehitamist.
 
@@ -233,6 +237,10 @@ Täida skriptid järgmises järjekorras:
 3. `TARA-Stat-seadista-rakendus.sh`
 
 `TARA-Stat-diagnoosi.sh` väljastab diagnostilist teavet - selle skripti võib käivitada igal ajal; see skript ei muuda paigaldust.
+
+Käivita skriptid
+
+`sudo bash TARA-Stat-paigalda-Nodejs.sh` jne
 
 ### 7.4 Tarkvarauuenduse paigaldamine
 
@@ -331,6 +339,40 @@ ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Ser
 ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
 ERR-05 | Kirjutamine logibaasi ebaõnnestus | Kontrollida kettamahtu ja kirjutamisõigusi
 
+### 10.1 Logibaasi seisu uurimine
+
+Kui tekib vajadus välja selgitada, mis seisus on MongoDB andmebaasi sisu ja kasutajate kontod, siis tee järgmist:
+
+`mongo -u userAdmin -p changeit -authenticationDatabase admin`
+
+(ava MongoDB käsureavahend, logides sisse kasutajaga `userAdmin`)
+
+Vajadusel vt:
+- [mongo](https://docs.mongodb.com/manual/reference/program/mongo/)
+- [mongo Shell Quick Reference](https://docs.mongodb.com/manual/reference/mongo-shell/)
+
+`show dbs` (kuva andmebaasid. Loetelus peab olema `admin` ja ´logibaas`)
+
+`use admin` (lülitu andmebaasile `admin`)
+
+`show users` (kuva kasutajakontod valitud andmebaasis; peab näitama kasutajat `admin`)
+
+`use admin` + `show users` (kuva kasutajakontod andmebaasis `users`; peab näitama kasutajaid `andmehaldur` ja `rakendus`)
+
+`use users` + `db.auth("andmehaldur", "changeit")` (logi sisse andmehaldurina)
+
+`use logibaas` + `show collections` (peab näitama: `autentimised`)
+
+`db.autentimised.find().sort({_id:1}).limit(5);` (kuva 5 viimast kirjet)
+
+### 10.2 Diagnostikaskript
+
+`cd /opt/TARA-Stat/scripts`
+
+`sudo bash TARA-Stat-diagnoosi.sh`
+
+Diagnostikaskript väljastab `systemctl status` raportid teenuste `tarastat` (TARA-Stat veebirakendus) ja `mongodb` (logibaas) kohta. Pööra tähelepanu: 1) kas `Active` väärtus on `active (running)` (roheline); 2) 10 viimasele logiteatele. Lisaks väljastab skript teatmikteabe kummagi teenuse oluliste asukohtade kohta.
+
 ## 11 Logi
 
 - MongoDB andmebaasilogi asub: `/var/log/mongodb/mongod.log`
@@ -339,13 +381,36 @@ ERR-05 | Kirjutamine logibaasi ebaõnnestus | Kontrollida kettamahtu ja kirjutam
 
 ## 12 Testimine
 
+Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasinasse kopeerida, kuid neid ei ole vaja (ega tohigi) skriptidega ega muul viisil aktiveerida.
+
 `mini.js`
 - tarkvara koosseisus olev lihtne vahend HTTP ja HTTPS ühenduste testimiseks:
 - `mini.js` - loob minimaalsed HTTP ja HTTPS serverid, mis kuulavad vastavalt portidelt `5001` ja `5000`.
 - `scripts/seadistaMini.sh` - paigaldab ´mini.js` systemd veebiteenusena.
 
+### 12.1 Logikirjete lisamise makett
+
 `mockup.js`
 -  on eraldi VM-i paigaldatav lihtne Node.js rakendus, mis etendab logikirjeid TARA-Stat logibaasi saatvat TARA-Server-it.
 - programmi juurde kuulub konf-ifail `mockup-config.js`.
 
-Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasinasse kopeerida, kuid neid ei ole vaja (ega tohigi) skriptidega ega muul viisil aktiveerida.
+Paigalda nii:
+
+`cd /opt/TARA-Stat`
+
+`sudo sed -i 's/localhost/<tara-stat-host>/' mockup-config.js` (sea TARA-Stat hostinimi; vajadusel seal ka port)
+
+`cat mockup-config.js` (kontrolli)
+
+`sudo npm install body-parser --save` (paigalda Node.js teegid)
+`sudo npm install ejs --save`
+`sudo npm install express --save`
+`sudo npm install mongodb --save`
+`sudo npm install request --save`
+`sudo npm install basic-auth --save`
+`sudo npm install request-debug --save`
+
+`nodejs mockup` (käivita)
+
+
+
