@@ -108,8 +108,7 @@ var options = {
 */
 
 var options = {
-  pfx: fs.readFileSync(path.join(__dirname, '..', 'keys', 'certificate.pfx'),
-    'utf8'),
+  pfx: fs.readFileSync(path.join(__dirname, '..', 'keys', 'certificate.pfx')),
   passphrase: 'changeit',
   requestCert: false,
   rejectUnauthorized: false
