@@ -1,5 +1,6 @@
 /**
- * Konfiguratsioonifail
+ * --------------------------------------------------------------------
+ *   TARA-STAT veebirakenduse konfiguratsioonifail config.js
  * 
  * Vt https://stackoverflow.com/questions/5869216/how-to-store-node-js-deployment-settings-configuration-files
  */
@@ -37,3 +38,9 @@ config.tarastatuser = 'tara-server';
 config.tarastatsecret = process.env.TARASTATSECRET || 'TARASTATSECRET-changeit';
 
 module.exports = config;
+
+/**
+ * --------------------------------------------------------------------
+ *   konfiguratsioonifaili config.js LÕPP
+ * 
+ */ 
