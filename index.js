@@ -81,6 +81,7 @@ app.use(bodyParser.json());
  * HTTPS suvandid
  * Vt: https://stackoverflow.com/questions/32705219/nodejs-accessing-file-with-relative-path 
  */
+console.log('config.key: ' + config.key);
 var options = {
   key: fs.readFileSync(config.key, 'utf8'),
   cert: fs.readFileSync(config.cert, 'utf8'),
