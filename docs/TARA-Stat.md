@@ -243,13 +243,31 @@ Märkus. Edasiarendusvõimalusena võib kaaluda paigaldusskriptide põhjal Jenki
 
 `sudo bash TARA-Stat-seadista-rakendus.sh`
 
-**Paigalda HTTPS võtmed**. kui rakenduses tuleb kasutada organisatsiooni CA väljaantud serti, siis loo võtmete kaust `../keys` (`TARA-Stat` naaberkaust) ja kopeeri sinna privaatvõti ja sert. Privaatvõtme faili nimi on vaikimisi `tara-stat.key` ja serdifaili nimi on vaikimisi `tara-stat.cert`. Kui soovid kasutada teisi nimesid, siis muuda vastavalt seadistusi failis `config.js`. _Self-signed_ võtmete korral genereeri uued võtmed ja sert:
+**Paigalda HTTPS võtmed**.
 
-`sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh`
+Loo võtmete kaust `../keys` (`TARA-Stat` naaberkaust).
 
-Seejärel sea kasutaja `tarastat` võtmete kausta omanikuks:
+'Sea kasutaja `tarastat` võtmete kausta omanikuks:
 
 `sudo chown -R tarastat:tarastat /opt/keys`
+
+Seejärel:
+
+a\) Kui kasutad organisatsiooni CA väljaantud serti:
+
+Moodusta kausta `../keys` sinna pfx-fail. Pfx-fail sisaldab privaatvõtit ja serdiahelat. Näiteks
+
+`openssl pkcs12 -export -out certificate.pfx -inkey tara-stat.key -in tara-stat.cert -certfile ahel.pem`
+
+moodustab privaatvõtmefailist `tara-stat.key`, sellele vastavat avaliku võtit sisaldavast serdist `tara-stat.cert` ja serdiahela failist `ahel.pem` neid koondava pfx-faili `certificate.pfx`.
+
+Sead konf-ifailis `config.js`, parameetris `config.pfx` pfx-faili nimi (vaikimisi `certificate.pfx`).
+
+b\) Kui kasutad _self-signed_ serti:
+
+Kopeeri kausta `../keys` privaatvõti ja sert. Privaatvõtme faili nimi on vaikimisi `tara-stat.key` ja serdifaili nimi on vaikimisi `tara-stat.cert`. Kui soovid kasutada teisi nimesid, siis muuda vastavalt seadistusi failis `config.js`. _Self-signed_ võtme võtmed ja serdi saad genereerida skriptiga:
+
+`sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh`
 
 **Käivita veebirakendus**. 
 

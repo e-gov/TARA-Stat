@@ -81,38 +81,33 @@ app.use(bodyParser.json());
  * HTTPS suvandid
  * Vt: https://stackoverflow.com/questions/32705219/nodejs-accessing-file-with-relative-path 
  */
-var voti = fs.readFileSync(path.join(__dirname, '..', 'keys', config.key),
-  'utf8');
+'utf8');
 
-/* Valmista ette sert koos vahe-CA serdiga - või self-signed sert */
-/*
+/* Valmista ette HTTPS serveri suvandid */
 if (config.selfsigned) {
+  /* Valmista ette self-signed sert */
+  var voti = fs.readFileSync(path.join(__dirname, '..', 'keys',
+    config.key), 'utf8');
   var sert = fs.readFileSync(path.join(__dirname, '..', 'keys',
-    config.cert),
-      'utf8');
+    config.cert), 'utf8');
+  var options = {
+    key: voti,
+    cert: sert,
+    requestCert: false,
+    rejectUnauthorized: false
+  };
 }
 else {
-  var sert = [
-    fs.readFileSync(path.join(__dirname, '..', 'keys', config.cert),
-      'utf8'),
-    fs.readFileSync(path.join(__dirname, '..', 'keys', config.intermediate),
-      'utf8')
-  ];
-}
-var options = {
-  key: voti,
-  cert: sert,
-  requestCert: false,
-  rejectUnauthorized: false
-};
+  /* Loe pfx-fail */
+  var options = {
+    pfx: fs.readFileSync(path.join(__dirname, '..', 'keys',
+      config.pfx)),
+    passphrase: 'changeit',
+    requestCert: false,
+    rejectUnauthorized: false
+  };
+}  
 */
-
-var options = {
-  pfx: fs.readFileSync(path.join(__dirname, '..', 'keys', 'certificate.pfx')),
-  passphrase: 'changeit',
-  requestCert: false,
-  rejectUnauthorized: false
-};
 
 /* HTTPS serveri loomine */
 var port = config.port;
