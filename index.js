@@ -82,7 +82,13 @@ app.use(bodyParser.json());
  * Vt: https://stackoverflow.com/questions/32705219/nodejs-accessing-file-with-relative-path 
  */
 var votmetee = path.join(__dirname, '..', 'keys', config.key);
-var serditee = path.join(__dirname, '..', 'keys', config.cert);
+if (config.selfsigned) {
+  var serditee = path.join(__dirname, '..', 'keys', config.cert);
+}
+else {
+  var serditee = path.join(__dirname, '..', 'keys',
+    [config.cert, config.intermediate]);
+}
 var options = {
   key: fs.readFileSync(votmetee, 'utf8'),
   cert: fs.readFileSync(serditee, 'utf8'),

@@ -14,10 +14,12 @@ config.logifail = process.env.LOGIFAIL || '/opt/TARA-Stat/log.txt';
 config.port = process.env.PORT || 5000;
 
 /**
- * HTTPS privaatvõtme ja serdi asukohad
+ * HTTPS privaatvõtme, serdi ja vahe-CA serdi failinimed
  */
+config.selfsigned = false;
 config.key = 'tara-stat.key';
 config.cert = 'tara-stat.cert';
+config.intermediate = 'intermediate.pem';
 
 /* Andmebaasi nimi */
 config.logibaas = 'logibaas';

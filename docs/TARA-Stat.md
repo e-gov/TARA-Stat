@@ -247,6 +247,10 @@ Märkus. Edasiarendusvõimalusena võib kaaluda paigaldusskriptide põhjal Jenki
 
 `sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh`
 
+Seejärel sea kasutaja `tarastat` võtmete kausta omanikuks:
+
+`sudo chown -R tarastat:tarastat /opt/keys`
+
 **Käivita veebirakendus**. 
 
 `sudo systemctl start tarastat`

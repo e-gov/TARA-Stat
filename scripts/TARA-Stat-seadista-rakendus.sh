@@ -162,6 +162,7 @@ WantedBy=multi-user.target
 EOF
 
 echo " --- Väljastan kontrolliks systemd haldusüksuse kirjeldusfaili"
+kasJatkan
 echo " --------------------------------------------"
 cat /lib/systemd/system/tarastat.service
 echo " --------------------------------------------"
@@ -181,5 +182,6 @@ echo " --- Käivitan TARA-Stat veebirakenduse"
 echo
 kasJatkan
 sudo systemctl start tarastat
+sudo systemctl status tarastat
 
 lopeta

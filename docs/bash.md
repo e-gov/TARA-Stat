@@ -95,15 +95,15 @@ permalink: Bash
     - `export var1
        ./script2.sh` (muutuja `var1` antakse skriptile parameetriks)       
 
-  - **openSSL**
-    - `openssl x509 -in <serdifail>.pem -noout -text` (kuvab serdi sisu)
-
 - **nano**, tekstiredaktor
   - [koduleht](https://www.nano-editor.org/)
   - `sudo nano failinimi`
   - `nano -Ynone -m failinimi` (käivita süntaksivärvimiseta ja hiire toega)
   - `Alt+A` ... `Ctrl+K` -> `Ctrl+U` (lõika ja aseta)
   - `Alt+A` ... `Alt+6` (kopeeri)
+
+- **openSSL**
+  - `openssl x509 -in <serdifail>.pem -noout -text` (kuvab serdi sisu)
 
 - **otsimine**
   - `sudo find / -type f -name "failinimi" (otsib üle kogu ketta konkreetse nimega faile)
