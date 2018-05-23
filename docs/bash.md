@@ -104,6 +104,8 @@ permalink: Bash
 
 - **openSSL**
   - `openssl x509 -in <serdifail>.pem -noout -text` (kuvab serdi sisu)
+  - `openssl s_client -host HOSTNAME -port PORT` (kuvab serdiahela)
+  - `openssl s_client -connect hostname:443 -showcerts | grep "^ "`
 
 - **otsimine**
   - `sudo find / -type f -name "failinimi" (otsib üle kogu ketta konkreetse nimega faile)

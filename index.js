@@ -85,6 +85,7 @@ var voti = fs.readFileSync(path.join(__dirname, '..', 'keys', config.key),
   'utf8');
 
 /* Valmista ette sert koos vahe-CA serdiga - või self-signed sert */
+/*
 if (config.selfsigned) {
   var sert = fs.readFileSync(path.join(__dirname, '..', 'keys',
     config.cert),
@@ -101,6 +102,15 @@ else {
 var options = {
   key: voti,
   cert: sert,
+  requestCert: false,
+  rejectUnauthorized: false
+};
+*/
+
+var options = {
+  pfx: fs.readFileSync(path.join(__dirname, '..', 'keys', 'certificate.pfx'),
+    'utf8'),
+  passphrase: 'changeit',
   requestCert: false,
   rejectUnauthorized: false
 };
