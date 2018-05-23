@@ -182,6 +182,10 @@ echo " --- Käivitan TARA-Stat veebirakenduse"
 echo
 kasJatkan
 sudo systemctl start tarastat
+echo
+echo " --- Kontrollin TARA-Stat veebirakenduse käivitumist"
+echo
+kasJatkan
 sudo systemctl status tarastat
 
 lopeta

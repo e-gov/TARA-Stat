@@ -81,17 +81,26 @@ app.use(bodyParser.json());
  * HTTPS suvandid
  * Vt: https://stackoverflow.com/questions/32705219/nodejs-accessing-file-with-relative-path 
  */
-var votmetee = path.join(__dirname, '..', 'keys', config.key);
+var voti = fs.readFileSync(path.join(__dirname, '..', 'keys', config.key),
+  'utf8');
+
+/* Valmista ette sert koos vahe-CA serdiga - või self-signed sert */
 if (config.selfsigned) {
-  var serditee = path.join(__dirname, '..', 'keys', config.cert);
+  var sert = fs.readFileSync(path.join(__dirname, '..', 'keys',
+    config.cert),
+      'utf8');
 }
 else {
-  var serditee = path.join(__dirname, '..', 'keys',
-    [config.cert, config.intermediate]);
+  var sert = [
+    fs.readFileSync(path.join(__dirname, '..', 'keys', config.cert),
+      'utf8'),
+    fs.readFileSync(path.join(__dirname, '..', 'keys', config.intermediate),
+      'utf8')
+  ];
 }
 var options = {
-  key: fs.readFileSync(votmetee, 'utf8'),
-  cert: fs.readFileSync(serditee, 'utf8'),
+  key: voti,
+  cert: sert,
   requestCert: false,
   rejectUnauthorized: false
 };
