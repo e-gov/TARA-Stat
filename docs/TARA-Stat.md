@@ -213,9 +213,9 @@ Veebirakenduse konfi-failis seatud väärtusi saab vajadusel üle määrata teen
 
 ### 7.3 Esmakordne paigaldamine
 
-Valmista VM ja paigalda Ubuntu (16 LTS server).
+**Eeltegevused**. Valmista VM ja paigalda Ubuntu (16 LTS server).
 
-Koodirepo paigaldamine. Alusta paigaldamist TARA-Stat koodi paigaldamisega koodirepost VM-i. Järgnevas eeldame, et TARA-Stat kood asub GitHub-is, kuid võib olla ka siserepos.
+**Paigalda koodirepo**. Alusta paigaldamist TARA-Stat koodi paigaldamisega koodirepost VM-i. Järgnevas eeldame, et TARA-Stat kood asub GitHub-is, kuid võib olla ka siserepos.
 
 Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`.
 
@@ -231,39 +231,57 @@ Seejärel leiad koodirepo kaustast `/opt/TARA-Stat/scripts` paigaldusskriptid, m
 
 Märkus. Edasiarendusvõimalusena võib kaaluda paigaldusskriptide põhjal Jenkinsi paigalduskonveieri ehitamist.
 
-Täida skriptid järgmises järjekorras:
+**Paigalda Node.js**. 
 
-1\. `TARA-Stat-paigalda-Nodejs.sh`
+`sudo bash TARA-Stat-paigalda-Nodejs.sh`
 
-2\. `TARA-Stat-paigalda-MongoDB.sh` (1. ja 2. järjekord ei ole oluline)
+**Paigalda MongoDB**.
 
-3\. `TARA-Stat-seadista-rakendus.sh`
+`sudo bash TARA-Stat-paigalda-MongoDB.sh` (Node.js ja MongoDB paigaldamise järjekord ei ole oluline)
 
-kui rakenduses tuleb kasutada organisatsiooni CA väljaantud serti, siis loo võtmete kaust ja kopeeri privaatvõti ja sert võtmete kausta. Privaatvõtme faili nimi on vaikimisi `tara-stat.key` ja serdifaili nimi on vaikimisi `tara-stat.cert`. Kui soovid kasutada teisi nimesid, siis muuda vastavalt seadistusi failis `config.js`. Seejärel täida skript: 
+**Seadista rakendus**.
 
-4\. `TARA-Stat-paigalda-votmed.sh`
+`sudo bash TARA-Stat-seadista-rakendus.sh`
+
+**Paigalda HTTPS võtmed**. kui rakenduses tuleb kasutada organisatsiooni CA väljaantud serti, siis loo võtmete kaust `../keys` (`TARA-Stat` naaberkaust) ja kopeeri sinna privaatvõti ja sert. Privaatvõtme faili nimi on vaikimisi `tara-stat.key` ja serdifaili nimi on vaikimisi `tara-stat.cert`. Kui soovid kasutada teisi nimesid, siis muuda vastavalt seadistusi failis `config.js`. _Self-signed_ võtmete korral genereeri uued võtmed ja sert:
+
+`sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh`
+
+**Käivita veebirakendus**. 
+
+`sudo systemctl start tarastat`
+
+**Kontrolli, et kõik töötab**. Kontrolli, et nii veebirakendus kui ka logibaas (teenus `mongodb`) töötavad. Selleks saad kasutada skripti:
+
+`sudo bash TARA-Stat/scripts/TARA-Stat-diagnoosi.sh`
 
 `TARA-Stat-diagnoosi.sh` väljastab diagnostilist teavet - selle skripti võib käivitada igal ajal; see skript ei muuda paigaldust.
 
-Käivita skriptid
+### 7.4 HTTPS võtmete vahetamine
 
-`sudo bash TARA-Stat-paigalda-Nodejs.sh` jne
+1\. Seiska TARA-Stat veebirakendus:
 
-### 7.4 HTTPS võtmete uuendamine
+`sudo systemctl stop tarastat`
 
-Seiska TARA-Stat veebirakendus ja täida uuesti eelmise jaotise 4. samm ja sellele eelnev käsitsi tegevus.
+2\. Kanna uued võtmed kausta `../keys` (`TARA-Stat` naaberkaust). _Self-signed_ võtmete korral genereeri uued võtmed ja sert:
+
+`sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh`
+
+3\. Taaskäivita veebirakendus:
+
+`sudo systemctl start tarastat`
 
 ### 7.5 Tarkvarauuenduse paigaldamine
 
-Kui tarkvarauuendus ei puuduta Node.js ega MongoDB-d, siis piisab 1. ja 4. sammu läbitegemisest. Täpne juhis, kas vajalik on täielik uuestipaigaldamine või on võimalik osaline uuestipaigaldamine, peab arendaja poolt kaasas olema konkreetse tarkvarauuendusega.
+Kui tarkvarauuendus ei puuduta Node.js ega MongoDB-d, siis piisab 1. ja 3. sammu läbitegemisest. Täpne juhis, kas vajalik on täielik uuestipaigaldamine või on võimalik osaline uuestipaigaldamine, peab arendaja poolt kaasas olema konkreetse tarkvarauuendusega.
 
 Väikese tarkvarauuenduse puhul on võimalik ka värskenduste tõmbamine repot üle kirjutamata:
 
-`git pull origin master` (kaustas `TARA-Stat`)
+`sudo git pull origin master` (kaustas `TARA-Stat`)
 
 Enne seda tuleb aga teha
 
-`git checkout .`
+`sudo git checkout .`
 
 sest kuna rakenduse seadistamisel on `config.js` muudetud, siis pull-i tegemisel tekib muidu konflikt.
 
