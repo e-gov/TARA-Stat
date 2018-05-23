@@ -107,6 +107,7 @@ permalink: Bash
   - `openssl s_client -host HOSTNAME -port PORT` (kuvab serdiahela)
   - `openssl s_client -connect HOSTNAME:PORT -showcerts`
   - `openssl pkcs12 -export -out certificate.pfx -inkey tara-stat.key -in tara-stat.cert -certfile intermediate.pem` (loob pfx-faili)
+  - vt: https://www.openssl.org/docs/manmaster/man1/pkcs12.html 
 
 - **otsimine**
   - `sudo find / -type f -name "failinimi" (otsib üle kogu ketta konkreetse nimega faile)

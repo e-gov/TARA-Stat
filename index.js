@@ -81,7 +81,6 @@ app.use(bodyParser.json());
  * HTTPS suvandid
  * Vt: https://stackoverflow.com/questions/32705219/nodejs-accessing-file-with-relative-path 
  */
-'utf8');
 
 /* Valmista ette HTTPS serveri suvandid */
 if (config.selfsigned) {
@@ -107,7 +106,6 @@ else {
     rejectUnauthorized: false
   };
 }  
-*/
 
 /* HTTPS serveri loomine */
 var port = config.port;
