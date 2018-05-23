@@ -16,8 +16,8 @@ config.port = process.env.PORT || 5000;
 /**
  * HTTPS privaatvõtme ja serdi asukohad
  */
-config.key = '../keys/tara-stat.key';
-config.cert = '../keys/tara-stat.cert';
+config.key = 'keys/tara-stat.key';
+config.cert = 'keys/tara-stat.cert';
 
 /* Andmebaasi nimi */
 config.logibaas = 'logibaas';
