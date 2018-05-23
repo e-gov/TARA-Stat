@@ -6,7 +6,6 @@
 #
 # 1. Loon Node.js käitluskasutaja (run user)
 # 2. Paigaldan rakendusele vajalikud Node.js teegid
-# 3. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
 # 4. Paigaldan MongoDB kasutamise salasõna
 # 5. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
 # 6. Annan tarastat-le õigused kodukaustale (TARA-Stat)
@@ -107,26 +106,6 @@ paigalda_Nodejs_teek "basic-auth"
 paigalda_Nodejs_teek "request-debug"
 
 echo " --- Node.js teegid paigaldatud"
-echo
-kasJatkan
-
-# ------------------------------
-# 3. Genereerin ja paigaldan veebirakenduse HTTPS võtmed
-#
-echo
-echo " --- Genereerin ja paigaldan veebirakenduse HTTPS võtmed"
-cd /opt/TARA-Stat
-mkdir keys
-cd keys
-
-# Genereeri võtmed
-openssl genrsa -out tara-stat.key 2048
-openssl req -new -x509 -key tara-stat.key -out tara-stat.cert -days 3650 -subj /CN=tara-stat
-
-echo Veendu, et failid tara-stat.cert ja tara-stat.key moodustati
-echo
-ls -l
-
 echo
 kasJatkan
 

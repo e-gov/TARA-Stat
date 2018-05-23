@@ -193,6 +193,7 @@ Paigaldamisel saab kasutada järgmisi skripte:
 | `TARA-Stat-paigalda-Nodejs.sh` | paigaldab Node.js |
 | `TARA-Stat-paigalda-MongoDB.sh` | paigaldab MongoDB ja seadistab logibaasi |
 | `TARA-Stat-seadista-rakendus.sh` | seadistab veebirakenduse |
+| `TARA-Stat-paigalda-votmed.sh` | paigaldab veebirakenduse HTTPS privaatvõtme ja serdi |
 | `TARA-Stat-diagnoosi.sh` | väljastab diagnostilist teavet paigalduse kohta |
 
 Skriptid asuvad koodirepo kaustas `/opt/TARA-Stat/scripts`.
@@ -232,9 +233,15 @@ Märkus. Edasiarendusvõimalusena võib kaaluda paigaldusskriptide põhjal Jenki
 
 Täida skriptid järgmises järjekorras:
 
-1. `TARA-Stat-paigalda-Nodejs.sh`
-2. `TARA-Stat-paigalda-MongoDB.sh` (1. ja 2. järjekord ei ole oluline)
-3. `TARA-Stat-seadista-rakendus.sh`
+1\. `TARA-Stat-paigalda-Nodejs.sh`
+
+2\. `TARA-Stat-paigalda-MongoDB.sh` (1. ja 2. järjekord ei ole oluline)
+
+3\. `TARA-Stat-seadista-rakendus.sh`
+
+kui rakenduses tuleb kasutada organisatsiooni CA väljaantud serti, siis loo võtmete kaust ja kopeeri privaatvõti ja sert võtmete kausta. Privaatvõtme faili nimi on vaikimisi `tara-stat.key` ja serdifaili nimi on vaikimisi `tara-stat.cert`. Kui soovid kasutada teisi nimesid, siis muuda vastavalt seadistusi failis `config.js`. Seejärel täida skript: 
+
+4\. `TARA-Stat-paigalda-votmed.sh`
 
 `TARA-Stat-diagnoosi.sh` väljastab diagnostilist teavet - selle skripti võib käivitada igal ajal; see skript ei muuda paigaldust.
 
@@ -242,7 +249,11 @@ Käivita skriptid
 
 `sudo bash TARA-Stat-paigalda-Nodejs.sh` jne
 
-### 7.4 Tarkvarauuenduse paigaldamine
+### 7.4 HTTPS võtmete uuendamine
+
+Seiska TARA-Stat veebirakendus ja täida uuesti eelmise jaotise 4. samm ja sellele eelnev käsitsi tegevus.
+
+### 7.5 Tarkvarauuenduse paigaldamine
 
 Kui tarkvarauuendus ei puuduta Node.js ega MongoDB-d, siis piisab 1. ja 4. sammu läbitegemisest. Täpne juhis, kas vajalik on täielik uuestipaigaldamine või on võimalik osaline uuestipaigaldamine, peab arendaja poolt kaasas olema konkreetse tarkvarauuendusega.
 
@@ -402,12 +413,12 @@ Paigalda nii:
 
 `cat mockup-config.js` (kontrolli)
 
-`sudo npm install body-parser --save` (paigalda Node.js teegid)
-`sudo npm install ejs --save`
-`sudo npm install express --save`
-`sudo npm install mongodb --save`
-`sudo npm install request --save`
-`sudo npm install basic-auth --save`
+`sudo npm install body-parser --save` (paigalda Node.js teegid)<br>
+`sudo npm install ejs --save`<br>
+`sudo npm install express --save`<br>
+`sudo npm install mongodb --save`<br>
+`sudo npm install request --save`<br>
+`sudo npm install basic-auth --save`<br>
 `sudo npm install request-debug --save`
 
 `nodejs mockup` (käivita)

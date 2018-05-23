@@ -13,9 +13,9 @@ config.logifail = process.env.LOGIFAIL || '/opt/TARA-Stat/log.txt';
 config.port = process.env.PORT || 5000;
 
 /**
- * HTTPS privaatvõtme ja serdi failide nimed
- * failid peavad olema kaustas TARA-Stat/keys
+ * HTTPS privaatvõtme ja serdi asukohad
  */
+config.keydir = 'KEYDIR-changeit';
 config.key = 'tara-stat.key';
 config.cert = 'tara-stat.cert';
 

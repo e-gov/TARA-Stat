@@ -7,9 +7,14 @@ permalink: Bash
 - **aritmeetika**
   - `echo $((1+1))` või `echo $[1+1]`
 
-- **faili allalaadimine internetist**
-  - `wget -O failinimi "URL"` (paneb jooksvasse kausta)  
-  - nt `wget -O code_1.23.0-1525361119_amd64.deb "https://go.microsoft.com/fwlink/?LinkID=760868"
+- **faili**
+  - **allalaadimine internetist**
+    - `wget -O failinimi "URL"` (paneb jooksvasse kausta)  
+    - nt `wget -O code_1.23.0-1525361119_amd64.deb "https://go.microsoft.com/fwlink/?LinkID=760868"
+  - **kopeerimine**
+    - `cp <source> <dest-n>`
+  - **ümbernimetamine**
+    - `mv <vana> <uus>`   
 `
 - **funktsioonid**
   - `function nimi { kood }`
@@ -90,6 +95,9 @@ permalink: Bash
     - `export var1
        ./script2.sh` (muutuja `var1` antakse skriptile parameetriks)       
 
+  - **openSSL**
+    - `openssl x509 -in <serdifail>.pem -noout -text` (kuvab serdi sisu)
+
 - **nano**, tekstiredaktor
   - [koduleht](https://www.nano-editor.org/)
   - `sudo nano failinimi`
@@ -126,7 +134,7 @@ permalink: Bash
   - `ps aux | grep "mongo"` (protsess)  
 
 - **secure copy**
-  - `scp kasutaja@host:/opt/kasutaja/tee/failini C:/TÖÖS` (faili kopeerimine lokaalsesse masinass SSH abil)
+  - `scp kasutaja@host:/opt/kasutaja/tee/failini C:/TÖÖS` (faili kopeerimine lokaalsesse masinasse SSH abil)
 
 - **shebang**
   - `#!/bin/bash` (näitab, millist programmi skripti täitmiseks kasutada)
