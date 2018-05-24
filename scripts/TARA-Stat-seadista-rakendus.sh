@@ -67,12 +67,14 @@ function paigalda_Nodejs_teek {
   kontrolli "$?" "Node.js teegi paigaldamine"
 }
 
+# ------------------------------
 # 0. Kontrollküsimus
 echo
 echo " --- TARA-Stat veebirakenduse seadistamine systemd-ga käitatavaks"
 echo
 kasJatkan
 
+# ------------------------------
 # 1. Loon käitluskasutaja (run user)
 echo " --- Loon kasutaja tarastat, kui see ei ole juba olemas"
 echo
@@ -91,6 +93,19 @@ kasJatkan
 echo
 echo " --- Paigaldan Node.js teegid"
 cd /opt/TARA-Stat
+
+# Vali teegirepo
+echo
+echo " --- Vali teegirepo"
+read -p "Kas soovid teegid paigaldada sisemisest teegihoidlast? [y/n]" prompt
+  if [[ $prompt != y && $prompt != Y ]]
+  then
+    read -p "Sisesta sisemise teegihoidla URL " teegihoidla
+    sudo npm config set registry $teegihoidla
+  else
+    sudo npm config set registry https://registry.npmjs.org/  
+  fi
+  echo
 
 # Eemaldan Node.js vanad teegid, kuid neid peaks olema
 if [ -d "$node_modules" ]; then
