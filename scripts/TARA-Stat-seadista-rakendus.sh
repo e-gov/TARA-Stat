@@ -75,7 +75,14 @@ echo
 kasJatkan
 
 # ------------------------------
+# Seiska TARA-Stat veebirakendus
+echo " --- Seiskan TARA-Stat veebirakenduse"
+echo
+sudo systemctl stop tarastat
+
+# ------------------------------
 # 1. Loon käitluskasutaja (run user)
+echo
 echo " --- Loon kasutaja tarastat, kui see ei ole juba olemas"
 echo
 sudo deluser tarastat
