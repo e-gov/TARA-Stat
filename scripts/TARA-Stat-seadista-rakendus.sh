@@ -104,8 +104,8 @@ cd /opt/TARA-Stat
 # Vali teegirepo
 echo
 echo " --- Vali teegirepo"
-read -p "Kas soovid teegid paigaldada sisemisest teegihoidlast? [y/n]" prompt
-  if [[ $prompt != y && $prompt != Y ]]
+read -p "Kas soovid teegid paigaldada sisemisest teegihoidlast? [y/n] " prompt
+  if [[ $prompt = y && $prompt = Y ]] 
   then
     read -p "Sisesta sisemise teegihoidla URL " teegihoidla
     sudo npm config set registry $teegihoidla
