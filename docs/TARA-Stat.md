@@ -107,6 +107,8 @@ Kirje:
 }
 ```
 
+- `time`, `clientId`, `method` ja `operation` peavad saadetavas päringus olema alati. Kui mõni neist on puudu, siis tagastab TARA-Stat veateate `Valesti moodustatud logikirje`. Element `error` ei ole kohustuslik; see lisatakse TARA-Stat-i ainult siis, kui `operation` väärtus on `ERROR`.
+
 TARA-Stat võtab saadetud kirjest olulised väljad, moodustab nendest logikirje ja salvestab logibaasi (Mongo DB).
 
 Logibaasi salvestatakse kirje vormingus:
