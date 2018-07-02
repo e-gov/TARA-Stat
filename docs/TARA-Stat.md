@@ -214,105 +214,75 @@ Konfigureeritakse järgmiste failidega:
 | fail        | eesmärk ja kasutamine |
 |-------------|-----------------------|
 | `/opt/TARA-Stat/config.js` | veebirakenduse konf-n. Konfigureeritakse paigaldusskriptiga `TARA-Stat-paigalda-rakendus.sh`. Käsitsi konf-mine on vajalik siis, kui tahetakse muuta tundlike taristuparameetrite vaikeväärtusi (nt porti). |
-| `/etc/mongodb.conf`        | MongoDB konf-n. Kasutatakse vaikimis konf-i. Käsitsi konf-mine on vajalik siis, kui tahetakse muuta tundlike taristuparameetrite vaikeväärtusi (nt porti). |
+| `/etc/mongodb.conf`        | MongoDB konf-n. Kasutatakse MongoDB distributsiooni vaikimisi konf-i. Käsitsi konf-mine on vajalik siis, kui tahetakse muuta tundlike taristuparameetrite vaikeväärtusi (nt porti). |
 
 Veebirakenduse konfi-failis seatud väärtusi saab vajadusel üle määrata teenuse käivitamiskäsus (`process.env` mehhanismiga).
 
 ### 5.3 Esmakordne paigaldamine
 
-**Eeltegevused**. Valmista VM ja paigalda Ubuntu (16 LTS server).
-
-**Paigalda koodirepo**. Alusta paigaldamist TARA-Stat koodi paigaldamisega koodirepost VM-i. Järgnevas eeldame, et TARA-Stat kood asub GitHub-is, kuid võib olla ka siserepos.
-
-Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`.
-
-`sudo rm -R /opt/TARA-Stat` (kustuta vana; valikuline)
-
-`cd /opt`
-
-`sudo git clone https://github.com/e-gov/TARA-Stat` 
-
-Seejärel leiad koodirepo kaustast `/opt/TARA-Stat/scripts` paigaldusskriptid, millega saad edasist tööd automatiseerida.
-
-`cd /opt/TARA-Stat/scripts`
-
-Märkus. Edasiarendusvõimalusena võib kaaluda paigaldusskriptide põhjal Jenkinsi paigalduskonveieri ehitamist.
-
-**Paigalda Node.js**. 
-
-`sudo bash TARA-Stat-paigalda-Nodejs.sh`
-
-**Paigalda MongoDB**.
-
-`sudo bash TARA-Stat-paigalda-MongoDB.sh` (Node.js ja MongoDB paigaldamise järjekord ei ole oluline)
-
-**Seadista rakendus**.
-
-`sudo bash TARA-Stat-seadista-rakendus.sh`
-
-**Paigalda HTTPS võtmed**.
-
-Loo võtmete kaust `../keys` (`TARA-Stat` naaberkaust).
-
-'Sea kasutaja `tarastat` võtmete kausta omanikuks:
-
-`sudo chown -R tarastat:tarastat /opt/keys`
+  nr |       |      
+:---:|:-----:|--------
+  1  |       | Valmista VM ja paigalda Ubuntu (16 LTS server)
+  2  | `sudo rm -R /opt/TARA-Stat` | Kustuta vana kood (valikuline)
+  3  | `cd /opt`<br>`sudo git clone https://github.com/e-gov/TARA-Stat` | Paigalda koodirepo. Alusta paigaldamist TARA-Stat koodi paigaldamisega koodirepost VM-i. Järgnevas eeldame, et TARA-Stat kood asub GitHub-is, kuid võib olla ka siserepos. Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`.
+  4  | `cd /opt/TARA-Stat/scripts` | Seejärel leiad koodirepo kaustast `/opt/TARA-Stat/scripts` paigaldusskriptid, millega saad edasist tööd automatiseerida.
+  5  | `sudo bash TARA-Stat-paigalda-Nodejs.sh` | Paigalda Node.js. 
+  6  | `sudo bash TARA-Stat-paigalda-MongoDB.sh` | Paigalda MongoDB. Node.js ja MongoDB paigaldamise järjekord ei ole oluline.
+  7  | `sudo bash TARA-Stat-seadista-rakendus.sh` | Seadista rakendus.
+  8  | `mkdir /opt/keys` | Paigalda HTTPS võtmed. Loo võtmete kaust `../keys` (`TARA-Stat` naaberkaust).
+  9  | `sudo chown -R tarastat:tarastat /opt/keys` | Sea kasutaja `tarastat` võtmete kausta omanikuks:
 
 Seejärel:
 
 a\) Kui kasutad organisatsiooni CA väljaantud serti:
 
-Moodusta kausta `../keys` sinna pfx-fail. Pfx-fail sisaldab privaatvõtit ja serdiahelat. Näiteks
-
-`openssl pkcs12 -export -out certificate.pfx -inkey tara-stat.key -in tara-stat.cert -certfile ahel.pem`
-
-moodustab privaatvõtmefailist `tara-stat.key`, sellele vastavat avaliku võtit sisaldavast serdist `tara-stat.cert` ja serdiahela failist `ahel.pem` neid koondava pfx-faili `certificate.pfx`.
-
-Sead konf-ifailis `config.js`, parameetris `config.pfx` pfx-faili nimi (vaikimisi `certificate.pfx`).
+  nr |       |      
+:---:|:-----:|--------
+  10 |       | Moodusta kausta `../keys` pfx-fail. Pfx-fail sisaldab privaatvõtit ja serdiahelat. Näiteks 
+`openssl pkcs12 -export -out certificate.pfx -inkey tara-stat.key -in tara-stat.cert -certfile ahel.pem` moodustab privaatvõtmefailist `tara-stat.key`, sellele vastavat avaliku võtit sisaldavast serdist `tara-stat.cert` ja serdiahela failist `ahel.pem` neid koondava pfx-faili `certificate.pfx`.
+  11 |       | Sea konf-ifailis `config.js`, parameetris `config.pfx` pfx-faili nimi (vaikimisi `certificate.pfx`).
 
 b\) Kui kasutad _self-signed_ serti:
 
-Kopeeri kausta `../keys` privaatvõti ja sert. Privaatvõtme faili nimi on vaikimisi `tara-stat.key` ja serdifaili nimi on vaikimisi `tara-stat.cert`. Kui soovid kasutada teisi nimesid, siis muuda vastavalt seadistusi failis `config.js`. _Self-signed_ võtme võtmed ja serdi saad genereerida skriptiga:
+  nr |       |      
+:---:|:-----:|--------
+  10 | `sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh` | Genereeri _self-signed_ privaatvõti ja sert.  Privaatvõtme faili nimi on vaikimisi `tara-stat.key` ja serdifaili nimi on vaikimisi `tara-stat.cert`. Kui soovid kasutada teisi nimesid, siis muuda vastavalt seadistusi failis `config.js`.
+  11 |       | Kopeeri privaatvõti ja sert kausta `../keys`.
 
-`sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh`
-
-**Käivita veebirakendus**. 
-
-`sudo systemctl start tarastat`
-
-**Kontrolli, et kõik töötab**. Kontrolli, et nii veebirakendus kui ka logibaas (teenus `mongodb`) töötavad. Selleks saad kasutada skripti:
-
-`sudo bash TARA-Stat/scripts/TARA-Stat-diagnoosi.sh`
-
-`TARA-Stat-diagnoosi.sh` väljastab diagnostilist teavet - selle skripti võib käivitada igal ajal; see skript ei muuda paigaldust.
+  nr |       |      
+:---:|:-----:|--------
+  12 | `sudo systemctl start tarastat` | Käivita veebirakendus.
+  13 | `sudo bash TARA-Stat/scripts/TARA-Stat-diagnoosi.sh` | Kontrolli, et nii veebirakendus (teenus `tarastat`) kui ka logibaas (teenus `mongodb`) töötavad. `TARA-Stat-diagnoosi.sh` väljastab diagnostilist teavet - selle skripti võib käivitada igal ajal; see skript ei muuda paigaldust.
 
 ### 5.4 HTTPS võtmete vahetamine
 
-1\. Seiska TARA-Stat veebirakendus:
-
-`sudo systemctl stop tarastat`
-
-2\. Kanna uued võtmed kausta `../keys` (`TARA-Stat` naaberkaust). _Self-signed_ võtmete korral genereeri uued võtmed ja sert:
-
-`sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh`
-
-3\. Taaskäivita veebirakendus:
-
-`sudo systemctl start tarastat`
+  nr |       |      
+:---:|:-----:|--------
+  1  | `sudo systemctl stop tarastat` | Seiska TARA-Stat veebirakendus.
+  2  | `sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh` | Kanna uued võtmed kausta `../keys` (`TARA-Stat` naaberkaust). _Self-signed_ võtmete korral genereeri uued võtmed ja sert.
+  3  | `sudo systemctl start tarastat` | Taaskäivita veebirakendus.
 
 ### 5.5 Tarkvarauuenduse paigaldamine
 
-Kui tarkvarauuendus ei puuduta Node.js ega MongoDB-d, siis piisab 1. ja 3. sammu läbitegemisest. Täpne juhis, kas vajalik on täielik uuestipaigaldamine või on võimalik osaline uuestipaigaldamine, peab arendaja poolt kaasas olema konkreetse tarkvarauuendusega.
+Täpne juhis, kas vajalik on täielik uuestipaigaldamine või on võimalik osaline uuestipaigaldamine, peab arendaja poolt kaasas olema konkreetse tarkvarauuendusega.
 
-Väikese tarkvarauuenduse puhul on võimalik ka värskenduste tõmbamine repot üle kirjutamata:
+Koodi uuesti paigaldamine repost:
 
-`sudo git pull origin master` (kaustas `TARA-Stat`)
+  nr |       |      
+:---:|:-----:|--------
+  1  | `sudo rm -R /opt/TARA-Stat` | Kustuta vana kood.
+ -2  | `cd /opt` | 
+  3  | `sudo git clone https://github.com/e-gov/TARA-Stat` | Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`.
+  4  | `cd /opt/TARA-Stat` |
+  5  | `sudo bash TARA-Stat-seadista-rakendus.sh` | Seadista rakendus.
 
-Enne seda tuleb aga teha
+Väikese tarkvarauuenduse puhul on võimalik värskenduste tõmbamine repot üle kirjutamata:
 
-`sudo git checkout .`
-
-sest kuna rakenduse seadistamisel on `config.js` muudetud, siis pull-i tegemisel tekib muidu konflikt.
+  nr |       |      
+:---:|:-----:|--------
+  1  | `cd /opt/TARA-Stat` | 
+  2  | `sudo git checkout .` | See on vajalik, kuna rakenduse seadistamisel on `config.js` muudetud. Pull-i tegemisel tekib muidu konflikt.
+  3  | `sudo git pull origin master` | (kaustas `TARA-Stat`)
 
 ### 5.5 VM tulemüüri seadistamine
 
