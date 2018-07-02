@@ -48,12 +48,14 @@ TARA-Stat koosneb kahest komponendist (tehniliselt on need ühes masinas käitat
 
 TARA-Stat-l on neli liidest:
 
-| liides    | otstarve |
-|-----------|----------|
-| logikirje lisamise liides (otspunkt) | HTTPS REST JSON otspunkt, mille kaudu TARA-Stat võtab TARA-Server-lt vastu logikirjeid |
-| statistika väljastamise  (otspunkt) | HTTPS veebiliides, mille kaudu statistikakasutaja tutvub kasutusstatistikaga |
-| logibaasi haldamise liides | MongoDB käsureaklient, millega aeg-ajalt puhastatakse logibaasi aegunud kirjetest |
-| elutukse liides | HTTPS otspunkt, millelt saab pärida kinnitust TARA-Stat elusoleku kohta |
+| liides    | URL või nimi  | otstarve |
+|-----------|:----:|----------|
+| logikirje lisamise liides (otspunkt) | `https://<tara-stat>:5000` | HTTPS REST JSON otspunkt, mille kaudu TARA-Stat võtab TARA-Server-lt vastu logikirjeid |
+| statistika väljastamise  (otspunkt) | `https://<tara-stat>/stat:5000` | HTTPS veebiliides, mille kaudu statistikakasutaja tutvub kasutusstatistikaga |
+| logibaasi haldamise liides | `mongo` | MongoDB käsureaklient, millega aeg-ajalt puhastatakse logibaasi aegunud kirjetest |
+| elutukse liides | `https://<tara-stat>/status:5000` | HTTPS otspunkt, millelt saab pärida kinnitust TARA-Stat elusoleku kohta |
+
+kus `<tara-stat>` on TARA-Stat-i domeeninimi.
 
 TARA-Stat suhtleb 5 välise osapoolega.
 
@@ -70,7 +72,7 @@ TARA-Stat suhtleb 5 välise osapoolega.
 Logikirje lisamise otspunkt võtab TARA-Serverilt vastu [Log4j 2](https://logging.apache.org/log4j/2.0/) JSON vormingus kirjeid autentimissündmuste kohta.
 
 Kirje:
-- tuleb saata `POST` päringus, URL-il `https://<tara-stat>`, kus `<tara-stat>` on TARA-Stat-i domeeninimi
+- tuleb saata `POST` päringus, URL-il `https://<tara-stat>:5000`, kus `<tara-stat>` on TARA-Stat-i domeeninimi
 - peab olema vormistatud JSON dokumendina (`Content-Type: application/json; charset=UTF-8`)
 - peab järgima Log4j 2 [JSON paigutust](https://logging.apache.org/log4j/2.0/manual/layouts.html#JSONLayout)
 - peab olema omatte päringus
@@ -140,30 +142,48 @@ kus:
 
 Statistika väljastamise otspunkti e statistikakasutaja UI kaudu saab kasutaja tutvuda TARA kasutusstatistikaga.
 
-- avada sirvikus leht `https://<tara-stat>` (kus `<tara-stat>` on TARA-Stat-i domeeninimi).
+- avada sirvikus leht `https://<tara-stat>/stat:5000` (kus `<tara-stat>` on TARA-Stat-i domeeninimi).
 - määrata periood (võib jääda ka tühjaks)
   - sisestades regulaaravaldise
   - nt `2018-04` valib 2018. a aprilli logikirjed
 - vajutada nupule
 - kuvatakse autentimiste arv perioodi jooksul klientrakenduste lõikes.
 
-## 4 Võtmed ja salasõnad
+## 4 Võtmete ja salasõnade ettevalmistamine
 
-TARA-Stat käitluskontekstis on 9 osapoolt (subjekti), kes vajavad identiteedi ja kredentsiaalide (võtmete või salasõnade) andmist ning õiguste seadmist.
+TARA-Stat paigaldamiseks ja käitamiseks vajatakse järgmisi võtmeid ja salasõnu (saladusi):
 
-| nr | kasutaja vm õiguste subjekt (_principal_), masinloetava nimega | subjekti liik ja kirjeldus | kredentsiaali(de) tüüp | millal luuakse |
-|:--:|:--------:|--------:|:--------------:|----|
-| 1 | `admin` | Ubuntu kasutaja, kes paigaldab tarkvara ja teeb muid haldustoiminguid | salasõna | VM loomisel |
-| 2 | `tarastat` | Ubuntu kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus | salasõna | TARA-Stat veebirakenduse seadistamisel |
-| 3 | `mongodb` | Ubuntu kasutaja, kelle alt käitatakse MongoDB andmebaas | MongoDB paigaldamisel |
-| 4 | `userAdmin` | MongoDB kasutaja, kes haldab MongoDB kasutajaid. Seda rolli täidab VM admin | salasõna | MongoDB paigaldamisel |
-| 5 | `rakendus` | TARA-Stat veebirakenduse konto MongoDB-s | salasõna | MongoDB paigaldamisel |
-| 6 | `andmehaldur` | MongoDB konto, mille alt kustutatakse aegunud logikirjeid. Andmehalduri rolli täidab VM admin | salasõna | MongoDB paigaldamisel |
-| 7 | `https://tara-stat.site` | TARA-Stat veebirakendus | _self-signed_ sert ja privaatvõti | TARA-Stat veebirakenduse seadistamisel |
-| 8 | - | statistikakasutaja - anonüümne inimene, kes pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | ei autendita, juurdepääs piiratakse kontekstiga | - |
-| 9 | `tara-server` | TARA-Server, pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna | TARA-Stat veebirakenduse seadistamisel |
+| nr | kasutaja vm õiguste subjekt (_principal_) | selgitus | kredentsiaali(de) tüüp | kus määratakse või kuhu paigaldatakse | kus kasutatakse |
+|:--:|:--------:|--------:|:--------------:|----|----|
+| 1 | `admin` | Ubuntu kasutaja, kes paigaldab tarkvara ja teeb muid haldustoiminguid | salasõna | määratakse VM op-süsteemi paigaldamisel | adminitoimigutes VM-is | 
+| 2 | `tarastat` | Ubuntu kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus | salasõna | TARA-Stat veebirakenduse seadistamisel | TARA-Stat veebirakenduse käitamisel |
+| 3 | `mongodb` | Ubuntu kasutaja, kelle alt käitatakse MongoDB andmebaas | salasõna | MongoDB paigaldamisel | MongoDB käitamisel |
+| 4 | `userAdmin` | MongoDB kasutaja, kes haldab MongoDB kasutajaid. Seda rolli täidab VM admin | salasõna | MongoDB paigaldamisel | MongoDB kasutajakontode haldamisel |
+| 5 | `rakendus` | TARA-Stat veebirakenduse konto MongoDB-s | salasõna | määratakse MongoDB paigaldamisel, kantakse ka TARA-Stat veebirakenduse konf-i | TARA-Stat-i poolt pöördumisel MongoDB poole |
+| 6 | `andmehaldur` | MongoDB konto, mille alt kustutatakse aegunud logikirjeid. Andmehalduri rolli täidab VM admin | salasõna | MongoDB paigaldamisel | MongoDB logibaasi haldamisel |
+| 7 | `https://<tara-stat>` | TARA-Stat veebirakendus | _self-signed_ sert ja privaatvõti | TARA-Stat veebirakenduse seadistamisel | Sirviku pöördumisel TARA-Stat-i poole |
+| 8 | `tara-server` | TARA-Server, pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna | TARA-Stat veebirakenduse seadistamisel | Logikirjete saatmisel TARA-Serveri poolt TARA-Stat-i logibaasi |
+
+Statistikakasutaja on TARA-Stat-i suhtes anonüümne inimene. Ta pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole. Statistikakasutajat ei autendita, juurdepääs piiratakse kontekstiga.
+
+Võtmete ja salasõnade kasutamist illustreerib järgnev joonis:
 
 <p style='text-align:center;'><img src='img/IDENTITEET.PNG' width= "500"></p>
+
+Repos olevates konf-ifailides on saladused esitatud väärtustega `changeit`. Toodangupaigalduses tuleb väärtused `changeit` asendada. Paigaldusskriptides küsitakse uusi väärtusi. Võtmed ja salasõnad tuleks ette valmistada (genereerida või valida) enne paigaldusskriptide käivitamist.
+
+Võtmete ja salasõnade ettevalmistamise plaan:
+
+| nr | subjekt  | kredentsiaali(de) tüüp | soovitatav moodustamise viis |
+|:--:|:--------:|-----------------------:|--------------                |
+| 1  | `admin`  | salasõna | vastavalt asutuse paroolipoliitikale |
+| 2  | `tarastat` | salasõna | vastavalt asutuse paroolipoliitikale |
+| 3  | `mongodb` | salasõna | vastavalt asutuse paroolipoliitikale |
+| 4  | `userAdmin` | salasõna | vastavalt asutuse paroolipoliitikale |
+| 5  | `rakendus` | salasõna | vastavalt asutuse paroolipoliitikale |
+| 6  | `andmehaldur` | salasõna | vastavalt asutuse paroolipoliitikale |
+| 7  | `https://<tara-stat>` | _self-signed_ sert ja privaatvõti | genereerida vastavalt juhendile jaotises "Esmakordne paigaldamine" |
+| 8  | `tara-server` | API kasutajanimi ja salasõna | kasutajanimi on `tara-server`; salasõna määrata vastavalt asutuse paroolipoliitikale |
 
 ## 5 Paigaldamine
 
