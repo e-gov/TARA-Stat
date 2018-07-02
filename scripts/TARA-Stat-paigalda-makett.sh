@@ -60,8 +60,8 @@ kasJatkan
 echo
 echo " --- Sean konf-ifailis TARA-Stat serveri domeeninime"
 cd /opt/TARA-Stat
-read -p "Sisesta TARA-Stat serveri domeeninimi: " TARASERVER
-sudo sed -i 's/localhost/$TARASERVER/' mockup-config.js 
+read -p "Sisesta TARA-Stat serveri domeeninimi: " TARASTAT
+sudo sed -i "s/localhost/$TARASTAT/" /opt/TARA-Stat/mockup-config.js 
 
 echo
 echo " --- Kontrolli, et domeeninimi on õigesti seatud:"
