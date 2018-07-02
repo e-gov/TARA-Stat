@@ -236,21 +236,23 @@ Seejärel:
 
 a\) Kui kasutad organisatsiooni CA väljaantud serti:
 
-  nr |       |      
-:---:|:-----:|--------
-  10 |       | Moodusta kausta `../keys` pfx-fail. Pfx-fail sisaldab privaatvõtit ja serdiahelat. Näiteks 
-`openssl pkcs12 -export -out certificate.pfx -inkey tara-stat.key -in tara-stat.cert -certfile ahel.pem` moodustab privaatvõtmefailist `tara-stat.key`, sellele vastavat avaliku võtit sisaldavast serdist `tara-stat.cert` ja serdiahela failist `ahel.pem` neid koondava pfx-faili `certificate.pfx`.
+  nr | käsk  | kirjeldus
+:---:|-------|--------
+  10 |       | Moodusta kausta `../keys` pfx-fail. 
   11 |       | Sea konf-ifailis `config.js`, parameetris `config.pfx` pfx-faili nimi (vaikimisi `certificate.pfx`).
+
+Pfx-fail sisaldab privaatvõtit ja serdiahelat. Näiteks 
+`openssl pkcs12 -export -out certificate.pfx -inkey tara-stat.key -in tara-stat.cert -certfile ahel.pem` moodustab privaatvõtmefailist `tara-stat.key`, sellele vastavat avaliku võtit sisaldavast serdist `tara-stat.cert` ja serdiahela failist `ahel.pem` neid koondava pfx-faili `certificate.pfx`.
 
 b\) Kui kasutad _self-signed_ serti:
 
-  nr |       |      
-:---:|:-----:|--------
+  nr | käsk  | kirjeldus
+:---:|-------|--------
   10 | `sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh` | Genereeri _self-signed_ privaatvõti ja sert.  Privaatvõtme faili nimi on vaikimisi `tara-stat.key` ja serdifaili nimi on vaikimisi `tara-stat.cert`. Kui soovid kasutada teisi nimesid, siis muuda vastavalt seadistusi failis `config.js`.
   11 |       | Kopeeri privaatvõti ja sert kausta `../keys`.
 
-  nr |       |      
-:---:|:-----:|--------
+  nr | käsk  | kirjeldus
+:---:|-------|--------
   12 | `sudo systemctl start tarastat` | Käivita veebirakendus.
   13 | `sudo bash TARA-Stat/scripts/TARA-Stat-diagnoosi.sh` | Kontrolli, et nii veebirakendus (teenus `tarastat`) kui ka logibaas (teenus `mongodb`) töötavad. `TARA-Stat-diagnoosi.sh` väljastab diagnostilist teavet - selle skripti võib käivitada igal ajal; see skript ei muuda paigaldust.
 
@@ -271,7 +273,7 @@ Koodi uuesti paigaldamine repost:
   nr | käsk  | kirjeldus
 :---:|-------|--------
   1  | `sudo rm -R /opt/TARA-Stat` | Kustuta vana kood.
- -2  | `cd /opt` | 
+  2  | `cd /opt` | 
   3  | `sudo git clone https://github.com/e-gov/TARA-Stat` | Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`.
   4  | `cd /opt/TARA-Stat` |
   5  | `sudo bash TARA-Stat-seadista-rakendus.sh` | Seadista rakendus.
@@ -282,7 +284,7 @@ Väikese tarkvarauuenduse puhul on võimalik värskenduste tõmbamine repot üle
 :---:|-------|--------
   1  | `cd /opt/TARA-Stat` | 
   2  | `sudo git checkout .` | See on vajalik, kuna rakenduse seadistamisel on `config.js` muudetud. Pull-i tegemisel tekib muidu konflikt.
-  3  | `sudo git pull origin master` | (kaustas `TARA-Stat`)
+  3  | `sudo git pull origin master` | Tõmba värskendused (kaustas `TARA-Stat`).
 
 ### 5.5 VM tulemüüri seadistamine
 
