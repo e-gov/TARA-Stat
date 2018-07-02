@@ -278,12 +278,24 @@ app.post('/',
   },
   (req, res) => {
     // console.log('--- Logikirje lisamine');
-    var aeg = req.body.aeg;
-    var klient = req.body.klient;
-    var meetod = req.body.meetod;
-    // console.log(JSON.stringify(req.body));
-    // console.log('aeg: ' + aeg + ', klient: ' + klient + ', meetod: ' + meetod);
-    if (!aeg || !klient || !meetod) {
+    /* Moodusta päringus saadetud kirjest logibaasi salvestatav kirje. */
+    var salvestatavKirje = {
+      time: req.body.message.time,
+      clientId: req.body.message.clientID,
+      method: req.body.message.method,
+      operation: req.body.message.operation
+    }
+    if (req.body.message.error) {
+      salvestatavKirje.error = req.body.message.error;
+    }
+    console.log(' Salvestatav kirje:');
+    console.log(JSON.stringify(salvestatavKirje, null, 2));
+    if (
+      !req.body.message.time ||
+      !req.body.message.clientID ||
+      !req.body.message.method ||
+      !req.body.message.operation
+    ) {
       res.status(400).send('ERR-03: Valesti moodustatud logikirje');
     }
 
@@ -295,11 +307,7 @@ app.post('/',
         // WriteResult objekt
         var lisamiseTulemus;
         lisamiseTulemus = db.collection(COLLECTION)
-          .insert({
-            aeg: aeg,
-            klient: klient,
-            meetod: meetod
-          });
+          .insert(salvestatavKirje);
         client.close();
         if (lisamiseTulemus.writeError) {
           console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");

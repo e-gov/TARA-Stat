@@ -117,7 +117,8 @@ Logibaasi salvestatakse kirje vormingus:
   "time": "<ISO 8601 kuupäev>",
   "clientID": "<klientrakenduse nimi>",
   "method": "<autentimismeetod>",
-  "operation": "<sündmuse koodnimetus>"
+  "operation": "<sündmuse koodnimetus>",
+  "error": "<veateade>"
 }
 ```
 
@@ -128,7 +129,8 @@ kus:
 - sündmuse koodnimetus peab olema vastavalt TARA [kasutusstatistika spetsifikatsioonile](https://e-gov.github.io/TARA-Doku/Statistika):
   - `START_AUTH` - autentimine alanud
   - `SUCCESSFUL_AUTH` - autentimise edukas lõpp
-  - `ERROR` - autentimise ebaedukas lõpp.
+  - `ERROR` - autentimise ebaedukas lõpp
+- veateade lisatakse ainult siis, kui see päringus saadeti (`operation` väärtus `ERROR`).
 
 ### 2.2 Statistika väljastamise otspunkt (statistikakasutaja UI)
 
