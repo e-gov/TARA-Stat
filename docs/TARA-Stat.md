@@ -3,11 +3,16 @@ permalink: Dokumentatsioon
 layout: TARA
 ---
 
-# Mikroteenus TARA-Stat
+# TARA-Stat
 {: .no_toc}
 
-## Ülevaade
+## Sisukord
 {: .no_toc}
+
+- TOC
+{:toc}
+
+## Ülevaade
 
 TARA-Stat on mikroteenus [autentimisteenuse TARA](https://e-gov.github.io/TARA-Doku) kasutusstatistika tootmiseks ja vaatamiseks. 
 
@@ -19,14 +24,8 @@ Kõik viited salasõnadele ja tundlikele taristuparameetritele (nt hostinimed, p
 
 TARA-Stat-i on arendanud Riigi Infosüsteemi Amet.
 
-(Eraldi _write-up_ mikroteenusarhitektuurist, kui peaksid huvi tundma: [https://e-gov.github.io/TARA-Stat/](https://e-gov.github.io/TARA-Stat/))
+Eraldi _write-up_ mikroteenusarhitektuurist on siin: [https://e-gov.github.io/TARA-Stat/](https://e-gov.github.io/TARA-Stat/).
 
-
-## Sisukord
-{: .no_toc}
-
-- TOC
-{:toc}
 
 ## 1 Funktsioon
 

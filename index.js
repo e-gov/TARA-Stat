@@ -262,7 +262,7 @@ function check(name, pass) {
 /**
  * Lisa logikirje
  * POST päring, kehas JSON
- * { "aeg": ..., "klient": ..., "meetod": ... }
+ * Vt https://e-gov.github.io/TARA-Stat/Dokumentatsioon
  */
 app.post('/',
   /* Kontrolli kredentsiaale */
@@ -281,7 +281,7 @@ app.post('/',
     /* Moodusta päringus saadetud kirjest logibaasi salvestatav kirje. */
     var salvestatavKirje = {
       time: req.body.message.time,
-      clientId: req.body.message.clientID,
+      clientId: req.body.message.clientId,
       method: req.body.message.method,
       operation: req.body.message.operation
     }

@@ -108,7 +108,8 @@ function saadaLogisse(url, saadetav_kirje) {
         console.log('--- Viga logiteenuse poole pöördumisel: ', error);
         return;
       }
-      console.log('--- Logikirje saadetud. HTTP staatuskood: ' + response.statusCode);
+      console.log('--- Logikirje saadetud. HTTP staatuskood: ' +
+        response.statusCode + ' ' + body);
     });
 }
 
