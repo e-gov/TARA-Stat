@@ -63,7 +63,7 @@ TARA-Stat suhtleb 5 välise osapoolega.
 |----------------|----------|
 | statistikakasutaja | autentimisteenust TARA käitava organisatsiooni teenistuja - teenusehaldur või tootejuht- kes vajab teavet teenuse kasutamise mahu, sh trendide kohta. Statistikakasutajale tuleb pakkuda statistikat. Eriti vajalik on teave teenuse tarbimismahtudest klientrakenduste lõikes. Statistikakasutajal peab olema võimalik ette anda periood, mille kohta statistika arvutatakse. Statistikakasutajal ei tohi olla võimalust logi muuta.<br><br>Kuna statistika on üldistatud ega sisalda isikuandmeid, lähtume statistika otspunkti turvamisel, et otspunkt on avatud organisatsiooni sisevõrgus, kõigile töötajatele. |
 | TARA-Server | saadab TARA-Stat-i logikirjeid. TARA-Server võib olla paigaldatud mitmes instantsis. |
-| andmehaldur | inimene, kes, kasutades MongoDB standardvahendeid - käsurealiidest `mongo` - kustutab logibaasist aegunud kirjeid. (Kasutusstatistika pakub huvi u aasta jooksul). See on harv tegevus. |
+| andmehaldur | inimene, kes, kasutades MongoDB standardvahendit - käsurealiidest `mongo` - kustutab logibaasist aegunud kirjeid. (Kasutusstatistika pakub huvi u aasta jooksul). See on harv tegevus. |
 | admin | inimene, kes paigaldab tarkvara, loob andmebaasi kasutajatele (TARA-Server, andmehaldur) kontod ja annab pääsuõigused. |
 | monitooringusüsteem | saab TARA-Stat-le saata "elutuksepäringu". TARA-Stat vastab, kas ta toimib. |
 
@@ -151,7 +151,7 @@ Statistika väljastamise otspunkti e statistikakasutaja UI kaudu saab kasutaja t
 
 ## 4 Võtmete ja salasõnade ettevalmistamine
 
-TARA-Stat paigaldamiseks ja käitamiseks vajatakse järgmisi võtmeid ja salasõnu (saladusi):
+TARA-Stat paigaldamiseks ja käitamiseks on vaja järgmisi võtmeid ja salasõnu (saladusi):
 
 | nr | kasutaja vm õiguste subjekt (_principal_) | selgitus | kredentsiaali(de) tüüp | kus määratakse või kuhu paigaldatakse | kus kasutatakse |
 |:--:|:--------:|--------:|:--------------:|----|----|
@@ -166,13 +166,9 @@ TARA-Stat paigaldamiseks ja käitamiseks vajatakse järgmisi võtmeid ja salasõ
 
 Statistikakasutaja on TARA-Stat-i suhtes anonüümne inimene. Ta pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole. Statistikakasutajat ei autendita, juurdepääs piiratakse kontekstiga.
 
-Võtmete ja salasõnade kasutamist illustreerib järgnev joonis:
+Repos olevates konf-ifailides on saladused esitatud väärtustega `changeit`. Toodangupaigalduses tuleb väärtused `changeit` asendada. Paigaldusskriptides küsitakse uusi väärtusi.
 
-<p style='text-align:center;'><img src='img/IDENTITEET.PNG' width= "500"></p>
-
-Repos olevates konf-ifailides on saladused esitatud väärtustega `changeit`. Toodangupaigalduses tuleb väärtused `changeit` asendada. Paigaldusskriptides küsitakse uusi väärtusi. Võtmed ja salasõnad tuleks ette valmistada (genereerida või valida) enne paigaldusskriptide käivitamist.
-
-Võtmete ja salasõnade ettevalmistamise plaan:
+Võtmed ja salasõnad tuleks ette valmistada (genereerida või valida) enne paigaldusskriptide käivitamist. Võtmete ja salasõnade ettevalmistamise plaan:
 
 | nr | subjekt  | kredentsiaali(de) tüüp | soovitatav moodustamise viis |
 |:--:|:--------:|-----------------------:|--------------                |
