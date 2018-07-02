@@ -178,7 +178,7 @@ Võtmed ja salasõnad tuleks ette valmistada (genereerida või valida) enne paig
 | 4  | `userAdmin` | salasõna | vastavalt asutuse paroolipoliitikale |
 | 5  | `rakendus` | salasõna | vastavalt asutuse paroolipoliitikale |
 | 6  | `andmehaldur` | salasõna | vastavalt asutuse paroolipoliitikale |
-| 7  | `https://<tara-stat>` | _self-signed_ sert ja privaatvõti | genereerida vastavalt juhendile jaotises "Esmakordne paigaldamine" |
+| 7  | `https://<tara-stat>` | organisatsiooni CA poolt väljaantud või _self-signed_ sert ja privaatvõti | genereerida vastavalt juhendile jaotises "Esmakordne paigaldamine" |
 | 8  | `tara-server` | API kasutajanimi ja salasõna | kasutajanimi on `tara-server`; salasõna määrata vastavalt asutuse paroolipoliitikale |
 
 ## 5 Paigaldamine
