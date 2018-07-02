@@ -220,8 +220,8 @@ Veebirakenduse konfi-failis seatud väärtusi saab vajadusel üle määrata teen
 
 ### 5.3 Esmakordne paigaldamine
 
-  nr |       |      
-:---:|:-----:|--------
+  nr | käsk  | kirjeldus
+:---:|-------|--------
   1  |       | Valmista VM ja paigalda Ubuntu (16 LTS server)
   2  | `sudo rm -R /opt/TARA-Stat` | Kustuta vana kood (valikuline)
   3  | `cd /opt`<br>`sudo git clone https://github.com/e-gov/TARA-Stat` | Paigalda koodirepo. Alusta paigaldamist TARA-Stat koodi paigaldamisega koodirepost VM-i. Järgnevas eeldame, et TARA-Stat kood asub GitHub-is, kuid võib olla ka siserepos. Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`.
@@ -258,10 +258,12 @@ b\) Kui kasutad _self-signed_ serti:
 
 ### 5.4 HTTPS võtmete vahetamine
 
+See on võtmepaar ja sert, millega tehakse võimalikuks sirvikust TARA-Stat statistika väljastamise otspunkti poole pöördumine turvahoiatusteta HTTPS-i abil.
+
   nr | käsk  | kirjeldus
 :---:|-------|--------
   1  | `sudo systemctl stop tarastat` | Seiska TARA-Stat veebirakendus.
-  2  | `sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh` | Kanna uued võtmed kausta `../keys` (`TARA-Stat` naaberkaust). _Self-signed_ võtmete korral genereeri uued võtmed ja sert.
+  2  | `sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh` | Kanna uued võtmed kausta `../keys` (`TARA-Stat` naaberkaust). _Self-signed_ võtmete kasutamisel genereeri uued võtmed ja sert.
   3  | `sudo systemctl start tarastat` | Taaskäivita veebirakendus.
 
 ### 5.5 Tarkvarauuenduse paigaldamine
@@ -288,7 +290,7 @@ Väikese tarkvarauuenduse puhul on võimalik värskenduste tõmbamine repot üle
 
 ### 5.5 VM tulemüüri seadistamine
 
-Pääsureeglite seadmiseks VM tulemüüris pakume siin lähteandmed, kuid (kahjuks) mitte konkreetseid juhiseid. Vaja on tagada:
+Vaja on tagada:
 
 - TARA-Server-lt tulevate HTTPS päringute teenindamine
 - statistikakasutajalt (pöördub sirvikuga) tulevate HTTPS päringute (sh AJAX) teenindamine
@@ -306,7 +308,7 @@ Pääsureeglite seadmisel VLAN-is ja/või sisevõrgu ruuteri(te)s, samuti TARA-S
 Nii TARA-Stat veebirakendus kui ka MongoDB käitatakse systemd hallatavate teenustena. 
 
 |    | TARA-Stat veebiteenus | MongoDB (logibaas) |
-|----|-----------------------|--------------------|
+|----|:---------------------:|:------------------:|
 | systemd teenusenimi | `tarastat` |  `mongodb`  |
 | käitav Ubuntu kasutaja | `tarastat` | `mongodb` |
 
@@ -339,11 +341,15 @@ TARA-Stat masinas saab teenuste `tarastat` ja `mongodb` ülalolekut kontrollida:
 
 ### 7.1 Diagnostikaskript
 
+Diagnostikaskript väljastab `systemctl status` raportid teenuste `tarastat` (TARA-Stat veebirakendus) ja `mongodb` (logibaas) kohta. Pööra tähelepanu:
+- kas `Active` väärtus on `active (running)` (roheline)
+- 10 viimasele logiteatele.
+
 `cd /opt/TARA-Stat/scripts`
 
 `sudo bash TARA-Stat-diagnoosi.sh`
 
-Diagnostikaskript väljastab `systemctl status` raportid teenuste `tarastat` (TARA-Stat veebirakendus) ja `mongodb` (logibaas) kohta. Pööra tähelepanu: 1) kas `Active` väärtus on `active (running)` (roheline); 2) 10 viimasele logiteatele. Lisaks väljastab skript teatmikteabe kummagi teenuse oluliste asukohtade kohta.
+Lisaks väljastab skript teatmikteabe kummagi teenuse oluliste asukohtade kohta.
 
 ### 7.2 Veateated
 
