@@ -25,26 +25,48 @@ const API_USER = config.TARASTATUSER;
 const API_KEY = config.TARASTATSECRET;
 
 /* Logikirjete vahemiku algus */
-var a = { y: 2018, m: 0, d: 1 };
+var a = { y: 2018, m: 4, d: 1 };
 /* Logikirjete vahemiku lõpp */
-var b = { y: 2018, m: 4, d: 2 };
+var b = { y: 2018, m: 7, d: 2 };
 /* Logikirjete arv */
-const N = 10;
-var klientrakendused = [
+const N = 60;
+const klientrakendused = [
   'klientrakendus A',
   'klientrakendus B',
   'klientrakendus C'];
-var meetodid = ['MobileID', 'ID_CARD', 'eIDAS'];
+const meetodid = [
+  'mID',
+  'idcard',
+  'eIDAS',
+  'banklink',
+  'smartid'
+];
+const operatsioonid = [
+  'START_AUTH',
+  'SUCCESSFUL_AUTH',
+  'ERROR'
+];
+const veateated = [
+  'Veateade NNNN',
+  'Veateade MMMM'
+];
 
 console.log('--- TARA-Stat makettrakendus');
 console.log('--- Genereerin ' + N.toString() + ' logikirjet');
 for (var i = 0; i < N; i++) {
-  saadaLogisse(
-    TARA_STAT_URL,
-    genereeriKuupaev(a, b),
-    genereeriKlientrakendus(klientrakendused),
-    genereeriMeetod(meetodid)
-  );
+  // Moodusta saadetav kirje
+  var saadetav_kirje = {
+    "message": {
+      "time": genereeriKuupaev(a, b),
+      "clientId": klientrakendused[getRandomInt(0, klientrakendused.length - 1)],
+      "method": meetodid[getRandomInt(0, meetodid.length - 1)],
+      "operation": operatsioonid[getRandomInt(0, operatsioonid.length - 1)]
+    }
+  }
+  if (saadetav_kirje.operation == 'ERROR') {
+    saadetav_kirje.error = veateated[getRandomInt(0, veateated.length - 1)]
+  }
+  saadaLogisse(TARA_STAT_URL, saadetav_kirje);
 }
 
 return
@@ -58,24 +80,14 @@ function genereeriKuupaev(a, b) {
     getRandomInt(0, 59),
     getRandomInt(0, 59)
   ));
-  // console.log(d.toISOString());
   return d.toISOString();
 }
 
-function genereeriKlientrakendus(klientrakendused) {
-  return klientrakendused[getRandomInt(0, klientrakendused.length - 1)];
-}
-
-function genereeriMeetod(meetodid) {
-  return meetodid[getRandomInt(0, meetodid.length - 1)];
-}
-
-function saadaLogisse(url, kp, klientr, meetod) {
-  var body = JSON.stringify({
-    aeg: kp,
-    klient: klientr,
-    meetod: meetod
-  });
+/**
+ * Saadab kirje logibaasi (Mongo DB)
+ */
+function saadaLogisse(url, saadetav_kirje) {
+  const body = JSON.stringify(saadetav_kirje);
   /* Valmista HTTP Authorization päise väärtus */
   const B64_VALUE = new Buffer(API_USER + ":" + API_KEY).toString('base64');
   console.log('---- Saadan logisse: ' + body);
@@ -83,7 +95,7 @@ function saadaLogisse(url, kp, klientr, meetod) {
     url: TARA_STAT_URL,
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json; charset=utf-8',
       'Authorization': 'Basic ' + B64_VALUE
     },
     body: body,
