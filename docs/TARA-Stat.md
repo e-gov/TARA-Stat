@@ -190,6 +190,7 @@ Paigaldamisel saab kasutada järgmisi skripte:
 | `TARA-Stat-seadista-rakendus.sh` | seadistab veebirakenduse |
 | `TARA-Stat-paigalda-votmed.sh` | paigaldab veebirakenduse HTTPS privaatvõtme ja serdi |
 | `TARA-Stat-diagnoosi.sh` | väljastab diagnostilist teavet paigalduse kohta |
+| `TARA-Stat-paigalda-makett.sh` | paigaldab makettrakenduse |
 
 Skriptid asuvad koodirepo kaustas `/opt/TARA-Stat/scripts`.
 
