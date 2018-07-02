@@ -256,8 +256,8 @@ b\) Kui kasutad _self-signed_ serti:
 
 ### 5.4 HTTPS võtmete vahetamine
 
-  nr |       |      
-:---:|:-----:|--------
+  nr | käsk  | kirjeldus
+:---:|-------|--------
   1  | `sudo systemctl stop tarastat` | Seiska TARA-Stat veebirakendus.
   2  | `sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh` | Kanna uued võtmed kausta `../keys` (`TARA-Stat` naaberkaust). _Self-signed_ võtmete korral genereeri uued võtmed ja sert.
   3  | `sudo systemctl start tarastat` | Taaskäivita veebirakendus.
@@ -268,8 +268,8 @@ Täpne juhis, kas vajalik on täielik uuestipaigaldamine või on võimalik osali
 
 Koodi uuesti paigaldamine repost:
 
-  nr |       |      
-:---:|:-----:|--------
+  nr | käsk  | kirjeldus
+:---:|-------|--------
   1  | `sudo rm -R /opt/TARA-Stat` | Kustuta vana kood.
  -2  | `cd /opt` | 
   3  | `sudo git clone https://github.com/e-gov/TARA-Stat` | Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`.
@@ -278,8 +278,8 @@ Koodi uuesti paigaldamine repost:
 
 Väikese tarkvarauuenduse puhul on võimalik värskenduste tõmbamine repot üle kirjutamata:
 
-  nr |       |      
-:---:|:-----:|--------
+  nr | käsk  | kirjeldus
+:---:|-------|--------
   1  | `cd /opt/TARA-Stat` | 
   2  | `sudo git checkout .` | See on vajalik, kuna rakenduse seadistamisel on `config.js` muudetud. Pull-i tegemisel tekib muidu konflikt.
   3  | `sudo git pull origin master` | (kaustas `TARA-Stat`)
