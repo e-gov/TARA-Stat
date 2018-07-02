@@ -59,6 +59,7 @@ kasJatkan
 # 1. Sean konf-ifailis TARA-Stat serveri domeeninime
 echo
 echo " --- Sean konf-ifailis TARA-Stat serveri domeeninime"
+cd /opt/TARA-Stat
 read -p "Sisesta TARA-Stat serveri domeeninimi: " TARASERVER
 sudo sed -i 's/localhost/$TARASERVER/' mockup-config.js 
 
