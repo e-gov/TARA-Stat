@@ -65,17 +65,70 @@ TARA-Stat koosneb kahest komponendist ja neljast liidesest.
 
 ### 2.1 Logikirje lisamise otspunkt
 
-Saata `POST` päring `https://<tara-stat>` (kus `<tara-stat>` on TARA-Stat-i domeeninimi), mille kehas on JSON kujul
+Logikirje lisamise otspunkt võtab TARA-Serverilt vastu [Log4j 2](https://logging.apache.org/log4j/2.0/) JSON vormingus kirjeid autentimissündmuste kohta.
+
+Kirje:
+- tuleb saata `POST` päringus, URL-il `https://<tara-stat>`, kus `<tara-stat>` on TARA-Stat-i domeeninimi
+- peab olema vormistatud JSON dokumendina (`Content-Type: application/json; charset=UTF-8`)
+- peab järgima Log4j 2 [JSON paigutust](https://logging.apache.org/log4j/2.0/manual/layouts.html#JSONLayout)
+- peab olema omatte päringus
+- peab sisaldama `message` elementi, järgmise sisuga:
+
+(autentimine alanud)
 
 ```
-{ 
-  "aeg": <ISO date>,
-  "klient": <klientrakenduse nimi>,
-  "meetod": <MobileID,  ID_CARD, eIDAS vm meetod>
+"message" : {
+   "time" : "<kuupäeva formaat>",
+   "clientId" : "openIdDemo",
+   "method" : "banklink",
+   "operation" : "START_AUTH"
 }
 ```
 
-`ISO date` on ajatempel kujul `2018-04-28`, millele võib järgneda kellaaja osa.
+(autentimise edukas lõpp)
+
+```
+"message" : {
+   "time" : "<kuupäeva formaat>",
+   "clientId" : "openIdDemo",
+   "method" : "banklink",
+   "operation" : "SUCCESSFUL_AUTH"
+}
+```
+
+(autentimise ebaedukas lõpp)
+
+```
+"message" : {
+   "time" : "<kuupäeva formaat>",
+   "clientId" : "openIdDemo",
+   "method" : "banklink",
+   "operation" : "ERROR",
+   "error" : "INTERNAL_ERROR",
+}
+```
+
+TARA-Stat võtab saadetud kirjest olulised väljad, moodustab nendest logikirje ja salvestab logibaasi (Mongo DB).
+
+Logibaasi salvestatakse kirje vormingus:
+
+```
+{
+  "time": "<ISO 8601 kuupäev>",
+  "clientID": "<klientrakenduse nimi>",
+  "method": "<autentimismeetod>",
+  "operation": "<sündmuse koodnimetus>"
+}
+```
+
+kus:
+- `ISO 8601 kuupäev` on ajatempel kujul `2018-04-28`, millele võib järgneda kellaaja osa
+- klientrakenduse nimi on TARA-s registreeritud klientrakenduse nimi
+- autentimismeetod peab olema vastavalt TARA [tehnilises kirjelduses](https://e-gov.github.io/TARA-Doku/TehnilineKirjeldus#43-identsust%C3%B5endip%C3%A4ring) määratule.
+- sündmuse koodnimetus peab olema vastavalt TARA [kasutusstatistika spetsifikatsioonile](https://e-gov.github.io/TARA-Doku/Statistika):
+  - `START_AUTH` - autentimine alanud
+  - `SUCCESSFUL_AUTH` - autentimise edukas lõpp
+  - `ERROR` - autentimise ebaedukas lõpp.
 
 ### 2.2 Statistika väljastamise otspunkt (statistikakasutaja UI)
 
