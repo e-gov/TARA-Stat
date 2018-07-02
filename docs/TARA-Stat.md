@@ -161,7 +161,7 @@ TARA-Stat paigaldamiseks ja käitamiseks on vaja järgmisi võtmeid ja salasõnu
 | 4 | `userAdmin` | MongoDB kasutaja, kes haldab MongoDB kasutajaid. Seda rolli täidab VM admin | salasõna | MongoDB paigaldamisel | MongoDB kasutajakontode haldamisel |
 | 5 | `rakendus` | TARA-Stat veebirakenduse konto MongoDB-s | salasõna | määratakse MongoDB paigaldamisel, kantakse ka TARA-Stat veebirakenduse konf-i | TARA-Stat-i poolt pöördumisel MongoDB poole |
 | 6 | `andmehaldur` | MongoDB konto, mille alt kustutatakse aegunud logikirjeid. Andmehalduri rolli täidab VM admin | salasõna | MongoDB paigaldamisel | MongoDB logibaasi haldamisel |
-| 7 | `https://<tara-stat>` | TARA-Stat veebirakendus | _self-signed_ sert ja privaatvõti | TARA-Stat veebirakenduse seadistamisel | Sirviku pöördumisel TARA-Stat-i poole |
+| 7 | `https://<tara-stat>` | TARA-Stat veebirakendus | organisatsiooni CA poolt väljaantud või _self-signed_ sert ja privaatvõti | TARA-Stat veebirakenduse seadistamisel | Sirviku pöördumisel TARA-Stat-i poole |
 | 8 | `tara-server` | TARA-Server, pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna | TARA-Stat veebirakenduse seadistamisel | Logikirjete saatmisel TARA-Serveri poolt TARA-Stat-i logibaasi |
 
 Statistikakasutaja on TARA-Stat-i suhtes anonüümne inimene. Ta pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole. Statistikakasutajat ei autendita, juurdepääs piiratakse kontekstiga.
