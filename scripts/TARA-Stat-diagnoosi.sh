@@ -6,19 +6,19 @@
 #
 
 echo
-echo " --- TARA-Stat: Annan teavet paigalduse olukorra kohta"
+echo " --------------------------------------------------- "
+echo "  TARA-Stat: Annan teavet paigalduse olukorra kohta  "
 echo
 
-echo " ----------------------------------------------- "
 echo
 systemctl status tarastat
 echo
-echo " ----------------------------------------------- "
+echo "       ------------------------------------ "
 echo
 # ps aux | grep tarasta
 systemctl status mongodb
 echo 
-echo " ---------------------------------------------------- "
+echo "       ------------------------------------ "
 echo
 # ps aux | grep mongodb
 

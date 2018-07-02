@@ -292,7 +292,7 @@ app.post('/',
     console.log(JSON.stringify(salvestatavKirje, null, 2));
     if (
       !req.body.message.time ||
-      !req.body.message.clientID ||
+      !req.body.message.clientId ||
       !req.body.message.method ||
       !req.body.message.operation
     ) {

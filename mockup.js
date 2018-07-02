@@ -29,7 +29,7 @@ var a = { y: 2018, m: 4, d: 1 };
 /* Logikirjete vahemiku lõpp */
 var b = { y: 2018, m: 7, d: 2 };
 /* Logikirjete arv */
-const N = 60;
+const N = 5;
 const klientrakendused = [
   'klientrakendus A',
   'klientrakendus B',

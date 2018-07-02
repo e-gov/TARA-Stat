@@ -118,6 +118,7 @@ echo
 grep -i 'config.' /opt/TARA-Stat/mockup-config.js
 echo
 
+cd /opt/TARA-Stat
 echo " --- Makettrakendus paigaldatud"
 echo
 echo "Makettrakenduse saad käivitada: nodejs mockup"
