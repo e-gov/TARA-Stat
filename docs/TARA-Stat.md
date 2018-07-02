@@ -26,7 +26,6 @@ TARA-Stat-i on arendanud Riigi Infosüsteemi Amet.
 
 Eraldi _write-up_ mikroteenusarhitektuurist on siin: [https://e-gov.github.io/TARA-Stat/](https://e-gov.github.io/TARA-Stat/).
 
-
 TARA-Stat pakub:
 
 - võimalust autentimisteenuses fikseeritud autentimistoimingute logimiseks
@@ -40,14 +39,12 @@ TARA-Stat kasutajaliides statistikakasutajale:
 
 <p style='text-align:center;'><img src='img/Capture.PNG' width= "650" style='border: 1px solid black;'></p>
 
-## 2 Osapooled, komponendid ja liidesed
+TARA-Stat koosneb kahest komponendist (tehniliselt on need ühes masinas käitatavad Linux-i teenused):
 
-TARA-Stat koosneb kahest komponendist:
-
-| komponent | otstarve |
-|-----------|----------|
-| veebirakendus | Node.js rakendus, mis ühelt poolt võtab vastu logikirjed ja salvestab need logibaasi. Teiselt poolt arvutab kasutusstatistika ja esitab seda statistikakasutajale. Koosneb omakorda serveripoolsest osast ja  kasutaja sirvikusse laetavast osast |
-| logibaas | MongoDB andmebaas, kus salvestatakse logikirjeid |
+| komponent | tehniline nimi | otstarve |
+|-----------|----------------|----------|
+| veebirakendus | `tarastat` | Node.js rakendus, mis ühelt poolt võtab vastu logikirjed ja salvestab need logibaasi. Teiselt poolt arvutab kasutusstatistika ja esitab seda statistikakasutajale. Koosneb omakorda serveripoolsest osast ja  kasutaja sirvikusse laetavast osast |
+| logibaas | `mongodb` | MongoDB andmebaas, kuhu salvestatakse logikirjeid |
 
 TARA-Stat-l on neli liidest:
 
@@ -68,7 +65,7 @@ TARA-Stat suhtleb 5 välise osapoolega.
 | admin | inimene, kes paigaldab tarkvara, loob andmebaasi kasutajatele (TARA-Server, andmehaldur) kontod ja annab pääsuõigused. |
 | monitooringusüsteem | saab TARA-Stat-le saata "elutuksepäringu". TARA-Stat vastab, kas ta toimib. |
 
-## 3 Logikirje lisamise otspunkt
+## 2 Logikirje lisamise otspunkt
 
 Logikirje lisamise otspunkt võtab TARA-Serverilt vastu [Log4j 2](https://logging.apache.org/log4j/2.0/) JSON vormingus kirjeid autentimissündmuste kohta.
 
@@ -115,7 +112,7 @@ Kirje:
 
 - `time`, `clientId`, `method` ja `operation` peavad saadetavas päringus olema alati. Kui mõni neist on puudu, siis tagastab TARA-Stat veateate `Valesti moodustatud logikirje`. Element `error` ei ole kohustuslik; see lisatakse TARA-Stat-i ainult siis, kui `operation` väärtus on `ERROR`.
 
-TARA-Stat võtab saadetud kirjest olulised väljad, moodustab nendest logikirje ja salvestab logibaasi (Mongo DB).
+TARA-Stat võtab saadetud kirjest olulised väljad, moodustab nendest logikirje ja salvestab logibaasi (MongoDB).
 
 Logibaasi salvestatakse kirje vormingus:
 
@@ -139,7 +136,7 @@ kus:
   - `ERROR` - autentimise ebaedukas lõpp
 - veateade lisatakse ainult siis, kui see päringus saadeti (`operation` väärtus `ERROR`).
 
-## 4 Statistika väljastamise otspunkt
+## 3 Statistika väljastamise otspunkt
 
 Statistika väljastamise otspunkti e statistikakasutaja UI kaudu saab kasutaja tutvuda TARA kasutusstatistikaga.
 
@@ -150,27 +147,25 @@ Statistika väljastamise otspunkti e statistikakasutaja UI kaudu saab kasutaja t
 - vajutada nupule
 - kuvatakse autentimiste arv perioodi jooksul klientrakenduste lõikes.
 
-## 5 Identiteedid ja kredentsiaalid
+## 4 Võtmed ja salasõnad
 
-Osapooltel on identiteedid (nimed), mida tõendavad kredentsiaalid (paroolid, võtmed).
+TARA-Stat käitluskontekstis on 9 osapoolt (subjekti), kes vajavad identiteedi ja kredentsiaalide (võtmete või salasõnade) andmist ning õiguste seadmist.
 
-TARA-Stat käitluskontekstis on 9 osapoolt (subjekti), kes vajavad identiteedi ja kredentsiaalide andmist ning õiguste seadmist.
-
-| kasutaja vm õiguste subjekt (_principal_), masinloetava nimega | subjekti liik ja kirjeldus | kredentsiaalid |
-|:--------:|:-------:|:--------------:|
-| `admin` | Ubuntu kasutaja, kes paigaldab tarkvara ja teeb muid haldustoiminguid | salasõna |
-| `tarastat` | Ubuntu kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus | salasõna |
-| `mongodb` | Ubuntu kasutaja, kelle alt käitatakse Mongo DB andmebaas | 
-| `userAdmin` | MongoDB kasutaja, kes haldab MongoDB kasutajaid. Seda rolli täidab VM admin | salasõna |
-| `rakendus` | TARA-Stat veebirakenduse konto MongoDB-s | salasõna |
-| `andmehaldur` | MongoDB konto, mille alt kustutatakse aegunud logikirjeid. Andmehalduri rolli täidab VM admin | salasõna |
-| `https://tara-stat.site` | TARA-Stat veebirakendus | _self-signed_ sert |
-| - | statistikakasutaja - anonüümne inimene, kes pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | ei autendita, juurdepääs piiratakse kontekstiga |
-| `tara-server` | TARA-Server, pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna |
+| nr | kasutaja vm õiguste subjekt (_principal_), masinloetava nimega | subjekti liik ja kirjeldus | kredentsiaali(de) tüüp | millal luuakse |
+|:--:|:--------:|--------:|:--------------:|----|
+| 1 | `admin` | Ubuntu kasutaja, kes paigaldab tarkvara ja teeb muid haldustoiminguid | salasõna | VM loomisel |
+| 2 | `tarastat` | Ubuntu kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus | salasõna | TARA-Stat veebirakenduse seadistamisel |
+| 3 | `mongodb` | Ubuntu kasutaja, kelle alt käitatakse MongoDB andmebaas | MongoDB paigaldamisel |
+| 4 | `userAdmin` | MongoDB kasutaja, kes haldab MongoDB kasutajaid. Seda rolli täidab VM admin | salasõna | MongoDB paigaldamisel |
+| 5 | `rakendus` | TARA-Stat veebirakenduse konto MongoDB-s | salasõna | MongoDB paigaldamisel |
+| 6 | `andmehaldur` | MongoDB konto, mille alt kustutatakse aegunud logikirjeid. Andmehalduri rolli täidab VM admin | salasõna | MongoDB paigaldamisel |
+| 7 | `https://tara-stat.site` | TARA-Stat veebirakendus | _self-signed_ sert ja privaatvõti | TARA-Stat veebirakenduse seadistamisel |
+| 8 | - | statistikakasutaja - anonüümne inimene, kes pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole | ei autendita, juurdepääs piiratakse kontekstiga | - |
+| 9 | `tara-server` | TARA-Server, pöördub TARA-Stat logikirjete vastuvõtmise otspunkti poole | API kasutajanimi ja salasõna | TARA-Stat veebirakenduse seadistamisel |
 
 <p style='text-align:center;'><img src='img/IDENTITEET.PNG' width= "500"></p>
 
-## 6 Paigaldamine
+## 5 Paigaldamine
 
 TARA-Stat paigaldatakse põhiosas paigaldusskriptidega, seejuures on vaja ka käsitsi tegevusi.
 
@@ -179,7 +174,7 @@ Järgnevas eeldame, et:
 - Ubuntu 16 LTS on paigaldatud
 - paigaldaja (admin) on sudo-õigustega kasutajana sisse loginud. 
 
-### 6.1 Paigaldusskriptid
+### 5.1 Paigaldusskriptid
 
 Paigaldamisel saab kasutada järgmisi skripte:
 
@@ -196,7 +191,7 @@ Skriptid asuvad koodirepo kaustas `/opt/TARA-Stat/scripts`.
 
 Skriptid on kommenteeritud - igas skripti päises on kirjeldatud täidetavad sammud. Enne paigaldamist tutvu skriptitekstidega.
 
-### 6.2 Konfigureerimine
+### 5.2 Konfigureerimine
 
 Konfigureeritakse järgmiste failidega:
 
@@ -207,7 +202,7 @@ Konfigureeritakse järgmiste failidega:
 
 Veebirakenduse konfi-failis seatud väärtusi saab vajadusel üle määrata teenuse käivitamiskäsus (`process.env` mehhanismiga).
 
-### 6.3 Esmakordne paigaldamine
+### 5.3 Esmakordne paigaldamine
 
 **Eeltegevused**. Valmista VM ja paigalda Ubuntu (16 LTS server).
 
@@ -275,7 +270,7 @@ Kopeeri kausta `../keys` privaatvõti ja sert. Privaatvõtme faili nimi on vaiki
 
 `TARA-Stat-diagnoosi.sh` väljastab diagnostilist teavet - selle skripti võib käivitada igal ajal; see skript ei muuda paigaldust.
 
-### 6.4 HTTPS võtmete vahetamine
+### 5.4 HTTPS võtmete vahetamine
 
 1\. Seiska TARA-Stat veebirakendus:
 
@@ -289,7 +284,7 @@ Kopeeri kausta `../keys` privaatvõti ja sert. Privaatvõtme faili nimi on vaiki
 
 `sudo systemctl start tarastat`
 
-### 6.5 Tarkvarauuenduse paigaldamine
+### 5.5 Tarkvarauuenduse paigaldamine
 
 Kui tarkvarauuendus ei puuduta Node.js ega MongoDB-d, siis piisab 1. ja 3. sammu läbitegemisest. Täpne juhis, kas vajalik on täielik uuestipaigaldamine või on võimalik osaline uuestipaigaldamine, peab arendaja poolt kaasas olema konkreetse tarkvarauuendusega.
 
@@ -303,7 +298,7 @@ Enne seda tuleb aga teha
 
 sest kuna rakenduse seadistamisel on `config.js` muudetud, siis pull-i tegemisel tekib muidu konflikt.
 
-### 6.5 VM tulemüüri seadistamine
+### 5.5 VM tulemüüri seadistamine
 
 Pääsureeglite seadmiseks VM tulemüüris pakume siin lähteandmed, kuid (kahjuks) mitte konkreetseid juhiseid. Vaja on tagada:
 
@@ -318,7 +313,7 @@ Vajadusel vt:
 
 Pääsureeglite seadmisel VLAN-is ja/või sisevõrgu ruuteri(te)s, samuti TARA-Serveris lähtu organisatsiooni võrgureeglitest.
 
-## 7 Käivitamine ja seiskamine
+## 6 Käivitamine ja seiskamine
 
 Nii TARA-Stat veebirakendus kui ka MongoDB käitatakse systemd hallatavate teenustena. 
 
@@ -338,7 +333,7 @@ Teenused käivitatakse ja seisatakse standardsete `systemctl` käskudega, nt:
 
 Teenuste `tarastat` ja `mongodb` käivitamise järjekord ei ole oluline. Kuid peab arvestama, et `tarastat` sõltub `mongodb`-st - kui logibaas ei ole üleval, siis ei saa logikirjeid salvestada ega statistikat väljastada.
 
-## 8 Seire ja diagnostika
+## 7 Seire ja diagnostika
 
 Päringu `https://<tara-stat>/status` saamisel kontrollib TARA-Stat oma logibaasi ülevalolekut. Kui logibaas on üleval, siis tagastatakse HTTP vastus `200` `OK`,
 - vastasel korral `500` `Internal Server Error`.
@@ -354,7 +349,7 @@ TARA-Stat masinas saab teenuste `tarastat` ja `mongodb` ülalolekut kontrollida:
 `systemctl status tarastat` | kuva teenuse `tarastat` staatus
 `systemctl status mongodb` | kuva teenuse `mongodb` staatus
 
-### 8.1 Diagnostikaskript
+### 7.1 Diagnostikaskript
 
 `cd /opt/TARA-Stat/scripts`
 
@@ -362,7 +357,7 @@ TARA-Stat masinas saab teenuste `tarastat` ja `mongodb` ülalolekut kontrollida:
 
 Diagnostikaskript väljastab `systemctl status` raportid teenuste `tarastat` (TARA-Stat veebirakendus) ja `mongodb` (logibaas) kohta. Pööra tähelepanu: 1) kas `Active` väärtus on `active (running)` (roheline); 2) 10 viimasele logiteatele. Lisaks väljastab skript teatmikteabe kummagi teenuse oluliste asukohtade kohta.
 
-### 8.2 Veateated
+### 7.2 Veateated
 
 Sirviku teated:
 
@@ -379,7 +374,7 @@ ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Ser
 ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
 ERR-05 | Kirjutamine logibaasi ebaõnnestus | Kontrollida kettamahtu ja kirjutamisõigusi
 
-## 9 Olulised asukohad
+## 8 Olulised asukohad
 
 Koodirepo `https://github.com/e-gov/TARA-Stat`:
 
@@ -405,7 +400,7 @@ MongoDB (paigaldus):
 | systemd haldusüksuse kirjeldusfail | `/lib/systemd/system/mongod.service` |
 | automaatkäivitusskript | `/etc/init.d/mongodb` |
 
-## 10 Logibaasi haldamine
+## 9 Logibaasi haldamine
 
 Kui tekib vajadus välja selgitada, mis seisus on MongoDB andmebaasi sisu ja kasutajate kontod või logibaasi tühjendada, siis tee järgmist:
 
@@ -428,13 +423,13 @@ Lisateave vt:
 - [mongo](https://docs.mongodb.com/manual/reference/program/mongo/)
 - [mongo Shell Quick Reference](https://docs.mongodb.com/manual/reference/mongo-shell/)
 
-## 11 Teenuse enda logid
+## 10 Teenuse enda logid
 
 - MongoDB andmebaasilogi asub: `/var/log/mongodb/mongod.log`
 - Node.js- endal logi ei ole
 - Veebirakendus logib faili, mille asukoht vaikimisi on `/opt/TARA-Stat/log.txt`. Logifaili asukoht on veebirakenduse konf-ifailis seatav.
 
-## 12 Testimine
+## 11 Testimine
 
 Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasinasse kopeerida, kuid neid ei ole vaja (ega tohigi) skriptidega ega muul viisil aktiveerida.
 
@@ -444,7 +439,7 @@ Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasi
 - loob minimaalsed HTTP ja HTTPS serverid, mis kuulavad vastavalt portidelt `5001` ja `5000`.
   - `scripts/seadistaMini.sh` - paigaldab ´mini.js` systemd veebiteenusena.
 
-## 13 Logikirjete lisamise makettrakendus
+## 12 Logikirjete lisamise makettrakendus
 
 `mockup.js`
 -  on eraldi VM-i paigaldatav lihtne Node.js rakendus, mis etendab logikirjeid TARA-Stat logibaasi saatvat TARA-Server-it.
@@ -452,7 +447,7 @@ Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasi
 
 Makettrakenduse võib paigaldada käsitsi või skriptiga.
 
-### 13.1 Käsitsi paigaldamine
+### 12.1 Käsitsi paigaldamine
 
 1. Kustuta vana kood: `sudo rm -R /opt/TARA-Stat`
 2. Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`:
@@ -474,13 +469,13 @@ Makettrakenduse võib paigaldada käsitsi või skriptiga.
   - paigalda TARA-Stat API võti makettrakenduse konf-i
   - `sed -i "s/TARASTATSECRET-changeit/<API võti>/" /opt/TARA-Stat/mockup-config.js`
 
-### 13.2 Skriptiga paigaldamine
+### 12.2 Skriptiga paigaldamine
 
 Paigaldada võib ka koodirepo kaustas `TARA-Stat/scripts` asuva paigaldusskriptiga `TARA-Stat-paigalda-makett.sh`:
 - `cd /opt/TARA-Stat/scripts`
 - `sudo bash TARA-Stat-paigalda-makett.sh`
 
-### 13.3 Käivitamine
+### 12.3 Käivitamine
 
 Makettrakenduse käivitamiseks sisesta: 
 
@@ -490,7 +485,7 @@ Iga käivitamisega genereeritakse juhuslikult teatud arv logikirjeid ja saadetak
 
 Juhised logibaasi uurimiseks on jaotises [Logibaasi sisu uurimine](#101-logibaasi-seisu-uurimine).
 
-## 14 Turvamine
+## 13 Turvamine
 
 TARA-Stat-is on rakendatud järgmised turvavalikud.
 
@@ -510,7 +505,7 @@ TARA-Stat-is on rakendatud järgmised turvavalikud.
 Vajadusel vt taustaks:
 - MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega.
 
-## 15 Sõltuvused
+## 14 Sõltuvused
 
 Tootmissõltuvused:
 
@@ -540,6 +535,4 @@ Arendussõltuvused
 | Jekyll | | avaliku dok-ni publitseerimine |
 
 Märkus. "Standardne" tähendab laialt kasutatavat, stabiilset teeki, millest `npm` abil paigaldatakse viimane versioon. Kui versioon on tühi, siis kasutatakse standardseid võimalusi, mis ei nõua sidumist konkreetse versiooniga.
-
-
 
