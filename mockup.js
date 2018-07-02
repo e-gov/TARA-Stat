@@ -63,8 +63,8 @@ for (var i = 0; i < N; i++) {
       "operation": operatsioonid[getRandomInt(0, operatsioonid.length - 1)]
     }
   }
-  if (saadetav_kirje.operation == 'ERROR') {
-    saadetav_kirje.error = veateated[getRandomInt(0, veateated.length - 1)]
+  if (saadetav_kirje.message.operation == 'ERROR') {
+    saadetav_kirje.message.error = veateated[getRandomInt(0, veateated.length - 1)]
   }
   saadaLogisse(TARA_STAT_URL, saadetav_kirje);
 }

@@ -494,29 +494,40 @@ Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasi
 - `mini.js` - loob minimaalsed HTTP ja HTTPS serverid, mis kuulavad vastavalt portidelt `5001` ja `5000`.
 - `scripts/seadistaMini.sh` - paigaldab ´mini.js` systemd veebiteenusena.
 
-### 12.1 Logikirjete lisamise makett
+### 12.1 Logikirjete lisamise makettrakendus
 
 `mockup.js`
 -  on eraldi VM-i paigaldatav lihtne Node.js rakendus, mis etendab logikirjeid TARA-Stat logibaasi saatvat TARA-Server-it.
 - programmi juurde kuulub konf-ifail `mockup-config.js`.
 
-Paigalda nii:
+Makettrakenduse võib paigaldada käsitsi või skriptiga.
 
-`cd /opt/TARA-Stat`
+Käsitsi paigaldamine:
 
-`sudo sed -i 's/localhost/<tara-stat-host>/' mockup-config.js` (sea TARA-Stat hostinimi; vajadusel seal ka port)
+1. Kustuta vana kood: `sudo rm -R /opt/TARA-Stat`
+2. Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`:
+ - `cd /opt`
+ - `sudo git clone https://github.com/e-gov/TARA-Stat`
+ - `cd /opt/TARA-Stat`
+3. Määra makettrakenduse konf-ifailis TARA-Stat serveri domeeninimi, vajadusel ka port:
+  - `sudo sed -i 's/localhost/<tara-stat-host>/' mockup-config.js`
+  - kontrolli, et domeeninimi sai õigesti paika: `cat mockup-config.js`
+4. Paigalda Node.js teegid:
+  - `sudo npm install body-parser --save`
+  - `sudo npm install ejs --save`
+  - `sudo npm install express --save`
+  - `sudo npm install mongodb --save`
+  - `sudo npm install request --save`
+  - `sudo npm install basic-auth --save`
+  - `sudo npm install request-debug --save`
 
-`cat mockup-config.js` (kontrolli)
+Paigaldada võib ka koodirepo kaustas `TARA-Stat/scripts` asuva paigaldusskriptiga `TARA-Stat-paigalda-makett.sh`:
+- `cd /opt/TARA-Stat/scripts`
+- `sudo bash TARA-Stat-paigalda-makett.sh`
 
-`sudo npm install body-parser --save` (paigalda Node.js teegid)<br>
-`sudo npm install ejs --save`<br>
-`sudo npm install express --save`<br>
-`sudo npm install mongodb --save`<br>
-`sudo npm install request --save`<br>
-`sudo npm install basic-auth --save`<br>
-`sudo npm install request-debug --save`
+Makettrakenduse käivitamiseks sisesta: 
 
-`nodejs mockup` (käivita)
+`nodejs mockup`
 
-
+Iga käivitamisega genereeritakse juhuslikult teatud arv logikirjeid ja saadetakse TARA-Stat logibaasi.
 
