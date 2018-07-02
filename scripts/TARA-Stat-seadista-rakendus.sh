@@ -70,7 +70,7 @@ function paigalda_Nodejs_teek {
 # ------------------------------
 # 0. Kontrollküsimus
 echo
-echo " --- TARA-Stat veebirakenduse seadistamine systemd-ga käitatavaks"
+echo " --- TARA-Stat veebirakenduse seadistamine"
 echo
 kasJatkan
 

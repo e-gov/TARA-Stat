@@ -102,6 +102,22 @@ paigalda_Nodejs_teek "request-debug"
 
 echo " --- Node.js teegid paigaldatud"
 echo
+kasJatkan
+
+# ------------------------------
+# 3. Loon usalduse makettrakenduse ja TARA-Stat-i vahel
+#
+echo
+echo " --- Paigaldan TARA-Stat API võtme makettrakenduse konf-i"
+
+read -p "Anna API võti: " TARASTATSECRET
+sed -i "s/TARASTATSECRET-changeit/$TARASTATSECRET/" /opt/TARA-Stat/mockup-config.js
+
+echo "Veendu, et $TARASTATSECRET sai paigaldatud: "
+echo
+grep -i 'config.' /opt/TARA-Stat/mockup-config.js
+echo
+
 echo " --- Makettrakendus paigaldatud"
 echo
 echo "Makettrakenduse saad käivitada: nodejs mockup"

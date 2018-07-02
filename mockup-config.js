@@ -1,4 +1,4 @@
-/**
+/** ---------------------------------------------------------------
  * Makettrakenduse mockup.js konfiguratsioonifail
  */
 
@@ -8,7 +8,10 @@ var config = {};
 config.TARASTATURL = process.env.TARASTATURL || 'https://localhost:5000';
 
 /* Logikirje lisamise API võti */
-config.TARASTATUSER = process.env.TARASTATUSER || 'changeit';
+config.TARASTATUSER = 'tara-server';
 config.TARASTATSECRET = process.env.TARASTATSECRET || 'changeit';
 
 module.exports = config;
+
+/* --------------------------------------------------------------------
+*/

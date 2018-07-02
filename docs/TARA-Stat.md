@@ -447,29 +447,26 @@ ERR-05 | Kirjutamine logibaasi ebaõnnestus | Kontrollida kettamahtu ja kirjutam
 
 ### 10.1 Logibaasi seisu uurimine
 
-Kui tekib vajadus välja selgitada, mis seisus on MongoDB andmebaasi sisu ja kasutajate kontod, siis tee järgmist:
+Kui tekib vajadus välja selgitada, mis seisus on MongoDB andmebaasi sisu ja kasutajate kontod või logibaasi tühjendada, siis tee järgmist:
 
-`mongo -u userAdmin -p changeit -authenticationDatabase admin`
+käsk | selgitus
+-----|---------
+`mongo -u userAdmin -p changeit -authenticationDatabase admin` | ava MongoDB käsureavahend, logides sisse kasutajaga `userAdmin`
+`show dbs` | kuva andmebaasid. Loetelus peab olema `admin` ja ´logibaas`
+`use admin` | lülitu andmebaasile `admin`
+`show users` | kuva kasutajakontod valitud andmebaasis; peab näitama kasutajat `admin`
+`use users` | lülitus andmebaasile `users`
+`show users` | kuva kasutajakontod andmebaasis `users`; peab näitama kasutajaid `andmehaldur` ja `rakendus`
+`db.auth("andmehaldur", "changeit")` | logi sisse andmehaldurina
+`use logibaas` | lülitu logibaasile
+`show collections` | peab näitama: `autentimised`
+`db.autentimised.find().sort({_id:1}).limit(5);` | kuva 5 viimast kirjet
+`db.autentimised.remove({})` | tühjenda logibaas
+`exit` | välju CLI-st
 
-(ava MongoDB käsureavahend, logides sisse kasutajaga `userAdmin`)
-
-Vajadusel vt:
+Lisateave vt:
 - [mongo](https://docs.mongodb.com/manual/reference/program/mongo/)
 - [mongo Shell Quick Reference](https://docs.mongodb.com/manual/reference/mongo-shell/)
-
-`show dbs` (kuva andmebaasid. Loetelus peab olema `admin` ja ´logibaas`)
-
-`use admin` (lülitu andmebaasile `admin`)
-
-`show users` (kuva kasutajakontod valitud andmebaasis; peab näitama kasutajat `admin`)
-
-`use admin` + `show users` (kuva kasutajakontod andmebaasis `users`; peab näitama kasutajaid `andmehaldur` ja `rakendus`)
-
-`use users` + `db.auth("andmehaldur", "changeit")` (logi sisse andmehaldurina)
-
-`use logibaas` + `show collections` (peab näitama: `autentimised`)
-
-`db.autentimised.find().sort({_id:1}).limit(5);` (kuva 5 viimast kirjet)
 
 ### 10.2 Diagnostikaskript
 
@@ -490,11 +487,12 @@ Diagnostikaskript väljastab `systemctl status` raportid teenuste `tarastat` (TA
 Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasinasse kopeerida, kuid neid ei ole vaja (ega tohigi) skriptidega ega muul viisil aktiveerida.
 
 `mini.js`
-- tarkvara koosseisus olev lihtne vahend HTTP ja HTTPS ühenduste testimiseks:
-- `mini.js` - loob minimaalsed HTTP ja HTTPS serverid, mis kuulavad vastavalt portidelt `5001` ja `5000`.
-- `scripts/seadistaMini.sh` - paigaldab ´mini.js` systemd veebiteenusena.
 
-### 12.1 Logikirjete lisamise makettrakendus
+- tarkvara koosseisus olev lihtne vahend HTTP ja HTTPS ühenduste testimiseks:
+- loob minimaalsed HTTP ja HTTPS serverid, mis kuulavad vastavalt portidelt `5001` ja `5000`.
+  - `scripts/seadistaMini.sh` - paigaldab ´mini.js` systemd veebiteenusena.
+
+## 13 Logikirjete lisamise makettrakendus
 
 `mockup.js`
 -  on eraldi VM-i paigaldatav lihtne Node.js rakendus, mis etendab logikirjeid TARA-Stat logibaasi saatvat TARA-Server-it.
@@ -502,7 +500,7 @@ Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasi
 
 Makettrakenduse võib paigaldada käsitsi või skriptiga.
 
-Käsitsi paigaldamine:
+### 13.1 Käsitsi paigaldamine
 
 1. Kustuta vana kood: `sudo rm -R /opt/TARA-Stat`
 2. Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`:
@@ -511,7 +509,7 @@ Käsitsi paigaldamine:
  - `cd /opt/TARA-Stat`
 3. Määra makettrakenduse konf-ifailis TARA-Stat serveri domeeninimi, vajadusel ka port:
   - `sudo sed -i 's/localhost/<tara-stat-host>/' mockup-config.js`
-  - kontrolli, et domeeninimi sai õigesti paika: `cat mockup-config.js`
+  - kontrolli, et domeeninimi sai õigesti paika: `cat /opt/TARA-Stat/mockup-config.js`
 4. Paigalda Node.js teegid:
   - `sudo npm install body-parser --save`
   - `sudo npm install ejs --save`
@@ -520,10 +518,17 @@ Käsitsi paigaldamine:
   - `sudo npm install request --save`
   - `sudo npm install basic-auth --save`
   - `sudo npm install request-debug --save`
+5. Loo usaldus makettrakenduse ja TARA-Stat-i vahel
+  - paigalda TARA-Stat API võti makettrakenduse konf-i
+  - `sed -i "s/TARASTATSECRET-changeit/<API võti>/" /opt/TARA-Stat/mockup-config.js`
+
+### 13.2 Skriptiga paigaldamine
 
 Paigaldada võib ka koodirepo kaustas `TARA-Stat/scripts` asuva paigaldusskriptiga `TARA-Stat-paigalda-makett.sh`:
 - `cd /opt/TARA-Stat/scripts`
 - `sudo bash TARA-Stat-paigalda-makett.sh`
+
+### 13.3 Käivitamine
 
 Makettrakenduse käivitamiseks sisesta: 
 
@@ -531,3 +536,4 @@ Makettrakenduse käivitamiseks sisesta:
 
 Iga käivitamisega genereeritakse juhuslikult teatud arv logikirjeid ja saadetakse TARA-Stat logibaasi.
 
+Juhised logibaasi uurimiseks on jaotises [Logibaasi sisu uurimine](#101-logibaasi-seisu-uurimine).
