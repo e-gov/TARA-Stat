@@ -194,14 +194,35 @@ Järgnevas eeldame, et:
 
 Paigaldamisel saab kasutada järgmisi skripte:
 
-| paigaldusskript - ülesanne | sõltuvused |
+| paigaldusskript | ülesanne | sõltuvused |
 |--------|----------|
-| `TARA-Stat-paigalda-Nodejs.sh` <br> paigaldab Node.js | https://deb.nodesource.com/setup_6.x | 
-| `TARA-Stat-paigalda-MongoDB.sh` <br> paigaldab MongoDB ja seadistab logibaasi | hkp://keyserver.ubuntu.com:80 <br> https://repo.mongodb.org/apt/ubuntu <br> kasutaja `mongodb` parool <br> MongoDB kasutajate `userAdmin`, `rakendus` ja `andmehaldur` paroolid |
-| `TARA-Stat-seadista-rakendus.sh` <br> seadistab veebirakenduse | kasutaja `tarastat` parool <br> Node.js teegirepo (sisemine või `https://registry.npmjs.org/`) <br> Node.js teegid: <br> `body-parser` <br> `ejs` <br> `express` <br> `mongodb` <br> `request` <br> `basic-auth` <br> `request-debug` <br> MongoDB kasutamise salasõna <br> logikirje lisamise otspunkti API-võti |
-| `TARA-Stat-genereeri-votmed.sh` <br> paigaldab veebirakenduse HTTPS privaatvõtme ja serdi | |
-| `TARA-Stat-diagnoosi.sh` <br> väljastab diagnostilist teavet paigalduse kohta | |
-| `TARA-Stat-paigalda-makett.sh` <br> paigaldab makettrakenduse | |
+| `TARA-Stat-paigalda-Nodejs.sh` | paigaldab Node.js | 
+| `TARA-Stat-paigalda-MongoDB.sh` | paigaldab MongoDB ja seadistab logibaasi |
+| `TARA-Stat-seadista-rakendus.sh` | seadistab veebirakenduse |
+| `TARA-Stat-genereeri-votmed.sh` <br> genereerib veebirakenduse HTTPS privaatvõtme ja serdi |
+| `TARA-Stat-diagnoosi.sh` <br> väljastab diagnostilist teavet paigalduse kohta |
+| `TARA-Stat-paigalda-makett.sh` <br> paigaldab makettrakenduse |
+
+Skriptide sõltuvused välistest või käivitamise ajal etteantavatest väärtustest:
+
+`TARA-Stat-paigalda-Nodejs.sh`:
+
+- https://deb.nodesource.com/setup_6.x
+
+`TARA-Stat-paigalda-MongoDB.sh`:
+
+- hkp://keyserver.ubuntu.com:80
+- https://repo.mongodb.org/apt/ubuntu
+- kasutaja `mongodb` parool
+- MongoDB kasutajate `userAdmin`, `rakendus` ja `andmehaldur` paroolid
+
+`TARA-Stat-seadista-rakendus.sh`:
+
+- kasutaja `tarastat` parool
+- Node.js teegirepo (sisemine või `https://registry.npmjs.org/`)
+- Node.js teegid: `body-parser`, `ejs`, `express`, `mongodb`, `request`, `basic-auth`, `request-debug`
+- MongoDB kasutamise salasõna
+- logikirje lisamise otspunkti API-võti.
 
 Skriptid asuvad koodirepo kaustas `/opt/TARA-Stat/scripts`.
 
