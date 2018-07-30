@@ -194,25 +194,25 @@ Järgnevas eeldame, et:
 
 Paigaldamisel saab kasutada järgmisi skripte:
 
-| paigaldusskript | ülesanne | sõltuvused |
+| paigaldusskript | ülesanne |
 |--------|----------|
 | `TARA-Stat-paigalda-Nodejs.sh` | paigaldab Node.js | 
 | `TARA-Stat-paigalda-MongoDB.sh` | paigaldab MongoDB ja seadistab logibaasi |
 | `TARA-Stat-seadista-rakendus.sh` | seadistab veebirakenduse |
-| `TARA-Stat-genereeri-votmed.sh` <br> genereerib veebirakenduse HTTPS privaatvõtme ja serdi |
-| `TARA-Stat-diagnoosi.sh` <br> väljastab diagnostilist teavet paigalduse kohta |
-| `TARA-Stat-paigalda-makett.sh` <br> paigaldab makettrakenduse |
+| `TARA-Stat-genereeri-votmed.sh` | genereerib veebirakenduse HTTPS privaatvõtme ja - juhul, kui kasutatakse _self-signed_ serti - serdi  |
+| `TARA-Stat-diagnoosi.sh` | väljastab diagnostilist teavet paigalduse kohta |
+| `TARA-Stat-paigalda-makett.sh` | paigaldab makettrakenduse |
 
 Skriptide sõltuvused välistest või käivitamise ajal etteantavatest väärtustest:
 
 `TARA-Stat-paigalda-Nodejs.sh`:
 
-- https://deb.nodesource.com/setup_6.x
+- `https://deb.nodesource.com/setup_6.x`
 
 `TARA-Stat-paigalda-MongoDB.sh`:
 
-- hkp://keyserver.ubuntu.com:80
-- https://repo.mongodb.org/apt/ubuntu
+- `hkp://keyserver.ubuntu.com:80`
+- `https://repo.mongodb.org/apt/ubuntu`
 - kasutaja `mongodb` parool
 - MongoDB kasutajate `userAdmin`, `rakendus` ja `andmehaldur` paroolid
 
