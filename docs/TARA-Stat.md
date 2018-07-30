@@ -194,14 +194,14 @@ Järgnevas eeldame, et:
 
 Paigaldamisel saab kasutada järgmisi skripte:
 
-| paigaldusskript | ülesanne |
+| paigaldusskript - ülesanne | sõltuvused |
 |--------|----------|
-| `TARA-Stat-paigalda-Nodejs.sh` | paigaldab Node.js |
-| `TARA-Stat-paigalda-MongoDB.sh` | paigaldab MongoDB ja seadistab logibaasi |
-| `TARA-Stat-seadista-rakendus.sh` | seadistab veebirakenduse |
-| `TARA-Stat-paigalda-votmed.sh` | paigaldab veebirakenduse HTTPS privaatvõtme ja serdi |
-| `TARA-Stat-diagnoosi.sh` | väljastab diagnostilist teavet paigalduse kohta |
-| `TARA-Stat-paigalda-makett.sh` | paigaldab makettrakenduse |
+| `TARA-Stat-paigalda-Nodejs.sh` <br> paigaldab Node.js | https://deb.nodesource.com/setup_6.x | 
+| `TARA-Stat-paigalda-MongoDB.sh` <br> paigaldab MongoDB ja seadistab logibaasi | hkp://keyserver.ubuntu.com:80 <br> https://repo.mongodb.org/apt/ubuntu <br> kasutaja `mongodb` parool <br> MongoDB kasutajate `userAdmin`, `rakendus` ja `andmehaldur` paroolid |
+| `TARA-Stat-seadista-rakendus.sh` <br> seadistab veebirakenduse | kasutaja `tarastat` parool <br> Node.js teegirepo (sisemine või `https://registry.npmjs.org/`) <br> Node.js teegid: <br> `body-parser` <br> `ejs` <br> `express` <br> `mongodb` <br> `request` <br> `basic-auth` <br> `request-debug` <br> MongoDB kasutamise salasõna <br> logikirje lisamise otspunkti API-võti |
+| `TARA-Stat-genereeri-votmed.sh` <br> paigaldab veebirakenduse HTTPS privaatvõtme ja serdi | |
+| `TARA-Stat-diagnoosi.sh` <br> väljastab diagnostilist teavet paigalduse kohta | |
+| `TARA-Stat-paigalda-makett.sh` <br> paigaldab makettrakenduse | |
 
 Skriptid asuvad koodirepo kaustas `/opt/TARA-Stat/scripts`.
 
@@ -242,7 +242,7 @@ a\) Kui kasutad organisatsiooni CA väljaantud serti:
   11 |       | Sea konf-ifailis `config.js`, parameetris `config.pfx` pfx-faili nimi (vaikimisi `certificate.pfx`).
 
 Pfx-fail sisaldab privaatvõtit ja serdiahelat. Näiteks 
-`openssl pkcs12 -export -out certificate.pfx -inkey tara-stat.key -in tara-stat.cert -certfile ahel.pem` moodustab privaatvõtmefailist `tara-stat.key`, sellele vastavat avaliku võtit sisaldavast serdist `tara-stat.cert` ja serdiahela failist `ahel.pem` neid koondava pfx-faili `certificate.pfx`.
+`openssl pkcs12 -export -out certificate.pfx -inkey tara-stat.key -in tara-stat.cert -certfile ahel.pem` moodustab privaatvõtmefailist `tara-stat.key`, sellele vastavat avalikku võtit sisaldavast serdist `tara-stat.cert` ja serdiahela failist `ahel.pem` neid koondava pfx-faili `certificate.pfx`.
 
 b\) Kui kasutad _self-signed_ serti:
 
