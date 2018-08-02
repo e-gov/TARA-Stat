@@ -8,7 +8,7 @@
 'use strict';
 const net = require('net');
 
-let HOST = 'tara-stat-rakendus.ci.kit';
+let HOST = 'tara-stat-makett.ci.kit';
 let PORT = 5000;
 
 let logikirje = 'See on logikirje.\r\n';
