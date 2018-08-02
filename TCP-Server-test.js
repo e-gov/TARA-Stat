@@ -8,6 +8,9 @@
 'use strict';
 const net = require('net');
 
+let HOST = '127.0.0.1';
+let PORT = 3000;
+
 let server = net.createServer((connection) => {
   console.log('TARA-Server võttis ühendust');
   connection.write(`TARA-Server kuuldel`);
@@ -26,5 +29,6 @@ let server = net.createServer((connection) => {
    
  });
 
- server.listen(3000,
-  () => console.log('TARA-Stat kuuldel'));
+ server.listen(PORT, HOST);
+ 
+ console.log('TARA-Stat kuuldel ' + HOST + ':' + PORT);

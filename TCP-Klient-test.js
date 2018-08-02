@@ -8,11 +8,14 @@
 'use strict';
 const net = require('net');
 
-let logikirje = 'See on logikirje.';
+let HOST = '127.0.0.1';
+let PORT = 3000;
+
+let logikirje = 'See on logikirje.\r\n';
 
 let client = net.Socket();
-client.connect(3000, '127.0.0.1', function() {
-  console.log('TARA-Stat-ga ühendus loodud');
+client.connect(PORT, HOST, function() {
+  console.log('TARA-Stat-ga ' + HOST + ':' + PORT + ' ühendus loodud');
   console.log('Saadan: ' + logikirje);
   client.write(logikirje);
 });
