@@ -13,7 +13,7 @@ let PORT = 3000;
 
 let server = net.createServer((connection) => {
   console.log('TARA-Server võttis ühendust');
-  connection.write(`TARA-Server kuuldel`);
+  connection.write(`TARA-Server kuuldel\r\n`);
       
   connection.on('data', function(data) {
     console.log('Saadud: ' + data);
@@ -22,9 +22,7 @@ let server = net.createServer((connection) => {
   
   connection.on('close',
     () => {
-    console.log('Ühendus TCP kliendiga ' +
-      connection.remoteAddress +
-      connection.remotePort + ' suletud');
+    console.log('Ühendus TCP kliendiga suletud');
     });
    
  });
