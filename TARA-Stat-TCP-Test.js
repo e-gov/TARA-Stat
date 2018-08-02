@@ -36,4 +36,4 @@ let server = net.createServer((connection) => {
 
  server.listen(PORT);
  
- console.log('TARA-Stat kuuldel ' + HOST + ':' + PORT);
+ console.log('TARA-Stat kuuldel ' + 'pordil: ' + PORT);
