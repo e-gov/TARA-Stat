@@ -1,15 +1,22 @@
 /*
-  TCP-Server-test.js - Logikirje vastuvõtmise test 
+  TARA-Stat-TCP-Test.js - Logikirje vastuvõtmise test 
 
-  TCP server, võtab vastu Syslog vormingus logikirje
+  Testrakendus, mille eesmärk on testida logikirje saatmist
+  TARA-Stat-le Syslog vormingus, TCP kaudu
+
+  Testrakendus kuulab TCP pordil 5000 ja väljastab vastuvõetud
+  logikirjed konsoolile.
+
+  Testrakenduse käivitamine:
+  - cd /opt/TARA-Stat
+  - node TARA-Stat-TCP-Test.js
   
 */
 
 'use strict';
 const net = require('net');
 
-let HOST = '127.0.0.1';
-let PORT = 3000;
+let PORT = 5000;
 
 let server = net.createServer((connection) => {
   console.log('TARA-Server võttis ühendust');
@@ -27,6 +34,6 @@ let server = net.createServer((connection) => {
    
  });
 
- server.listen(PORT, HOST);
+ server.listen(PORT);
  
  console.log('TARA-Stat kuuldel ' + HOST + ':' + PORT);
