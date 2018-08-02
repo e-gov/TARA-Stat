@@ -16,13 +16,13 @@ let server = net.createServer((connection) => {
   connection.write(`TARA-Server kuuldel\r\n`);
       
   connection.on('data', function(data) {
-    console.log('Saadud: ' + data);
+    console.log('TARA-Server-lt saadud: ' + data);
     connection.write('Kätte saadud: ' + data);
   });
   
   connection.on('close',
     () => {
-    console.log('Ühendus TCP kliendiga suletud');
+    console.log('TARA-Server-ga ühendus suletud');
     });
    
  });

@@ -16,12 +16,12 @@ let logikirje = 'See on logikirje.\r\n';
 let client = net.Socket();
 client.connect(PORT, HOST, function() {
   console.log('TARA-Stat-ga ' + HOST + ':' + PORT + ' ühendus loodud');
-  console.log('Saadan: ' + logikirje);
+  console.log('TARA-Stat-le saadetud: ' + logikirje);
   client.write(logikirje);
 });
 
 client.on('data', function(data) {
-	console.log('Saadud TCP serverilt: ' + data);
+	console.log('TARA-Stat-lt saadud: ' + data);
 	client.destroy(); // kill client after server's response
 });
 
