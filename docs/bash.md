@@ -1,217 +1,294 @@
 ---
-permalink: Bash
+permalink: BASH
+layout: TARA
 ---
 
-# Bash
+# Bash-i, ühtlasi ka Linux-i ja OpenSSL-i meelespea
+{: .no_toc}
 
-- **aritmeetika**
-  - `echo $((1+1))` või `echo $[1+1]`
+- TOC
+{:toc}
 
-- **faili**
-  - **allalaadimine internetist**
-    - `wget -O failinimi "URL"` (paneb jooksvasse kausta)  
-    - nt `wget -O code_1.23.0-1525361119_amd64.deb "https://go.microsoft.com/fwlink/?LinkID=760868"
-  - **kopeerimine**
-    - `cp <source> <dest-n>`
-  - **ümbernimetamine**
-    - `mv <vana> <uus>`   
-`
-- **funktsioonid**
-  - `function nimi { kood }`
-  - parameetri poole pöördumine: `$1` - esimene parameeter
-  - väljakutsumine parameetriga: `fnimi param`
+## Aritmeetika
 
-- **jooksev kaust**
-  - `pwd`
+`echo $((1+1))`
 
-- **jutumärgid**
-  - _Single quotes will treat every character literally_
-  - Jutumärgid lubavad viiteid muutujatele
+`echo $[1+1]`
 
-- **kasutaja**
-  - `sudo adduser nimi` (lisamine)
-  - `sudo deluser nimi` (kustutamine)
-  - `sudo deluser --remove-home nimi` (kodukausta kustutamisega)
-  - **vahetamine**
-    - `su nimi` (vaheta kasutajat, vahetamata kausta)
-    - `su - nimi` (vaheta kasutajat, liigud uue kodukausta)
-    - `exit` (tagasilülitumine eelmisele kasutajale)
-  - **kasutaja nimel käsu täitmine**
-    - `su -c 'mongod --config /etc/mongod.conf &' - mongodb`
-    - vt [su kirjeldus](http://www.linfo.org/su.html)
-  - **superuser**, peakasutaja
-    - `sudo käsk` (käsu täitmine peakasutajana)
-    - konf-ifail `/etc/sudoers`
-  - **omandis failid**
-    - `find /var -user nimi` (kasutaja `nimi` failid kaustas `/var`)
-    - `find /data/project -group ftpusers -name "*.c` (grupile kuuluvad failid kaustas, mustri järgi)
+# Kaustad ja failid
 
-- **kasutaja sisend**
-  - `read NAME` (mitu muutujat eralda tühikutega)
-  - `read -p "Paigaldada (y/n)? " answer`
+`wget -O failinimi "URL"` (faili allalaadimine internetist; paneb jooksvasse kausta)
 
-- **kausta v faili**
-  - `ls -a -l` (sisu, sh peidetud failide kuvamine)
-  - `ll` (eelmise alias)
-  - `rm -R nimi` (kustutamine, rekursiivselt)
+`cp <source> <dest-n>` (kopeerimine)
 
-- **kommentaar**
-  - `#`
+`mv <vana> <uus>` (ümbernimetamine)
 
-- **kontrolli, kas pakett on paigaldatud**
-  - `dpkg -l paketinimi`
+`pwd` (jooksev kaust)
 
-- **käsu väljundi haaramine**
-  - `$(date +%Y%m%d)` - täidab käsu ja haarab väljundi
-  - väljundi saab omistada muutujale: `myvar=$( ls /etc | wc -l )` (failide arv kaustas)
+`ls -a -l` # sisu, sh peidetud failide kuvamine
 
-- **kuvamine terminalile**
-  - `echo`
+`ll` # (eelmise alias)
 
-- **menüü**
-  - `OPTIONS="Hello Quit"
-      select opt in $OPTIONS; do
-        if [ "$opt" = "Quit" ]; then
-          echo done
-          exit
-        elif [ "$opt" = "Hello" ]; then`  
+`rm -R <nimi>` # kustutamine, rekursiivselt
 
-- **muutujad**
-  - defineerimine: `STR="Hello!"` (tühikuta! tõstutundlikud!)
-  - kasutamine: `echo $STR`
-  - võrdlustes: `if [ "$T1" = "$T2" ]; then`
-  - lokaalne m-ja (funktsioonis): `local STR=Hello`
-  - **erimuutujad**
-    - `$0` - skripti nimi
-    - `$1` - parameetri nimi
-    - `$#` - mitu parameetrit anti
-    - `$?` - viimase protsessi staatus
-    - `$USER` - skripti täitva kasutaja nimi
-    - `$PATH` - keskkonnamuutuja PATH (kaustad eraldatud `:`-ga)
-    - `$HOSTNAME` - masina nimi 
-    - `$LINENO` - jooksva rea nr
-    - käsk `env` näitab keskkonnamuutujaid 
-  - **eksportimine**
-    - `export var1
-       ./script2.sh` (muutuja `var1` antakse skriptile parameetriks)       
+`sudo find / -type f -name "failinimi"` (otsib üle kogu ketta konkreetse nimega faile)
 
-- **nano**, tekstiredaktor
-  - [koduleht](https://www.nano-editor.org/)
-  - `sudo nano failinimi`
-  - `nano -Ynone -m failinimi` (käivita süntaksivärvimiseta ja hiire toega)
-  - `Alt+A` ... `Ctrl+K` -> `Ctrl+U` (lõika ja aseta)
-  - `Alt+A` ... `Alt+6` (kopeeri)
+`scp kasutaja@host:/opt/kasutaja/tee/failinimi C:/TÖÖS` # (faili kopeerimine lokaalsesse masinasse SSH abil (secure copy))
 
-- **openSSL**
-  - `openssl x509 -in <serdifail>.pem -noout -text` (kuvab serdi sisu)
-  - `openssl s_client -host HOSTNAME -port PORT` (kuvab serdiahela)
-  - `openssl s_client -connect HOSTNAME:PORT -showcerts`
-  - `openssl pkcs12 -export -out certificate.pfx -inkey tara-stat.key -in tara-stat.cert -certfile intermediate.pem` (loob pfx-faili)
-  - vt: https://www.openssl.org/docs/manmaster/man1/pkcs12.html 
+# Juhtimisstruktuurid
 
-- **otsimine**
-  - `sudo find / -type f -name "failinimi" (otsib üle kogu ketta konkreetse nimega faile)
+`if [ "foo" = "foo" ]; then` (if-lause algus)
 
-- **paketi v rakenduse**
-  - `sudo apt-get remove rakendusenimi` (paigaldatud paketi eemaldamine)
-  - `which nodejs` (paketi asukoha otsimine)
+`fi` (if-lause lõpp)
 
-- **parooli muutmine**
-  - `passwd` (oma parooli vahetamine)
-  - `sudo passwd kasutaja` (teise kasutaja parooli vahetamine) 
-  - `cat /etc/passwd | grep tarastat` (kasutaja kirje)   
+`else`, `else if`
 
-- **programmi asukoha leidmine**
-  - `which nimi`
+`function <nimi> { <kood> }` (funktsiooni deklareerimine)
 
-- **protsessi lõpetamine**
-  - `kill -s 15 <pid>` (lõpetab protsessi, saates signaali _terminate_ (15) 
+`<fnimi> <param>` (funktsiooni väljakutsumine parameetriga)
 
-- **protsesside seisund**
-  - `ps` (jooksva kasutaja jooksva terminaliga seotud protsessid)
-  - `ps aux` (kõik protsessid)
-  - `ps -ejH` (protsessipuu)
+`$1` (parameetri poole pöördumine funktsioonis; esimene parameeter)
 
-- **seisundi väljaselgitamine**
-  - `netstat --listen` (kes millist porti kuulab)
-  - `sudo netstat -peanut | grep ":5000"` (protsess, mis kuulab porti 5000)
-  - `ps aux | grep "mongo"` (protsess)  
+# Jutumärgid
+- _Single quotes will treat every character literally_
+- Jutumärgid lubavad viiteid muutujatele
 
-- **secure copy**
-  - `scp kasutaja@host:/opt/kasutaja/tee/failini C:/TÖÖS` (faili kopeerimine lokaalsesse masinasse SSH abil)
+# Kasutaja
 
-- **shebang**
-  - `#!/bin/bash` (näitab, millist programmi skripti täitmiseks kasutada)
+`sudo adduser <nimi>` (lisamine)
 
-- **skripti täitmine**
-  - `./skript.sh` (täidab jooksvas kaustas oleva skripti)
-  - `sudo bash skript.sh` (täidab skripti root-na)
+`sudo deluser <nimi>` (kustutamine)
 
-- **sudo**
-  - prefiks, millega saab käsu täita peakasutaja (_root_) õigustes (sudo õiguse olemasolul)
+`sudo deluser --remove-home <nimi>` (kodukausta kustutamisega)
 
-- **suunamine** - `>` failide ühendamine, nt `stdout` ühendada `stdin`-ga
-  - `stdout` suunamine faili: `ls -l > ls-1.txt`
-  - **failideskriptorid** - `stdin`, `stdout`, `stderr`
-  - `1` tähistab `stdout`, `2` tähistab `stderr`
-  - **<<EOF** (sisendi suunamine käsule)
-    - [kirjeldus](https://superuser.com/questions/1003760/what-does-eof-do)
+`su <nimi>` (vaheta kasutajat, vahetamata kausta)
 
-- **striimiredaktor**
-  - `sed -i 's/authorization: disabled/authorization: enabled/' /etc/mongod.conf`
-  - [sed juhend](https://www.gnu.org/software/sed/manual/sed.html)
+`su - <nimi>` (vaheta kasutajat, liigud uude kodukausta)
 
-- **terminalist lahtisidumine**
-  - ` &` (käsu lõpus, käivitatav protsess seotakse terminalist lahti ja hakkab jooksma taustal)
-  - `nohu käsk` (_no hangup_)
+`exit` (tagasilülitumine eelmisele kasutajale)
 
-- **tingimuslause**
-  - `if [ "foo" = "foo" ]; then
-       ...
-     fi`
-  - `else`, `else if`
+`su -c 'mongod --config /etc/mongod.conf &' - mongodb` (kasutaja nimel käsu täitmine; vt [su kirjeldus](http://www.linfo.org/su.html)
 
-- **toru**
-  - `|` - ühendus protsesside vahel
+`sudo <käsk>` (käsu täitmine peakasutajana)
 
-- **võrguühendused**
-  - [iproute2](https://en.wikipedia.org/wiki/Iproute2)
-  - `netstat -plntu` (loetelu kuulajatest: protokoll, IP, port)
+`ls /etc/sudoers` (sudo-poliitika konf-ifail)
 
-- **õigused failisüsteemis**
-  - `chmod` (õiguste muutmine)
-    - `-R` (rekursiivseltsud)
-    - `sudo chmod -R ug+rw /var/lib/mongodb` (user ja group-le lisada read ja write õigused)
-    - `sudo chmod +x kaivita.sh` (käivitusõiguse andmine failile)
-  - `sudo chown kasutaja fail` (seab kasutaja faili omanikuks)  
+`find /var -user <kasutajanimi>` (kasutajale kuuluvad failid kaustas /var)
 
-## systemd alustamissüsteem
+`find /data/project -group ftpusers -name "*.c"` (grupile kuuluvad failid kaustas, mustri järgi)
 
-- **systemctl**
-  - teenuste haldusvahend, osa systemd haldussüsteemist
-  - [How To Use Systemctl to Manage Systemd Services and Units](https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units)
-  - `sudo systemctl start nimi` (käivita teenus `nimi`)
-  - `stop`, `restart`
-  - `reload` (loeb uuesti konf-ifail, kui on suuteline)
-  - `reload-or-restart` (emb-kumb)
-  - `enable` (määrab VM käivitamisel automaatselt käivitatavaks)
-  - `disable`
-  - `systemctl status pm2` (kuva üksuse staatus)
-  - `is-active`, `is-enabled`, `is-failed`
-  - **haldusüksus (unit)**
-    - v.o installed -> loaded -> active -> running
-    - `list-units *pm2*.service` (kuva üksused mustri järgi)
-    - `systemctl list-units --type=service` (aktiivsed teenused)
-    - `/lib/systemd/system` (haldusüksuste kirjeldusfailide kaust)
+# Kasutaja sisend
 
-## Märkmed
+`read NAME` # (mitu muutujat eralda tühikutega)
+
+`read -p "Paigaldada (y/n)? " answer`
+
+
+# Käsu väljundi haaramine
+
+`$(date +%Y%m%d)` # täidab käsu ja haarab väljundi
+
+väljundi saab omistada muutujale:
+
+`myvar=$( ls /etc | wc -l )` (failide arv kaustas)
+
+`echo` # kuvamine terminalile
+
+# Menüü
+```
+OPTIONS="Hello Quit"
+select opt in $OPTIONS; do
+  if [ "$opt" = "Quit" ]; then
+    echo done
+    exit
+  elif [ "$opt" = "Hello" ]; then 
+```
+
+# Muutujad
+
+`STR="Hello!"` (defineerimine (nimed tühikuta ja tõstutundlikud!))
+
+`echo $STR` (kasutamine) 
+
+`if [ "$T1" = "$T2" ]; then` (võrdlustes) 
+
+`local STR=Hello` (lokaalne m-ja (funktsioonis)) 
+
+`$0` (skripti nimi)
+
+`$1` (parameetri nimi)
+
+`$#` (mitu parameetrit anti)
+
+`$?` (viimase protsessi staatus)
+
+`$USER` (skripti täitva kasutaja nimi)
+
+`$PATH` (keskkonnamuutuja PATH (kaustad eraldatud :-ga))
+
+`$HOSTNAME` (masina nimi)
+
+`$LINENO` (jooksva rea nr)
+
+`env` (näitab keskkonnamuutujaid)
+
+`export var1` + `./script2.sh` (eksportimine: muutuja var1 antakse skriptile parameetriks)      
+
+# nano, tekstiredaktor
+
+[koduleht](https://www.nano-editor.org/)
+
+`sudo nano <failinimi>`
+
+`nano -Ynone -m <failinimi>` (käivita süntaksivärvimiseta ja hiire toega)
+
+`Alt+A ... Ctrl+K -> Ctrl+U` (lõika ja aseta)
+
+`Alt+A ... Alt+6` (kopeeri)
+
+# openSSL
+
+`openssl x509 -in <serdifail>.pem -noout -text` # (kuvab serdi sisu)
+
+`openssl s_client -host HOSTNAME -port PORT` # (kuvab serdiahela)
+
+`openssl s_client -connect HOSTNAME:PORT -showcerts`
+
+`openssl pkcs12 -export -out certificate.pfx -inkey tara-stat.key -in tara-stat.cert -certfile intermediate.pem` # (loob pfx-faili)
+
+vt: https://www.openssl.org/docs/manmaster/man1/pkcs12.html
+
+# Paketihaldus
+
+`dpkg` - Debian Package Manager
+
+`apt` - Advanced Package Tool. Kasutab sisemist andmebaasi
+
+`apt-cache` - käsureavahend apt puhvriga tutvumiseks
+
+`apt-cache pkgnames` (kuva saadaolevate pakettide nimed)
+
+`apt-cache pkgnames <nimealgus>` (kuva stringiga algava nimega paketid)
+
+`apt-cache search <paketinimi>` (kuva paketi lühikirjeldus)
+
+`apt-cache show <paketinimi>` (kuva paketi kirjeldus)
+
+`apt-cache showpkg <paketinimi>` (kuva sõltuvate pakettide seis)
+
+`dpkg -l <paketinimi>` (kontrolli, kas pakett on paigaldatud)
+
+`sudo apt-get remove <rakendusenimi>` (paigaldatud paketi eemaldamine)
+
+`which nodejs` (paketi või rakenduse asukoha otsimine)
+
+# Paroolihaldus
+
+`passwd` (oma parooli vahetamine)
+
+`sudo passwd <kasutaja>` (teise kasutaja parooli vahetamine)
+
+`cat /etc/passwd | grep <kasutajanimi>` (kasutaja kirje kuvamine)  
+
+# Protsessid
+
+`kill -s 15 <pid>` (lõpetab protsessi, saates signaali _terminate_ (15))
+
+`ps` (jooksva kasutaja jooksva terminaliga seotud protsessid)
+
+`ps aux` (kõik protsessid)
+
+`ps -ejH` (protsessipuu)
+
+`netstat --listen` (kes millist porti kuulab)
+
+`sudo netstat -peanut | grep ":5000"` (protsess, mis kuulab porti 5000)
+
+`ps aux | grep "mongo"` (protsess)
+
+# Skriptid
+
+`#!/bin/bash` (näitab, millist programmi skripti täitmiseks kasutada)
+
+`./skript.sh` (täidab jooksvas kaustas oleva skripti)
+
+`sudo bash skript.sh` (täidab skripti root-na)
+
+`sudo` (prefiks, millega saab käsu täita peakasutaja (_root_) õigustes (sudo õiguse olemasolul))
+
+# Suunamine ja ühendamine
+
+nt stdout ühendada stdin-ga
+
+`stdin`, `stdout`, `stderr` (failideskriptorid; 1. positsioonil stdout, 2. - stderr)
+
+`ls -l > ls-1.txt` (stdout suunamine faili) 
+
+`<<EOF` (sisendi suunamine käsule, [kirjeldus](https://superuser.com/questions/1003760/what-does-eof-do))
+
+`|` (toru - ühendus protsesside vahel)
+
+# sed, striimiredaktor
+
+`sed -i 's/authorization: disabled/authorization: enabled/' /etc/mongod.conf`
+([sed juhend](https://www.gnu.org/software/sed/manual/sed.html))
+
+# Terminalist lahtisidumine
+
+`&` (käsu lõpus, käivitatav protsess seotakse terminalist lahti ja hakkab jooksma taustal)
+
+`nohu <käsk>` (_no hangup_)
+
+
+
+# Võrguühendused
+
+vt [iproute2](https://en.wikipedia.org/wiki/Iproute2)
+
+`netstat -plntu` (loetelu kuulajatest: protokoll, IP, port)
+
+# Õigused failisüsteemis
+
+`chmod` (õiguste muutmine)
+
+`-R` (rekursiivselt)
+
+`sudo chmod -R ug+rw /var/lib/mongodb` (user ja group-le lisada read ja write õigused)
+
+`sudo chmod +x kaivita.sh` (käivitusõiguse andmine failile)
+
+`sudo chown kasutaja fail` (seab kasutaja faili omanikuks) 
+
+# systemd, rakenduste haldussüsteem
+
+`systemctl` - teenuste haldusvahend, osa `systemd` haldussüsteemist. Vt [How To Use Systemctl to Manage Systemd Services and Units](https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units)
+
+`sudo systemctl start nimi` (käivita teenus nimi)
+
+`stop`, `restart`
+
+`reload` (loeb uuesti konf-ifail, kui on suuteline)
+
+`reload-or-restart` (emb-kumb)
+
+`enable` (määrab VM käivitamisel automaatselt käivitatavaks)
+
+`disable`
+
+`systemctl status <üksus>` (kuva üksuse staatus)
+
+`is-active`, `is-enabled`, `is-failed`
+
+haldusüksus (unit): v.o `installed` -> `loaded` -> `active` -> `running`
+
+`list-units *pm2*.service` (kuva üksused mustri järgi)
+
+`systemctl list-units --type=service` (aktiivsed teenused)
+
+`/lib/systemd/system` (haldusüksuste kirjeldusfailide kaust)
+
+# Märkmed
 
 - [Manual Work is a Bug](https://queue.acm.org/detail.cfm?id=3197520)
-
-- `sudo apt-get install libxss1 libasound2`
-- `sudo apt-get install libgtk2.0-0`
-- vt https://github.com/Microsoft/vscode/issues/13089
 - [Ubuntu tekstiredaktorite ülevaade](http://www.informit.com/articles/article.aspx?p=1670957&seqNum=3)
-- `sudo apt-get install apt-transport-https`
-- https://stackoverflow.com/questions/15043606/change-user-mongod-is-running-under-in-ubuntu 
-- http://www.codexpedia.com/devops/mongodb-authentication-setting/ 
+
