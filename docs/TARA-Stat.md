@@ -211,7 +211,7 @@ MongoDB (paigaldus):
 | systemd haldusüksuse kirjeldusfail | `/lib/systemd/system/mongod.service` |
 | automaatkäivitusskript | `/etc/init.d/mongodb` |
 
-## 14 Sõltuvused
+### 1.4 Sõltuvused
 
 Tootmissõltuvused:
 
@@ -246,6 +246,8 @@ Märkus. "Standardne" tähendab laialt kasutatavat, stabiilset teeki, millest `n
 
 ### 2.1 Paigaldamine
 
+#### 2.1.1 Skriptide ülevaade
+
 TARA-Stat paigaldatakse põhiosas paigaldusskriptidega, seejuures on vaja ka käsitsi tegevusi.
 
 Järgnevas eeldame, et:
@@ -253,11 +255,9 @@ Järgnevas eeldame, et:
 - Ubuntu 16 LTS on paigaldatud
 - paigaldaja (admin) on sudo-õigustega kasutajana sisse loginud. 
 
-#### 2.1.1 Paigaldusskriptid
-
 Paigaldamisel saab kasutada järgmisi skripte:
 
-| paigaldusskript | ülesanne |
+| skript | ülesanne |
 |--------|----------|
 | `TARA-Stat-paigalda-Nodejs.sh` | paigaldab Node.js | 
 | `TARA-Stat-paigalda-MongoDB.sh` | paigaldab MongoDB ja seadistab logibaasi |
@@ -266,20 +266,35 @@ Paigaldamisel saab kasutada järgmisi skripte:
 | `TARA-Stat-diagnoosi.sh` | väljastab diagnostilist teavet paigalduse kohta |
 | `TARA-Stat-paigalda-makett.sh` | paigaldab makettrakenduse |
 
-Skriptide sõltuvused välistest või käivitamise ajal etteantavatest väärtustest:
+Skriptid asuvad koodirepo kaustas `/opt/TARA-Stat/scripts`. Skriptid on kommenteeritud - igas skripti päises on kirjeldatud täidetavad sammud. Enne paigaldamist tutvu skriptitekstidega. Skriptide täpsemad spetsifikatsioonide on allpool.
 
-`TARA-Stat-paigalda-Nodejs.sh`:
+#### 2.1.2 Paigalda Node.js
 
-- `https://deb.nodesource.com/setup_6.x`
+element  | väärtus     
+nimetus: | `TARA-Stat-paigalda-Nodejs.sh`
+käivitusparameetrid: | TARA-Stat konfifaili asukoht 
+ülesanne: | paigaldab Node.js
+eeldused: | - virtuaalmasin (VM) on loodud<br>- Ubuntu 16 LTS on paigaldatud<br>- paigaldaja (admin) on sudo-õigustega kasutajana sisse loginud
+töö käik: | 1. kontrollib, kas Node.js on juba paigaldatud; kui jah, siis teade paigaldajale ja töö lõpp; 2. paigaldab curl-i; 3. loeb TARA-Stat konfifailist Node.js koodirepo asukoha; 4. paigaldab Node.js
+seadistus: | TARA-Stat konfifailist loeb Node.js repo asukoha
+sõltuvused: | `https://deb.nodesource.com/setup_6.x`
 
-`TARA-Stat-paigalda-MongoDB.sh`:
+#### 2.1.3 Paigalda MongoDB
+
+element  | väärtus     
+nimetus: | `TARA-Stat-paigalda-MongoDB.sh`
+käivitusparameetrid: | TARA-Stat konfifaili asukoht
 
 - `hkp://keyserver.ubuntu.com:80`
 - `https://repo.mongodb.org/apt/ubuntu`
 - kasutaja `mongodb` parool
 - MongoDB kasutajate `userAdmin`, `rakendus` ja `andmehaldur` paroolid
 
-`TARA-Stat-seadista-rakendus.sh`:
+#### 2.1.4 Seadista rakendus
+
+element  | väärtus     
+nimetus: | `TARA-Stat-seadista-rakendus.sh`:
+käivitusparameetrid: | TARA-Stat konfifaili asukoht
 
 - kasutaja `tarastat` parool
 - Node.js teegirepo (sisemine või `https://registry.npmjs.org/`)
@@ -287,11 +302,7 @@ Skriptide sõltuvused välistest või käivitamise ajal etteantavatest väärtus
 - MongoDB kasutamise salasõna
 - logikirje lisamise otspunkti API-võti.
 
-Skriptid asuvad koodirepo kaustas `/opt/TARA-Stat/scripts`.
-
-Skriptid on kommenteeritud - igas skripti päises on kirjeldatud täidetavad sammud. Enne paigaldamist tutvu skriptitekstidega.
-
-#### 2.1.2 Konfigureerimine
+#### 2.1.5 Konfigureerimine
 
 Konfigureeritakse järgmiste failidega:
 
@@ -302,7 +313,7 @@ Konfigureeritakse järgmiste failidega:
 
 Veebirakenduse konfi-failis seatud väärtusi saab vajadusel üle määrata teenuse käivitamiskäsus (`process.env` mehhanismiga).
 
-#### 2.1.3 Esmakordne paigaldamine
+#### 2.1.6 Esmakordne paigaldamine
 
   nr | käsk  | kirjeldus
 :---:|-------|--------
@@ -340,7 +351,7 @@ b\) Kui kasutad _self-signed_ serti:
   12 | `sudo systemctl start tarastat` | Käivita veebirakendus.
   13 | `sudo bash TARA-Stat/scripts/TARA-Stat-diagnoosi.sh` | Kontrolli, et nii veebirakendus (teenus `tarastat`) kui ka logibaas (teenus `mongodb`) töötavad. `TARA-Stat-diagnoosi.sh` väljastab diagnostilist teavet - selle skripti võib käivitada igal ajal; see skript ei muuda paigaldust.
 
-#### 2.1.4 HTTPS võtmete vahetamine
+#### 2.1.7 HTTPS võtmete vahetamine
 
 See on võtmepaar ja sert, millega tehakse võimalikuks sirvikust TARA-Stat statistika väljastamise otspunkti poole pöördumine turvahoiatusteta HTTPS-i abil.
 
@@ -350,7 +361,7 @@ See on võtmepaar ja sert, millega tehakse võimalikuks sirvikust TARA-Stat stat
   2  | `sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh` | Kanna uued võtmed kausta `../keys` (`TARA-Stat` naaberkaust). _Self-signed_ võtmete kasutamisel genereeri uued võtmed ja sert.
   3  | `sudo systemctl start tarastat` | Taaskäivita veebirakendus.
 
-#### 2.1.5 Tarkvarauuenduse paigaldamine
+#### 2.1.8 Tarkvarauuenduse paigaldamine
 
 Täpne juhis, kas vajalik on täielik uuestipaigaldamine või on võimalik osaline uuestipaigaldamine, peab arendaja poolt kaasas olema konkreetse tarkvarauuendusega.
 
@@ -372,7 +383,7 @@ Väikese tarkvarauuenduse puhul on võimalik värskenduste tõmbamine repot üle
   2  | `sudo git checkout .` | See on vajalik, kuna rakenduse seadistamisel on `config.js` muudetud. Pull-i tegemisel tekib muidu konflikt.
   3  | `sudo git pull origin master` | Tõmba värskendused (kaustas `TARA-Stat`).
 
-#### 2.1.5 VM tulemüüri seadistamine
+#### 2.1.9 VM tulemüüri seadistamine
 
 Vaja on tagada:
 
