@@ -9,6 +9,8 @@ layout: TARA
 - TOC
 {:toc}
 
+Fold All: `CTRL+K, CTRL+0`
+
 ## Aritmeetika
 
 `echo $((1+1))`
@@ -160,9 +162,11 @@ vt: https://www.openssl.org/docs/manmaster/man1/pkcs12.html
 
 # Paketihaldus
 
-`dpkg` - Debian Package Manager
+MÕISTED: `dpkg` (Debian Package Manager) - alamtaseme paketihaldusvahend; `apt` - Advanced Package Tool. Kasutab sisemist andmebaasi; repository (varamu) - kaust, milles on paketid ja indeksifail; `/etc/apt/sources.list` - kasutatavate varamute nimekiri; pakett - laiendiga `.deb`, sisaldab kahendkoodifaile, metateavet, sh paigaldusskripte.
 
-`apt` - Advanced Package Tool. Kasutab sisemist andmebaasi
+KIRJANDUS: [APT (Debian)](https://en.wikipedia.org/wiki/APT_(Debian)) (Wikipedia); [The Debian Administrator's Handbook](https://debian-handbook.info/browse/stable/)  
+
+KÄSUD:
 
 `apt-cache` - käsureavahend apt puhvriga tutvumiseks
 
