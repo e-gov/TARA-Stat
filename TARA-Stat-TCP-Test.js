@@ -17,15 +17,15 @@
 const net = require('net');
 
 let PORT = 5000;
-let buffered = ''; // Andmepuhver
 
-function processReceived() {
-  var received = buffered.split('\n');
-  while (received.length > 1) {
-    // Syslog kirje eraldatud
-    console.log(received[0]);
-    buffered = received.slice(1).join('\n');
-    received = buffered.split('\n');
+function eraldaJSON(syslogKirje) {
+  let osad = syslogKirje.split('{');
+  if (osad.length > 1) {
+    let msg = '{' + osad[1];
+    console.log('TARA-Stat: Saadud: ' + msg);
+  }
+  else {
+    console.log('TARA-Stat: Ei suuda Syslog kirjest JSON-t eraldada');
   }
 }
 
@@ -34,16 +34,34 @@ let server = net.createServer((socket) => {
   /* socket tüüp on Socket, vt
      https://nodejs.org/api/net.html
   */
+
   console.log('TARA-Stat: ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
   socket.write(`TARA-Stat kuuldel\r\n`);
 
-  /* Socket on EventEmitter; sellest 'on' meetod.
-    Andmete saabumise käsitlemine
+  /* Andmete saabumise käsitleja
+    'on' meetod on võimalik, kuna Socket on EventEmitter.
   */
   socket.on('data', function (data) {
     console.log('TARA-Stat: saadud: ' + data.length + ' baiti');
-    buffered += data;
-    processReceived();
+    /* Andmepuhver.
+      Kui panna igale ühendusele eraldi, siis tekib probleem: 
+      sündmuse 'data' käsitlejad võivad üksteisele sisse sõita.
+      Probleemi ei teki, kui iga kirje tuleb ühes tükis (aga
+      tükis võib olla mitu kirjet).
+      Seetõttu on andmepuhver praegu pandud 'data'-käsitleja
+      tasandile.
+    */
+    var buffered = '' + data;
+    // console.log('TARA-Stat: buffered: ' + buffered);
+    var received = buffered.split('\n');
+    while (received.length > 1) {
+      // Syslog kirje eraldatud
+      let syslogKirje = received[0];
+      buffered = received.slice(1).join('\n');
+      received = buffered.split('\n');
+      eraldaJSON(syslogKirje);
+    }
+
   });
 
   socket.on('close',
