@@ -1,173 +1,105 @@
-/*
-  TARA-Stat - Mikroteenus TARA statistika kogumiseks 
-  ja vaatamiseks
-
-  Priit Parmakson, 2018
-
-*/
+/**
+ * TARA-Stat - Mikroteenus TARA statistika kogumiseks ja
+ * vaatamiseks
+ * 
+ * Veebirakenduse kogu kood on siinses failis. Node.js callback-de tõttu
+ * on peamine töötsükkel asetatud MongoDB-ga ühenduse võtmise 
+ * callback-i sisse. Kõigepealt luuakse ühendus MongoDB-ga. Seejärel 
+ * käivitatakse Express veebirakendus (mis hakkab väljastama 
+ * kasutusstatistikat) ja TCP server (mis hakkab vastu võtma 
+ * logikirjeid).
+ * 
+ * @author Priit Parmakson, 2018
+ */
 
 'use strict';
 
-/* Konf-i laadimine */
-/* Linux
-var config = require('./config');
-*/
-var config = require('./config');
+// -------- 1 Teekide laadimine  --------
 
-/* Teekide laadimine */
-/** HTTPS
- *   vt https://www.kevinleary.net/self-signed-trusted-certificates-node-js-express-js/
- */
+// TCP ühenduste teek
+const net = require('net');
+
+// Lukuteek
+var ReadWriteLock = require('rwlock');
+
+// HTTPS (Node.js)
 var https = require('https');
 
-/* Sertide laadimiseks */
+// Sertide laadimiseks
 var fs = require('fs');
 var path = require('path');
 
-/* Logimiseks */
+// Logimiseks
 var util = require('util');
 
-/* Veebiraamistik Express */
+// Veebiraamistik Express
 const express = require('express');
 
-/*
- * HTTP päringu parsimisvahend
- * NB! AInult application/JSON
- *  */
+// HTTP päringu parsimisvahend. NB! Ainult application/JSON
 const bodyParser = require('body-parser');
 
-/* Basic Authentication vahend */
-var auth = require('basic-auth');
-
-/* Node.JS utiliidid */
+// Node.JS utiliidid
 const f = require('util').format;
 
-/* MongoDB */
+// MongoDB
 const MongoClient = require('mongodb').MongoClient;
 
-/* Logimise sisseseadmine */
-const LOGIFAIL = config.logifail;
-var logFile = fs.createWriteStream(LOGIFAIL, { flags: 'a' });
+// Alusta lukuhaldur
+var lock = new ReadWriteLock();
+
+// -------- 2 Konf-i laadimine  --------
+var config = require('./config');
+
+// -------- 3 Globaalsed muutujad -------- 
+// MongoDB andmebaasiühendus. Deklareeritud siin, et oleks elutukse
+// väljastajas kättesaadav
+var db;
+
+// -------- 4 Väiksemad ettevalmistused -------- 
+
+// Rakenduse enda logimise sisseseadmine
+var logFile = fs.createWriteStream(config.LOGIFAIL, { flags: 'a' });
 // Või 'w' faili uuesti alustamiseks
 var logStdout = process.stdout;
-
 console.log = function () {
-  logFile.write(util.format.apply(null, arguments) + '\n');
-  logStdout.write(util.format.apply(null, arguments) + '\n');
+  logFile.write('TARA-Stat: ' + util.format.apply(null, arguments) + '\n');
+  logStdout.write('TARA-Stat: ' + util.format.apply(null, arguments) + '\n');
 }
 console.error = console.log;
+let utc = new Date().toJSON();
+console.log(utc + ' Käivitun');
 
-/* Veebiserveri ettevalmistamine */
+// Expressi ettevalmistamine
 const app = express();
-/* TODO: Eemaldada?
-app.set('port', 5000); */
 
-/* Sea juurkaust, millest serveeritakse sirvikusse ressursse
- vt http://expressjs.com/en/starter/static-files.html 
- ja https://expressjs.com/en/4x/api.html#express.static */
+// Sea juurkaust, millest serveeritakse sirvikusse ressursse
 app.use(express.static(__dirname + '/public'));
 
-/* Sea rakenduse vaadete (kasutajale esitatavate HTML-mallide) kaust */
+// Sea rakenduse vaadete (kasutajale esitatavate HTML-mallide) kaust
 app.set('views', __dirname + '/views');
 
-/* Määra kasutatav mallimootor */
+// Määra kasutatav mallimootor
 app.set('view engine', 'ejs');
 
-/* Vajalik seadistus MIME-tüübi application/json
-parsimiseks */
+// Vajalik seadistus MIME-tüübi application/json parsimiseks
 app.use(bodyParser.json());
 
-/**
- * HTTPS suvandid
- * Vt: https://stackoverflow.com/questions/32705219/nodejs-accessing-file-with-relative-path 
- */
+// -------- 5 Express marsruuteri töötlusreeglid -------- 
 
-/* Valmista ette HTTPS serveri suvandid */
-if (config.selfsigned) {
-  /* Valmista ette self-signed sert */
-  var voti = fs.readFileSync(path.join(__dirname, '..', 'keys',
-    config.key), 'utf8');
-  var sert = fs.readFileSync(path.join(__dirname, '..', 'keys',
-    config.cert), 'utf8');
-  var options = {
-    key: voti,
-    cert: sert,
-    requestCert: false,
-    rejectUnauthorized: false
-  };
-}
-else {
-  /* Loe pfx-fail */
-  var options = {
-    pfx: fs.readFileSync(path.join(__dirname, '..', 'keys',
-      config.pfx)),
-    passphrase: 'changeit',
-    requestCert: false,
-    rejectUnauthorized: false
-  };
-}  
-
-/* HTTPS serveri loomine */
-var port = config.port;
-var server = https.createServer(options, app);
-
-/**
- * Paigaldusparameetrid
- */
-/* Andmebaasi nimi */
-const LOGIBAAS = config.logibaas;
-const COLLECTION = config.collection;
-const ELUTUKSETABEL = config.heartbeathelpertable;
-
-/* Andmebaasiga ühendumise kredentsiaalid */
-const MONGO_USER = config.mongouser;
-const MONGO_PWD = config.mongouserpwd;
-const authMechanism = 'DEFAULT';
-
-/* Logikirje lisamise API võti */
-const TARA_STAT_USER = config.tarastatuser;
-const TARA_STAT_SECRET = config.tarastatsecret;
-
-/**
- * Andmebaasiga ühendumise URL
- * Vt 
- * https://docs.mongodb.com/manual/reference/connection-string/
- * ja http://mongodb.github.io/node-mongodb-native/3.0/tutorials/connect/authenticating/
- * NB! Konto andmebaas - users - on URL-i hardcoded.
- */
-const MONGODB_URL =
-  f('mongodb://%s:%s@localhost:27017/users?authMechanism=%s',
-    MONGO_USER,
-    MONGO_PWD,
-    authMechanism);
-
-/**
- *  Järgnevad marsruuteri töötlusreeglid
- */
-
-/**
- * Kuva esileht
- */
+// Kuva esileht
 app.get('/', function (req, res) {
-  // Ühendu logibaasi külge
-  MongoClient.connect(MONGODB_URL, (err, client) => {
-    if (err === null) {
-      console.log("--- Logibaasiga ühendumine õnnestus");
-      res.render('pages/index');
-      const db = client.db(LOGIBAAS);
-      client.close();
-    }
-    else {
-      console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-      res.render('pages/viga', { veateade: "ERR-01: Logibaasiga ühendumine ebaõnnestus" });
-    }
-  });
+  // Kas logibaasiga ühendus on loodud?
+  if (db !== null) {
+    console.log("Logibaasiga ühendumine õnnestus");
+    res.render('pages/index');
+  }
+  else {
+    console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
+    res.render('pages/viga', { veateade: "ERR-01: Logibaasiga ühendumine ebaõnnestus" });
+  }
 });
 
-/**
- * Väljasta statistika
- * (AJAX päring)
- */
+// Väljasta statistika (AJAX päring)
 app.get('/stat', (req, res) => {
 
   /**
@@ -178,9 +110,8 @@ app.get('/stat', (req, res) => {
    *   aggregation pipeline läbimise tulemusel saadud kirjed 
    */
   const leiaKlienditi = function (r, db, callback) {
-    const collection = db.collection(COLLECTION);
-    /* Autentimine sisaldub juba andmebaasiga ühendumise URL-is 
-      (MONGODB_URL) */
+    const collection = db.collection(config.COLLECTION);
+    // Autentimine sisaldub juba andmebaasiga ühendumise URL-is
     collection
       .aggregate([
         {
@@ -230,139 +161,209 @@ app.get('/stat', (req, res) => {
   }
 
   // Ühendu logibaasi külge
-  MongoClient.connect(MONGODB_URL, (err, client) => {
-    if (err === null) {
-      // console.log("--- Logibaasiga ühendumine õnnestus");
-      const db = client.db(LOGIBAAS);
-      leiaKlienditi(r, db, (kirjed) => {
-        res.send(
-          {
-            kirjed: kirjed
-          });
-        client.close();
+  leiaKlienditi(r, db, (kirjed) => {
+    res.send(
+      {
+        kirjed: kirjed
       });
-    }
-    else {
-      console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-      res.send({});
-    }
   });
+
 });
 
+// Vasta elusolekupäringule
+app.get('/status', function (req, res) {
+  // Tee proovisalvestus MongoDB andmebaasi
+  var lisamiseTulemus;
+  lisamiseTulemus = db.collection(config.HEARTBEATHELPERTABLE)
+    .insert({
+      kirjeldus: 'elutukse'
+    });
+  if (lisamiseTulemus.writeError) {
+    console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");
+    res.status(500).send('ERR-05: Kirjutamine logibaasi ebaõnnestus')
+  }
+  res.status(200).send('OK');
+});
+
+// -------- 6 Logikirje salvestamise abifunktsioonid -------- 
 /**
- * Kontrolli kredentsiaale (API-võtit)
+ * Logikirje salvestamine logibaasi (MongoDB)
+ * @param logikirje {String} saadetud logikirje, JSON-struktuur
  */
-function check(name, pass) {
-  // console.log('--- Kredentsiaalide kontroll');
-  // console.log(name + ' = ' + TARA_STAT_USER + '?');
-  // console.log(pass + ' = ' + TARA_STAT_SECRET + '?');
-  return ((name === TARA_STAT_USER) && (pass === TARA_STAT_SECRET))
+function salvestaLogikirje(logikirje) {
+  // parsi JSON objektiks
+  let kirjeObjektina = JSON.parse(logikirje);
+
+  var salvestatavKirje = {
+    time: kirjeObjektina.time,
+    clientId: kirjeObjektina.clientId,
+    method: kirjeObjektina.method,
+    operation: kirjeObjektina.operation
+  };
+  if (kirjeObjektina.error) {
+    salvestatavKirje.error = kirjeObjektina.error;
+  }
+  console.log('Salvestatav kirje: ' +
+    JSON.stringify(salvestatavKirje, null, 2));
+
+  if (
+    !kirjeObjektina.time ||
+    !kirjeObjektina.clientId ||
+    !kirjeObjektina.method ||
+    !kirjeObjektina.operation
+  ) {
+    console.log('ERR-03: Valesti moodustatud logikirje');
+  }
+
+  // WriteResult objekt
+  var lisamiseTulemus;
+  lisamiseTulemus = db
+    .collection(config.COLLECTION)
+    .insert(salvestatavKirje);
+  if (lisamiseTulemus.writeError) {
+    console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");
+    res.status(500).send('ERR-05: Kirjutamine logibaasi ebaõnnestus')
+  }
+  console.log('Kirje lisatud');
+  res.status(200).send('OK');
+
 }
 
 /**
- * Lisa logikirje
- * POST päring, kehas JSON
- * Vt https://e-gov.github.io/TARA-Stat/Dokumentatsioon
+ * Eraldab Syslog-kirjest JSON-struktuuri -
+ * logikirje - ja suunab selle logibaasi salvestamisele
+ * Eeldab täpset vormingut.
+ * @param syslogKirje {String} saadetud Syslog-kirje
  */
-app.post('/',
-  /* Kontrolli kredentsiaale */
-  (req, res, next) => {
-    var credentials = auth(req);
-    if (!credentials || !check(credentials.name, credentials.pass)) {
-      res.statusCode = 401;
-      res.end('ERR-04: Logibaasi poole pöörduja autentimine ebaõnnestus');
-    } else {
-      // console.log('--- Logikirje lisaja autenditud');
-      next();
-    }
-  },
-  (req, res) => {
-    // console.log('--- Logikirje lisamine');
-    /* Moodusta päringus saadetud kirjest logibaasi salvestatav kirje. */
-    var salvestatavKirje = {
-      time: req.body.message.time,
-      clientId: req.body.message.clientId,
-      method: req.body.message.method,
-      operation: req.body.message.operation
-    }
-    if (req.body.message.error) {
-      salvestatavKirje.error = req.body.message.error;
-    }
-    console.log(' Salvestatav kirje:');
-    console.log(JSON.stringify(salvestatavKirje, null, 2));
-    if (
-      !req.body.message.time ||
-      !req.body.message.clientId ||
-      !req.body.message.method ||
-      !req.body.message.operation
-    ) {
-      res.status(400).send('ERR-03: Valesti moodustatud logikirje');
-    }
+function tootleSyslogKirje(syslogKirje) {
+  let osad = syslogKirje.split('{');
+  if (osad.length > 1) {
+    let logikirje = '{' + osad[1];
+    console.log('Saadud: ' + logikirje);
+    salvestaLogikirje(logikirje);
+  }
+  else {
+    console.log('Ei suuda Syslog kirjest JSON-t eraldada');
+  }
+}
 
-    // Ühendu logibaasi külge
-    MongoClient.connect(MONGODB_URL, (err, client) => {
-      if (err === null) {
-        // console.log("--- Logibaasiga ühendumine õnnestus");
-        const db = client.db(LOGIBAAS);
-        // WriteResult objekt
-        var lisamiseTulemus;
-        lisamiseTulemus = db.collection(COLLECTION)
-          .insert(salvestatavKirje);
-        client.close();
-        if (lisamiseTulemus.writeError) {
-          console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");
-          res.status(500).send('ERR-05: Kirjutamine logibaasi ebaõnnestus')
-        }
-        console.log('--- Kirje lisatud');
-        res.status(200).send('OK');
-      }
-      else {
-        console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-        res.status(500).send('ERR-01: Logibaasiga ühendumine ebaõnnestus')
-      }
+// -------- 7 Defineeri TCP server -------- 
+let tcpserver = net.createServer((socket) => {
+
+  // Defineeri ühenduses toimuvatele sündmustele käsitlejad
+
+  /* Andmepuhver.
+    TCP on madalama taseme protokoll, mis tähendab, et logikirje võib tulla mitmes tükis. Ja ka vastupidi, ühes tükis võib tulla mitu logikirjet. TARA-Stat-is tehakse tüki saamisel lõim. Lõimel kulub tüki töötlemiseks natuke aega. Järgmine tükk võib aga juba sisse tulla, sellele tehakse uus lõim, mis alustab omakorda töötlust. Vaja on tagada, et esimene lõim lõpetab enne töö, kui järgmine alustab. S.t vaja on mutex-it (lukustamist). Javas on mutex-võimalus sisse ehitatud. Node.JS-s aga mitte.    
+    Sündmuse 'data' käsitlejad võivad üksteisele sisse sõita.
+    Probleemi ei teki, kui iga kirje tuleb ühes tükis (aga
+    tükis võib olla mitu kirjet).
+    Lukustamiseks on siin kasutatud teeki rwlock.
+  */
+  var buffered = '';
+
+  /**
+   * Analüüsib andmepuhvrit buffered, eraldab ja suunab
+   * töötlusele (tootleSyslogKirje) kõik reavahetusega lõppevad osad.
+   */
+  function eraldaKirjedAndmepuhvrist() {
+    var received = buffered.split('\n');
+    while (received.length > 1) {
+      // Syslog kirje eraldatud
+      let syslogKirje = received[0];
+      buffered = received.slice(1).join('\n');
+      received = buffered.split('\n');
+      tootleSyslogKirje(syslogKirje);
+    }
+  }
+
+  // Andmete saabumise käsitleja
+  socket.on('data', function (data) {
+    console.log('TARA-Stat: saadud: ' + data.length + ' baiti');
+    // Võta andmepuhvrisse kirjutamise lukk
+    lock.writeLock(function (release) {
+      // Lisa saabunud andmed puhvrisse
+      buffered += data;
+      // Eemalda puhvrist täiskirjed
+      eraldaKirjedAndmepuhvrist();
+      // Vabasta lukk
+      release();
     });
 
   });
 
-/**
- * Vasta elusolekupäringule
- */
-app.get('/status', function (req, res) {
-  // Kontrolli andmebaasiühendust
-  MongoClient.connect(MONGODB_URL, (err, client) => {
-    if (err === null) {
-      const db = client.db(LOGIBAAS);
-      // WriteResult objekt
-      var lisamiseTulemus;
-      lisamiseTulemus = db.collection(ELUTUKSETABEL)
-        .insert({
-          kirjeldus: 'elutukse'
-        });
-      if (lisamiseTulemus.writeError) {
-        console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");
-        res.status(500).send('ERR-05: Kirjutamine logibaasi ebaõnnestus')
-      }
-      client.close();
-      res.status(200).send('OK');
-    }
-    else {
-      console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-      res.status(500).send('ERR-01: Logibaasiga ühendumine ebaõnnestus')
-    }
-  });
+  // Ühenduse sulgemise käsitleja
+  socket.on('close',
+    () => {
+      console.log('TARA-Stat: ühendus suletud');
+    });
+
+  // Ühenduse vea käsitleja
+  socket.on('error',
+    (errorMessage) => {
+      console.log("TARA-Stat: Viga logikirje vastuvõtmisel (TCP");
+      console.log(errorMessage);
+    });
+
+  console.log('TARA-Stat: ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
+  socket.write(`TARA-Stat kuuldel\r\n`);
+
 });
 
-/**
- * Veebiserveri käivitamine 
- */
+// -------- 8 Defineeri HTTPS server -------- 
+// Valmista ette HTTPS serveri suvandid
+if (config.SELFSIGNED) {
+  // Valmista ette self-signed sert
+  var voti = fs.readFileSync(path.join(__dirname, '..', 'keys',
+    config.KEY), 'utf8');
+  var sert = fs.readFileSync(path.join(__dirname, '..', 'keys',
+    config.CERT), 'utf8');
+  var options = {
+    key: voti,
+    cert: sert,
+    requestCert: false,
+    rejectUnauthorized: false
+  };
+}
+else {
+  // Loe pfx-fail
+  var options = {
+    pfx: fs.readFileSync(path.join(__dirname, '..', 'keys',
+      config.PFX)),
+    passphrase: 'changeit',
+    requestCert: false,
+    rejectUnauthorized: false
+  };
+}
+var server = https.createServer(options, app);
 
-/* HTTP puhul
-app.listen(app.get('port'), function () {
- console.log('---- TARA-Stat käivitatud ----');
+// -------- 9 Loo ühendus MongoDB - ga ja käivita
+//                        TCP ning HTTPS serverid-------- 
+
+// Andmebaasiga ühendumise URL
+// NB! Konto andmebaas - users - on URL-i hardcoded.
+const authMechanism = 'DEFAULT';
+const MONGODB_URL =
+  f('mongodb://%s:%s@localhost:27017/users?authMechanism=%s',
+    config.MONGOUSER,
+    config.MONGOUSERPWD,
+    authMechanism);
+
+MongoClient.connect(MONGODB_URL, (err, client) => {
+  if (err === null) {
+    // console.log("--- Logibaasiga ühendumine õnnestus");
+    db = client.db(LOGIBAAS);
+
+    // Käivita TCP server
+    tcpserver.listen(TCPPORT);
+    console.log('TCP-Server kuuldel pordil: ' + TCPPORT);
+
+    // Käivita veebiserver 
+    server.listen(port, function () {
+      console.log('HTTPS-Server kuuldel pordil: ' + server.address().port);
+    });
+
+  }
+  else {
+    console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
+  }
 });
-*/
-server.listen(port, function () {
-  console.log('--- TARA-Stat kuulab pordil: ' + server.address().port);
-});
-
-
