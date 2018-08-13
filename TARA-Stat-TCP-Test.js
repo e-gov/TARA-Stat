@@ -18,6 +18,15 @@ const net = require('net');
 
 let PORT = 5000;
 
+/* Alusta lukuhaldur
+*/
+var ReadWriteLock = require('rwlock');
+var lock = new ReadWriteLock();
+
+/**
+ * Eraldab Syslog-kirje MSG-osast JSON-struktuuri.
+ * Eeldab täpset vormingut.
+ */
 function eraldaJSON(syslogKirje) {
   let osad = syslogKirje.split('{');
   if (osad.length > 1) {
@@ -31,28 +40,29 @@ function eraldaJSON(syslogKirje) {
 
 // Defineeri TCP server
 let server = net.createServer((socket) => {
-  /* socket tüüp on Socket, vt
+
+  /* Defineeri ühenduse töötleja
+     Ühenduse (socket) tüüp on Socket, vt 
      https://nodejs.org/api/net.html
   */
 
   console.log('TARA-Stat: ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
   socket.write(`TARA-Stat kuuldel\r\n`);
 
-  /* Andmete saabumise käsitleja
-    'on' meetod on võimalik, kuna Socket on EventEmitter.
+  /* Andmepuhver.
+    TCP on madalama taseme protokoll, mis tähendab, et logikirje võib tulla mitmes tükis. Ja ka vastupidi, ühes tükis võib tulla mitu logikirjet. TARA-Stat-is tehakse tüki saamisel lõim. Lõimel kulub tüki töötlemiseks natuke aega. Järgmine tükk võib aga juba sisse tulla, sellele tehakse uus lõim, mis alustab omakorda töötlust. Vaja on tagada, et esimene lõim lõpetab enne töö, kui järgmine alustab. S.t vaja on mutex-it (lukustamist). Javas on mutex-võimalus sisse ehitatud. Node.JS-s aga mitte.    
+    Sündmuse 'data' käsitlejad võivad üksteisele sisse sõita.
+    Probleemi ei teki, kui iga kirje tuleb ühes tükis (aga
+    tükis võib olla mitu kirjet).
+    Lukustamiseks on siin kasutatud teeki rwlock.
   */
-  socket.on('data', function (data) {
-    console.log('TARA-Stat: saadud: ' + data.length + ' baiti');
-    /* Andmepuhver.
-      Kui panna igale ühendusele eraldi, siis tekib probleem: 
-      sündmuse 'data' käsitlejad võivad üksteisele sisse sõita.
-      Probleemi ei teki, kui iga kirje tuleb ühes tükis (aga
-      tükis võib olla mitu kirjet).
-      Seetõttu on andmepuhver praegu pandud 'data'-käsitleja
-      tasandile.
-    */
-    var buffered = '' + data;
-    // console.log('TARA-Stat: buffered: ' + buffered);
+  var buffered = '';
+
+  /**
+   * Analüüsib andmepuhvrit buffered, eraldab ja suunab
+   * töötlusele kõik reavahetusega lõppevad osad.
+   */
+  function eraldaKirjedAndmepuhvrist() {
     var received = buffered.split('\n');
     while (received.length > 1) {
       // Syslog kirje eraldatud
@@ -61,6 +71,22 @@ let server = net.createServer((socket) => {
       received = buffered.split('\n');
       eraldaJSON(syslogKirje);
     }
+  }
+
+  /* Andmete saabumise käsitleja
+    'on' meetod on võimalik, kuna Socket on EventEmitter.
+  */
+  socket.on('data', function (data) {
+    console.log('TARA-Stat: saadud: ' + data.length + ' baiti');
+    // Võta andmepuhvrisse kirjutamise lukk
+    lock.writeLock(function (release) {
+      // Lisa saabunud andmed puhvrisse
+      buffered += data;
+      // Eemalda puhvrist täiskirjed
+      eraldaKirjedAndmepuhvrist();
+      // Vabasta lukk
+      release();
+    });
 
   });
 
