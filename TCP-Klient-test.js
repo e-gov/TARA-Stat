@@ -19,20 +19,29 @@ let logikirjed = [
 ];
 
 let client = net.Socket();
+
 client.connect(PORT, HOST, function() {
-  console.log('TARA-Stat-ga ' + HOST + ':' + PORT + ' ühendus loodud');
+  console.log('TCP-Klient: TARA-Stat-ga ' + HOST + ':' + PORT + ' ühendus loodud');
   // Saada logikirjed
   logikirjed.forEach((logikirje) => { 
-    console.log('TARA-Stat-le saadetud: ' + logikirje);
+    console.log('TCP-Klient: saadetud: ' + logikirje);
     client.write(logikirje);
   });
+  // Sule ühendus
+  client.destroy();
+  console.log('TCP-Klient: ühendus suletud');
 });
 
 client.on('data', function(data) {
-	console.log('TARA-Stat-lt saadud: ' + data);
+	console.log('TCP-Klient: TARA-Stat-lt saadud: ' + data);
 	// client.destroy(); // kill client after server's response
 });
 
 client.on('close', function() {
-	console.log('TARA-Stat-ga ühendus suletud');
+	console.log('TCP-Klient: TARA-Stat-ga ühendus suletud');
+});
+
+client.on('error', function(ex) {
+  console.log("TCP-Klient: viga käsitletud");
+  console.log(ex);
 });

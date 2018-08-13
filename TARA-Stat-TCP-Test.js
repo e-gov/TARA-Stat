@@ -34,24 +34,29 @@ let server = net.createServer((socket) => {
   /* socket tüüp on Socket, vt
      https://nodejs.org/api/net.html
   */
-  console.log('TARA-Stat: ühendusevõtt aadressilt ' + socket.remoteAddress +':'+ socket.remotePort);
+  console.log('TARA-Stat: ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
   socket.write(`TARA-Stat kuuldel\r\n`);
-  
+
   /* Socket on EventEmitter; sellest 'on' meetod.
     Andmete saabumise käsitlemine
   */
-  socket.on('data', function(data) {
+  socket.on('data', function (data) {
     console.log('TARA-Stat: saadud: ' + data.length + ' baiti');
-    // connection.write('Kätte saadud: ' + data);
     buffered += data;
     processReceived();
   });
-  
+
   socket.on('close',
     () => {
-    console.log('TARA-Stat: ühendus suletud');
+      console.log('TARA-Stat: ühendus suletud');
     });
-   
+
+  socket.on('error',
+    (errorMessage) => {
+      console.log("TCP-Klient: viga käsitletud");
+      console.log(errorMessage);
+    });
+
 });
 
 // Käivita TCP server
