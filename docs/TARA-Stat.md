@@ -429,8 +429,8 @@ Teenused käivitatakse ja seisatakse standardsete `systemctl` käskudega, nt:
 
  käsk | selgitus
 ------|----------
-`systemctl start mongodb` | käivita teenus `mongodb`
-`systemctl stop mongodb` | peata teenus `mongodb`
+`sudo systemctl start mongodb` | käivita teenus `mongodb`
+`sudo systemctl stop mongodb` | peata teenus `mongodb`
 
 Ülalolevates näidetes saab siis `mongodb` asemel kasutada `tarastat`.
 

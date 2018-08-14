@@ -124,8 +124,8 @@ app.get('/stat', (req, res) => {
         {
           $group: {
             _id: {
-              "clientId": "$klient",
-              "method": "$meetod"
+              "clientId": "$clientId",
+              "method": "$method"
             },
             kirjeteArv: { $sum: 1 }
           }
