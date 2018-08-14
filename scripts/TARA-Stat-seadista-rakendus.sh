@@ -122,10 +122,8 @@ fi
 paigalda_Nodejs_teek "body-parser"
 paigalda_Nodejs_teek "ejs"
 paigalda_Nodejs_teek "express"
+paigalda_Nodejs_teek "rwlock"
 paigalda_Nodejs_teek "mongodb"
-paigalda_Nodejs_teek "request"
-paigalda_Nodejs_teek "basic-auth"
-paigalda_Nodejs_teek "request-debug"
 
 echo " --- Node.js teegid paigaldatud"
 echo

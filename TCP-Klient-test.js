@@ -10,7 +10,7 @@ const net = require('net');
 
 // let HOST = 'tara-stat-makett.ci.kit';
 let HOST = 'localhost';
-let PORT = 5000;
+let PORT = 5001;
 
 // Test-logikirjed. Kirje lõpus on \n (0x0A)
 let logikirjed = [
