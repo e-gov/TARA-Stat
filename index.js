@@ -58,6 +58,9 @@ var db;
 // -------- 4 Väiksemad ettevalmistused -------- 
 
 // Rakenduse enda logimise sisseseadmine
+// Märkus. Silumisel arvestada, et teise või sudo-õigusteta
+// kasutaja alt käivitamisel logifaili jätkamine ebaõnnestub
+// õiguste puudumise tõttu
 var logFile = fs.createWriteStream(config.LOGIFAIL, { flags: 'a' });
 // Või 'w' faili uuesti alustamiseks
 var logStdout = process.stdout;

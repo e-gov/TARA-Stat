@@ -510,7 +510,7 @@ Käsitsi paigaldamine:
  - `cd /opt`
  - `sudo git clone https://github.com/e-gov/TARA-Stat`
  - `cd /opt/TARA-Stat`
-3. Sea testrakenduse koodis TARA-Stat serveri domeeninimi, vajadusel ka port:
+3. Sea testrakenduse koodis TARA-Stat serveri domeeninimi, vajadusel ka port
 4. Paigalda Node.js teegid:
   - `sudo npm install body-parser --save`
   - `sudo npm install ejs --save`
@@ -534,8 +534,8 @@ TARA-Stat-is on rakendatud järgmised turvavalikud.
 
 1. Omaette VM. TARA-Stat paigaldatakse eraldi VM-i. VM-is ei ole teisi rakendusi. 
 1. Ainult sisevõrgus. Mikroteenus on ligipääsetav ainult organisatsiooni sisevõrgus.
-1. API kaitse võti. Logikirje lisamise otspunkt kaitstakse API võtmega (salasõnaga). API võti paigaldatakse TARA-Serverisse ja pannakse kaasa igas päringus logikirje lisamise otspunkti poole. Statistika väljastamise otspunkt API võtmega kaitset ei vaja, kuid on ligipääsetav ainult organisatsiooni sisevõrgus. Elutukse otspunkt on ligipääsetav ainult organisatsiooni sisevõrgus.
-1. HTTPS. Veebirakendus API-s ainult HTTPS.
+1. <strike>API kaitse võti. Logikirje lisamise otspunkt kaitstakse API võtmega (salasõnaga). API võti paigaldatakse TARA-Serverisse ja pannakse kaasa igas päringus logikirje lisamise otspunkti poole.</strike> (Märkus. Syslog TCP ühenduses ei rakendata). Statistika väljastamise otspunkt API võtmega kaitset ei vaja, kuid on ligipääsetav ainult organisatsiooni sisevõrgus. Elutukse otspunkt on ligipääsetav ainult organisatsiooni sisevõrgus.
+1. HTTPS. Veebirakenduse API-s ainult HTTPS. (Märkus. Syslog TCP ühenduses ei rakendata).
 1. Andmebaasikasutaja autentimine. Veebirakendus pöördub MongoDB poole eraldi andmebaasikasutajana (`rakendus`). Andmebaasikasutaja autenditakse. Kasutusel on MongoDB vaikimisi autentimismehhanism - soolaga salasõna põhine.
 1. Rollipõhine pääsuhaldus andmebaasis. Admin on eraldi andmebaasikasutaja.
 1. Veebirakenduse ja MongoDB suhtluses ei rakendata TLS-i. Kuna andmebaas suhtleb ainult samas masinas oleva rakendusega ja masinas ei ole teisi rakendusi, ei ole TLS-i hädavajalik.
@@ -548,7 +548,13 @@ TARA-Stat-is on rakendatud järgmised turvavalikud.
 Vajadusel vt taustaks:
 - MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega.
 
-## LISA 2 Veateated
+## LISA 2 Käideldavus
+
+TARA-Stat-i võib logikirjeid saata mitu TARA-Serveri instantsi.
+
+TARA-Stat ise ei ole mõeldud mitmes instantsis paigaldamiseks. Mitmes instantsis paigaldamine oleks küll võimalik, kuid kasutusstatistika koguneks siis instantside kaupa ositi.
+
+## LISA 3 Veateated
 
 Sirviku teated:
 
