@@ -328,17 +328,16 @@ Eeldused:
 
 Tee toimingud:
 - sea veebirakenduse konf-ifailis `/opt/TARA-Stat/config.js` vajalikud väärtused 
-- käivita skript: `sudo bash TARA-Stat-seadista-rakendus.sh`:
+- käivita skript: `sudo bash /opt/TARA-Stat/scripts/TARA-Stat-seadista-rakendus.sh`:
 
 Skript teeb:
 1. Loon Node.js käitluskasutaja (run user)
 2. Paigaldan rakendusele vajalikud Node.js teegid
 4. Paigaldan MongoDB kasutamise salasõna
-5. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
-6. Annan tarastat-le õigused kodukaustale (TARA-Stat)
-7. Loon systemd haldusüksuse kirjeldusfaili
-8. Laen deemoni
-9. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
+5. Annan tarastat-le õigused kodukaustale (TARA-Stat)
+6. Loon systemd haldusüksuse kirjeldusfaili
+7. Laen deemoni
+8. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
 
 Skripti sõltuvused:
 - kasutaja `tarastat` parool
@@ -392,7 +391,7 @@ Tee toimingud:
 - `sudo rm -R /opt/TARA-Stat` - kustuta vana kood.
 - `cd /opt`
 - `sudo git clone https://github.com/e-gov/TARA-Stat` - paigalda TARA-Stat kood kausta `/opt/TARA-Stat`.
-- `cd /opt/TARA-Stat`
+- `cd /opt/TARA-Stat/scripts`
 - `sudo bash TARA-Stat-seadista-rakendus.sh` - seadista rakendus.
 
 Väikese tarkvarauuenduse puhul on võimalik värskenduste tõmbamine repot üle kirjutamata:

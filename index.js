@@ -348,22 +348,25 @@ const MONGODB_URL =
     config.MONGOUSERPWD,
     authMechanism);
 
-MongoClient.connect(MONGODB_URL, (err, client) => {
-  if (err === null) {
-    // console.log("--- Logibaasiga ühendumine õnnestus");
-    db = client.db(LOGIBAAS);
+MongoClient.connect(
+  MONGODB_URL,
+  { useNewUrlParser: true },
+  (err, client) => {
+    if (err === null) {
+      // console.log("--- Logibaasiga ühendumine õnnestus");
+      db = client.db(LOGIBAAS);
 
-    // Käivita TCP server
-    tcpserver.listen(TCPPORT);
-    console.log('TCP-Server kuuldel pordil: ' + TCPPORT);
+      // Käivita TCP server
+      tcpserver.listen(TCPPORT);
+      console.log('TCP-Server kuuldel pordil: ' + TCPPORT);
 
-    // Käivita veebiserver 
-    server.listen(port, function () {
-      console.log('HTTPS-Server kuuldel pordil: ' + server.address().port);
-    });
+      // Käivita veebiserver 
+      server.listen(port, function () {
+        console.log('HTTPS-Server kuuldel pordil: ' + server.address().port);
+      });
 
-  }
-  else {
-    console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-  }
-});
+    }
+    else {
+      console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
+    }
+  });

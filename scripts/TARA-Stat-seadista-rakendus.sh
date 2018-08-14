@@ -7,11 +7,10 @@
 # 1. Loon Node.js käitluskasutaja (run user)
 # 2. Paigaldan rakendusele vajalikud Node.js teegid
 # 4. Paigaldan MongoDB kasutamise salasõna
-# 5. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
-# 6. Annan tarastat-le õigused kodukaustale (TARA-Stat)
-# 7. Loon systemd haldusüksuse kirjeldusfaili
-# 8. Laen deemoni
-# 9. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
+# 5. Annan tarastat-le õigused kodukaustale (TARA-Stat)
+# 6. Loon systemd haldusüksuse kirjeldusfaili
+# 7. Laen deemoni
+# 8. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
 #
 # Vt:
 # - https://blog.nodeswat.com/set-up-a-secure-node-js-web-application-9256b8790f11
@@ -138,29 +137,13 @@ read -p "Anna MongoDB kasutaja 'rakendus' salasõna: " MONGOUSERPWD
 sed -i "s/MONGOUSERPWD-changeit/$MONGOUSERPWD/" /opt/TARA-Stat/config.js
 
 # ------------------------------
-# 5. Loon usalduse TARA-Serveri ja TARA-Stat-i vahel
-#
-echo
-echo " --- Paigaldan API võtme TARA-Stat konf-i"
-
-read -p "Anna API võti: (juhusõne pikkusega vähemalt 20 tähemärki): " TARASTATSECRET
-sed -i "s/TARASTATSECRET-changeit/$TARASTATSECRET/" /opt/TARA-Stat/config.js
-
-echo "Veendu, et $MONGOUSERPWD ja $TARASTATSECRET said paigaldatud: "
-echo
-grep -i 'config.' /opt/TARA-Stat/config.js
-echo
-
-kasJatkan
-
-# ------------------------------
-# 6. Annan tarastat-le õigused kodukaustale (TARA-Stat)
+# 5. Annan tarastat-le õigused kodukaustale (TARA-Stat)
 #
 sudo chown -R tarastat:tarastat /opt/TARA-Stat
 cd /opt/TARA-Stat
 
 # ------------------------------
-# 7. Loon systemd haldusüksuse kirjeldusfaili
+# 6. Loon systemd haldusüksuse kirjeldusfaili
 #
 echo " --- Loon systemd haldusüksuse kirjeldusfaili"
 echo
@@ -189,14 +172,14 @@ echo " --------------------------------------------"
 echo
 
 # ------------------------------
-# 8. Laen deemoni
+# 7. Laen deemoni
 #
 echo " --- Laen deemoni"
 echo
 sudo systemctl daemon-reload
 
 # ------------------------------
-# 9. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
+# 8. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
 #
 echo " --- Käivitan TARA-Stat veebirakenduse"
 echo
