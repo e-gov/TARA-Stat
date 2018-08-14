@@ -485,7 +485,7 @@ käsk | selgitus
 `db.autentimised.remove({})` | tühjenda logibaas
 `exit` | välju CLI-st
 
-Lisateave vt:
+Vaata lisaks:
 - [mongo](https://docs.mongodb.com/manual/reference/program/mongo/)
 - [mongo Shell Quick Reference](https://docs.mongodb.com/manual/reference/mongo-shell/)
 
@@ -508,7 +508,8 @@ Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasi
  - `cd /opt`
  - `sudo git clone https://github.com/e-gov/TARA-Stat`
  - `cd /opt/TARA-Stat`
-3. Sea testrakenduse koodis TARA-Stat serveri domeeninimi, vajadusel ka port
+3. Sea testrakenduse koodis TARA-Stat serveri domeeninimi, vajadusel ka port, nt:
+ -  `sudo nano -Ynone LogikirjeteSaatmiseTest.js`
 
 Testrakenduse käivitamiseks sisesta: 
 

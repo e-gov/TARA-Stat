@@ -4,11 +4,16 @@
  * Genereerib logikirjeid ja lisab need TARA-STAT logibaasi
  */
 
-/* Logikirjete vahemiku algus */
+// TARA-Stat-i domeeninimi ja logikirjete vastuvõtu port
+// NB! Enne käivitamist sea tegelikud väärtused 
+const HOST = 'sea tegelik';
+const PORT = 5001;
+
+// Logikirjete vahemiku algus
 var a = { y: 2018, m: 4, d: 1 };
-/* Logikirjete vahemiku lõpp */
+// Logikirjete vahemiku lõpp
 var b = { y: 2018, m: 7, d: 2 };
-/* Logikirjete arv */
+// Logikirjete arv
 const N = 5;
 const klientrakendused = [
   'klientrakendus A',
@@ -31,7 +36,7 @@ const veateated = [
   'Veateade MMMM'
 ];
 
-console.log('LogikirjeteSaatmiseTest: logikirjete saatmise testrakendus');
+console.log('\n LogikirjeteSaatmiseTest.js \n');
 
 /**
  * Genereeri ja saada Syslog kirjed TARA-Stat-le 
@@ -39,9 +44,9 @@ console.log('LogikirjeteSaatmiseTest: logikirjete saatmise testrakendus');
  */
 function genereeriJaSaadaLogikirjed(client) {
   console.log('--- Genereerin ' + N.toString() + ' logikirjet');
-  for (var i = 0; i < N; i++) {
+  for (let i = 0; i < N; i++) {
     // Moodusta saadetav kirje
-    var saadetav_kirje = {
+    let saadetavKirje = {
       "time": genereeriKuupaev(a, b),
       "clientId": klientrakendused[getRandomInt(0, klientrakendused.length - 1)],
       "method": meetodid[getRandomInt(0, meetodid.length - 1)],
@@ -59,11 +64,11 @@ function genereeriJaSaadaLogikirjed(client) {
  * @param {TCP klient} client 
  * @param {Object} saadetavKirje 
  */
-function saadaLogisseSyslog(client, saadetav_kirje) {
+function saadaLogisseSyslog(client, saadetavKirje) {
   // Lisa Syslog-kirje standardne osa
   let syslogPais = '<38>Aug  1 10:51:54 acf2e2b322ab ';
-  let syslogKirje = syslogPais + JSON.toString(saadetavKirje);
-  client.write(logikirje); // NB! Async
+  let syslogKirje = syslogPais + JSON.stringify(saadetavKirje) + '\n';
+  client.write(syslogKirje); // NB! Async
   console.log('TCP-Klient: saadetud: ' + syslogKirje);
 }
 
@@ -96,8 +101,6 @@ function getRandomInt(min, max) {
 
 // Loo TCP klient TARA-Stat-ga ühendumiseks
 const net = require('net');
-const HOST = 'tara-stat-makett.ci.kit';
-const PORT = 5001;
 let client = net.Socket();
 
 // Sea TCP kliendi sündmusekäsitlejad 
@@ -106,7 +109,7 @@ client.on('data', function (data) {
 });
 
 client.on('close', function () {
-  console.log('TCP-Klient: TARA-Stat-ga ühendus suletud');
+  console.log('TCP-Klient: TARA-Stat-ga ühendus suletud \n');
 });
 
 client.on('error', function (ex) {
@@ -116,7 +119,8 @@ client.on('error', function (ex) {
 
 // Loo ühendus, genereeri ja saada logikirjed
 client.connect(PORT, HOST, function () {
-  console.log('TCP-Klient: TARA-Stat-ga ' + HOST + ':' + PORT + ' ühendus loodud');
+  console.log('TCP-Klient: TARA-Stat-ga ' + HOST +
+   ':' + PORT + ' ühendus loodud');
 
   // Genereeri ja saada logikirjed
   genereeriJaSaadaLogikirjed(client);
@@ -125,5 +129,4 @@ client.connect(PORT, HOST, function () {
   setTimeout(() => {
     client.destroy();
   }, 10000);
-  console.log('TCP-Klient: ühendus suletud');
 });

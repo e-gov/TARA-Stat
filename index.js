@@ -222,13 +222,13 @@ function salvestaLogikirje(logikirje) {
   var lisamiseTulemus;
   lisamiseTulemus = db
     .collection(config.COLLECTION)
-    .insert(salvestatavKirje);
+    .insertOne(salvestatavKirje);
   if (lisamiseTulemus.writeError) {
     console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");
-    res.status(500).send('ERR-05: Kirjutamine logibaasi ebaõnnestus')
   }
-  console.log('Kirje lisatud');
-  res.status(200).send('OK');
+  else {
+    console.log('Kirje lisatud');
+  }
 
 }
 
@@ -251,7 +251,7 @@ function tootleSyslogKirje(syslogKirje) {
 }
 
 // -------- 7 Defineeri TCP server -------- 
-let tcpserver = net.createServer((socket) => {
+let tcpServer = net.createServer((socket) => {
 
   // Defineeri ühenduses toimuvatele sündmustele käsitlejad
 
@@ -337,10 +337,10 @@ else {
     rejectUnauthorized: false
   };
 }
-var server = https.createServer(options, app);
+var httpsServer = https.createServer(options, app);
 
 // -------- 9 Loo ühendus MongoDB - ga ja käivita
-//                        TCP ning HTTPS serverid-------- 
+//            TCP ning HTTPS serverid             -------- 
 
 // Andmebaasiga ühendumise URL
 // NB! Konto andmebaas - users - on URL-i hardcoded.
@@ -360,11 +360,11 @@ MongoClient.connect(
       db = client.db(config.LOGIBAAS);
 
       // Käivita TCP server
-      tcpserver.listen(config.TCPPORT);
+      tcpServer.listen(config.TCPPORT);
       console.log('TCP-Server kuuldel pordil: ' + config.TCPPORT);
 
       // Käivita veebiserver 
-      server.listen(config.HTTPSPORT, function () {
+      httpsServer.listen(config.HTTPSPORT, function () {
         console.log('HTTPS-Server kuuldel pordil: ' + server.address().port);
       });
 
