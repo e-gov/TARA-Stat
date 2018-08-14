@@ -16,11 +16,11 @@ layout: TARA
 
 TARA-Stat on mikroteenus [autentimisteenuse TARA](https://e-gov.github.io/TARA-Doku) kasutusstatistika tootmiseks ja vaatamiseks. 
 
-Käesolev dokument esitab teenuse kirjelduse ja juhised teenuse paigaldamiseks, hooldamiseks ja kasutamiseks. 
+Käesolev dokument esitab tarkvara kirjelduse ja juhised tarkvara paigaldamiseks, hooldamiseks ja kasutamiseks. 
 
 Dokument on mõeldud TARA-Stat paigaldajale, käitajale ja kasutajale.
 
-_Kõik viited salasõnadele ja tundlikele taristuparameetritele (nt hostinimed, pordid, kasutajanimed) siin dokumendis on illustratiivsed ja kuuluvad toodangupaigalduses ümbervaatamisele, salasõnade osas aga kindlasti asendamisega turvalistega._
+_Kõik viited salasõnadele ja tundlikele taristuparameetritele (nt hostinimed, pordid, kasutajanimed) on dokumendis illustratiivsed ja kuuluvad toodangupaigalduses ümbervaatamisele, salasõnade osas aga kindlasti asendamisega turvalistega._
 
 TARA-Stat-i on arendanud Riigi Infosüsteemi Amet.
 
@@ -41,7 +41,7 @@ TARA-Stat pakub:
 
 TARA-Stat kasutajaliides statistikakasutajale:
 
-<p style='text-align:center;'><img src='img/Capture.PNG' width= "650" style='border: 1px solid black;'></p>
+<p style='text-align:center;'><img src='img/Capture.PNG' width= "500" style='border: 1px solid black;'></p>
 
 TARA-Stat koosneb kahest komponendist (tehniliselt on need ühes masinas käitatavad Linux-i teenused):
 
@@ -409,7 +409,7 @@ Vaja on tagada:
 - statistikakasutajalt (pöördub sirvikuga) tulevate HTTPS päringute (sh AJAX) teenindamine
 - monitooringulahenduselt (kui kasutatakse) tulevate HTTPS päringute teenindamine.
 
-TARA-Stat kuulab vaikimisi HTTPS pordil 5000.
+TARA-Stat kuulab vaikimisi HTTPS ühendusi pordil 5000 ja Syslog TCP ühendusi pordil 5001.
 
 Vajadusel vt:
 - [How to Install MongoDB on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04), Step 3.
@@ -445,7 +445,9 @@ Päringu `https://<tara-stat>/status` saamisel kontrollib TARA-Stat oma logibaas
 
 TARA-Stat ülevalolekut saab lõppkasutaja seisukohast kontrollida nii:
 - lülitu tööarvutiga organisatsiooni sisevõrku (VPN)
-- sirvikus ava `https://tara-stat-<site>:5000`. Rakendus teatab, et ühendus ei ole turvaline. See on tingitud _self-signed_ serdist. Aktsepteeri turvaerind. Ilmub rakenduse avaleht.
+- sirvikus ava `https://tara-stat-<site>:5000`.
+
+Märkus. Kui rakendus peaks teatama, et ühendus ei ole turvaline, siis see on tingitud _self-signed_ serdist. Aktsepteeri turvaerind. Ilmub rakenduse avaleht. Kui paigaldatud on organisatsiooni CA poolt väljaantud sert, siis teadet ei tule. 
 
 TARA-Stat masinas saab teenuste `tarastat` ja `mongodb` ülalolekut kontrollida:
 
@@ -493,11 +495,11 @@ Lisateave vt:
 
 Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasinasse kopeerida, kuid neid ei ole vaja (ega tohigi) skriptidega ega muul viisil aktiveerida.
 
-`mini.js`
+`mini.js` on:
 
 - tarkvara koosseisus olev lihtne vahend HTTP ja HTTPS ühenduste testimiseks:
 - loob minimaalsed HTTP ja HTTPS serverid, mis kuulavad vastavalt portidelt `5001` ja `5000`.
-  - `scripts/seadistaMini.sh` - paigaldab ´mini.js` systemd veebiteenusena.
+  - `scripts/seadistaMini.sh` - paigaldab `mini.js` systemd veebiteenusena.
 
 ### 3.1 Logikirjete lisamise testrakendus
 
