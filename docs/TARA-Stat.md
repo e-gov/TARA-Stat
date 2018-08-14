@@ -3,7 +3,7 @@ permalink: Dokumentatsioon
 layout: TARA
 ---
 
-# TARA-Stat. Kirjeldus ja kasutusjuhend
+# TARA-Stat. Tarkvara kirjeldus ja haldusjuhend
 {: .no_toc}
 
 ## Sisukord
@@ -262,7 +262,7 @@ Konfigureeritakse järgmiste failidega:
 
 Konfiguratsiooni osaks on ka võtmed ja kasutajakontod.
 
-## 2 Hooldusjuhised
+## 2 Paigaldus- ja hooldusjuhised
 
 ### 2.1 Paigalda koodirepo
 
@@ -373,7 +373,7 @@ b\) Kui kasutad _self-signed_ serti:
 - `sudo systemctl start tarastat` - Käivita veebirakendus.
 - `sudo bash TARA-Stat/scripts/TARA-Stat-diagnoosi.sh` - Kontrolli, et nii veebirakendus (teenus `tarastat`) kui ka logibaas (teenus `mongodb`) töötavad. `TARA-Stat-diagnoosi.sh` väljastab diagnostilist teavet - selle skripti võib käivitada igal ajal; see skript ei muuda paigaldust.
 
-### 2.6 HTTPS võtmete vahetamine
+### 2.6 Võtmete vahetamine
 
 See on võtmepaar ja sert, millega tehakse võimalikuks sirvikust TARA-Stat statistika väljastamise otspunkti poole pöördumine turvahoiatusteta HTTPS-i abil.
 
