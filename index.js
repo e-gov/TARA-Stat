@@ -114,19 +114,18 @@ app.get('/stat', (req, res) => {
    */
   const leiaKlienditi = function (r, db, callback) {
     const collection = db.collection(config.COLLECTION);
-    // Autentimine sisaldub juba andmebaasiga ühendumise URL-is
     collection
       .aggregate([
         {
           $match: {
-            aeg: { $regex: r }
+            time: { $regex: r }
           }
         },
         {
           $group: {
             _id: {
-              "klient": "$klient",
-              "meetod": "$meetod"
+              "clientId": "$klient",
+              "method": "$meetod"
             },
             kirjeteArv: { $sum: 1 }
           }
@@ -138,7 +137,8 @@ app.get('/stat', (req, res) => {
         }
       ])
       .toArray(function (err, kirjed) {
-        console.log(err);
+        console.log('Täidan päringu andmebaasi. Leitud kirjeid: ' +
+          kirjed.length);
         if (err === null) {
           callback(kirjed);
         }
@@ -163,7 +163,7 @@ app.get('/stat', (req, res) => {
     r = new RegExp('.*');
   }
 
-  // Ühendu logibaasi külge
+  // Tee otsing logibaasis ja saada tulemused
   leiaKlienditi(r, db, (kirjed) => {
     res.send(
       {
@@ -194,9 +194,20 @@ app.get('/status', function (req, res) {
  * @param logikirje {String} saadetud logikirje, JSON-struktuur
  */
 function salvestaLogikirje(logikirje) {
-  // parsi JSON objektiks
+  // Parsi JSON objektiks
   let kirjeObjektina = JSON.parse(logikirje);
 
+  // Kontrolli nõutavate elementide olemasolu
+  if (
+    !kirjeObjektina.time ||
+    !kirjeObjektina.clientId ||
+    !kirjeObjektina.method ||
+    !kirjeObjektina.operation
+  ) {
+    console.log('ERR-03: Valesti moodustatud logikirje');
+  }
+
+  // Koosta salvestatav kirje
   var salvestatavKirje = {
     time: kirjeObjektina.time,
     clientId: kirjeObjektina.clientId,
@@ -209,15 +220,6 @@ function salvestaLogikirje(logikirje) {
   console.log('Salvestatav kirje: ' +
     JSON.stringify(salvestatavKirje, null, 2));
 
-  if (
-    !kirjeObjektina.time ||
-    !kirjeObjektina.clientId ||
-    !kirjeObjektina.method ||
-    !kirjeObjektina.operation
-  ) {
-    console.log('ERR-03: Valesti moodustatud logikirje');
-  }
-
   // WriteResult objekt
   var lisamiseTulemus;
   lisamiseTulemus = db
@@ -229,7 +231,6 @@ function salvestaLogikirje(logikirje) {
   else {
     console.log('Kirje lisatud');
   }
-
 }
 
 /**
@@ -365,7 +366,7 @@ MongoClient.connect(
 
       // Käivita veebiserver 
       httpsServer.listen(config.HTTPSPORT, function () {
-        console.log('HTTPS-Server kuuldel pordil: ' + server.address().port);
+        console.log('HTTPS-Server kuuldel pordil: ' + httpsServer.address().port);
       });
 
     }

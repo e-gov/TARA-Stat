@@ -15,10 +15,10 @@ function alusta() {
         var r = $('<tr></tr>');
         r.appendTo(t);
         $('<td></td>')
-        .text(kirjed[i]._id.klient)
+        .text(kirjed[i]._id.clientId)
         .appendTo(r);
         $('<td></td>')
-        .text(kirjed[i]._id.meetod)
+        .text(kirjed[i]._id.method)
         .appendTo(r);
         $('<td></td>')
         .text(kirjed[i].kirjeteArv)
@@ -46,8 +46,8 @@ function alusta() {
             [
               {
                 "_id": {
-                  "klient": "klientrakendus A",
-                  "meetod": "eIDAS"
+                  "clientId": "klientrakendus A",
+                  "method": "eIDAS"
                 },
                 "kirjeteArv": 1
               },

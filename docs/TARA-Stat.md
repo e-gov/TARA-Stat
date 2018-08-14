@@ -327,7 +327,7 @@ Eeldused:
 - masinasse on loodud koodirepo `https://github.com/e-gov/TARA-Stat` kohalik git-koopia ja see on värske (vajadusel värskendatud)
 
 Tee toimingud:
-- sea veebirakenduse konf-ifailis `/opt/TARA-Stat/config.js` vajalikud väärtused 
+- sea veebirakenduse konf-ifailis `/opt/TARA-Stat/config.js` vajalikud väärtused
 - käivita skript: `sudo bash /opt/TARA-Stat/scripts/TARA-Stat-seadista-rakendus.sh`:
 
 Skript teeb:
@@ -396,8 +396,10 @@ Tee toimingud:
 Väikese tarkvarauuenduse puhul on võimalik värskenduste tõmbamine repot üle kirjutamata:
 
 - `cd /opt/TARA-Stat`
-- `sudo git checkout .` - see on vajalik, kuna rakenduse seadistamisel on `config.js` muudetud. Pull-i tegemisel tekib muidu konflikt.
+- `sudo git checkout -- .` - maagiline toiming, mis on vajalik, kuna rakenduse seadistamisel on `config.js` muudetud. Pull-i tegemisel tekib muidu konflikt.
 - `sudo git pull origin master` - tõmba värskendused (kaustas `TARA-Stat`).
+
+Mõlemal juhul on seejärel vajalik veebirakenduse uuesti seadistamine (vt jaotis "Seadista veebirakendus").
 
 ### 2.8 VM tulemüüri seadistamine
 
@@ -554,8 +556,8 @@ Sirviku teated:
 Veebirakenduse veateated:
 
 kood | veateade | vea lahendamise soovitus
-ERR-01 | Logibaasiga ühendumine ebaõnnestus | Kontrollida, kas MongoDB töötab
-ERR-02 | Viga logibaasist lugemisel | Kontrollida, kas MongoDB töötab
+ERR-01 | Logibaasiga ühendumine ebaõnnestus | Kas MongoDB töötab? Kas TARA-Stat veebirakendus on logibaasiga ühendumiseks seadistatud?
+ERR-02 | Viga logibaasist lugemisel | Kas MongoDB töötab?
 ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Serveris
 ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
 ERR-05 | Kirjutamine logibaasi ebaõnnestus | Kontrollida kettamahtu ja kirjutamisõigusi
