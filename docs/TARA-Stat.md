@@ -501,9 +501,7 @@ Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasi
 
 ### 3.1 Logikirjete lisamise testrakendus
 
-`LogikirjeteSaatmiseTest.js` on eraldi VM-i paigaldatav lihtne Node.js rakendus, mis etendab logikirjeid TARA-Stat logibaasi saatvat TARA-Server-it. Testrakenduse võib paigaldada käsitsi või skriptiga.
-
-Käsitsi paigaldamine:
+`LogikirjeteSaatmiseTest.js` on eraldi VM-i paigaldatav lihtne Node.js rakendus, mis etendab logikirjeid TARA-Stat logibaasi saatvat TARA-Server-it. Testrakendus tuleb paigaldada käsitsi.
 
 1. Kustuta vana kood: `sudo rm -R /opt/TARA-Stat`
 2. Paigalda TARA-Stat kood kausta `/opt/TARA-Stat`:
@@ -511,18 +509,8 @@ Käsitsi paigaldamine:
  - `sudo git clone https://github.com/e-gov/TARA-Stat`
  - `cd /opt/TARA-Stat`
 3. Sea testrakenduse koodis TARA-Stat serveri domeeninimi, vajadusel ka port
-4. Paigalda Node.js teegid:
-  - `sudo npm install body-parser --save`
-  - `sudo npm install ejs --save`
-  - `sudo npm install express --save`
-  - `sudo npm install mongodb --save`
-  - `sudo npm install rwlock --save`
 
-Skriptiga paigaldamine. Paigaldada võib ka koodirepo kaustas `TARA-Stat/scripts` asuva paigaldusskriptiga `TARA-Stat-paigalda-test.sh`:
-- `cd /opt/TARA-Stat/scripts`
-- `sudo bash TARA-Stat-paigalda-test.sh`
-
-Käivitamine. Makettrakenduse käivitamiseks sisesta: 
+Testrakenduse käivitamiseks sisesta: 
 
 `nodejs LogikirjeteSaatmiseTest`
 
