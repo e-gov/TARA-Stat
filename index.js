@@ -354,14 +354,14 @@ MongoClient.connect(
   (err, client) => {
     if (err === null) {
       // console.log("--- Logibaasiga ühendumine õnnestus");
-      db = client.db(LOGIBAAS);
+      db = client.db(config.LOGIBAAS);
 
       // Käivita TCP server
-      tcpserver.listen(TCPPORT);
-      console.log('TCP-Server kuuldel pordil: ' + TCPPORT);
+      tcpserver.listen(config.TCPPORT);
+      console.log('TCP-Server kuuldel pordil: ' + config.TCPPORT);
 
       // Käivita veebiserver 
-      server.listen(port, function () {
+      server.listen(config.HTTPSPORT, function () {
         console.log('HTTPS-Server kuuldel pordil: ' + server.address().port);
       });
 

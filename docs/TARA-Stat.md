@@ -391,8 +391,7 @@ Tee toimingud:
 - `sudo rm -R /opt/TARA-Stat` - kustuta vana kood.
 - `cd /opt`
 - `sudo git clone https://github.com/e-gov/TARA-Stat` - paigalda TARA-Stat kood kausta `/opt/TARA-Stat`.
-- `cd /opt/TARA-Stat/scripts`
-- `sudo bash TARA-Stat-seadista-rakendus.sh` - seadista rakendus.
+- `sudo bash /opt/TARA-Stat/scripts/TARA-Stat-seadista-rakendus.sh` - seadista rakendus.
 
 Väikese tarkvarauuenduse puhul on võimalik värskenduste tõmbamine repot üle kirjutamata:
 
