@@ -87,6 +87,7 @@ Kirje:
   "time" : "<kuupäeva formaat>",
   "clientId" : "openIdDemo",
   "method" : "banklink",
+  "bank" : "SEB",
   "operation" : "START_AUTH"
 }
 ```
@@ -98,6 +99,7 @@ Kirje:
   "time" : "<kuupäeva formaat>",
   "clientId" : "openIdDemo",
   "method" : "banklink",
+  "bank" : "SEB",
   "operation" : "SUCCESSFUL_AUTH"
 }
 ```
@@ -109,12 +111,13 @@ Kirje:
   "time" : "<kuupäeva formaat>",
   "clientId" : "openIdDemo",
   "method" : "banklink",
+  "bank" : "SEB",
   "operation" : "ERROR",
   "error" : "INTERNAL_ERROR",
 }
 ```
 
-- `time`, `clientId`, `method` ja `operation` peavad saadetavas päringus olema alati. Kui mõni neist on puudu, siis tagastab TARA-Stat veateate `Valesti moodustatud logikirje`. Element `error` ei ole kohustuslik; see lisatakse TARA-Stat-i ainult siis, kui `operation` väärtus on `ERROR`.
+- `time`, `clientId`, `method` ja `operation` peavad saadetavas päringus olema alati. `bank` on kohustuslik ainult juhul kui tegemist on pangalingi kirjega (`method` väärtus on `banklink` ). Kui mõni neist on puudu, siis tagastab TARA-Stat veateate `Valesti moodustatud logikirje`. Element `error` ei ole kohustuslik; see lisatakse TARA-Stat-i ainult siis, kui `operation` väärtus on `ERROR`.
 
 TARA-Stat võtab saadetud kirjest olulised väljad, moodustab nendest logikirje ja salvestab logibaasi (MongoDB).
 
@@ -125,6 +128,7 @@ Logibaasi salvestatakse kirje vormingus:
   "time": "<ISO 8601 kuupäev>",
   "clientID": "<klientrakenduse nimi>",
   "method": "<autentimismeetod>",
+  "bank": "<panga kood>",
   "operation": "<sündmuse koodnimetus>",
   "error": "<veateade>"
 }
@@ -134,6 +138,7 @@ kus:
 - `ISO 8601 kuupäev` on ajatempel kujul `2018-04-28`, millele võib järgneda kellaaja osa
 - klientrakenduse nimi on TARA-s registreeritud klientrakenduse nimi
 - autentimismeetod peab olema vastavalt TARA [tehnilises kirjelduses](https://e-gov.github.io/TARA-Doku/TehnilineKirjeldus#43-identsust%C3%B5endip%C3%A4ring) määratule.
+- panga kood on pangalingiga autentimise puhul panga lühinimetus (läbivalt suurte tähtedega)
 - sündmuse koodnimetus peab olema vastavalt TARA [kasutusstatistika spetsifikatsioonile](https://e-gov.github.io/TARA-Doku/Statistika):
   - `START_AUTH` - autentimine alanud
   - `SUCCESSFUL_AUTH` - autentimise edukas lõpp
