@@ -393,6 +393,9 @@ Täpne juhis, kas vajalik on täielik uuestipaigaldamine või on võimalik osali
 Koodi uuesti paigaldamine repost:
 
 Tee toimingud:
+
+- `sudo systemctl stop tarastat` - seiska veebirakendus (juhul kui see käib) 
+
 - `sudo rm -R /opt/TARA-Stat` - kustuta vana kood.
 - `cd /opt`
 - `sudo git clone https://github.com/e-gov/TARA-Stat` - paigalda TARA-Stat kood kausta `/opt/TARA-Stat`.
