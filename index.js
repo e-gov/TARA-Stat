@@ -221,7 +221,7 @@ function salvestaLogikirje(logikirje) {
     salvestatavKirje.error = kirjeObjektina.error;
   }
   // console.log('Salvestatav kirje: ' +
-  JSON.stringify(salvestatavKirje, null, 2));
+  // JSON.stringify(salvestatavKirje, null, 2));
 
   // WriteResult objekt
   var lisamiseTulemus;
