@@ -92,12 +92,13 @@ app.use(bodyParser.json());
 // Kuva esileht
 app.get('/', function (req, res) {
   // Kas logibaasiga ühendus on loodud?
+  let utc = new Date().toJSON();
   if (db !== null) {
-    console.log("Logibaasiga ühendumine õnnestus");
+    console.log(utc + " Logibaasiga ühendumine õnnestus");
     res.render('pages/index');
   }
   else {
-    console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
+    console.log(utc + " ERR-01: Logibaasiga ühendumine ebaõnnestus");
     res.render('pages/viga', { veateade: "ERR-01: Logibaasiga ühendumine ebaõnnestus" });
   }
 });
@@ -137,13 +138,14 @@ app.get('/stat', (req, res) => {
         }
       ])
       .toArray(function (err, kirjed) {
-        console.log('Täidan päringu andmebaasi. Leitud kirjeid: ' +
-          kirjed.length);
+        let utc = new Date().toJSON();
         if (err === null) {
+          console.log(utc + ' Päring andmebaasi täidetud. Leitud kirjeid: ' +
+            kirjed.length);
           callback(kirjed);
         }
         else {
-          console.log('ERR-02: Viga logibaasist lugemisel');
+          console.log(utc + ' ERR-02: Viga logibaasist lugemisel');
           /* TODO Ajax-päringule vastamisel see pole adekvaatne */
           res.render('pages/viga', { veateade: "ERR-02: Viga logibaasist lugemisel" });
         }
@@ -182,7 +184,8 @@ app.get('/status', function (req, res) {
       kirjeldus: 'elutukse'
     });
   if (lisamiseTulemus.writeError) {
-    console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");
+    let utc = new Date().toJSON();
+    console.log(utc + " ERR-05: Kirjutamine logibaasi ebaõnnestus");
     res.status(500).send('ERR-05: Kirjutamine logibaasi ebaõnnestus')
   }
   res.status(200).send('OK');
@@ -217,19 +220,20 @@ function salvestaLogikirje(logikirje) {
   if (kirjeObjektina.error) {
     salvestatavKirje.error = kirjeObjektina.error;
   }
-  console.log('Salvestatav kirje: ' +
-    JSON.stringify(salvestatavKirje, null, 2));
+  // console.log('Salvestatav kirje: ' +
+  JSON.stringify(salvestatavKirje, null, 2));
 
   // WriteResult objekt
   var lisamiseTulemus;
   lisamiseTulemus = db
     .collection(config.COLLECTION)
     .insertOne(salvestatavKirje);
+  let utc = new Date().toJSON();
   if (lisamiseTulemus.writeError) {
-    console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");
+    console.log(utc + " ERR-05: Kirjutamine logibaasi ebaõnnestus");
   }
   else {
-    console.log('Kirje lisatud');
+    console.log(utc + ' Kirje lisatud logibaasi');
   }
 }
 
@@ -241,13 +245,14 @@ function salvestaLogikirje(logikirje) {
  */
 function tootleSyslogKirje(syslogKirje) {
   let osad = syslogKirje.split('{');
+  let utc = new Date().toJSON();
   if (osad.length > 1) {
     let logikirje = '{' + osad[1];
-    console.log('Saadud: ' + logikirje);
+    console.log(utc + ' Saadud: ' + logikirje);
     salvestaLogikirje(logikirje);
   }
   else {
-    console.log('Ei suuda Syslog kirjest JSON-t eraldada');
+    console.log(utc + ' Ei suuda Syslog kirjest JSON-t eraldada');
   }
 }
 
@@ -282,7 +287,8 @@ let tcpServer = net.createServer((socket) => {
 
   // Andmete saabumise käsitleja
   socket.on('data', function (data) {
-    console.log('TARA-Stat: saadud: ' + data.length + ' baiti');
+    let utc = new Date().toJSON();
+    console.log(utc + ' Saadud: ' + data.length + ' baiti');
     // Võta andmepuhvrisse kirjutamise lukk
     lock.writeLock(function (release) {
       // Lisa saabunud andmed puhvrisse
@@ -298,17 +304,20 @@ let tcpServer = net.createServer((socket) => {
   // Ühenduse sulgemise käsitleja
   socket.on('close',
     () => {
-      console.log('TARA-Stat: ühendus suletud');
+      let utc = new Date().toJSON();
+      console.log(utc + ' TARA-Stat: ühendus suletud');
     });
 
   // Ühenduse vea käsitleja
   socket.on('error',
     (errorMessage) => {
-      console.log("TARA-Stat: Viga logikirje vastuvõtmisel (TCP");
+      let utc = new Date().toJSON();
+      console.log(utc + " Viga logikirje vastuvõtmisel (TCP");
       console.log(errorMessage);
     });
 
-  console.log('TARA-Stat: ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
+  let utc = new Date().toJSON();  
+  console.log(utc + ' Ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
   socket.write(`TARA-Stat kuuldel\r\n`);
 
 });
@@ -361,16 +370,18 @@ MongoClient.connect(
       db = client.db(config.LOGIBAAS);
 
       // Käivita TCP server
+      let utc = new Date().toJSON();
       tcpServer.listen(config.TCPPORT);
-      console.log('TCP-Server kuuldel pordil: ' + config.TCPPORT);
+      console.log(utc + ' TCP-Server kuuldel pordil: ' + config.TCPPORT);
 
       // Käivita veebiserver 
       httpsServer.listen(config.HTTPSPORT, function () {
-        console.log('HTTPS-Server kuuldel pordil: ' + httpsServer.address().port);
+        console.log(utc + ' HTTPS-Server kuuldel pordil: ' + httpsServer.address().port);
       });
 
     }
     else {
-      console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
+      let utc = new Date().toJSON();
+      console.log(utc + " ERR-01: Logibaasiga ühendumine ebaõnnestus");
     }
   });
