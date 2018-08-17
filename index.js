@@ -127,7 +127,8 @@ app.get('/stat', (req, res) => {
             _id: {
               "clientId": "$clientId",
               "method": "$method",
-              "operation": "$operation"
+              "operation": "$operation",
+              "bank": "$bank"
             },
             kirjeteArv: { $sum: 1 }
           }
@@ -220,6 +221,9 @@ function salvestaLogikirje(logikirje) {
   };
   if (kirjeObjektina.error) {
     salvestatavKirje.error = kirjeObjektina.error;
+  }
+  if (kirjeObjektina.method == 'banklink') {
+    salvestatavKirje.bank = kirjeObjektina.bank;
   }
   // console.log('Salvestatav kirje: ' +
   // JSON.stringify(salvestatavKirje, null, 2));

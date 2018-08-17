@@ -9,8 +9,9 @@ function alusta() {
       var t = $('<table><tr>' +
       '<th>klientrakendus</th>' +
       '<th>autentimismeetod</th>' +
-      '<th>autentimisi</th>' +
+      '<th>pank</th>' +
       '<th>sündmus</th>' +
+      '<th>autentimisi</th>' +
       '</tr></table>');
       for (var i = 0; i < kirjed.length; i++) {
         var r = $('<tr></tr>');
@@ -20,6 +21,9 @@ function alusta() {
         .appendTo(r);
         $('<td></td>')
         .text(kirjed[i]._id.method)
+        .appendTo(r);
+        $('<td></td>')
+        .text(kirjed[i]._id.bank)
         .appendTo(r);
         $('<td></td>')
         .text(kirjed[i]._id.operation)

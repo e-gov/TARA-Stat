@@ -478,7 +478,18 @@ Probleemide lahendamiseks saab kasutada teenuse enda logisid (vt jaotis "Olulise
 
 ### 2.12 Logibaasi haldamine
 
-Kui tekib vajadus välja selgitada, mis seisus on MongoDB andmebaasi sisu ja kasutajate kontod või logibaasi tühjendada, siis tee järgmist:
+Kui tekib vajadus välja selgitada, mis seisus on MongoDB andmebaasi sisu või või logibaasi tühjendada, siis tee järgmist:
+
+käsk | selgitus
+-----|---------
+`mongo -u andmehaldur -p changeit -authenticationDatabase users;` | ava MongoDB käsureavahend, logides sisse kasutajaga `andmehaldur`
+`use logibaas` | lülitu logibaasile
+`show collections` | peab näitama: `autentimised`
+`db.autentimised.find().sort({_id:1}).limit(5);` | kuva 5 viimast kirjet
+`db.autentimised.remove({})` | tühjenda logibaas
+`exit` | välju CLI-st
+
+Andmebaasi kasutajaid haldamiseks tuleb käsureavahendisse sisse logida administraatorina:
 
 käsk | selgitus
 -----|---------
@@ -489,11 +500,6 @@ käsk | selgitus
 `use users` | lülitus andmebaasile `users`
 `show users` | kuva kasutajakontod andmebaasis `users`; peab näitama kasutajaid `andmehaldur` ja `rakendus`
 `db.auth("andmehaldur", "changeit")` | logi sisse andmehaldurina
-`use logibaas` | lülitu logibaasile
-`show collections` | peab näitama: `autentimised`
-`db.autentimised.find().sort({_id:1}).limit(5);` | kuva 5 viimast kirjet
-`db.autentimised.remove({})` | tühjenda logibaas
-`exit` | välju CLI-st
 
 Vaata lisaks:
 - [mongo](https://docs.mongodb.com/manual/reference/program/mongo/)
