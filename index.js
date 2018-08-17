@@ -253,7 +253,7 @@ function tootleSyslogKirje(syslogKirje) {
   let utc = new Date().toJSON();
   if (osad.length > 1) {
     let logikirje = '{' + osad[1];
-    console.log(utc + ' Saadud: ' + logikirje);
+    console.log(' Logikirje: ' + logikirje);
     salvestaLogikirje(logikirje);
   }
   else {
