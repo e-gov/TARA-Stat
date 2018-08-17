@@ -238,7 +238,7 @@ function salvestaLogikirje(logikirje) {
     console.log(utc + " ERR-05: Kirjutamine logibaasi ebaõnnestus");
   }
   else {
-    console.log(utc + ' Kirje lisatud logibaasi');
+    console.log(' Kirje lisatud logibaasi');
   }
 }
 
@@ -253,7 +253,7 @@ function tootleSyslogKirje(syslogKirje) {
   let utc = new Date().toJSON();
   if (osad.length > 1) {
     let logikirje = '{' + osad[1];
-    console.log(' Logikirje: ' + logikirje);
+    console.log(' ' + logikirje);
     salvestaLogikirje(logikirje);
   }
   else {
