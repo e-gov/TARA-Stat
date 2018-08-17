@@ -119,15 +119,15 @@ app.get('/stat', (req, res) => {
       .aggregate([
         {
           $match: {
-            time: { $regex: r },
-            operation: { $eq: "SUCCESSFUL_AUTH" }
+            time: { $regex: r }
           }
         },
         {
           $group: {
             _id: {
               "clientId": "$clientId",
-              "method": "$method"
+              "method": "$method",
+              "operation": "$operation"
             },
             kirjeteArv: { $sum: 1 }
           }

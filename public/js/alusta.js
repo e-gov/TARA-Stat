@@ -10,6 +10,7 @@ function alusta() {
       '<th>klientrakendus</th>' +
       '<th>autentimismeetod</th>' +
       '<th>autentimisi</th>' +
+      '<th>sündmus</th>' +
       '</tr></table>');
       for (var i = 0; i < kirjed.length; i++) {
         var r = $('<tr></tr>');
@@ -19,6 +20,9 @@ function alusta() {
         .appendTo(r);
         $('<td></td>')
         .text(kirjed[i]._id.method)
+        .appendTo(r);
+        $('<td></td>')
+        .text(kirjed[i]._id.operation)
         .appendTo(r);
         $('<td></td>')
         .text(kirjed[i].kirjeteArv)
@@ -48,6 +52,7 @@ function alusta() {
                 "_id": {
                   "clientId": "klientrakendus A",
                   "method": "eIDAS"
+                  "operation": "START_AUTH", "ERROR" või ""SUCCESSFUL_AUTH"
                 },
                 "kirjeteArv": 1
               },
