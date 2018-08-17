@@ -119,7 +119,8 @@ app.get('/stat', (req, res) => {
       .aggregate([
         {
           $match: {
-            time: { $regex: r }
+            time: { $regex: r },
+            operation: { $eq: "SUCCESSFUL_AUTH" }
           }
         },
         {
