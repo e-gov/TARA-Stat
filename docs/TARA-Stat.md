@@ -524,8 +524,8 @@ Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasi
  - `cd /opt`
  - `sudo git clone https://github.com/e-gov/TARA-Stat`
  - `cd /opt/TARA-Stat`
-3. Sea testrakenduse koodis TARA-Stat serveri domeeninimi, vajadusel ka port, nt:
- -  `sudo nano -Ynone LogikirjeteSaatmiseTest.js`
+3. Sea testrakenduse koodis TARA-Stat serveri domeeninimi, vajadusel ka port, nt redaktoriga nano:
+ -  `sudo nano -Ynone LogikirjeteSaatmiseTest.js` (`Ctrl+O` salvesta)
 
 Testrakenduse käivitamiseks sisesta: 
 
@@ -554,7 +554,7 @@ TARA-Stat-is on rakendatud järgmised turvavalikud.
 1. Veebirakenduse API-s on kasutusel ainult HTTPS. (Märkus. Syslog TCP ühenduses ei rakendata).
 1. Veebirakenduse ja MongoDB suhtluses ei rakendata TLS-i. Kuna andmebaas suhtleb ainult samas masinas oleva rakendusega ja masinas ei ole teisi rakendusi, ei ole TLS-i hädavajalik.
 
-### 4.3 Sisendi puhastamine. 
+### 4.3 Sisendi puhastamine 
 Kaitse on rakendatud ohuvektorile: rakenduse kokkujooksmine vales vormingus andmete saatmisel logikirjete vastuvõtmise otspunkti (puhvri ületäitumine eraldajateta kirjete puhul; viga JSON-kirje parsimisel). 
 
 ### 4.4 Andmebaasi kaitse
