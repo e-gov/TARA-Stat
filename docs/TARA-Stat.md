@@ -533,33 +533,44 @@ Testrakenduse käivitamiseks sisesta:
 
 Iga käivitamisega genereeritakse juhuslikult teatud arv logikirjeid ja saadetakse TARA-Stat logibaasi.
 
-## LISA 1 Turvamine
+## 4 Turvamine
 
 TARA-Stat-is on rakendatud järgmised turvavalikud.
 
-1. Omaette VM. TARA-Stat paigaldatakse eraldi VM-i. VM-is ei ole teisi rakendusi. 
-1. Ainult sisevõrgus. Mikroteenus on ligipääsetav ainult organisatsiooni sisevõrgus.
-1. <strike>API kaitse võti. Logikirje lisamise otspunkt kaitstakse API võtmega (salasõnaga). API võti paigaldatakse TARA-Serverisse ja pannakse kaasa igas päringus logikirje lisamise otspunkti poole.</strike> (Märkus. Syslog TCP ühenduses ei rakendata). Statistika väljastamise otspunkt API võtmega kaitset ei vaja, kuid on ligipääsetav ainult organisatsiooni sisevõrgus. Elutukse otspunkt on ligipääsetav ainult organisatsiooni sisevõrgus.
-1. HTTPS. Veebirakenduse API-s ainult HTTPS. (Märkus. Syslog TCP ühenduses ei rakendata).
-1. Andmebaasikasutaja autentimine. Veebirakendus pöördub MongoDB poole eraldi andmebaasikasutajana (`rakendus`). Andmebaasikasutaja autenditakse. Kasutusel on MongoDB vaikimisi autentimismehhanism - soolaga salasõna põhine.
-1. Rollipõhine pääsuhaldus andmebaasis. Admin on eraldi andmebaasikasutaja.
-1. Veebirakenduse ja MongoDB suhtluses ei rakendata TLS-i. Kuna andmebaas suhtleb ainult samas masinas oleva rakendusega ja masinas ei ole teisi rakendusi, ei ole TLS-i hädavajalik.
-1. Andmebaasi ei krüpteerita, kuna konfidentsiaalsusvajadus ei ole kõrge.
+### 4.1 Juurdepääsu kaitse
+
+1. TARA-Stat paigaldatakse eraldi VM-i. VM-is ei ole teisi rakendusi. 
+1. TARA-Stat on ligipääsetav ainult organisatsiooni sisevõrgus.
+1. Logikirje lisamise otspunktis (Syslog TCP ühendus) on juurdepääs piiratud võrgu tasandil.
+1. Statistika väljastamise otspunkt API võtmega kaitset ei vaja, kuid on ligipääsetav ainult organisatsiooni sisevõrgus.
+1. Elutukse otspunkt on ligipääsetav ainult organisatsiooni sisevõrgus.
+1. Veebirakendus pöördub MongoDB poole eraldi andmebaasikasutajana (`rakendus`). Andmebaasikasutaja autenditakse. Kasutusel on MongoDB vaikimisi autentimismehhanism - soolaga salasõna põhine.
+1. Admin on eraldi andmebaasikasutaja.
 1. Nii veebirakendus kui ka MongoDB käitatakse eraldi, spetsiaalsete kasutajate alt (`tarastat` ja `mongodb`).
 1. Ligipääs andmebaasile (kirjutamine) on kaitstud ka failisüsteemi õiguste tasemel.
-1. Andmebaasi võrgus nähtavuse piiramine. Andmebaas ei ole nähtav VM-st väljapoole. Andmebaasi kasutab ainult samas masinas asuv veebirakendus. 
+1. Andmebaas ei ole nähtav VM-st väljapoole. Andmebaasi kasutab ainult samas masinas asuv veebirakendus. 
+
+### 4.2 Transpordi kaitse
+1. Veebirakenduse API-s on kasutusel ainult HTTPS. (Märkus. Syslog TCP ühenduses ei rakendata).
+1. Veebirakenduse ja MongoDB suhtluses ei rakendata TLS-i. Kuna andmebaas suhtleb ainult samas masinas oleva rakendusega ja masinas ei ole teisi rakendusi, ei ole TLS-i hädavajalik.
+
+### 4.3 Sisendi puhastamine. 
+Kaitse on rakendatud ohuvektorile: rakenduse kokkujooksmine vales vormingus andmete saatmisel logikirjete vastuvõtmise otspunkti (puhvri ületäitumine eraldajateta kirjete puhul; viga JSON-kirje parsimisel). 
+
+### 4.4 Andmebaasi kaitse
+1. Andmebaasi ei krüpteerita, kuna konfidentsiaalsusvajadus ei ole kõrge.
 1. Andmebaasi auditilogi ei peeta, kuna terviklusvajadus ei ole nii kõrge.
 
 Vajadusel vt taustaks:
 - MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega.
 
-## LISA 2 Käideldavus
+## 5 Käideldavus
 
 TARA-Stat-i võib logikirjeid saata mitu TARA-Serveri instantsi.
 
 TARA-Stat ise ei ole mõeldud mitmes instantsis paigaldamiseks. Mitmes instantsis paigaldamine oleks küll võimalik, kuid kasutusstatistika koguneks siis instantside kaupa ositi.
 
-## LISA 3 Veateated
+## LISA 1 Veateated
 
 Sirviku teated:
 
