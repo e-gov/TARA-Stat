@@ -16,7 +16,7 @@ config.HTTPS_KEY = 'https.key'; // HTTPS privaatvõtme failinimi
 config.HTTPS_CERT = 'https.cert'; // HTTPS serdi failinimi
 
 // TCP-TLS Serveri seadistus 
-config.TCP_TLS_Port = 5001; // TCP (TLS) Serveri port
+config.TCP_TLS_PORT = 5001; // TCP (TLS) Serveri port
 config.TCP_TLS_KEY = 'tcp-tls.key'; // TCP-TLS privaatvõtme failinimi
 config.TCP_TLS_CERT = 'tcp-tls.cert'; // TCP-TLS serdi failinimi
 
