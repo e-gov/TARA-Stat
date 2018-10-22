@@ -2,7 +2,9 @@
 
 # TARA-Stat-genereeri-votmed.sh
 #
-# Genereeri TARA-Stat veebirakenduse HTTPS privaatvõti ja sert
+# Genereeri TARA-Stat veebirakenduse:
+# 1) HTTPS Serveri privaatvõti ja sert (self-signed)
+# 2) TCP TLS Serveri privaatvõti ja sert (self-signed)
 #
 
 # ------------------------------
@@ -10,7 +12,7 @@
 #
 function lopeta {
   echo
-  echo " --- Võtmete paigaldamise LÕPP"
+  echo " --- Võtmete genereerimise LÕPP"
   echo
   exit
 }
@@ -30,7 +32,8 @@ function kasJatkan {
 
 # 0. Kontrollküsimus
 echo
-echo " --- Genereerin TARA-Stat veebirakenduse HTTPS privaatvõtme ja serdi"
+echo " --- Genereerin TARA-Stat veebirakenduse HTTPS Serveri"
+echo "     ja TCP TLS Serveri privaatvõtmed ja serdid (self-signed)"
 echo
 kasJatkan
 
@@ -41,10 +44,23 @@ cd /opt/TARA-Stat
 mkdir keys
 cd keys
 
-openssl genrsa -out tara-stat.key 2048
-openssl req -new -x509 -key tara-stat.key -out tara-stat.cert -days 3650 -subj /CN=tara-stat
+# HTTPS Serveri võtmepaar ja sert
+openssl genrsa -out tara-stat-https.key 2048
+openssl req -new -x509 \
+  -key tara-stat-https.key \
+  -out tara-stat-https.cert \
+  -days 3650 \
+  -subj /CN=tara-stat
 
-echo Veendu, et failid tara-stat.cert ja tara-stat.key moodustati
+# TCP TLS Serveri võtmepaar ja sert
+openssl genrsa -out tara-stat-tcp-tls.key 2048
+openssl req -new -x509 \
+  -key tara-stat-tcp-tls.key \
+  -out tara-stat-tcp-tls.cert \
+  -days 3650 \
+  -subj /CN=tara-stat
+
+echo Veendu, et failid moodustati
 echo
 ls -l
 
