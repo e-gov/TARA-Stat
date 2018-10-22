@@ -2,10 +2,11 @@
 
 # TARA-Stat-genereeri-votmed.sh
 #
-# Genereeri TARA-Stat veebirakenduse:
+# Genereeri TARA-Stat veebirakenduse jaoks krüptomaterjal:
 # 1) HTTPS Serveri privaatvõti ja sert (self-signed)
 # 2) TCP TLS Serveri privaatvõti ja sert (self-signed)
 #
+# Krüptomaterjal luuakse kausta: /opt/keys
 
 # Värvid
 ORANGE='\033[0;33m'
@@ -44,12 +45,13 @@ kasJatkan
 # ------------------------------
 # 1. Kui paigaldaja soovib, siis genereeritakse võtmepaar ja sert
 #
-cd /opt/TARA-Stat
+cd /opt
 mkdir keys
 cd keys
 
 # HTTPS Serveri võtmepaar ja sert
-openssl genrsa -out https.key 2048
+openssl genrsa \
+  -out https.key 2048
 openssl req -new -x509 \
   -key https.key \
   -out https.cert \
@@ -57,7 +59,8 @@ openssl req -new -x509 \
   -subj /CN=tara-stat
 
 # TCP TLS Serveri võtmepaar ja sert
-openssl genrsa -out tcp-tls.key 2048
+openssl genrsa \
+  -out tcp-tls.key 2048
 openssl req -new -x509 \
   -key tcp-tls.key \
   -out tcp-tls.cert \
