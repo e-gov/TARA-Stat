@@ -265,8 +265,8 @@ var TCP_TLS_options = {
     config.TCP_TLS_KEY), 'utf8'),
   cert: fs.readFileSync(path.join(__dirname, '..', 'keys',
     config.TCP_TLS_CERT), 'utf8'),
-  requestCert: false,
-  rejectUnauthorized: false
+  requestCert: true,
+  rejectUnauthorized: true
 };
 
 // Defineeri TCP-TLS Server
