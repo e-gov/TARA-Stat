@@ -168,23 +168,12 @@ TARA-Stat paigaldamiseks ja käitamiseks on vaja järgmisi võtmeid ja salasõnu
 | 4 | `userAdmin` | MongoDB kasutaja, kes haldab MongoDB kasutajaid. Seda rolli täidab VM admin | salasõna | MongoDB paigaldamisel | MongoDB kasutajakontode haldamisel |
 | 5 | `rakendus` | TARA-Stat veebirakenduse konto MongoDB-s | salasõna | määratakse MongoDB paigaldamisel, kantakse ka TARA-Stat veebirakenduse konf-i | TARA-Stat-i poolt pöördumisel MongoDB poole |
 | 6 | `andmehaldur` | MongoDB konto, mille alt kustutatakse aegunud logikirjeid. Andmehalduri rolli täidab VM admin | salasõna | MongoDB paigaldamisel | MongoDB logibaasi haldamisel |
-| 7 | `https://<tara-stat>` | TARA-Stat veebirakendus | organisatsiooni CA poolt väljaantud või _self-signed_ sert ja privaatvõti | TARA-Stat veebirakenduse seadistamisel | Sirviku pöördumisel TARA-Stat-i poole |
+| 7 | `https://<tara-stat>` | TARA-Stat veebirakendus HTTPS serverina | organisatsiooni CA poolt väljaantud või _self-signed_ sert ja privaatvõti | TARA-Stat veebirakenduse seadistamisel | Sirviku pöördumisel TARA-Stat-i poole |
+| 8 | `TARA-Stat TCP TLS server` | TARA-Stat veebirakendus TCP TLS serverina | organisatsiooni CA poolt väljaantud või _self-signed_ sert ja privaatvõti | TARA-Stat veebirakenduse seadistamisel | TARA-Serveri pöördumisel TARA-Stat-i poole |
 
 Statistikakasutaja on TARA-Stat-i suhtes anonüümne inimene. Ta pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole. Statistikakasutajat ei autendita, juurdepääs piiratakse kontekstiga.
 
 Repos olevates konf-ifailides on saladused esitatud väärtustega `changeit`. Toodangupaigalduses tuleb väärtused `changeit` asendada. Paigaldusskriptides küsitakse uusi väärtusi.
-
-Võtmed ja salasõnad tuleks ette valmistada (genereerida või valida) enne paigaldusskriptide käivitamist. Võtmete ja salasõnade ettevalmistamise plaan:
-
-| nr | subjekt  | kredentsiaali(de) tüüp | soovitatav moodustamise viis |
-|:--:|:--------:|-----------------------:|--------------                |
-| 1  | `admin`  | salasõna | vastavalt asutuse paroolipoliitikale |
-| 2  | `tarastat` | salasõna | vastavalt asutuse paroolipoliitikale |
-| 3  | `mongodb` | salasõna | vastavalt asutuse paroolipoliitikale |
-| 4  | `userAdmin` | salasõna | vastavalt asutuse paroolipoliitikale |
-| 5  | `rakendus` | salasõna | vastavalt asutuse paroolipoliitikale |
-| 6  | `andmehaldur` | salasõna | vastavalt asutuse paroolipoliitikale |
-| 7  | `https://<tara-stat>` | organisatsiooni CA poolt väljaantud või _self-signed_ sert ja privaatvõti | genereerida vastavalt juhendile jaotises "Esmakordne paigaldamine" |
 
 ### 1.5 Olulised asukohad
 
@@ -194,6 +183,7 @@ Võtmed ja salasõnad tuleks ette valmistada (genereerida või valida) enne paig
 | `index.js`   | veebirakendus |
 | `scripts`    | paigaldusskriptid |
 | `docs`       | dokumentatsioon |
+| `/opt/keys` | TARA-Stat veebirakenduse võtmed |
 | `/opt/TARA-Stat/config.js` | TARA-Stat veebirakenduse konf-ifail |
 | `/opt/TARA-Stat/log.txt` | TARA-Stat veebirakenduse logi |
 | `/lib/systemd/system/tarastat.service` | TARA-Stat veebirakenduse systemd haldusüksuse kirjeldusfail |
