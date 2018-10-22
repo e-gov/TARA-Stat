@@ -11,10 +11,10 @@ const fs = require('fs');
 const path = require('path');
 
 const HOST = 'tara-stat-makett.ci.kit';
-const PORT = 5002;
-const CA_CERT = 'ca.cert';
-const TCP_TLS_TEST_KEY = 'tcp-tls-test.key';
-const TCP_TLS_TEST_CERT = 'tcp-tls-test.cert';
+const PORT = 5001;
+const CA_CERT = 'ca.cert'; // CA serdifaili nimi
+const TCP_TLS_TEST_KEY = 'tcp-tls-test.key'; // TCP TLS kliendi privaatvõtme faili nimi
+const TCP_TLS_TEST_CERT = 'tcp-tls-test.cert'; // TCP TLS kliendi serdifaili nimi
 
 // Test-logikirjed. Kirje lõpus on \n (0x0A)
 let logikirjed = [
