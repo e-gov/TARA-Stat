@@ -19,12 +19,16 @@
 # - https://stackoverflow.com/questions/26944841/what-is-the-lowest-privileged-user-that-node-js-can-run-as-on-ubuntu?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa (minimaalsed õigused Node.js käitamiseks)
 #
 
+# Värvid
+ORANGE='\033[0;33m'
+NC='\033[0m' # No Color
+
 # ------------------------------
 # Abistaja: Väljasta lõputeade ja välju
 #
 function lopeta {
   echo
-  echo " --- Node.js paigaldamise LÕPP"
+  echo -e "${ORANGE} --- Node.js paigaldamise LÕPP ${NC}"
   echo
   exit
 }
@@ -49,10 +53,10 @@ function kontrolli {
   echo
   if [ "$1" = 0 ]
   then
-    echo " --- $2 -> OK"
+    echo -e "${ORANGE} --- $2 -> OK ${NC}"
     echo
   else  
-    echo " --- $2 -> EBAÕNNESTUS"
+    echo -e "${ORANGE} --- $2 -> EBAÕNNESTUS ${NC}"
     echo
     lopeta
   fi 
@@ -69,26 +73,26 @@ function paigalda_Nodejs_teek {
 # ------------------------------
 # 0. Kontrollküsimus
 echo
-echo " --- TARA-Stat veebirakenduse seadistamine"
+echo -e "${ORANGE} --- TARA-Stat veebirakenduse seadistamine ${NC}"
 echo
 kasJatkan
 
 # ------------------------------
 # Seiska TARA-Stat veebirakendus
-echo " --- Seiskan TARA-Stat veebirakenduse"
+echo -e "${ORANGE} --- Seiskan TARA-Stat veebirakenduse ${NC}"
 echo
 sudo systemctl stop tarastat
 
 # ------------------------------
 # 1. Loon käitluskasutaja (run user)
 echo
-echo " --- Loon kasutaja tarastat, kui see ei ole juba olemas"
+echo -e "${ORANGE} --- Loon kasutaja tarastat, kui see ei ole juba olemas ${NC}"
 echo
 sudo deluser tarastat
 # Loon süsteemse kasutaja (-r) tarastat, kellel pole õigust sisse logida (-s) ja
 # kelle kodukaust on /opt/TARA-Stat. Kodukausta veel ei loo
 sudo useradd -r -s /bin/false --home /opt/TARA-Stat tarastat
-echo " --- Väljastan kontrolliks teabe kasutaja tarastat kohta"
+echo -e "${ORANGE} --- Väljastan kontrolliks teabe kasutaja tarastat kohta ${NC}"
 echo
 id tarastat
 kasJatkan
@@ -97,12 +101,12 @@ kasJatkan
 # 2. Paigaldan rakendusele vajalikud Node.js teegid
 #
 echo
-echo " --- Paigaldan Node.js teegid"
+echo -e "${ORANGE} --- Paigaldan Node.js teegid ${NC}"
 cd /opt/TARA-Stat
 
 # Vali teegirepo
 echo
-echo " --- Vali teegirepo"
+echo -e "${ORANGE} --- Vali teegirepo ${NC}"
 read -p "Kas soovid teegid paigaldada sisemisest teegihoidlast? (y/n)? " prompt
   if [[ $prompt = y || $prompt = Y ]] 
   then
@@ -124,7 +128,7 @@ paigalda_Nodejs_teek "express"
 paigalda_Nodejs_teek "rwlock"
 paigalda_Nodejs_teek "mongodb"
 
-echo " --- Node.js teegid paigaldatud"
+echo -e "${ORANGE} --- Node.js teegid paigaldatud ${NC}"
 echo
 kasJatkan
 
@@ -132,7 +136,7 @@ kasJatkan
 # 4. Paigaldan MongoDB kasutamise salasõna
 #
 echo
-echo " --- Paigaldan MongoDB kasutamise salasõna TARA-Stat konf-i"
+echo -e "${ORANGE} --- Paigaldan MongoDB kasutamise salasõna TARA-Stat konf-i ${NC}"
 read -p "Anna MongoDB kasutaja 'rakendus' salasõna: " MONGOUSERPWD
 sed -i "s/MONGOUSERPWD-changeit/$MONGOUSERPWD/" /opt/TARA-Stat/config.js
 
@@ -145,7 +149,7 @@ cd /opt/TARA-Stat
 # ------------------------------
 # 6. Loon systemd haldusüksuse kirjeldusfaili
 #
-echo " --- Loon systemd haldusüksuse kirjeldusfaili"
+echo -e "${ORANGE} --- Loon systemd haldusüksuse kirjeldusfaili ${NC}"
 echo
 sudo dd of=/lib/systemd/system/tarastat.service << EOF
 [Unit]
@@ -164,7 +168,7 @@ ExecStart=/usr/bin/node /opt/TARA-Stat/index.js
 WantedBy=multi-user.target
 EOF
 
-echo " --- Väljastan kontrolliks systemd haldusüksuse kirjeldusfaili"
+echo -e "${ORANGE} --- Väljastan kontrolliks systemd haldusüksuse kirjeldusfaili ${NC}"
 kasJatkan
 echo " --------------------------------------------"
 cat /lib/systemd/system/tarastat.service
@@ -174,19 +178,19 @@ echo
 # ------------------------------
 # 7. Laen deemoni
 #
-echo " --- Laen deemoni"
+echo -e "${ORANGE} --- Laen deemoni ${NC}"
 echo
 sudo systemctl daemon-reload
 
 # ------------------------------
 # 8. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
 #
-echo " --- Käivitan TARA-Stat veebirakenduse"
+echo -e "${ORANGE} --- Käivitan TARA-Stat veebirakenduse ${NC}"
 echo
 kasJatkan
 sudo systemctl start tarastat
 echo
-echo " --- Kontrollin TARA-Stat veebirakenduse käivitumist"
+echo -e "${ORANGE} --- Kontrollin TARA-Stat veebirakenduse käivitumist ${NC}"
 echo
 kasJatkan
 sudo systemctl status tarastat

@@ -49,18 +49,18 @@ mkdir keys
 cd keys
 
 # HTTPS Serveri võtmepaar ja sert
-openssl genrsa -out tara-stat-https.key 2048
+openssl genrsa -out https.key 2048
 openssl req -new -x509 \
-  -key tara-stat-https.key \
-  -out tara-stat-https.cert \
+  -key https.key \
+  -out https.cert \
   -days 3650 \
   -subj /CN=tara-stat
 
 # TCP TLS Serveri võtmepaar ja sert
-openssl genrsa -out tara-stat-tcp-tls.key 2048
+openssl genrsa -out tcp-tls.key 2048
 openssl req -new -x509 \
-  -key tara-stat-tcp-tls.key \
-  -out tara-stat-tcp-tls.cert \
+  -key tcp-tls.key \
+  -out tcp-tls.cert \
   -days 3650 \
   -subj /CN=tara-stat
 

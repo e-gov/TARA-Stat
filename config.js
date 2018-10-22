@@ -20,10 +20,10 @@ config.HTTPS_PORT = 5000;
 config.HTTPS_SELFSIGNED = true;
 
 // HTTPS privaatvõtme failinimi
-config.HTTPS_KEY = 'tara-stat-https.key';
+config.HTTPS_KEY = 'https.key';
 
 // HTTPS serdi failinimi
-config.HTTPS_CERT = 'tara-stat-https.cert';
+config.HTTPS_CERT = 'https.cert';
 
 // HTTPS pfx-faili nimi (organisatsiooni CA puhul)
 config.HTTPS_PFX = 'https-certificate.pfx';
@@ -38,10 +38,10 @@ config.TCP_TLS_Port = 5002;
 config.TCP_TLS_SELFSIGNED = true;
 
 // TCP-TLS privaatvõtme failinimi
-config.TCP_TLS_KEY = 'tara-stat-tcp-tls.key';
+config.TCP_TLS_KEY = 'tcp-tls.key';
 
 // TCP-TLS serdi failinimi
-config.TCP_TLS_CERT = 'tara-stat-tcp-tls.cert';
+config.TCP_TLS_CERT = 'tcp-tls.cert';
 
 // TCP-TLS pfx-faili nimi (organisatsiooni CA puhul)
 config.TCP_TLS_PFX = 'tcp-tls-certificate.pfx';
