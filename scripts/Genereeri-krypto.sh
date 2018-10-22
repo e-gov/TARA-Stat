@@ -87,8 +87,7 @@ openssl x509 -req \
   -CA ca-crt.pem \
   -CAkey ca-key.pem \
   -CAcreateserial \
-  -out https-crt.pem \
-  -subj /CN=tara-stat
+  -out https-crt.pem
 # Moodusta pfx-fail
 openssl pkcs12 -export \
   -out https.pfx \
