@@ -54,32 +54,38 @@ else {
   };
 }
 
-let client = tls.Socket();
-
-client.connect(options, () => {
-  console.log('TCP-Klient: TARA-Stat-ga ' + HOST + ':' + PORT + ' ühendus loodud');
+const client = tls.connect(options, () => {
+  console.log('TCP-TLS-Klient: TARA-Stat-ga ' + HOST + ':' + PORT + ' ühendus loodud');
+  // Kas kliendi autoriseerimine õnnestus?
+  if (client.authorized) {
+    console.log("TCP-TLS-Klient: server autoriseeris ühenduse.");
+  }
+  else {
+    console.log("TCP-TLS-Klient: server ei autoriseerinud ühendust " +
+      client.authorizationError)
+  }
   // Saada logikirjed
-  logikirjed.forEach((logikirje) => { 
-    console.log('TCP-Klient: saadetud: ' + logikirje);
+  logikirjed.forEach((logikirje) => {
+    console.log('TCP-TLS-Klient: saadetud: ' + logikirje);
     client.write(logikirje);
   });
   // Sule ühendus 3 s pärast
-  setTimeout(() => { 
+  setTimeout(() => {
     client.destroy();
-  }, 3000); 
-  console.log('TCP-Klient: ühendus suletud');
+  }, 3000);
+  console.log('TCP-TLS-Klient: ühendus suletud');
 });
 
 client.on('data', (data) => {
-	console.log('TCP-Klient: TARA-Stat-lt saadud: ' + data);
-	// client.destroy(); // kill client after server's response
+  console.log('TCP-TLS-Klient: TARA-Stat-lt saadud: ' + data);
+  // client.destroy(); // kill client after server's response
 });
 
 client.on('close', () => {
-	console.log('TCP-Klient: TARA-Stat-ga ühendus suletud');
+  console.log('TCP-TLS-Klient: TARA-Stat-ga ühendus suletud');
 });
 
 client.on('error', (ex) => {
-  console.log("TCP-Klient: viga käsitletud");
+  console.log("TCP-TLS-Klient: viga käsitletud");
   console.log(ex);
 });

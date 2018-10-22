@@ -21,5 +21,6 @@ sudo git pull origin master
 echo
 echo -e "${ORANGE} --- TARA-Stat tarkvara värskendatud. "
 echo -e "Krüptomaterjali (kaustas /opt/keys) ei kirjutatud üle."
-echo -e "Ära unusta, et veebirakendus tuleb nüüd uuesti seadistada. ${NC}"
+echo -e "Ära unusta, et veebirakendus tuleb nüüd uuesti seadistada:"
+echo -e "sudo bash /opt/TARA-Stat/scripts/TARA-Stat-seadista-rakendus.sh ${NC}"
 echo
