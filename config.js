@@ -10,41 +10,18 @@ config.LOGIFAIL = '/opt/TARA-Stat/log.txt';
 // TCP Serveri port (TLS-ta; kuulub eemaldamisele)
 config.TCP_PORT = 5001;
 
-/**
- * HTTPS Serveri seadistus
- */ 
-// HTTPS Serveri port
-config.HTTPS_PORT = 5000; 
+// CA sert
+config.CA_CERT = 'ca.cert';
 
-// Kas HTTPS self-signed sert?
-config.HTTPS_SELFSIGNED = true;
+// HTTPS Serveri seadistus
+config.HTTPS_PORT = 5000; // HTTPS Serveri port
+config.HTTPS_KEY = 'https.key'; // HTTPS privaatvõtme failinimi
+config.HTTPS_CERT = 'https.cert'; // HTTPS serdi failinimi
 
-// HTTPS privaatvõtme failinimi
-config.HTTPS_KEY = 'https.key';
-
-// HTTPS serdi failinimi
-config.HTTPS_CERT = 'https.cert';
-
-// HTTPS pfx-faili nimi (organisatsiooni CA puhul)
-config.HTTPS_PFX = 'https-certificate.pfx';
-
-/**
- * TCP-TLS Serveri seadistus
- */ 
-// TCP (TLS) Serveri port
-config.TCP_TLS_Port = 5002;
-
-// Kas TCP-TLS self-signed sert?
-config.TCP_TLS_SELFSIGNED = true;
-
-// TCP-TLS privaatvõtme failinimi
-config.TCP_TLS_KEY = 'tcp-tls.key';
-
-// TCP-TLS serdi failinimi
-config.TCP_TLS_CERT = 'tcp-tls.cert';
-
-// TCP-TLS pfx-faili nimi (organisatsiooni CA puhul)
-config.TCP_TLS_PFX = 'tcp-tls-certificate.pfx';
+// TCP-TLS Serveri seadistus 
+config.TCP_TLS_Port = 5001; // TCP (TLS) Serveri port
+config.TCP_TLS_KEY = 'tcp-tls.key'; // TCP-TLS privaatvõtme failinimi
+config.TCP_TLS_CERT = 'tcp-tls.cert'; // TCP-TLS serdi failinimi
 
 // Andmebaasi nimi
 config.LOGIBAAS = 'logibaas';

@@ -206,7 +206,7 @@ function salvestaLogikirje(logikirje) {
   var kirjeObjektina;
   try {
     kirjeObjektina = JSON.parse(logikirje);
-  } catch(e) {
+  } catch (e) {
     console.log('Ei suuda logikirje JSON-it parsida');
     return;
   }
@@ -268,113 +268,25 @@ function tootleSyslogKirje(syslogKirje) {
   }
 }
 
-/** -------- 7a Defineeri TLS Server --------
- * Vajame TCP TLS serverit. See tuleb luua Node.js 'tls' mooduliga
+/** -------- 7 Defineeri TCP TLS Server --------
+ * Node.js 'tls' mooduliga
  * "tls.Server class is a subclass of net.Server that accepts encrypted connections
  * using TLS "
 */
 // Valmista ette suvandid
-if (config.TCP_TLS_SELFSIGNED) {
-  // Valmista ette self-signed sert
-  var voti = fs.readFileSync(path.join(__dirname, '..', 'keys',
-    config.TCP_TLS_KEY), 'utf8');
-  var sert = fs.readFileSync(path.join(__dirname, '..', 'keys',
-    config.TCP_TLS_CERT), 'utf8');
-  var options = {
-    key: voti,
-    cert: sert,
-    requestCert: false,
-    rejectUnauthorized: false
-  };
-}
-else {
-  // Loe pfx-fail
-  var options = {
-    pfx: fs.readFileSync(path.join(__dirname, '..', 'keys',
-      config.TCP_TLS_PFX)),
-    passphrase: 'changeit',
-    requestCert: false,
-    rejectUnauthorized: false
-  };
-}
+var TCP_TLS_options = {
+  ca: fs.readFileSync(path.join(__dirname, '..', 'keys',
+    config.TCP_TLS_KEY), 'utf8'),
+  key: fs.readFileSync(path.join(__dirname, '..', 'keys',
+    config.TCP_TLS_KEY), 'utf8'),
+  cert: fs.readFileSync(path.join(__dirname, '..', 'keys',
+    config.TCP_TLS_CERT), 'utf8'),
+  requestCert: false,
+  rejectUnauthorized: false
+};
 
 // Defineeri TCP-TLS Server
-const tcpTlsServer = tls.createServer(options, (socket) => {
-
-  // Defineeri ühenduses toimuvatele sündmustele käsitlejad
-
-  /* Andmepuhver.
-    TCP on madalama taseme protokoll, mis tähendab, et logikirje võib tulla mitmes tükis. Ja ka vastupidi, ühes tükis võib tulla mitu logikirjet. TARA-Stat-is tehakse tüki saamisel lõim. Lõimel kulub tüki töötlemiseks natuke aega. Järgmine tükk võib aga juba sisse tulla, sellele tehakse uus lõim, mis alustab omakorda töötlust. Vaja on tagada, et esimene lõim lõpetab enne töö, kui järgmine alustab. S.t vaja on mutex-it (lukustamist). Javas on mutex-võimalus sisse ehitatud. Node.JS-s aga mitte.    
-    Sündmuse 'data' käsitlejad võivad üksteisele sisse sõita.
-    Probleemi ei teki, kui iga kirje tuleb ühes tükis (aga
-    tükis võib olla mitu kirjet).
-    Lukustamiseks on siin kasutatud teeki rwlock.
-  */
- var buffered = '';
-
- /**
-  * Analüüsib andmepuhvrit buffered, eraldab ja suunab
-  * töötlusele (tootleSyslogKirje) kõik reavahetusega lõppevad osad.
-  */
- function eraldaKirjedAndmepuhvrist() {
-   var received = buffered.split('\n');
-   while (received.length > 1) {
-     // Syslog kirje eraldatud
-     let syslogKirje = received[0];
-     buffered = received.slice(1).join('\n');
-     received = buffered.split('\n');
-     tootleSyslogKirje(syslogKirje);
-   }
- }
-
- // Andmete saabumise käsitleja
- socket.on('data', function (data) {
-   console.log('Saadud: ' + data.length + ' baiti');
-   // Võta andmepuhvrisse kirjutamise lukk
-   lock.writeLock(function (release) {
-     // Lisa saabunud andmed puhvrisse
-     buffered += data;
-     // Kui puhveri sisu saab nii pikaks, et see viitab
-     // ebakorrektsele sisendile, võimalikule ründele - 
-     // reavahetuste puudumisele - siis ignoreeri ja tühjenda
-     // puhver
-     if (buffered.length > 10000) {
-       console.log('Puhvri täitumine (> 1000 märki).' + 
-       ' Viitab reavahetuste puudumisele. Ignoreerin saadetud andmeid.');
-       buffered = '';
-     }
-     else {
-       // Eemalda puhvrist täiskirjed
-       eraldaKirjedAndmepuhvrist();
-     }
-     // Vabasta lukk
-     release();
-   });
-
- });
-
- // Ühenduse sulgemise käsitleja
- socket.on('close',
-   () => {
-     console.log('TARA-Stat: ühendus suletud');
-   });
-
- // Ühenduse vea käsitleja
- socket.on('error',
-   (errorMessage) => {
-     console.log("Viga logikirje vastuvõtmisel (TCP");
-     console.log(errorMessage);
-   });
-
- console.log('Ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
- socket.write(`TARA-Stat kuuldel\r\n`);
-
-});
-
-/** -------- 7 Defineeri TCP server -------- 
- * Praegu koodis sees. TCP TLS serveri töölesaamisel sulgeme.
-*/
-let tcpServer = net.createServer((socket) => {
+const tcpTlsServer = tls.createServer(TCP_TLS_options, (socket) => {
 
   // Defineeri ühenduses toimuvatele sündmustele käsitlejad
 
@@ -414,8 +326,8 @@ let tcpServer = net.createServer((socket) => {
       // reavahetuste puudumisele - siis ignoreeri ja tühjenda
       // puhver
       if (buffered.length > 10000) {
-        console.log('Puhvri täitumine (> 1000 märki).' + 
-        ' Viitab reavahetuste puudumisele. Ignoreerin saadetud andmeid.');
+        console.log('Puhvri täitumine (> 1000 märki).' +
+          ' Viitab reavahetuste puudumisele. Ignoreerin saadetud andmeid.');
         buffered = '';
       }
       else {
@@ -448,30 +360,17 @@ let tcpServer = net.createServer((socket) => {
 
 // -------- 8 Defineeri HTTPS server -------- 
 // Valmista ette HTTPS serveri suvandid
-if (config.HTTPS_SELFSIGNED) {
-  // Valmista ette self-signed sert
-  var voti = fs.readFileSync(path.join(__dirname, '..', 'keys',
-    config.HTTPS_KEY), 'utf8');
-  var sert = fs.readFileSync(path.join(__dirname, '..', 'keys',
-    config.HTTPS_CERT), 'utf8');
-  var options = {
-    key: voti,
-    cert: sert,
-    requestCert: false,
-    rejectUnauthorized: false
-  };
-}
-else {
-  // Loe pfx-fail
-  var options = {
-    pfx: fs.readFileSync(path.join(__dirname, '..', 'keys',
-      config.HTTPS_PFX)),
-    passphrase: 'changeit',
-    requestCert: false,
-    rejectUnauthorized: false
-  };
-}
-var httpsServer = https.createServer(options, app);
+var HTTPS_options = {
+  ca: fs.readFileSync(path.join(__dirname, '..', 'keys',
+    config.CA_CERT), 'utf8'),
+  key: fs.readFileSync(path.join(__dirname, '..', 'keys',
+    config.HTTPS_KEY), 'utf8'),
+  cert: sert = fs.readFileSync(path.join(__dirname, '..', 'keys',
+    config.HTTPS_CERT), 'utf8'),
+  requestCert: true,
+  rejectUnauthorized: true
+};
+var httpsServer = https.createServer(HTTPS_options, app);
 
 // -------- 9 Loo ühendus MongoDB - ga ja käivita
 //            TCP ning HTTPS serverid             -------- 
@@ -492,11 +391,6 @@ MongoClient.connect(
     if (err === null) {
       // console.log("--- Logibaasiga ühendumine õnnestus");
       db = client.db(config.LOGIBAAS);
-
-      // Käivita TCP server
-      tcpServer.listen(config.TCP_PORT, () => {
-        console.log('TCP Server kuuldel pordil: ' + config.TCP_PORT);
-      });
 
       // Käivita TCP-TLS server
       tcpTlsServer.listen(config.TCP_TLS_PORT, () => {
