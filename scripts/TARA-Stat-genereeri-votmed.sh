@@ -16,7 +16,7 @@ NC='\033[0m' # No Color
 #
 function lopeta {
   echo
-  echo "${ORANGE} --- Võtmete genereerimise LÕPP ${NC}"
+  echo -e "${ORANGE} --- Võtmete genereerimise LÕPP ${NC}"
   echo
   exit
 }
@@ -26,7 +26,7 @@ function lopeta {
 #
 function kasJatkan {
   echo
-  read -p "${ORANGE} --- Jätkata (y/n)?  ${NC}" prompt
+  read -p " --- Jätkata (y/n)? " prompt
   if [[ $prompt != y && $prompt != Y ]]
   then
     lopeta
@@ -36,8 +36,8 @@ function kasJatkan {
 
 # 0. Kontrollküsimus
 echo
-echo "${ORANGE} --- Genereerin TARA-Stat veebirakenduse HTTPS Serveri ${NC}"
-echo "${ORANGE}     ja TCP TLS Serveri privaatvõtmed ja serdid (self-signed) ${NC}"
+echo -e "${ORANGE} --- Genereerin TARA-Stat veebirakenduse HTTPS Serveri ${NC}"
+echo -e "${ORANGE}     ja TCP TLS Serveri privaatvõtmed ja serdid (self-signed) ${NC}"
 echo
 kasJatkan
 
