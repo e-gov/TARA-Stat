@@ -329,7 +329,7 @@ Skripti sõltuvused:
 Eeldused:
 - Node.js on paigaldatud
 - MongoDB on paigaldatud
-- masinasse on loodud koodirepo `https://github.com/e-gov/TARA-Stat` kohalik git-koopia ja see on värske (vajadusel värskendatud)
+- masinasse on loodud koodirepo `https://github.com/e-gov/TARA-Stat` kohalik git-koopia ja see on värske (vajadusel värskendatud, vt jaotis "2.7 Tarkvarauuenduse paigaldamine")
 
 Tee toimingud:
 - sea veebirakenduse konf-ifailis `/opt/TARA-Stat/config.js` vajalikud väärtused
@@ -372,8 +372,7 @@ Pfx-fail sisaldab privaatvõtit ja serdiahelat. Näiteks
 
 b\) Kui kasutad _self-signed_ serti:
 
-- `sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh` - genereeri _self-signed_ privaatvõti ja sert.  Privaatvõtme faili nimi on vaikimisi `tara-stat.key` ja serdifaili nimi on vaikimisi `tara-stat.cert`. Kui soovid kasutada teisi nimesid, siis muuda vastavalt seadistusi failis `config.js`.
-- Kopeeri privaatvõti ja sert kausta `../keys`.
+- `sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh` - genereeri _self-signed_ privaatvõti ja sert nii HTTPS kui ka TCP TLS serverile.
 - `sudo systemctl start tarastat` - Käivita veebirakendus.
 - `sudo bash TARA-Stat/scripts/TARA-Stat-diagnoosi.sh` - Kontrolli, et nii veebirakendus (teenus `tarastat`) kui ka logibaas (teenus `mongodb`) töötavad. `TARA-Stat-diagnoosi.sh` väljastab diagnostilist teavet - selle skripti võib käivitada igal ajal; see skript ei muuda paigaldust.
 

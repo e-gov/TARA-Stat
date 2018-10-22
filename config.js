@@ -32,7 +32,7 @@ config.HTTPS_PFX = 'https-certificate.pfx';
  * TCP-TLS Serveri seadistus
  */ 
 // TCP (TLS) Serveri port
-consfig.TCP_TLS_Port = 5002;
+config.TCP_TLS_Port = 5002;
 
 // Kas TCP-TLS self-signed sert?
 config.TCP_TLS_SELFSIGNED = false;

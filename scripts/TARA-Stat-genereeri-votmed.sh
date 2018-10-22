@@ -7,12 +7,16 @@
 # 2) TCP TLS Serveri privaatvõti ja sert (self-signed)
 #
 
+# Värvid
+ORANGE='\033[0;33m'
+NC='\033[0m' # No Color
+
 # ------------------------------
 # Abistaja: Väljasta lõputeade ja välju
 #
 function lopeta {
   echo
-  echo " --- Võtmete genereerimise LÕPP"
+  echo "${RED} --- Võtmete genereerimise LÕPP ${NC}"
   echo
   exit
 }
@@ -22,7 +26,7 @@ function lopeta {
 #
 function kasJatkan {
   echo
-  read -p " --- Jätkata (y/n)? " prompt
+  read -p "${RED} --- Jätkata (y/n)?  ${NC}" prompt
   if [[ $prompt != y && $prompt != Y ]]
   then
     lopeta
@@ -32,8 +36,8 @@ function kasJatkan {
 
 # 0. Kontrollküsimus
 echo
-echo " --- Genereerin TARA-Stat veebirakenduse HTTPS Serveri"
-echo "     ja TCP TLS Serveri privaatvõtmed ja serdid (self-signed)"
+echo "${RED} --- Genereerin TARA-Stat veebirakenduse HTTPS Serveri ${NC}"
+echo "${RED}     ja TCP TLS Serveri privaatvõtmed ja serdid (self-signed) ${NC}"
 echo
 kasJatkan
 
