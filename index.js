@@ -19,34 +19,18 @@
 'use strict';
 
 // -------- 1 Teekide laadimine  --------
-
-// TCP ühenduste teek (ilma TLS-ta)
-const net = require('net');
-// TCP ühenduste teek (TLS-ga)
-const tls = require('tls');
-
-// Lukuteek
-var ReadWriteLock = require('rwlock');
-
-// HTTPS (Node.js)
-var https = require('https');
-
-// Sertide laadimiseks
-var fs = require('fs');
-var path = require('path');
-
-// Logimiseks
-var util = require('util');
-
-// Veebiraamistik Express
-const express = require('express');
-
+const net = require('net'); // TCP ühenduste teek (ilma TLS-ta)
+const tls = require('tls'); // TCP ühenduste teek (TLS-ga)
+const ReadWriteLock = require('rwlock'); // Lukuteek
+const https = require('https'); // HTTPS (Node.js)
+const fs = require('fs'); // Sertide laadimiseks
+const path = require('path');
+const util = require('util'); // Logimiseks
+const express = require('express'); // Veebiraamistik Express
 // HTTP päringu parsimisvahend. NB! Ainult application/JSON
 const bodyParser = require('body-parser');
-
 // Node.JS utiliidid
 const f = require('util').format;
-
 // MongoDB
 const MongoClient = require('mongodb').MongoClient;
 

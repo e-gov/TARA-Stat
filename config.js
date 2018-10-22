@@ -7,9 +7,6 @@ var config = {};
 // Logifaili asukoht
 config.LOGIFAIL = '/opt/TARA-Stat/log.txt';
 
-// TCP Serveri port (TLS-ta; kuulub eemaldamisele)
-config.TCP_PORT = 5001;
-
 // CA sert
 config.CA_CERT = 'ca.cert';
 
