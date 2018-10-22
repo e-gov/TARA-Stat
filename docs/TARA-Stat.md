@@ -372,7 +372,7 @@ See on võtmepaar ja sert, millega tehakse võimalikuks sirvikust TARA-Stat stat
 
 Tee toimingud:
 - `sudo systemctl stop tarastat` - seiska TARA-Stat veebirakendus.
-- `sudo bash TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh` -  kanna uued võtmed kausta `../keys` (`TARA-Stat` naaberkaust). _Self-signed_ võtmete kasutamisel genereeri uued võtmed ja sert.
+- `sudo bash /opt/TARA-Stat/scripts/TARA-Stat-genereeri-votmed.sh` -  kanna uued võtmed kausta `../keys` (`TARA-Stat` naaberkaust). _Self-signed_ võtmete kasutamisel genereeri uued võtmed ja sert.
 - `sudo systemctl start tarastat` - taaskäivita veebirakendus.
 
 ### 2.7 Tarkvarauuenduse paigaldamine
