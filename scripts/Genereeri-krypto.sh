@@ -29,7 +29,6 @@ function lopeta {
 # Abistaja: Küsin kasutajalt kas jätkata
 #
 function kasJatkan {
-  echo
   read -p " --- Jätkata (y/n)? " prompt
   if [[ $prompt != y && $prompt != Y ]]
   then
@@ -84,16 +83,16 @@ openssl req -new \
 openssl x509 -req \
   -days 3650 \
   -in https.csr \
-  -CA ca.crt \
+  -CA ca.cert \
   -CAkey ca.key \
   -CAcreateserial \
-  -out https.crt
+  -out https.cert
 # Moodusta pfx-fail
 openssl pkcs12 -export \
   -out https.pfx \
   -inkey https.key \
   -in https.cert \
-  -certfile ca.crt
+  -certfile ca.cert
 
 echo
 echo -e "${ORANGE} Veendu, et failid moodustati ${NC}"
