@@ -13,6 +13,7 @@ echo
 echo -e "${ORANGE} --- Värskenda TARA-Stat tarkvara ${NC}"
 echo
 
+sudo systemctl stop tarastat # seiska veebirakendus (juhul kui see käib)
 cd /opt/TARA-Stat
 sudo git checkout -- .
 sudo git pull origin master
