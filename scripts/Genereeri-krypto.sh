@@ -19,9 +19,7 @@ NC='\033[0m' # No Color
 # Abistaja: Väljasta lõputeade ja välju
 #
 function lopeta {
-  echo
   echo -e "${ORANGE} --- Võtmete genereerimise LÕPP ${NC}"
-  echo
   exit
 }
 
@@ -49,6 +47,35 @@ echo
 kasJatkan
 
 # ------------------------------
+# Genereeri Serveri privaatvõti, sert ja pfx-fail
+# Parameetrid: $1 - subjekti nimi, $2 - failinimi
+#
+function genereeriKomplekt {
+echo -e "${ORANGE} --- Genereerin $1 privaatvõtme, serdi ja pfx-faili ${NC}"
+# Genereeri võtmepaar
+openssl genrsa \
+  -out $2.key 2048
+# Genereeri serdiallkirjastamispäring
+openssl req -new \
+  -key $2.key \
+  -out $2.csr
+# Allkirjasta sert  
+openssl x509 -req \
+  -days 3650 \
+  -in $2.csr \
+  -CA ca.cert \
+  -CAkey ca.key \
+  -CAcreateserial \
+  -out $2.cert
+# Moodusta pfx-fail
+openssl pkcs12 -export \
+  -out $2.pfx \
+  -inkey $2.key \
+  -in $2.cert \
+  -certfile ca.cert
+}
+
+# ------------------------------
 # 1. Liigu kausta /opt/keys
 #
 cd /opt
@@ -58,45 +85,17 @@ cd keys
 # ------------------------------
 # 2. Genereeri CA privaatvõti ja sert
 #
-echo
 echo -e "${ORANGE} --- Genereerin CA privaatvõtme ja serdi ${NC}"
-echo
 openssl req -new -x509 \
   -days 9999 \
   -keyout ca.key \
   -out ca.cert
 
-# ------------------------------
-# 3. Genereeri HTTPS Serveri privaatvõti, sert ja pfx-fail
-#
-echo
-echo -e "${ORANGE} --- Genereerin HTTPS Serveri privaatvõtme, serdi ja pfx-faili ${NC}"
-echo
-# Genereeri võtmepaar
-openssl genrsa \
-  -out https.key 2048
-# Genereeri serdiallkirjastamispäring
-openssl req -new \
-  -key https.key \
-  -out https.csr
-# Allkirjasta sert  
-openssl x509 -req \
-  -days 3650 \
-  -in https.csr \
-  -CA ca.cert \
-  -CAkey ca.key \
-  -CAcreateserial \
-  -out https.cert
-# Moodusta pfx-fail
-openssl pkcs12 -export \
-  -out https.pfx \
-  -inkey https.key \
-  -in https.cert \
-  -certfile ca.cert
+genereeriKomplekt "HTTPS Server" "https"
+genereeriKomplekt "TCP TLS Server" "tcp-tls"
+genereeriKomplekt "TCP TLS Testklient" "tcp-tls-test"
 
-echo
 echo -e "${ORANGE} Veendu, et failid moodustati ${NC}"
-echo
 ls -l
 
 echo
