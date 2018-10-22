@@ -10,11 +10,9 @@ const tls = require('tls');
 const fs = require('fs');
 const path = require('path');
 
-let HOST = 'tara-stat-makett.ci.kit';
-// let HOST = 'localhost';
-let PORT = 5002;
-
-const SELFSIGNED = true;
+const HOST = 'tara-stat-makett.ci.kit';
+const PORT = 5002;
+const CA_CERT = 'ca.cert';
 const TCP_TLS_TEST_KEY = 'tcp-tls-test.key';
 const TCP_TLS_TEST_CERT = 'tcp-tls-test.cert';
 
@@ -26,33 +24,21 @@ let logikirjed = [
 ];
 
 // Valmista ette suvandid
-if (SELFSIGNED) {
-  // Valmista ette self-signed sert
-  var voti = fs.readFileSync(path.join(__dirname, '..', 'keys',
-    TCP_TLS_TEST_KEY), 'utf8');
-  var sert = fs.readFileSync(path.join(__dirname, '..', 'keys',
-    TCP_TLS_TEST_CERT), 'utf8');
-  var options = {
-    host: HOST,
-    port: PORT,
-    key: voti,
-    cert: sert,
-    requestCert: true,
-    rejectUnauthorized: true
-  };
-}
-else {
-  // Loe pfx-fail
-  var options = {
-    host: HOST,
-    port: PORT,
-    pfx: fs.readFileSync(path.join(__dirname, '..', 'keys',
-      config.TCP_TLS_PFX)),
-    passphrase: 'changeit',
-    requestCert: true,
-    rejectUnauthorized: true
-  };
-}
+var cacert = fs.readFileSync(path.join(__dirname, '..', 'keys',
+  CA_CERT), 'utf8');
+var voti = fs.readFileSync(path.join(__dirname, '..', 'keys',
+  TCP_TLS_TEST_KEY), 'utf8');
+var sert = fs.readFileSync(path.join(__dirname, '..', 'keys',
+  TCP_TLS_TEST_CERT), 'utf8');
+var options = {
+  host: HOST,
+  port: PORT,
+  ca: cacert,
+  key: voti,
+  cert: sert,
+  requestCert: true,
+  rejectUnauthorized: true
+};
 
 const client = tls.connect(options, () => {
   console.log('TCP-TLS-Klient: TARA-Stat-ga ' + HOST + ':' + PORT + ' ühendus loodud');
