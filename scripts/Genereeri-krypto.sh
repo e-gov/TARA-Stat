@@ -57,16 +57,22 @@ mkdir keys
 cd keys
 
 # ------------------------------
-# 2. Genereeri CA
+# 2. Genereeri CA privaatvõti ja sert
 #
+echo
+echo -e "${ORANGE} --- Genereerin CA privaatvõtme ja serdi ${NC}"
+echo
 openssl req -new -x509 \
   -days 9999 \
   -keyout ca-key.pem \
   -out ca-crt.pem
 
 # ------------------------------
-# 3. Genereeri HTTPS Serveri sert
+# 3. Genereeri HTTPS Serveri privaatvõti, sert ja pfx-fail
 #
+echo
+echo -e "${ORANGE} --- Genereerin HTTPS Serveri privaatvõtme, serdi ja pfx-faili ${NC}"
+echo
 # Genereeri võtmepaar
 openssl genrsa \
   -out https.key 2048
@@ -75,7 +81,7 @@ openssl req -new \
   -key https.key \
   -out https-csr.pem
 # Allkirjasta sert  
-openssl req -new -x509 \
+openssl x509 -req \
   -days 3650 \
   -in https-csr.pem \
   -CA ca-crt.pem \
