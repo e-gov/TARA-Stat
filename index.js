@@ -349,7 +349,7 @@ var HTTPS_options = {
     config.CA_CERT), 'utf8'),
   key: fs.readFileSync(path.join(__dirname, '..', 'keys',
     config.HTTPS_KEY), 'utf8'),
-  cert: sert = fs.readFileSync(path.join(__dirname, '..', 'keys',
+  cert: fs.readFileSync(path.join(__dirname, '..', 'keys',
     config.HTTPS_CERT), 'utf8'),
   requestCert: true,
   rejectUnauthorized: true
