@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TARA-Stat-genereeri-votmed.sh
+# Genereeri-krypto.sh
 #
 # Genereeri TARA-Stat testimiseks vajalik krüptomaterjal.
 # 
@@ -64,8 +64,8 @@ echo -e "${ORANGE} --- Genereerin CA privaatvõtme ja serdi ${NC}"
 echo
 openssl req -new -x509 \
   -days 9999 \
-  -keyout ca-key.pem \
-  -out ca-crt.pem
+  -keyout ca.key \
+  -out ca.cert
 
 # ------------------------------
 # 3. Genereeri HTTPS Serveri privaatvõti, sert ja pfx-fail
@@ -79,24 +79,31 @@ openssl genrsa \
 # Genereeri serdiallkirjastamispäring
 openssl req -new \
   -key https.key \
-  -out https-csr.pem
+  -out https.csr
 # Allkirjasta sert  
 openssl x509 -req \
   -days 3650 \
-  -in https-csr.pem \
-  -CA ca-crt.pem \
-  -CAkey ca-key.pem \
+  -in https.csr \
+  -CA ca.crt \
+  -CAkey ca.key \
   -CAcreateserial \
-  -out https-crt.pem
+  -out https.crt
 # Moodusta pfx-fail
 openssl pkcs12 -export \
   -out https.pfx \
   -inkey https.key \
   -in https.cert \
-  -certfile ca-crt.pem
+  -certfile ca.crt
 
-echo Veendu, et failid moodustati
+echo
+echo -e "${ORANGE} Veendu, et failid moodustati ${NC}"
 echo
 ls -l
+
+echo
+echo -e "${ORANGE} Kontrolli pfx-faili ${NC}"
+echo
+openssl pkcs12 -info \
+  -in https.pfx
 
 lopeta
