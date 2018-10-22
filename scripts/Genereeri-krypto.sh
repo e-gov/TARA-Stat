@@ -99,9 +99,8 @@ echo -e "${ORANGE} Veendu, et failid moodustati ${NC}"
 ls -l
 
 echo
-echo -e "${ORANGE} Kontrolli pfx-faili ${NC}"
+echo -e "${ORANGE} Pfx-faili saad kontrollida käsuga "
+echo -e "openssl pkcs12 -info -in fail.pfx ${NC}"
 echo
-openssl pkcs12 -info \
-  -in https.pfx
 
 lopeta

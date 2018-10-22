@@ -8,6 +8,7 @@
 'use strict';
 const tls = require('tls');
 const fs = require('fs');
+const path = require('path');
 
 let HOST = 'tara-stat-makett.ci.kit';
 // let HOST = 'localhost';
@@ -19,9 +20,9 @@ const TCP_TLS_TEST_CERT = 'tcp-tls-test.cert';
 
 // Test-logikirjed. Kirje lõpus on \n (0x0A)
 let logikirjed = [
-  '<38>Aug  1 10:51:54 acf2e2b322ab {"time":"2018-08-01T10:51:54.542","clientId":"openIdDemo","method":"mID","operation":"START_AUTH"}\n',
-  '<38>Aug  1 10:52:05 acf2e2b322ab {"time":"2018-08-01T10:52:05.252","clientId":"openIdDemo","method":"mID","operation":"SUCCESSFUL_AUTH"}\n',
-  '<38>Aug  1 10:53:54 acf2e2b322ab {"time":"2018-08-01T10:53:54.261","clientId":"openIdDemo","method":"mID","operation":"ERROR","error":"NO_AGREEMENT: User is not a Mobile-ID client"}\n',
+  '<38>Aug  1 10:51:54 acf2e2b322ab {"time":"2018-10-01T10:51:54.542","clientId":"openIdDemo","method":"mID","operation":"START_AUTH"}\n',
+  '<38>Aug  1 10:52:05 acf2e2b322ab {"time":"2018-10-01T10:52:05.252","clientId":"openIdDemo","method":"mID","operation":"SUCCESSFUL_AUTH"}\n',
+  '<38>Aug  1 10:53:54 acf2e2b322ab {"time":"2018-10-01T10:53:54.261","clientId":"openIdDemo","method":"mID","operation":"ERROR","error":"NO_AGREEMENT: User is not a Mobile-ID client"}\n',
 ];
 
 // Valmista ette suvandid
