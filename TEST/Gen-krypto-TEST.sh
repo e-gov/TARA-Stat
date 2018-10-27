@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Genereeri-krypto.sh
 #
 # Genereeri TARA-Stat testimiseks vajalik krüptomaterjal.
 # 
@@ -19,14 +18,21 @@
 #
 # Krüptomaterjal luuakse:
 # - Linux-i puhul kausta /opt/keys
-# - Windows puhul jooksvasse kausta
+# - Windows puhul jooksva kausta alamkausta keys-TEST
 #
 # Käivitamine:
 # - Linux: 
 #    käivita suvalisest kaustast
+#    $ ./opt/TARA-Stat/scripts/Gen-krypto-TEST-sh <SD> <KD>
 # - Windows:
-#    mine kausta TARA-Stat/keys-TEST
-#    $ ./../scripts/Ge-krypto-TEST.sh
+#    mine kausta TARA-Stat/TEST
+#    $ ./Gen-krypto-TEST.sh <SD> <KD>
+#
+# kus:
+#   <SD> - TLS serveri domeeninimi
+#   <KD> - TLS kliendi domeeninimi
+# Kui server ja klient on samas masinas, siis vali mõlema
+# domeeninimeks localhost.
 
 # Värvid
 ORANGE='\033[0;33m'
@@ -38,12 +44,23 @@ CA_KEY='ca-TEST.key'
 # ------------------------------
 # Abistaja: Väljasta lõputeade ja välju
 function lopeta {
-  echo -e "${ORANGE} --- Võtmete genereerimise LÕPP ${NC}"
+  echo -e "${ORANGE} --- Krüpto genereerimise LÕPP ${NC}"
   exit
 }
 
 # ------------------------------
-# Abistaja: Küsin kasutajalt kas jätkata
+# Haara skripti parameetrid
+if (( $# != 2 )); then
+  echo -e "${ORANGE} Kasuta nii: Gen-krypto-TEST-sh <serveri domeen> <kliendi domeen> ${NC}"
+  lopeta
+fi
+SD=$1
+KD=$2
+echo -e "${ORANGE} Serveridomeen: $SD ${NC}"
+echo -e "${ORANGE} Kliendidomeen: $KD ${NC}"
+
+# ------------------------------
+# Abistaja: Küsin kasutajalt, kas jätkata
 function kasJatkan {
   read -p " --- Jätkata (y/n)? " prompt
   if [[ $prompt != y && $prompt != Y ]]
@@ -53,6 +70,7 @@ function kasJatkan {
   echo
 }
 
+# ------------------------------
 # 0. Op-süsteemi valimine
 echo
 echo -e "${ORANGE} --- Genereerin TARA-Stat testimiseks vajaliku krüptomaterjali"
@@ -121,12 +139,15 @@ openssl pkcs12 -export \
 }
 
 # ------------------------------
-# 1. Liigu kausta /opt/keys
+# 1. Moodusta võtmete kaust ja liigu sinna
 #
 if [ "$OPSYS" = "Linux" ]; then
   cd /opt
   mkdir keys
   cd keys
+else
+  mkdir keys-TEST
+  cd keys-TEST
 fi
 
 # ------------------------------
@@ -134,21 +155,21 @@ fi
 #
 if [ "$OPSYS" = "Linux" ]; then
   CA_CERT_SUBJ="/C=EE/O=RIA/CN=CA-TEST"
-  HTTPS_S_CERT_SUBJ="/C=EE/O=RIA/CN=localhost"
-  TLS_S_CERT_SUBJ="/C=EE/O=RIA/CN=localhost"
-  TLS_K_CERT_SUBJ="/C=EE/O=RIA/CN=localhost"
-  TLS_S_SELF_CERT_SUBJ='/C=EE/O=RIA/CN=localhost'
-  TLS_K_SELF_CERT_SUBJ='/C=EE/O=RIA/CN=localhost'
+  HTTPS_S_CERT_SUBJ="/C=EE/O=RIA/CN=$SD"
+  TLS_S_CERT_SUBJ="/C=EE/O=RIA/CN=$SD"
+  TLS_K_CERT_SUBJ="/C=EE/O=RIA/CN=$KD"
+  TLS_S_SELF_CERT_SUBJ="/C=EE/O=RIA/CN=$SD"
+  TLS_K_SELF_CERT_SUBJ="/C=EE/O=RIA/CN=$KD"
 else
   # Windows-i eripära, vt:
   # https://stackoverflow.com/questions/31506158/running-openssl-from-a-bash-script-on-windows-subject-does-not-start-with
   # Vähemalt Windows-is väldi tühikuid CN-s
   CA_CERT_SUBJ="//C=EE\O=RIA\CN=CA-TEST"
-  HTTPS_S_CERT_SUBJ="//C=EE\O=RIA\CN=localhost"
-  TLS_S_CERT_SUBJ="//C=EE\O=RIA\CN=localhost"
-  TLS_K_CERT_SUBJ="//C=EE\O=RIA\CN=localhost"
-  TLS_S_SELF_CERT_SUBJ='//C=EE\O=RIA\CN=localhost'
-  TLS_K_SELF_CERT_SUBJ='//C=EE\O=RIA\CN=localhost'
+  HTTPS_S_CERT_SUBJ="//C=EE\O=RIA\CN=$SD"
+  TLS_S_CERT_SUBJ="//C=EE\O=RIA\CN=$SD"
+  TLS_K_CERT_SUBJ="//C=EE\O=RIA\CN=$KD"
+  TLS_S_SELF_CERT_SUBJ="//C=EE\O=RIA\CN=$SD"
+  TLS_K_SELF_CERT_SUBJ="//C=EE\O=RIA\CN=$KD"
 fi
 
 # ------------------------------

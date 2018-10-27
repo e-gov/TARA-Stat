@@ -22,17 +22,26 @@ const path = require('path');
 const kaivitamiseParameetrid = process.argv;
 if (kaivitamiseParameetrid.length < 4) {
   console.log('TLS server: Liiga vähe parameetreid');
+  kuvaKasutusteave();
   return
 }
 const opsys = kaivitamiseParameetrid[2];
 if (!['Linux', 'Windows'].includes(opsys)) {
   console.log('TLS server: Op-süsteem p.o Linux v Windows');
+  kuvaKasutusteave();
   return
 }
 const sertType = kaivitamiseParameetrid[3];
 if (!['CA', 'Self'].includes(sertType)) {
   console.log('TLS server: Serditüüp p.o CA v Self');
+  kuvaKasutusteave();
   return
+}
+
+function kuvaKasutusteave() {
+  console.log('node TLS-K-TEST <op-süsteem> <serditüüp>');
+  console.log('<opsüsteem> - Windows | Linux');
+  console.log('<serditüüp> - CA | Self');
 }
 
 // TLS serveri, millega ühendust võetakse, parameetrid
@@ -82,7 +91,8 @@ const socket = tls.connect(TLS_C_OPTIONS, () => {
   console.log('TLS klient: TARA-Stat-ga ' +
     TLS_SERVER_HOST + ':' + TLS_SERVER_PORT +
     ' ühendus loodud');
-  // Kas kliendi autoriseerimine õnnestus?
+
+    // Kas kliendi autoriseerimine õnnestus?
   if (socket.authorized) {
     console.log("TLS klient: server autoriseeris ühenduse.");
   }
