@@ -19,7 +19,6 @@
 'use strict';
 
 // -------- 1 Teekide laadimine  --------
-const net = require('net'); // TCP ühenduste teek (ilma TLS-ta)
 const tls = require('tls'); // TCP ühenduste teek (TLS-ga)
 const ReadWriteLock = require('rwlock'); // Lukuteek
 const https = require('https'); // HTTPS (Node.js)
