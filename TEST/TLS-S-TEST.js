@@ -182,4 +182,4 @@ let server = tls.createServer(
 
 // Käivita TCP server
 server.listen(PORT);
-console.log('TLS Server: kuuldel ' + JSON.stringify(server.address()) + ':' + PORT);
+console.log('TLS Server: kuuldel ' + JSON.stringify(server.address()));

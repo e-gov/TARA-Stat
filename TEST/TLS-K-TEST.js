@@ -73,25 +73,25 @@ var TLS_C_OPTIONS = {
 
 if (sertType == 'CA') {
   TLS_C_OPTIONS.ca = fs.readFileSync(
-    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
-      'ca-TEST.cert'), 'utf8');
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      'ca.cert'), 'utf8');
   TLS_C_OPTIONS.key = fs.readFileSync(
-    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
-      'tls-client-TEST.key'), 'utf8');
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      'tls-client.key'), 'utf8');
   TLS_C_OPTIONS.cert = fs.readFileSync(
-    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
-      'tls-client-TEST.cert'), 'utf8');
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      'tls-client.cert'), 'utf8');
 }
 else {
   TLS_C_OPTIONS.ca = fs.readFileSync(
-    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
-      'tls-server-SELF-TEST.cert'), 'utf8');
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      'tls-server-SELF.cert'), 'utf8');
   TLS_C_OPTIONS.key = fs.readFileSync(
-    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
-      'tls-client-SELF-TEST.key'), 'utf8');
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      'tls-client-SELF.key'), 'utf8');
   TLS_C_OPTIONS.cert = fs.readFileSync(
-    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
-      'tls-client-SELF-TEST.cert'), 'utf8');
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      'tls-client-SELF.cert'), 'utf8');
 }
 
 // Loo TLS klient, ühendu TLS serveriga
