@@ -49,9 +49,11 @@ const TLS_SERVER_HOST = kaivitamiseParameetrid[4];
 const TLS_SERVER_PORT = kaivitamiseParameetrid[5];
 
 function kuvaKasutusteave() {
-  console.log('node TLS-K-TEST <op-süsteem> <serditüüp>');
+  console.log('\033[0;33m Kasuta nii: node TLS-K-TEST <op-süsteem> <serditüüp> <sd> <port>');
   console.log('<opsüsteem> - Windows | Linux');
   console.log('<serditüüp> - CA | Self');
+  console.log('<sd> - serveri domeeninimi');
+  console.log('<port> - serveri port \033[0m');
 }
 
 // Test-logikirjed. Kirje lõpus on \n (0x0A)
