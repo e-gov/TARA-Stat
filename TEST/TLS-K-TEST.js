@@ -65,24 +65,24 @@ var TLS_C_OPTIONS = {
 
 if (sertType == 'CA') {
   TLS_C_OPTIONS.ca = fs.readFileSync(
-    path.join(__dirname, 'keys-TEST',
+    path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
       'ca-TEST.cert'), 'utf8');
   TLS_C_OPTIONS.key = fs.readFileSync(
-    path.join(__dirname, 'keys-TEST',
+    path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
       'tls-client-TEST.key'), 'utf8');
   TLS_C_OPTIONS.cert = fs.readFileSync(
-    path.join(__dirname, 'keys-TEST',
+    path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
       'tls-client-TEST.cert'), 'utf8');
 }
 else {
   TLS_C_OPTIONS.ca = fs.readFileSync(
-    path.join(__dirname, 'keys-TEST',
+    path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
       'tls-server-SELF-TEST.cert'), 'utf8');
   TLS_C_OPTIONS.key = fs.readFileSync(
-    path.join(__dirname, 'keys-TEST',
+    path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
       'tls-client-SELF-TEST.key'), 'utf8');
   TLS_C_OPTIONS.cert = fs.readFileSync(
-    path.join(__dirname, 'keys-TEST',
+    path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
       'tls-client-SELF-TEST.cert'), 'utf8');
 }
 

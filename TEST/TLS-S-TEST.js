@@ -1,5 +1,10 @@
 /*
-  TLS server (TEST). Server kuulab TCP pordil ja väljastab vastuvõetud logikirjed konsoolile. Töötab, vastavalt seadistusele, nii Windows kui ka Linux platvormil. Usaldus serveri ja kliendi vahel luuakse, vastavalt seadistusele, kas CA või isetehtud sertide abil. Võtmete ja sertide ettevalmistamiseks kasuta skripti Gen-krypto-TEST.sh. Vt ka: TLS klient (TEST).
+  TLS server (TEST). Server kuulab TCP pordil ja väljastab
+  vastuvõetud logikirjed konsoolile. Töötab, vastavalt seadistusele,
+  nii Windows kui ka Linux platvormil. Usaldus serveri ja kliendi vahel
+  luuakse, vastavalt seadistusele, kas CA või isetehtud sertide abil. 
+  Võtmete ja sertide ettevalmistamiseks kasuta skripti 
+  Gen-krypto-TEST.sh. Vt ka: TLS klient (TEST).
 
   Käivitamine: node TLS-S-TEST <op-süsteem> <serditüüp>,
   kus
@@ -66,13 +71,13 @@ const PORT = 5001; // TCP (TLS) Serveri port
 if (sertType == 'CA') {
   var TLS_S_options = {
     key: fs.readFileSync(
-      path.join(__dirname, 'keys-TEST',
+      path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
         'tls-server-TEST.key'), 'utf8'),
     cert: fs.readFileSync(
-      path.join(__dirname, 'keys-TEST',
+      path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
         'tls-server-TEST.cert'), 'utf8'),
     ca: fs.readFileSync(
-      path.join(__dirname, 'keys-TEST',
+      path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
         'ca-TEST.cert'), 'utf8'),
     requestCert: false,
     rejectUnauthorized: false
@@ -81,13 +86,13 @@ if (sertType == 'CA') {
 else { // Serditüübi Self korral
   var TLS_S_options = {
     key: fs.readFileSync(
-      path.join(__dirname, 'keys-TEST',
+      path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
         'tls-server-SELF-TEST.key'), 'utf8'),
     cert: fs.readFileSync(
-      path.join(__dirname, 'keys-TEST',
+      path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
         'tls-server-SELF-TEST.cert'), 'utf8'),
     ca: fs.readFileSync(
-      path.join(__dirname, 'keys-TEST',
+      path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
         'tls-client-SELF-TEST.cert'), 'utf8'),
     requestCert: false,
     rejectUnauthorized: false
