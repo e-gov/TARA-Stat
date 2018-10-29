@@ -20,10 +20,6 @@
 
 */
 
-// TLS serveri, millega ühendust võetakse, parameetrid
-const TLS_SERVER_HOST = 'localhost';
-const TLS_SERVER_PORT = 5001;
-
 'use strict';
 const tls = require('tls');
 const fs = require('fs');
