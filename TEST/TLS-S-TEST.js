@@ -72,14 +72,14 @@ function eraldaJSON(syslogKirje) {
 if (sertType == 'CA') {
   var TLS_S_options = {
     key: fs.readFileSync(
-      path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
-        'tls-server-TEST.key'), 'utf8'),
+      path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+        'tls-server.key'), 'utf8'),
     cert: fs.readFileSync(
-      path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
-        'tls-server-TEST.cert'), 'utf8'),
+      path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+        'tls-server.cert'), 'utf8'),
     ca: fs.readFileSync(
-      path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
-        'ca-TEST.cert'), 'utf8'),
+      path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+        'ca.cert'), 'utf8'),
     requestCert: false,
     rejectUnauthorized: false
   };
@@ -87,14 +87,14 @@ if (sertType == 'CA') {
 else { // Serditüübi Self korral
   var TLS_S_options = {
     key: fs.readFileSync(
-      path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
-        'tls-server-SELF-TEST.key'), 'utf8'),
+      path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+        'tls-server-SELF.key'), 'utf8'),
     cert: fs.readFileSync(
-      path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
-        'tls-server-SELF-TEST.cert'), 'utf8'),
+      path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+        'tls-server-SELF.cert'), 'utf8'),
     ca: fs.readFileSync(
-      path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys-TEST',
-        'tls-client-SELF-TEST.cert'), 'utf8'),
+      path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+        'tls-client-SELF.cert'), 'utf8'),
     requestCert: false,
     rejectUnauthorized: false
   };

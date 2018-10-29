@@ -1,14 +1,22 @@
 #!/bin/bash
 
 #
-# Genereeri TARA-Stat testimiseks vajalik krüptomaterjal.
+# Genereeri TARA-Stat jaoks vajalik krüptomaterjal.
+#
+# Krüptomaterjal luuakse jooksva kausta alamkausta keys.
+#
+# Krüptomaterjali võib luua ka muu vahendiga; sellisel juhul
+# tuleb vajalike nimedega ja omadustega võtmete ja sertide
+# olemasolu kaustas /opt/tara-ci-config/keys enne TARA-Stat 
+# käivitamist.
+#
 # 
-# 1) CA (TEST) privaatvõti ja iseallkirjastatud sert
-# 1) HTTPS serveri (TEST) privaatvõti ja CA poolt allkirjastatud sert
-# 2) TLS serveri (TEST) privaatvõti ja CA poolt allkirjastatud sert
-# 3) TLS kliendi (TEST) privaatvõti ja CA poolt allkirjastatud sert
-# 4) TLS serveri (TEST) privaatvõti ja iseallkirjastatud sert
-# 5) TLS kliendi (TEST) privaatvõti ja iseallkirjastatud sert
+# 1) CA privaatvõti ja iseallkirjastatud sert
+# 1) HTTPS serveri privaatvõti ja CA poolt allkirjastatud sert
+# 2) TLS serveri privaatvõti ja CA poolt allkirjastatud sert
+# 3) TLS kliendi privaatvõti ja CA poolt allkirjastatud sert
+# 4) TLS serveri privaatvõti ja iseallkirjastatud sert
+# 5) TLS kliendi privaatvõti ja iseallkirjastatud sert
 #
 # Töötab nii Linux-is kui ka Windows-is.
 # Op-süsteem näidatakse skripti käivitamisel.
@@ -16,15 +24,13 @@
 # salasõnade küsimisel jääb rippuma. Seetõttu salasõnad on skripti
 # sisse kirjutatud.
 #
-# Krüptomaterjal luuakse jooksva kausta alamkausta keys-TEST
-#
 # Käivitamine:
 # - Linux: 
 #    käivita suvalisest kaustast
-#    $ ./opt/TARA-Stat/scripts/Gen-krypto-TEST-sh <SD> <KD>
+#    $ ./opt/tara-ci-config/TARA-Stat/Gen-krypto.sh <SD> <KD>
 # - Windows:
-#    mine kausta TARA-Stat/TEST
-#    $ ./Gen-krypto-TEST.sh <SD> <KD>
+#    mine kausta tara-ci-config/TARA-Stat
+#    $ ./Gen-krypto.sh <SD> <KD>
 #
 # kus:
 #   <SD> - TLS serveri domeeninimi
@@ -36,8 +42,8 @@
 ORANGE='\033[0;33m'
 NC='\033[0m' # No Color
 
-CA_CERT='ca-TEST.cert'
-CA_KEY='ca-TEST.key'
+CA_CERT='ca.cert'
+CA_KEY='ca.key'
 
 # ------------------------------
 # Abistaja: Väljasta lõputeade ja välju
@@ -73,12 +79,11 @@ function kasJatkan {
 echo
 echo -e "${ORANGE} --- Genereerin TARA-Stat testimiseks vajaliku krüptomaterjali"
 echo -e "1) CA privaatvõtme ja serdi"
-echo -e "2) HTTPS serveri (TEST) privaatvõtme, serdi ja pfx-faili "
-echo -e "3) TLS serveri (TEST) privaatvõtme, serdi ja pfx-faili"
-echo -e "4) TLS kliendi (TEST) privaatvõtme, serdi ja pfx-faili"
-echo -e "Krüptomaterjal moodustatakse:"
-echo -e "- Windows-is jooksvasse kausta"
-echo -e "- Linux-is kausta /opt/keys. ${NC}"
+echo -e "2) HTTPS serveri privaatvõtme, serdi ja pfx-faili "
+echo -e "3) TLS serveri privaatvõtme, serdi ja pfx-faili"
+echo -e "4) TLS kliendi privaatvõtme, serdi ja pfx-faili"
+echo -e "Krüptomaterjal moodustatakse kausta:"
+echo -e "tara-ci-config/TARA-Stat/keys ${NC}"
 echo
 
 echo -e "${ORANGE} Vali platvorm ${NC}"
@@ -139,8 +144,8 @@ openssl pkcs12 -export \
 # ------------------------------
 # 1. Moodusta võtmete kaust ja liigu sinna
 #
-mkdir keys-TEST
-cd keys-TEST
+mkdir keys
+cd keys
 
 # ------------------------------
 # 2. Valmista ette CN-d
@@ -184,9 +189,9 @@ openssl req \
 # ------------------------------
 # 4. Genereeri võtmed ja serdid CA abil
 #
-genereeriKomplekt "HTTPS Server" "https-server-TEST" $HTTPS_S_CERT_SUBJ
-genereeriKomplekt "TLS Server TEST" "tls-server-TEST" $TLS_S_CERT_SUBJ
-genereeriKomplekt "TLS Klient TEST" "tls-client-TEST" $TLS_K_CERT_SUBJ
+genereeriKomplekt "HTTPS Server" "https-server" $HTTPS_S_CERT_SUBJ
+genereeriKomplekt "TLS Server" "tls-server" $TLS_S_CERT_SUBJ
+genereeriKomplekt "TLS Klient" "tls-client" $TLS_K_CERT_SUBJ
 
 # ------------------------------
 # 5. Genereeri TLS serveri privaatvõti ja iseallkirjastatud sert
@@ -199,8 +204,8 @@ openssl req \
   -sha256 \
   -newkey rsa:2048 \
   -subj $TLS_S_SELF_CERT_SUBJ \
-  -keyout 'tls-server-SELF-TEST.key' \
-  -out 'tls-server-SELF-TEST.cert'
+  -keyout 'tls-server-SELF.key' \
+  -out 'tls-server-SELF.cert'
 
 # ------------------------------
 # 6. Genereeri TLS kliendi privaatvõti ja iseallkirjastatud sert
@@ -213,8 +218,8 @@ openssl req \
   -sha256 \
   -newkey rsa:2048 \
   -subj $TLS_K_SELF_CERT_SUBJ \
-  -keyout 'tls-client-SELF-TEST.key' \
-  -out 'tls-client-SELF-TEST.cert'
+  -keyout 'tls-client-SELF.key' \
+  -out 'tls-client-SELF.cert'
 
 echo -e "${ORANGE} Veendu, et failid moodustati ${NC}"
 ls -l
