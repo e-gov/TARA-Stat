@@ -6,10 +6,11 @@
   Võtmete ja sertide ettevalmistamiseks kasuta skripti 
   Gen-krypto-TEST.sh. Vt ka: TLS klient (TEST).
 
-  Käivitamine: node TLS-S-TEST <op-süsteem> <serditüüp>,
+  Käivitamine: node TLS-S-TEST <op-süsteem> <serditüüp> <port>,
   kus
     <opsüsteem> - Windows | Linux
     <serditüüp> - CA | Self
+    <port> - pordinumber
   
 */
 
@@ -25,7 +26,7 @@ var lock = new ReadWriteLock();
 // Loe ja kontrolli käivitamisel antud parameetrid
 // Vt: https://nodejs.org/docs/latest/api/process.html#process_process_argv
 const kaivitamiseParameetrid = process.argv;
-if (kaivitamiseParameetrid.length < 4) {
+if (kaivitamiseParameetrid.length < 5) {
   console.log('TLS server: Liiga vähe parameetreid');
   kuvaKasutusteave();
   return
@@ -42,6 +43,7 @@ if (!['CA', 'Self'].includes(sertType)) {
   kuvaKasutusteave();
   return
 }
+const PORT = parseInt(kaivitamiseParameetrid[4]);
 
 function kuvaKasutusteave() {
   console.log('node TLS-S-TEST <op-süsteem> <serditüüp>');
@@ -65,8 +67,6 @@ function eraldaJSON(syslogKirje) {
 }
 
 // TLS serveri seadistus 
-const PORT = 5001; // TCP (TLS) Serveri port
-
 // Serdid ja võtmed
 if (sertType == 'CA') {
   var TLS_S_options = {
@@ -181,4 +181,4 @@ let server = tls.createServer(
 
 // Käivita TCP server
 server.listen(PORT);
-console.log('TLS Server: kuuldel ' + server.address + ':' + PORT);
+console.log('TLS Server: kuuldel ' + server.address() + ':' + PORT);
