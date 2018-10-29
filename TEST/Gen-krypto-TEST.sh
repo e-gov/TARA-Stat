@@ -16,9 +16,7 @@
 # salasõnade küsimisel jääb rippuma. Seetõttu salasõnad on skripti
 # sisse kirjutatud.
 #
-# Krüptomaterjal luuakse:
-# - Linux-i puhul kausta /opt/keys
-# - Windows puhul jooksva kausta alamkausta keys-TEST
+# Krüptomaterjal luuakse jooksva kausta alamkausta keys-TEST
 #
 # Käivitamine:
 # - Linux: 
@@ -141,14 +139,8 @@ openssl pkcs12 -export \
 # ------------------------------
 # 1. Moodusta võtmete kaust ja liigu sinna
 #
-if [ "$OPSYS" = "Linux" ]; then
-  cd /opt
-  mkdir keys
-  cd keys
-else
-  mkdir keys-TEST
-  cd keys-TEST
-fi
+mkdir keys-TEST
+cd keys-TEST
 
 # ------------------------------
 # 2. Valmista ette CN-d
