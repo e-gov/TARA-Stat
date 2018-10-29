@@ -80,8 +80,8 @@ if (sertType == 'CA') {
     ca: fs.readFileSync(
       path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
         'ca.cert'), 'utf8'),
-    requestCert: false,
-    rejectUnauthorized: false
+    requestCert: true,
+    rejectUnauthorized: true
   };
 }
 else { // Serditüübi Self korral
@@ -95,8 +95,8 @@ else { // Serditüübi Self korral
     ca: fs.readFileSync(
       path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
         'tls-client-SELF.cert'), 'utf8'),
-    requestCert: false,
-    rejectUnauthorized: false
+    requestCert: true,
+    rejectUnauthorized: true
   };
 }
 

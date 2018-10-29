@@ -151,7 +151,7 @@ cd keys
 # 2. Valmista ette CN-d
 #
 if [ "$OPSYS" = "Linux" ]; then
-  CA_CERT_SUBJ="/C=EE/O=RIA/CN=CA-TEST"
+  CA_CERT_SUBJ="/C=EE/O=TARA-Stat TEST/CN=CA-TEST"
   HTTPS_S_CERT_SUBJ="/C=EE/O=RIA/CN=$SD"
   TLS_S_CERT_SUBJ="/C=EE/O=RIA/CN=$SD"
   TLS_K_CERT_SUBJ="/C=EE/O=RIA/CN=$KD"
@@ -161,7 +161,7 @@ else
   # Windows-i eripära, vt:
   # https://stackoverflow.com/questions/31506158/running-openssl-from-a-bash-script-on-windows-subject-does-not-start-with
   # Vähemalt Windows-is väldi tühikuid CN-s
-  CA_CERT_SUBJ="//C=EE\O=RIA\CN=CA-TEST"
+  CA_CERT_SUBJ="//C=EE\O=TARA-Stat TEST\CN=CA-TEST"
   HTTPS_S_CERT_SUBJ="//C=EE\O=RIA\CN=$SD"
   TLS_S_CERT_SUBJ="//C=EE\O=RIA\CN=$SD"
   TLS_K_CERT_SUBJ="//C=EE\O=RIA\CN=$KD"

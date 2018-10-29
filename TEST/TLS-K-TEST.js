@@ -67,8 +67,8 @@ let logikirjed = [
 var TLS_C_OPTIONS = {
   host: TLS_SERVER_HOST,
   port: TLS_SERVER_PORT,
-  requestCert: false,
-  rejectUnauthorized: false
+  requestCert: true,
+  rejectUnauthorized: true
 }
 
 if (sertType == 'CA') {
