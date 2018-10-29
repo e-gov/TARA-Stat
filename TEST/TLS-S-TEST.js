@@ -46,9 +46,10 @@ if (!['CA', 'Self'].includes(sertType)) {
 const PORT = parseInt(kaivitamiseParameetrid[4]);
 
 function kuvaKasutusteave() {
-  console.log('node TLS-S-TEST <op-süsteem> <serditüüp>');
+  console.log('node TLS-S-TEST <op-süsteem> <serditüüp> <port>');
   console.log('<opsüsteem> - Windows | Linux');
   console.log('<serditüüp> - CA | Self');
+  console.log('<port> - pordinumber');
 }
 
 /**
@@ -181,4 +182,4 @@ let server = tls.createServer(
 
 // Käivita TCP server
 server.listen(PORT);
-console.log('TLS Server: kuuldel ' + server.address() + ':' + PORT);
+console.log('TLS Server: kuuldel ' + JSON.stringify(server.address()) + ':' + PORT);

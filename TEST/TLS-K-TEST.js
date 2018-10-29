@@ -1,16 +1,28 @@
 /*
   TLS klient (TEST).
   
-  TLS klient ühendub TLS serveriga (TEST) ja saadab mõned logikirjed. Töötab, vastavalt seadistusele, nii Windows kui ka Linux platvormil. Võtmete ja sertide ettevalmistamiseks kasuta skripti Gen-krypto-TEST.sh. Vt ka: TLS server (TEST).
+  TLS klient ühendub TLS serveriga (TEST) ja saadab mõned logikirjed.
+  Töötab, vastavalt seadistusele, nii Windows kui ka Linux platvormil.
+  
+  Võtmete ja serdid (krüptomaterjal) peavad olema ette valmistatud kaustas:
+    ../../tara-ci-config/TARA-Stat/keys-TEST
+   
+  Vt ka: TLS server (TEST).
 
-  Käivitamine: node TLS-K-TEST <op-süsteem> <serditüüp>,
+  Käivitamine: node TLS-K-TEST <op-süsteem> <serditüüp> <sd> <port>,
   kus
     <opsüsteem> - Windows | Linux
     <serditüüp> - CA | Self
+    <sd> - serveri domeeninimi
+    <port> - serveri port
   
   Enne käivita TLS-S-TEST.
 
 */
+
+// TLS serveri, millega ühendust võetakse, parameetrid
+const TLS_SERVER_HOST = 'localhost';
+const TLS_SERVER_PORT = 5001;
 
 'use strict';
 const tls = require('tls');
@@ -20,7 +32,7 @@ const path = require('path');
 // Loe käivitamisel antud parameetrid
 // Vt: https://nodejs.org/docs/latest/api/process.html#process_process_argv
 const kaivitamiseParameetrid = process.argv;
-if (kaivitamiseParameetrid.length < 4) {
+if (kaivitamiseParameetrid.length < 6) {
   console.log('TLS server: Liiga vähe parameetreid');
   kuvaKasutusteave();
   return
@@ -37,16 +49,14 @@ if (!['CA', 'Self'].includes(sertType)) {
   kuvaKasutusteave();
   return
 }
+const TLS_SERVER_HOST = kaivitamiseParameetrid[4];
+const TLS_SERVER_PORT = kaivitamiseParameetrid[5];
 
 function kuvaKasutusteave() {
   console.log('node TLS-K-TEST <op-süsteem> <serditüüp>');
   console.log('<opsüsteem> - Windows | Linux');
   console.log('<serditüüp> - CA | Self');
 }
-
-// TLS serveri, millega ühendust võetakse, parameetrid
-const TLS_SERVER_HOST = 'localhost';
-const TLS_SERVER_PORT = 5001;
 
 // Test-logikirjed. Kirje lõpus on \n (0x0A)
 let logikirjed = [
