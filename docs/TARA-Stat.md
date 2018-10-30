@@ -454,11 +454,17 @@ Vaata lisaks:
 - [mongo](https://docs.mongodb.com/manual/reference/program/mongo/)
 - [mongo Shell Quick Reference](https://docs.mongodb.com/manual/reference/mongo-shell/)
 
-## 3 Testimine
+## 3 Kasutamine
+
+TARA-Stat kasutajaliides on avatud ainult asutuse töötajatele.
+
+Sirvikus ava `https://<tara-stat>:<tara-stat-https-port>`.
+
+## 4 Testimine
 
 Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasinasse kopeerida, kuid neid ei ole vaja (ega tohigi) skriptidega ega muul viisil aktiveerida.
 
-### 3.1 Logikirjete lisamise testrakendus
+### 4.1 Logikirjete lisamise testrakendus
 
 `LogikirjeteSaatmiseTest.js` lihtne Node.js rakendus, mis etendab logikirjeid TARA-Stat logibaasi saatvat TARA-Server-it.
 
@@ -475,11 +481,11 @@ Testrakenduse käivitamiseks sisesta:
 
 Iga käivitamisega genereeritakse juhuslikult teatud arv logikirjeid ja saadetakse TARA-Stat logibaasi.
 
-## 4 Turvamine
+## 5 Turvamine
 
 TARA-Stat-is on rakendatud järgmised turvavalikud.
 
-### 4.1 Juurdepääsu kaitse
+### 5.1 Juurdepääsu kaitse
 
 1. TARA-Stat paigaldatakse eraldi VM-i. VM-is ei ole teisi rakendusi. 
 1. TARA-Stat on ligipääsetav ainult organisatsiooni sisevõrgus.
@@ -492,21 +498,21 @@ TARA-Stat-is on rakendatud järgmised turvavalikud.
 1. Ligipääs andmebaasile (kirjutamine) on kaitstud ka failisüsteemi õiguste tasemel.
 1. Andmebaas ei ole nähtav VM-st väljapoole. Andmebaasi kasutab ainult samas masinas asuv veebirakendus. 
 
-### 4.2 Transpordi kaitse
+### 5.2 Transpordi kaitse
 1. Veebirakenduse API-s on kasutusel ainult HTTPS.
 1. Veebirakenduse ja MongoDB suhtluses ei rakendata TLS-i. Kuna andmebaas suhtleb ainult samas masinas oleva rakendusega ja masinas ei ole teisi rakendusi, ei ole TLS-i hädavajalik.
 
-### 4.3 Sisendi puhastamine 
+### 5.3 Sisendi puhastamine 
 Kaitse on rakendatud ohuvektorile: rakenduse kokkujooksmine vales vormingus andmete saatmisel logikirjete vastuvõtmise otspunkti (puhvri ületäitumine eraldajateta kirjete puhul; viga JSON-kirje parsimisel). 
 
-### 4.4 Andmebaasi kaitse
+### 5.4 Andmebaasi kaitse
 1. Andmebaasi ei krüpteerita, kuna konfidentsiaalsusvajadus ei ole kõrge.
 1. Andmebaasi auditilogi ei peeta, kuna terviklusvajadus ei ole nii kõrge.
 
 Vajadusel vt taustaks:
 - MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega.
 
-## 5 Käideldavus
+## 6 Käideldavus
 
 TARA-Stat-i võib logikirjeid saata mitu TARA-Serveri instantsi.
 
