@@ -37,7 +37,7 @@ const MongoClient = require('mongodb').MongoClient;
 var lock = new ReadWriteLock();
 
 // -------- 2 Konf-i laadimine  --------
-var config = require('./../tara-ci-config/TARA-Stat/config');
+var config = require('../tara-ci-config/TARA-Stat/config');
 
 // -------- 3 Globaalsed muutujad -------- 
 // MongoDB andmebaasiühendus. Deklareeritud siin, et oleks elutukse
