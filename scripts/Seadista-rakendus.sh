@@ -35,7 +35,7 @@ function lopeta {
 # Abistaja: Küsin kasutajalt kas jätkata
 #
 function kasJatkan {
-  read -p -e "${BLUE} --- Jätkata (y/n)? ${NC}" prompt
+  read -p " --- Jätkata (y/n)? " prompt
   if [[ $prompt != y && $prompt != Y ]]
   then
     lopeta
