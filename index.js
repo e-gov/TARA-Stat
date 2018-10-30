@@ -260,6 +260,11 @@ function tootleSyslogKirje(syslogKirje) {
  * using TLS "
 */
 // Valmista ette suvandid
+var abi = config.TLS_K_CERT;
+console.log(abi);
+var abi2 = path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+config.TLS_K_CERT);
+console.log(abi2);
 var TCP_TLS_options = {
   ca: fs.readFileSync(
     path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
