@@ -20,6 +20,7 @@
 
 # Värvid
 ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # ------------------------------
@@ -34,7 +35,7 @@ function lopeta {
 # Abistaja: Küsin kasutajalt kas jätkata
 #
 function kasJatkan {
-  read -p " --- Jätkata (y/n)? " prompt
+  read -p "${ORANGE} --- Jätkata (y/n)? ${NC}" prompt
   if [[ $prompt != y && $prompt != Y ]]
   then
     lopeta
@@ -114,7 +115,6 @@ paigalda_Nodejs_teek "rwlock"
 paigalda_Nodejs_teek "mongodb"
 
 echo -e "${ORANGE} --- Node.js teegid paigaldatud ${NC}"
-kasJatkan
 
 # ------------------------------
 # 3. Annan tarastat-le õigused kodukaustale (TARA-Stat)
