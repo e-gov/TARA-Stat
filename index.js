@@ -260,7 +260,7 @@ function tootleSyslogKirje(syslogKirje) {
  * using TLS "
 */
 // Valmista ette suvandid
-var TCP_TLS_options = {
+var TLS_S_options = {
   ca: fs.readFileSync(
     path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
     config.TLS_K_CERT), 'utf8'),
@@ -274,8 +274,8 @@ var TCP_TLS_options = {
   rejectUnauthorized: true
 };
 
-// Defineeri TCP-TLS Server
-const tcpTlsServer = tls.createServer(TCP_TLS_options, (socket) => {
+// Defineeri TLS server
+const tcpTlsServer = tls.createServer(TLS_S_options, (socket) => {
 
   // Defineeri ühenduses toimuvatele sündmustele käsitlejad
 
@@ -349,7 +349,7 @@ const tcpTlsServer = tls.createServer(TCP_TLS_options, (socket) => {
 
 // -------- 8 Defineeri HTTPS server -------- 
 // Valmista ette HTTPS serveri suvandid
-var HTTPS_options = {
+var HTTPS_S_options = {
   ca: fs.readFileSync(
     path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
     config.CA_CERT), 'utf8'),
@@ -362,7 +362,7 @@ var HTTPS_options = {
   requestCert: true,
   rejectUnauthorized: true
 };
-var httpsServer = https.createServer(HTTPS_options, app);
+var httpsServer = https.createServer(HTTPS_S_options, app);
 
 // -------- 9 Loo ühendus MongoDB - ga ja käivita
 //            TLS ning HTTPS serverid             -------- 
@@ -385,12 +385,12 @@ MongoClient.connect(
       db = client.db(config.LOGIBAAS);
 
       // Käivita TLS server
-      tcpTlsServer.listen(config.TCP_TLS_PORT, () => {
-        console.log('TLS server kuuldel pordil: ' + config.TCP_TLS_PORT);
+      tcpTlsServer.listen(config.TLS_S_PORT, () => {
+        console.log('TLS server kuuldel pordil: ' + config.TLS_S_PORT);
       });
 
       // Käivita HTTPS server 
-      httpsServer.listen(config.HTTPS_PORT, () => {
+      httpsServer.listen(config.HTTPS_S_PORT, () => {
         console.log('HTTPS server kuuldel pordil: ' + httpsServer.address().port);
       });
 

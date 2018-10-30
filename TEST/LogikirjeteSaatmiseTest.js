@@ -1,13 +1,21 @@
 /**
  * LogikirjeteSaatmiseTest.js
  * 
- * Genereerib logikirjeid ja lisab need TARA-STAT logibaasi
+ * Genereerin logikirjeid ja saadan need TARA-STAT-i
+ * 
+ * Käivitamine: node LogikirjeteSaatmiseTest
+ * 
  */
 
-// TARA-Stat-i domeeninimi ja logikirjete vastuvõtu port
-// NB! Enne käivitamist sea tegelikud väärtused 
-const HOST = 'sea tegelik';
-const PORT = 5001;
+'use strict';
+
+// -------- 1 Teekide laadimine  --------
+const tls = require('tls'); // TCP ühenduste teek (TLS-ga)
+const fs = require('fs'); // Sertide laadimiseks
+const path = require('path');
+
+// -------- 2 Konf-i laadimine  --------
+var config = require('/opt/tara-ci-config/TARA-Stat/config');
 
 // Logikirjete vahemiku algus
 var a = { y: 2018, m: 4, d: 1 };
@@ -36,7 +44,7 @@ const veateated = [
   'Veateade MMMM'
 ];
 
-console.log('\n LogikirjeteSaatmiseTest.js \n');
+console.log('---  Genereerin logikirjeid ja saadan need TARA-STAT-i \n');
 
 /**
  * Genereeri ja saada Syslog kirjed TARA-Stat-le 
@@ -99,34 +107,66 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Loo TCP klient TARA-Stat-ga ühendumiseks
-const net = require('net');
-let client = net.Socket();
+// Valmista ette kliendi suvandid
+var TLS_K_OPTIONS = {
+  host: config.TLS_S_HOST,
+  port: config.TLS_S_PORT,
+  ca = fs.readFileSync(
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      'tls-server-SELF.cert'), 'utf8'),
+  key = fs.readFileSync(
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      'tls-client-SELF.key'), 'utf8'),
+  cert = fs.readFileSync(
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      'tls-client-SELF.cert'), 'utf8'),
+  requestCert: true,
+  rejectUnauthorized: true
+}
 
-// Sea TCP kliendi sündmusekäsitlejad 
-client.on('data', function (data) {
-  console.log('TCP-Klient: TARA-Stat-lt saadud: ' + data);
-});
+// Loo TLS klient, ühendu TLS serveriga
+const socket = tls.connect(TLS_K_OPTIONS, () => {
+  console.log('TLS klient: TARA-Stat-ga ' +
+  config.TLS_S_HOST + ':' + config.TLS_S_PORT +
+    ' ühendus loodud');
 
-client.on('close', function () {
-  console.log('TCP-Klient: TARA-Stat-ga ühendus suletud \n');
-});
+    // Kas kliendi autoriseerimine õnnestus?
+  if (socket.authorized) {
+    console.log("TLS klient: server autoriseeris ühenduse.");
+  }
+  else {
+    console.log("TLS klient: server ei autoriseerinud ühendust " +
+      socket.authorizationError)
+  }
 
-client.on('error', function (ex) {
-  console.log("TCP-Klient: viga käsitletud");
-  console.log(ex);
-});
-
-// Loo ühendus, genereeri ja saada logikirjed
-client.connect(PORT, HOST, function () {
-  console.log('TCP-Klient: TARA-Stat-ga ' + HOST +
-   ':' + PORT + ' ühendus loodud');
+  let serverisert = socket.getPeerCertificate();
+  console.log('TLS klient: server esitas serdi:');
+  console.log(JSON.stringify(
+    serverisert,
+    ['subject', 'issuer', 'C', 'O', 'CN', 'valid_from', 'valid_to'],
+    ' '));
 
   // Genereeri ja saada logikirjed
   genereeriJaSaadaLogikirjed(client);
 
-  // Sule ühendus 10 s pärast. NB! Saatmised on async
+  // Sule ühendus 3 s pärast
   setTimeout(() => {
-    client.destroy();
-  }, 10000);
+    socket.destroy();
+  }, 3000);
+  console.log('TLS klient: sulgesin ühenduse');
 });
+
+socket.on('data', (data) => {
+  console.log('TLS klient: TLS serverilt saadud: ' + data);
+  // client.destroy(); // kill client after server's response
+});
+
+socket.on('close', () => {
+  console.log('TLS klient: TLS serveriga ühendus suletud');
+});
+
+socket.on('error', (ex) => {
+  console.log("TLS klient: viga käsitletud");
+  console.log(ex);
+});
+
