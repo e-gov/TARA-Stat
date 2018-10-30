@@ -260,8 +260,6 @@ function tootleSyslogKirje(syslogKirje) {
  * using TLS "
 */
 // Valmista ette suvandid
-var abi = config.TLS_K_CERT;
-console.log('config.TLS_K_CERT :' + JSON.stringify(abi));
 var TCP_TLS_options = {
   ca: fs.readFileSync(
     path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
@@ -388,12 +386,12 @@ MongoClient.connect(
 
       // Käivita TLS server
       tcpTlsServer.listen(config.TCP_TLS_PORT, () => {
-        console.log('TCP-TLS Server kuuldel pordil: ' + config.TCP_TLS_PORT);
+        console.log('TLS server kuuldel pordil: ' + config.TCP_TLS_PORT);
       });
 
       // Käivita HTTPS server 
       httpsServer.listen(config.HTTPS_PORT, () => {
-        console.log('HTTPS-Server kuuldel pordil: ' + httpsServer.address().port);
+        console.log('HTTPS server kuuldel pordil: ' + httpsServer.address().port);
       });
 
     }
