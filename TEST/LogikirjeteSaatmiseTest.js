@@ -108,21 +108,16 @@ function getRandomInt(min, max) {
 }
 
 // Valmista ette kliendi suvandid
-console.log('config.TLS_S_CERT: ' + config.TLS_S_CERT);
-console.log('Koostan tee');
-var abi = path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-config.TLS_S_CERT);
-console.log('Tee: ' + abi);
 var TLS_K_OPTIONS = {
   host: config.TLS_S_HOST,
   port: config.TLS_S_PORT,
-  ca = fs.readFileSync(
+  ca: fs.readFileSync(
     path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
       config.TLS_S_CERT), 'utf8'),
-  key = fs.readFileSync(
+  key: fs.readFileSync(
     path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
       config.TLS_K_KEY), 'utf8'),
-  cert = fs.readFileSync(
+  cert: fs.readFileSync(
     path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
       config.TLS_K_CERT), 'utf8'),
   requestCert: true,
