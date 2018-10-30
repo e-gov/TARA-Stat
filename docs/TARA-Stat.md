@@ -238,7 +238,7 @@ Konfigureeritakse järgmiste failidega:
 
 | fail        | eesmärk ja kasutamine |
 |-------------|-----------------------|
-| `/opt/TARA-Stat/config.js` | veebirakenduse konf-n. Konfigureeritakse paigaldusskriptiga `TARA-Stat-paigalda-rakendus.sh`. Käsitsi konf-mine on vajalik siis, kui tahetakse muuta tundlike taristuparameetrite vaikeväärtusi (nt porti). |
+| `/opt/TARA-Stat/config.js` | veebirakenduse konf-n. |
 | `/etc/mongodb.conf`        | MongoDB konf-n. Kasutatakse MongoDB distributsiooni vaikimisi konf-i. Käsitsi konf-mine on vajalik siis, kui tahetakse muuta tundlike taristuparameetrite vaikeväärtusi (nt porti). |
 
 Konfiguratsiooni osaks on ka võtmed ja kasutajakontod.
