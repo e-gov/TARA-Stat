@@ -110,7 +110,7 @@ th { font-weight: normal; font-style: italic; text-align: center; }
 code {
   font-family: monospace;
   font-size: 17px;
-  color: tomato !important;
+  color: green !important;
   background-color: #f6f8fa;
   border: 1px solid #e6e6de;
   border-radius: 4px;
