@@ -113,13 +113,13 @@ var TLS_K_OPTIONS = {
   port: config.TLS_S_PORT,
   ca = fs.readFileSync(
     path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-      'tls-server-SELF.cert'), 'utf8'),
+      config.TLS_S_CERT), 'utf8'),
   key = fs.readFileSync(
     path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-      'tls-client-SELF.key'), 'utf8'),
+      config.TLS_K_KEY), 'utf8'),
   cert = fs.readFileSync(
     path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-      'tls-client-SELF.cert'), 'utf8'),
+      config.TLS_K_CERT), 'utf8'),
   requestCert: true,
   rejectUnauthorized: true
 }
