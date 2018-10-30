@@ -3,8 +3,17 @@ function alusta() {
   /**
    * Päri statistika serveripoolelt ja kuva
    */
+  $('#perioodiMuster').on('keydown', (e) => {
+    if (e.keyCode == 13) {
+      pariStatistika();
+    }
+  });
+  
   $('#sooritaNupp').click(() => {
+    pariStatistika();    
+  });
 
+  function pariStatistika() {
     function kuvaKirjed(kirjed) {
       var t = $('<table><tr>' +
       '<th>klientrakendus</th>' +
@@ -68,7 +77,6 @@ function alusta() {
         kuvaKirjed(kirjed);
       }
     );
-    
-  });
 
+  }
 }
