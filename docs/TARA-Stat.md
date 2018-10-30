@@ -238,10 +238,9 @@ Konfigureeritakse järgmiste failidega:
 
 | fail        | eesmärk ja kasutamine |
 |-------------|-----------------------|
-| `/opt/TARA-Stat/config.js` | veebirakenduse konf-n. |
+| `/opt/tara-ci-config/TARA-Stat/config.js` | veebirakenduse konf-n. |
+| `/opt/tara-ci-config/TARA-Stat/keys` | veebirakenduse konf-n. |
 | `/etc/mongodb.conf`        | MongoDB konf-n. Kasutatakse MongoDB distributsiooni vaikimisi konf-i. Käsitsi konf-mine on vajalik siis, kui tahetakse muuta tundlike taristuparameetrite vaikeväärtusi (nt porti). |
-
-Konfiguratsiooni osaks on ka võtmed ja kasutajakontod.
 
 ## 2 Paigaldamine ja seadistamine
 
@@ -286,9 +285,11 @@ Kontrolli, et TARA-Stat kood kopeeriti kausta `/opt/TARA-Stat`.
 
 Koodiuuenduse paigaldamisel seiska kõigepealt veebirakendus (juhul kui see käib). Seejärel tõmba uuendused koodirepost.
 
-`sudo systemctl stop tarastat`
-`cd /opt/TARA-Stat`
-`sudo git pull`
+````
+sudo systemctl stop tarastat
+cd /opt/TARA-Stat
+sudo git pull
+````
 
 Koodi uuendamisel on vaja veebirakendus uuesti seadistada.
 
