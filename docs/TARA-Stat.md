@@ -253,8 +253,8 @@ Koodi ja seadistust hoitakse eraldi repodes.
 
 | repo nimi | eesmärk | avalik
 |------|---------|---------
-| https://e-gov.github.io/TARA-Stat | rakenduse kood | jah
-| tara-ci-config | rakenduse seadistus | ei
+| `https://e-gov.github.io/TARA-Stat` | rakenduse kood | jah
+| `tara-ci-config` | rakenduse seadistus | ei
 
 Paigaldustoimingud:
 

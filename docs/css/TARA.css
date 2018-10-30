@@ -107,7 +107,7 @@ pre, code, samp {
   font-family: monospace;
   font-size: 17px;
   color: tomato !important;
-  background-color: white; /* nagu GitHubis */
+  background-color: #f6f8fa; /* nagu GitHubis */
   white-space:pre-wrap;
   overflow-y: hidden; overflow-x: hidden;
   page-break-inside: avoid; hyphens: none;
