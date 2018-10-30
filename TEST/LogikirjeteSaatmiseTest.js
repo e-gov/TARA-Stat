@@ -147,7 +147,7 @@ const socket = tls.connect(TLS_K_OPTIONS, () => {
     ' '));
 
   // Genereeri ja saada logikirjed
-  genereeriJaSaadaLogikirjed(client);
+  genereeriJaSaadaLogikirjed(socket);
 
   // Sule ühendus 3 s pärast
   setTimeout(() => {
