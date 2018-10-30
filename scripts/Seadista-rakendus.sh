@@ -6,11 +6,10 @@
 #
 # 1. Loon Node.js käitluskasutaja (run user)
 # 2. Paigaldan rakendusele vajalikud Node.js teegid
-# 4. Paigaldan MongoDB kasutamise salasõna
-# 5. Annan tarastat-le õigused kodukaustale (TARA-Stat)
-# 6. Loon systemd haldusüksuse kirjeldusfaili
-# 7. Laen deemoni
-# 8. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
+# 3. Annan tarastat-le õigused kodukaustale (TARA-Stat)
+# 4. Loon systemd haldusüksuse kirjeldusfaili
+# 5. Laen deemoni
+# 6. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
 #
 # Vt:
 # - https://blog.nodeswat.com/set-up-a-secure-node-js-web-application-9256b8790f11
@@ -61,8 +60,8 @@ function kontrolli {
 # Abistaja: Paigalda Node.js teek
 #
 function paigalda_Nodejs_teek {
-  npm install $1 --save
-  kontrolli "$?" "Node.js teegi paigaldamine"
+  npm install $1 --save --silent
+  kontrolli "$?" "Node.js teegi $1 paigaldamine"
 }
 
 # ------------------------------
@@ -84,7 +83,6 @@ sudo deluser tarastat
 sudo useradd -r -s /bin/false --home /opt/TARA-Stat tarastat
 echo -e "${ORANGE} --- Väljastan kontrolliks teabe kasutaja tarastat kohta ${NC}"
 id tarastat
-kasJatkan
 
 # ------------------------------
 # 2. Paigaldan rakendusele vajalikud Node.js teegid
@@ -119,20 +117,13 @@ echo -e "${ORANGE} --- Node.js teegid paigaldatud ${NC}"
 kasJatkan
 
 # ------------------------------
-# 4. Paigaldan MongoDB kasutamise salasõna
-#
-echo -e "${ORANGE} --- Paigaldan MongoDB kasutamise salasõna TARA-Stat konf-i ${NC}"
-read -p "Anna MongoDB kasutaja 'rakendus' salasõna: " MONGOUSERPWD
-sed -i "s/MONGOUSERPWD-changeit/$MONGOUSERPWD/" /opt/TARA-Stat/config.js
-
-# ------------------------------
-# 5. Annan tarastat-le õigused kodukaustale (TARA-Stat)
+# 3. Annan tarastat-le õigused kodukaustale (TARA-Stat)
 #
 sudo chown -R tarastat:tarastat /opt/TARA-Stat
 cd /opt/TARA-Stat
 
 # ------------------------------
-# 6. Loon systemd haldusüksuse kirjeldusfaili
+# 4. Loon systemd haldusüksuse kirjeldusfaili
 #
 echo -e "${ORANGE} --- Loon systemd haldusüksuse kirjeldusfaili ${NC}"
 sudo dd of=/lib/systemd/system/tarastat.service << EOF
@@ -160,19 +151,18 @@ EOF
 # echo
 
 # ------------------------------
-# 7. Laen deemoni
+# 5. Laen deemoni
 #
 echo -e "${ORANGE} --- Laen deemoni ${NC}"
 sudo systemctl daemon-reload
 
 # ------------------------------
-# 8. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
+# 6. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
 #
 echo -e "${ORANGE} --- Käivitan TARA-Stat veebirakenduse ${NC}"
 kasJatkan
 sudo systemctl start tarastat
-echo -e "${ORANGE} --- Kontrollin TARA-Stat veebirakenduse käivitumist ${NC}"
-kasJatkan
+echo -e "${ORANGE} --- Kontrolli TARA-Stat veebirakenduse käivitumist ${NC}"
 sudo systemctl status tarastat
 
 lopeta

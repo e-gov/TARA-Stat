@@ -55,8 +55,10 @@ var logFile = fs.createWriteStream(config.LOGIFAIL, { flags: 'a' });
 var logStdout = process.stdout;
 console.log = function () {
   let utc = new Date().toJSON();
-  logFile.write('TARA-Stat: ' + utc + ' ' + util.format.apply(null, arguments) + '\n');
-  logStdout.write('TARA-Stat: ' + utc + ' ' + util.format.apply(null, arguments) + '\n');
+  logFile.write('TARA-Stat: ' + utc + ' ' +
+    util.format.apply(null, arguments) + '\n');
+  logStdout.write('TARA-Stat: ' + utc + ' ' +
+    util.format.apply(null, arguments) + '\n');
 }
 console.error = console.log;
 console.log('Käivitun');
@@ -87,7 +89,8 @@ app.get('/', function (req, res) {
   }
   else {
     console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-    res.render('pages/viga', { veateade: "ERR-01: Logibaasiga ühendumine ebaõnnestus" });
+    res.render('pages/viga',
+     { veateade: "ERR-01: Logibaasiga ühendumine ebaõnnestus" });
   }
 });
 
@@ -258,11 +261,14 @@ function tootleSyslogKirje(syslogKirje) {
 */
 // Valmista ette suvandid
 var TCP_TLS_options = {
-  ca: fs.readFileSync(path.join(__dirname, '..', 'keys',
+  ca: fs.readFileSync(
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
     config.TLS_K_CERT), 'utf8'),
-  key: fs.readFileSync(path.join(__dirname, '..', 'keys',
+  key: fs.readFileSync(
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
     config.TLS_S_KEY), 'utf8'),
-  cert: fs.readFileSync(path.join(__dirname, '..', 'keys',
+  cert: fs.readFileSync(
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
     config.TLS_S_CERT), 'utf8'),
   requestCert: true,
   rejectUnauthorized: true
@@ -344,11 +350,14 @@ const tcpTlsServer = tls.createServer(TCP_TLS_options, (socket) => {
 // -------- 8 Defineeri HTTPS server -------- 
 // Valmista ette HTTPS serveri suvandid
 var HTTPS_options = {
-  ca: fs.readFileSync(path.join(__dirname, '..', 'keys',
+  ca: fs.readFileSync(
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
     config.CA_CERT), 'utf8'),
-  key: fs.readFileSync(path.join(__dirname, '..', 'keys',
+  key: fs.readFileSync(
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
     config.HTTPS_KEY), 'utf8'),
-  cert: fs.readFileSync(path.join(__dirname, '..', 'keys',
+  cert: fs.readFileSync(
+    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
     config.HTTPS_CERT), 'utf8'),
   requestCert: true,
   rejectUnauthorized: true
