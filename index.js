@@ -8,7 +8,7 @@
  * on peamine töötsükkel asetatud MongoDB-ga ühenduse võtmise 
  * callback-i sisse. Kõigepealt luuakse ühendus MongoDB-ga. Seejärel 
  * käivitatakse Express veebirakendus (mis hakkab väljastama 
- * kasutusstatistikat) ja TCP server (mis hakkab vastu võtma 
+ * kasutusstatistikat) ja TLS server (mis hakkab vastu võtma 
  * logikirjeid).
  * 
  * Dokumentatsioon: https://e-gov.github.io/TARA-Stat/Dokumentatsioon
@@ -251,7 +251,7 @@ function tootleSyslogKirje(syslogKirje) {
   }
 }
 
-/** -------- 7 Defineeri TCP TLS Server --------
+/** -------- 7 Defineeri TLS server --------
  * Node.js 'tls' mooduliga
  * "tls.Server class is a subclass of net.Server that accepts encrypted connections
  * using TLS "
@@ -259,11 +259,11 @@ function tootleSyslogKirje(syslogKirje) {
 // Valmista ette suvandid
 var TCP_TLS_options = {
   ca: fs.readFileSync(path.join(__dirname, '..', 'keys',
-    config.TCP_TLS_KEY), 'utf8'),
+    config.TLS_K_CERT), 'utf8'),
   key: fs.readFileSync(path.join(__dirname, '..', 'keys',
-    config.TCP_TLS_KEY), 'utf8'),
+    config.TLS_S_KEY), 'utf8'),
   cert: fs.readFileSync(path.join(__dirname, '..', 'keys',
-    config.TCP_TLS_CERT), 'utf8'),
+    config.TLS_S_CERT), 'utf8'),
   requestCert: true,
   rejectUnauthorized: true
 };
@@ -356,7 +356,7 @@ var HTTPS_options = {
 var httpsServer = https.createServer(HTTPS_options, app);
 
 // -------- 9 Loo ühendus MongoDB - ga ja käivita
-//            TCP ning HTTPS serverid             -------- 
+//            TLS ning HTTPS serverid             -------- 
 
 // Andmebaasiga ühendumise URL
 // NB! Konto andmebaas - users - on URL-i hardcoded.
@@ -375,7 +375,7 @@ MongoClient.connect(
       // console.log("--- Logibaasiga ühendumine õnnestus");
       db = client.db(config.LOGIBAAS);
 
-      // Käivita TCP-TLS server
+      // Käivita TLS server
       tcpTlsServer.listen(config.TCP_TLS_PORT, () => {
         console.log('TCP-TLS Server kuuldel pordil: ' + config.TCP_TLS_PORT);
       });
