@@ -191,8 +191,8 @@ Repos olevates konf-ifailides on saladused esitatud väärtustega `changeit`. To
 | `index.js`   | veebirakendus |
 | `scripts`    | paigaldusskriptid |
 | `docs`       | dokumentatsioon |
-| `/opt/keys` | TARA-Stat veebirakenduse võtmed |
-| `/opt/TARA-Stat/config.js` | TARA-Stat veebirakenduse konf-ifail |
+| `/opt/tara-ci-config/TARA-Stat` | TARA-Stat seadistus |
+| `/opt/tara-ci-config/TARA-Stat/keys` | TARA-Stat võtmed |
 | `/opt/TARA-Stat/log.txt` | TARA-Stat veebirakenduse logi |
 | `/lib/systemd/system/tarastat.service` | TARA-Stat veebirakenduse systemd haldusüksuse kirjeldusfail |
 | `/etc/mongodb.conf` | MongoDB konf-ifail |
@@ -232,29 +232,7 @@ Arendussõltuvused:
 
 Märkus. "Standardne" tähendab laialt kasutatavat, stabiilset teeki, millest `npm` abil paigaldatakse viimane versioon. Kui versioon on tühi, siis kasutatakse standardseid võimalusi, mis ei nõua sidumist konkreetse versiooniga.
 
-### 1.7 Paigaldusskriptid (ülevaade)
-
-TARA-Stat paigaldatakse põhiosas paigaldusskriptidega, seejuures on vaja ka käsitsi tegevusi.
-
-Järgnevas eeldame, et:
-- virtuaalmasin (VM) on loodud
-- Ubuntu 16 LTS on paigaldatud
-- paigaldaja (admin) on sudo-õigustega kasutajana sisse loginud. 
-
-Paigaldamisel saab kasutada järgmisi skripte:
-
-| skript | ülesanne |
-|--------|----------|
-| `TARA-Stat-paigalda-Nodejs.sh` | paigaldab Node.js | 
-| `TARA-Stat-paigalda-MongoDB.sh` | paigaldab MongoDB ja seadistab logibaasi |
-| `TARA-Stat-seadista-rakendus.sh` | seadistab veebirakenduse |
-| `TARA-Stat-genereeri-votmed.sh` | genereerib veebirakenduse HTTPS privaatvõtme ja - juhul, kui kasutatakse _self-signed_ serti - serdi  |
-| `TARA-Stat-diagnoosi.sh` | väljastab diagnostilist teavet paigalduse kohta |
-| `TARA-Stat-paigalda-makett.sh` | paigaldab makettrakenduse |
-
-Skriptid asuvad koodirepo kaustas `/opt/TARA-Stat/scripts`. Skriptid on kommenteeritud - igas skripti päises on kirjeldatud täidetavad sammud. Enne paigaldamist tutvu skriptitekstidega. Skriptide täpsemad kirjeldused on allpool.
-
-### 1.6 Konfigureerimine (ülevaade)
+### 1.7 Konfigureerimine (ülevaade)
 
 Konfigureeritakse järgmiste failidega:
 
@@ -265,7 +243,7 @@ Konfigureeritakse järgmiste failidega:
 
 Konfiguratsiooni osaks on ka võtmed ja kasutajakontod.
 
-## 2 Paigaldamine
+## 2 Paigaldamine ja seadistamine
 
 ### 2.1 Ülevaade
 
@@ -396,7 +374,7 @@ Vajadusel vt:
 
 Pääsureeglite seadmisel VLAN-is ja/või sisevõrgu ruuteri(te)s, samuti TARA-Serveris lähtu organisatsiooni võrgureeglitest.
 
-### 2.9 Käivitamine ja seiskamine
+### 2.8 Käivitamine ja seiskamine
 
 Nii TARA-Stat veebirakendus kui ka MongoDB käitatakse systemd hallatavate teenustena. 
 
@@ -416,12 +394,12 @@ Teenused käivitatakse ja seisatakse standardsete `systemctl` käskudega, nt:
 
 Teenuste `tarastat` ja `mongodb` käivitamise järjekord ei ole oluline. Kuid peab arvestama, et `tarastat` sõltub `mongodb`-st - kui logibaas ei ole üleval, siis ei saa logikirjeid salvestada ega statistikat väljastada.
 
-### 2.10 Monitooringuga ühendamine
+### 2.9 Monitooringuga ühendamine
 
 Päringu `https://<tara-stat>/status` saamisel kontrollib TARA-Stat oma logibaasi ülevalolekut. Kui logibaas on üleval, siis tagastatakse HTTP vastus `200` `OK`,
 - vastasel korral `500` `Internal Server Error`.
 
-### 2.11 Diagnostika
+### 2.10 Diagnostika
 
 TARA-Stat ülevalolekut saab lõppkasutaja seisukohast kontrollida nii:
 - lülitu tööarvutiga organisatsiooni sisevõrku (VPN)
@@ -446,7 +424,7 @@ Lisaks väljastab skript teatmikteabe kummagi teenuse oluliste asukohtade kohta.
 
 Probleemide lahendamiseks saab kasutada teenuse enda logisid (vt jaotis "Olulised asukohad").
 
-### 2.12 Logibaasi haldamine
+### 2.11 Logibaasi haldamine
 
 Kui tekib vajadus välja selgitada, mis seisus on MongoDB andmebaasi sisu või või logibaasi tühjendada, siis tee järgmist:
 

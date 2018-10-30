@@ -106,8 +106,8 @@ th { font-weight: normal; font-style: italic; text-align: center; }
 pre, code, samp {
   font-family: monospace;
   font-size: 17px;
-  color: black !important;
-  background-color: #f6f8fa; /* nagu GitHubis */
+  color: tomato !important;
+  background-color: white; /* nagu GitHubis */
   white-space:pre-wrap;
   overflow-y: hidden; overflow-x: hidden;
   page-break-inside: avoid; hyphens: none;
