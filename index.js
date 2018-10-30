@@ -359,8 +359,8 @@ var HTTPS_S_options = {
   cert: fs.readFileSync(
     path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
     config.HTTPS_CERT), 'utf8'),
-  requestCert: true,
-  rejectUnauthorized: true
+  requestCert: false,
+  rejectUnauthorized: false
 };
 var httpsServer = https.createServer(HTTPS_S_options, app);
 
