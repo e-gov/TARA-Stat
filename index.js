@@ -275,8 +275,25 @@ var TLS_S_options = {
 };
 
 // Defineeri TLS server
-const tcpTlsServer = tls.createServer(TLS_S_options, (socket) => {
+const tcpTlsServer = tls.createServer(
+  TLS_S_options,
+  (socket) => {
+    console.log('TLS Server: ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
+    let kliendisert = socket.getPeerCertificate();
+    console.log('TLS Server: klient esitas serdi:');
+    console.log(JSON.stringify(
+      kliendisert,
+      ['subject', 'issuer', 'C', 'O', 'CN', 'valid_from', 'valid_to'],
+      ' '));
 
+    // Kas kliendi autoriseerimine õnnestus?
+    if (socket.authorized) {
+      console.log("TLS Server: autoriseerisin ühenduse.");
+    }
+    else {
+      console.log("TLS Server: ei autoriseerinud ühendust " +
+        socket.authorizationError)
+    }
   // Defineeri ühenduses toimuvatele sündmustele käsitlejad
 
   /* Andmepuhver.
