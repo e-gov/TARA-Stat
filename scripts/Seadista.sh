@@ -4,12 +4,12 @@
 #
 # Seadistan TARA-Stat veebirakenduse (systemd-ga käitatavaks)
 #
-# 1. Loon Node.js käitluskasutaja (run user)
+# 1. Loon Node.js käitluskasutaja (run user) tarastat
 # 2. Paigaldan rakendusele vajalikud Node.js teegid
 # 3. Annan tarastat-le õigused kodukaustale (TARA-Stat)
 # 4. Loon systemd haldusüksuse kirjeldusfaili
 # 5. Laen deemoni
-# 6. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
+# 6. (valikuline) Käivitan rakenduse (koos logibaasiga)
 #
 # Vt:
 # - https://blog.nodeswat.com/set-up-a-secure-node-js-web-application-9256b8790f11

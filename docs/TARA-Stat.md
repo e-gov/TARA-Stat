@@ -345,20 +345,19 @@ Käivita skript:
 `sudo bash /opt/TARA-Stat/scripts/Seadista.sh`:
 
 Skript teeb:
-1. Loon Node.js käitluskasutaja (run user)
+1. Loon Node.js käitluskasutaja (run user) tarastat
 2. Paigaldan rakendusele vajalikud Node.js teegid
-4. Paigaldan MongoDB kasutamise salasõna
-5. Annan tarastat-le õigused kodukaustale (TARA-Stat)
-6. Loon systemd haldusüksuse kirjeldusfaili
-7. Laen deemoni
-8. (valikuline) Käivitan veebirakenduse (koos logibaasiga)
+3. Annan tarastat-le õigused kodukaustale (TARA-Stat)
+4. Loon systemd haldusüksuse kirjeldusfaili
+5. Laen deemoni
+6. (valikuline) Käivitan rakenduse (koos MongoDB-ga)
 
 Skripti sõltuvused:
 - kasutaja `tarastat` parool
 - Node.js teegirepo (sisemine või `https://registry.npmjs.org/`)
-- Node.js teegid: `body-parser`, `ejs`, `express`, `mongodb`, `request`, `basic-auth`, `request-debug`
+- Node.js teegid: `body-parser`, `ejs`, `express`, `rwlock`, `mongodb`
 - MongoDB kasutamise salasõna
-- logikirje lisamise otspunkti API-võti.
+
 
 ### 2.7 VM tulemüüri seadistamine
 
@@ -419,7 +418,7 @@ Samuti saab kasutada diagnostikaskripti. Diagnostikaskript väljastab `systemctl
 - kas `Active` väärtus on `active (running)` (roheline)
 - 10 viimasele logiteatele.
 
-`sudo bash /opt/TARA-Stat/scripts/Diagnoosi.sh`
+`sudo bash /opt/TARA-Stat/scripts/Olukord.sh`
 
 Lisaks väljastab skript teatmikteabe kummagi teenuse oluliste asukohtade kohta.
 
