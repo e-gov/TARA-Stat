@@ -10,15 +10,15 @@ config.LOGIFAIL = '/opt/TARA-Stat/log.txt';
 // CA sert
 config.CA_CERT = 'ca.cert';
 
-// HTTPS Serveri seadistus
+// TARA-Stat kasutusstatistika väljastamise HTTPS Serveri seadistus
 config.HTTPS_PORT = 5000; // HTTPS Serveri port
-config.HTTPS_KEY = 'https.key'; // HTTPS privaatvõtme failinimi
-config.HTTPS_CERT = 'https.cert'; // HTTPS serdi failinimi
+config.HTTPS_KEY = 'https-server.key'; // HTTPS privaatvõtme failinimi
+config.HTTPS_CERT = 'https-server.cert'; // HTTPS serdi failinimi
 
-// TCP-TLS Serveri seadistus 
-config.TCP_TLS_PORT = 5001; // TCP (TLS) Serveri port
-config.TCP_TLS_KEY = 'tcp-tls.key'; // TCP-TLS privaatvõtme failinimi
-config.TCP_TLS_CERT = 'tcp-tls.cert'; // TCP-TLS serdi failinimi
+// TARA-Stat logikirjete saatmise TCP-TLS ühenduse seadistus 
+config.TCP_TLS_PORT = 5001; // TCP-TLS Serveri port
+config.TCP_TLS_KEY = 'tcp-osapool-SELF.key'; // TCP-TLS osapoole privaatvõtme failinimi
+config.TCP_TLS_CERT = 'tcp-osapool-SELF.cert'; // TCP-TLS osapoole serdi failinimi
 
 // Andmebaasi nimi
 config.LOGIBAAS = 'logibaas';
