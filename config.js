@@ -17,8 +17,8 @@ config.HTTPS_CERT = 'https-server.cert'; // HTTPS serdi failinimi
 
 // TARA-Stat logikirjete saatmise TCP-TLS ühenduse seadistus 
 config.TCP_TLS_PORT = 5001; // TCP-TLS Serveri port
-config.TCP_TLS_KEY = 'tcp-osapool-SELF.key'; // TCP-TLS osapoole privaatvõtme failinimi
-config.TCP_TLS_CERT = 'tcp-osapool-SELF.cert'; // TCP-TLS osapoole serdi failinimi
+config.TCP_TLS_KEY = 'TARA-STAT-TLS-PARTY-SELF.key'; // TCP-TLS osapoole privaatvõtme failinimi
+config.TCP_TLS_CERT = 'TARA-STAT-TLS-PARTY-SELF.cert'; // TCP-TLS osapoole serdi failinimi
 
 // Andmebaasi nimi
 config.LOGIBAAS = 'logibaas';

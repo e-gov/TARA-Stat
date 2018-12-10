@@ -475,8 +475,10 @@ Soovi korral võib testrakenduse paigaldada eraldi masinasse. Selleks tuleb täi
 
 Testrakenduse käivitamiseks sisesta: 
 
-`cd /opt/TARA-Stat/TEST`
-`nodejs LogikirjeteSaatmiseTest`
+````
+cd /opt/TARA-Stat/TEST
+nodejs LogikirjeteSaatmiseTest
+````
 
 Iga käivitamisega genereeritakse juhuslikult teatud arv logikirjeid ja saadetakse TARA-Stat logibaasi.
 
