@@ -1,7 +1,9 @@
 /**
  * LogikirjeteSaatmiseTest.js
  * 
- * Genereerin logikirjeid ja saadan need TARA-STAT-i
+ * Genereerin logikirjeid ja saadan need TARA-STAT-i.
+ * Käivitada masinast tara-stat-makett.ci.kit.
+ * Sertide nimed hardcode-tud, vt allpool.
  * 
  * Käivitamine: node LogikirjeteSaatmiseTest
  * 
@@ -109,17 +111,23 @@ function getRandomInt(min, max) {
 
 // Valmista ette kliendi suvandid
 var TLS_K_OPTIONS = {
-  host: config.TCP_TLS_HOST,
-  port: config.TCP_TLS_PORT,
-  ca: fs.readFileSync(
-    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-      config.TCP_TLS_CERT), 'utf8'),
+  host: config.TLS_S_HOST,
+  port: config.TLS_S_PORT,
   key: fs.readFileSync(
-    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-      config.TCP_TLS_KEY), 'utf8'),
+    path.join(
+      __dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      'tara-stat-makett.ci.kit-SELF.key'
+    ), 'utf8'),
   cert: fs.readFileSync(
-    path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-      config.TCP_TLS_CERT), 'utf8'),
+    path.join(
+      __dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      'tara-stat-makett.ci.kit-SELF.cert'
+    ), 'utf8'),
+  ca: fs.readFileSync(
+    path.join(
+      __dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      config.TLS_S_CERT
+    ), 'utf8'),
   requestCert: true,
   rejectUnauthorized: true
 }
@@ -127,10 +135,10 @@ var TLS_K_OPTIONS = {
 // Loo TLS klient, ühendu TLS serveriga
 const socket = tls.connect(TLS_K_OPTIONS, () => {
   console.log('TLS klient: TARA-Stat-ga ' +
-  config.TCP_TLS_HOST + ':' + config.TCP_TLS_PORT +
+    config.TLS_HOST + ':' + config.TLS_PORT +
     ' ühendus loodud');
 
-    // Kas kliendi autoriseerimine õnnestus?
+  // Kas kliendi autoriseerimine õnnestus?
   if (socket.authorized) {
     console.log("TLS klient: server autoriseeris ühenduse.");
   }

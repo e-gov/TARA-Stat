@@ -90,7 +90,7 @@ app.get('/', function (req, res) {
   else {
     console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
     res.render('pages/viga',
-     { veateade: "ERR-01: Logibaasiga ühendumine ebaõnnestus" });
+      { veateade: "ERR-01: Logibaasiga ühendumine ebaõnnestus" });
   }
 });
 
@@ -256,20 +256,39 @@ function tootleSyslogKirje(syslogKirje) {
 
 /** -------- 7 Defineeri TLS server --------
  * Node.js 'tls' mooduliga
- * "tls.Server class is a subclass of net.Server that accepts encrypted connections
- * using TLS "
 */
-// Valmista ette suvandid
+
+// Vii usaldusankrute loetelu sobivale kujule
+var caList = [];
+for (let anchor of config.TLS_S_CA) {
+  caList.push(
+    fs.readFileSync(
+      path.join(
+        __dirname,
+        '..',
+        'tara-ci-config',
+        'TARA-Stat',
+        'keys',
+        anchor),
+      'utf8'
+    )
+  )
+  console.log('Paigaldatud usaldusankur: ' + anchor);
+}
+
+// Valmista TLS Serveri seaded
 var TLS_S_options = {
-  ca: fs.readFileSync(
-    path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-    config.TLS_K_CERT), 'utf8'),
   key: fs.readFileSync(
-    path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-    config.TLS_S_KEY), 'utf8'),
+    path.join(
+      __dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      config.TLS_S_KEY), 'utf8'
+    ),
   cert: fs.readFileSync(
-    path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-    config.TLS_S_CERT), 'utf8'),
+    path.join(
+      __dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      config.TLS_S_CERT), 'utf8'
+    ),
+  ca: caList,
   requestCert: true,
   rejectUnauthorized: true
 };
@@ -294,88 +313,88 @@ const tcpTlsServer = tls.createServer(
       console.log("TLS Server: ei autoriseerinud ühendust " +
         socket.authorizationError)
     }
-  // Defineeri ühenduses toimuvatele sündmustele käsitlejad
+    // Defineeri ühenduses toimuvatele sündmustele käsitlejad
 
-  /* Andmepuhver.
-    TCP on madalama taseme protokoll, mis tähendab, et logikirje võib tulla mitmes tükis. Ja ka vastupidi, ühes tükis võib tulla mitu logikirjet. TARA-Stat-is tehakse tüki saamisel lõim. Lõimel kulub tüki töötlemiseks natuke aega. Järgmine tükk võib aga juba sisse tulla, sellele tehakse uus lõim, mis alustab omakorda töötlust. Vaja on tagada, et esimene lõim lõpetab enne töö, kui järgmine alustab. S.t vaja on mutex-it (lukustamist). Javas on mutex-võimalus sisse ehitatud. Node.JS-s aga mitte.    
-    Sündmuse 'data' käsitlejad võivad üksteisele sisse sõita.
-    Probleemi ei teki, kui iga kirje tuleb ühes tükis (aga
-    tükis võib olla mitu kirjet).
-    Lukustamiseks on siin kasutatud teeki rwlock.
-  */
-  var buffered = '';
+    /* Andmepuhver.
+      TCP on madalama taseme protokoll, mis tähendab, et logikirje võib tulla mitmes tükis. Ja ka vastupidi, ühes tükis võib tulla mitu logikirjet. TARA-Stat-is tehakse tüki saamisel lõim. Lõimel kulub tüki töötlemiseks natuke aega. Järgmine tükk võib aga juba sisse tulla, sellele tehakse uus lõim, mis alustab omakorda töötlust. Vaja on tagada, et esimene lõim lõpetab enne töö, kui järgmine alustab. S.t vaja on mutex-it (lukustamist). Javas on mutex-võimalus sisse ehitatud. Node.JS-s aga mitte.    
+      Sündmuse 'data' käsitlejad võivad üksteisele sisse sõita.
+      Probleemi ei teki, kui iga kirje tuleb ühes tükis (aga
+      tükis võib olla mitu kirjet).
+      Lukustamiseks on siin kasutatud teeki rwlock.
+    */
+    var buffered = '';
 
-  /**
-   * Analüüsib andmepuhvrit buffered, eraldab ja suunab
-   * töötlusele (tootleSyslogKirje) kõik reavahetusega lõppevad osad.
-   */
-  function eraldaKirjedAndmepuhvrist() {
-    var received = buffered.split('\n');
-    while (received.length > 1) {
-      // Syslog kirje eraldatud
-      let syslogKirje = received[0];
-      buffered = received.slice(1).join('\n');
-      received = buffered.split('\n');
-      tootleSyslogKirje(syslogKirje);
+    /**
+     * Analüüsib andmepuhvrit buffered, eraldab ja suunab
+     * töötlusele (tootleSyslogKirje) kõik reavahetusega lõppevad osad.
+     */
+    function eraldaKirjedAndmepuhvrist() {
+      var received = buffered.split('\n');
+      while (received.length > 1) {
+        // Syslog kirje eraldatud
+        let syslogKirje = received[0];
+        buffered = received.slice(1).join('\n');
+        received = buffered.split('\n');
+        tootleSyslogKirje(syslogKirje);
+      }
     }
-  }
 
-  // Andmete saabumise käsitleja
-  socket.on('data', function (data) {
-    console.log('Saadud: ' + data.length + ' baiti');
-    // Võta andmepuhvrisse kirjutamise lukk
-    lock.writeLock(function (release) {
-      // Lisa saabunud andmed puhvrisse
-      buffered += data;
-      // Kui puhveri sisu saab nii pikaks, et see viitab
-      // ebakorrektsele sisendile, võimalikule ründele - 
-      // reavahetuste puudumisele - siis ignoreeri ja tühjenda
-      // puhver
-      if (buffered.length > 10000) {
-        console.log('Puhvri täitumine (> 1000 märki).' +
-          ' Viitab reavahetuste puudumisele. Ignoreerin saadetud andmeid.');
-        buffered = '';
-      }
-      else {
-        // Eemalda puhvrist täiskirjed
-        eraldaKirjedAndmepuhvrist();
-      }
-      // Vabasta lukk
-      release();
+    // Andmete saabumise käsitleja
+    socket.on('data', function (data) {
+      console.log('Saadud: ' + data.length + ' baiti');
+      // Võta andmepuhvrisse kirjutamise lukk
+      lock.writeLock(function (release) {
+        // Lisa saabunud andmed puhvrisse
+        buffered += data;
+        // Kui puhveri sisu saab nii pikaks, et see viitab
+        // ebakorrektsele sisendile, võimalikule ründele - 
+        // reavahetuste puudumisele - siis ignoreeri ja tühjenda
+        // puhver
+        if (buffered.length > 10000) {
+          console.log('Puhvri täitumine (> 1000 märki).' +
+            ' Viitab reavahetuste puudumisele. Ignoreerin saadetud andmeid.');
+          buffered = '';
+        }
+        else {
+          // Eemalda puhvrist täiskirjed
+          eraldaKirjedAndmepuhvrist();
+        }
+        // Vabasta lukk
+        release();
+      });
+
     });
+
+    // Ühenduse sulgemise käsitleja
+    socket.on('close',
+      () => {
+        console.log('TARA-Stat: ühendus suletud');
+      });
+
+    // Ühenduse vea käsitleja
+    socket.on('error',
+      (errorMessage) => {
+        console.log("Viga logikirje vastuvõtmisel (TCP");
+        console.log(errorMessage);
+      });
+
+    console.log('Ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
+    socket.write(`TARA-Stat kuuldel\r\n`);
 
   });
-
-  // Ühenduse sulgemise käsitleja
-  socket.on('close',
-    () => {
-      console.log('TARA-Stat: ühendus suletud');
-    });
-
-  // Ühenduse vea käsitleja
-  socket.on('error',
-    (errorMessage) => {
-      console.log("Viga logikirje vastuvõtmisel (TCP");
-      console.log(errorMessage);
-    });
-
-  console.log('Ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
-  socket.write(`TARA-Stat kuuldel\r\n`);
-
-});
 
 // -------- 8 Defineeri HTTPS server -------- 
 // Valmista ette HTTPS serveri suvandid
 var HTTPS_S_options = {
   ca: fs.readFileSync(
     path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-    config.CA_CERT), 'utf8'),
+      config.CA_CERT), 'utf8'),
   key: fs.readFileSync(
     path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-    config.HTTPS_KEY), 'utf8'),
+      config.HTTPS_KEY), 'utf8'),
   cert: fs.readFileSync(
     path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
-    config.HTTPS_CERT), 'utf8'),
+      config.HTTPS_CERT), 'utf8'),
   requestCert: false,
   rejectUnauthorized: false
 };
