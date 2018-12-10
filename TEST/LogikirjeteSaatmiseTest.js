@@ -1,7 +1,7 @@
 /**
  * LogikirjeteSaatmiseTest.js
  * 
- * Genereerin logikirjeid ja saadan need TARA-STAT-i (tara-stat-rakendus.ci.kit)
+ * Genereerin logikirjeid ja saadan need TARA-STAT-i
  * 
  * Käivitamine: node LogikirjeteSaatmiseTest
  * 
@@ -109,7 +109,7 @@ function getRandomInt(min, max) {
 
 // Valmista ette kliendi suvandid
 var TLS_K_OPTIONS = {
-  host: 'tara-stat-rakendus.ci.kit',
+  host: config.TCP_TLS_HOST,
   port: config.TCP_TLS_PORT,
   ca: fs.readFileSync(
     path.join(__dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
@@ -127,7 +127,7 @@ var TLS_K_OPTIONS = {
 // Loo TLS klient, ühendu TLS serveriga
 const socket = tls.connect(TLS_K_OPTIONS, () => {
   console.log('TLS klient: TARA-Stat-ga ' +
-  config.TLS_S_HOST + ':' + config.TCP_TLS_PORT +
+  config.TCP_TLS_HOST + ':' + config.TCP_TLS_PORT +
     ' ühendus loodud');
 
     // Kas kliendi autoriseerimine õnnestus?
