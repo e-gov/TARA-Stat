@@ -37,7 +37,7 @@ const MongoClient = require('mongodb').MongoClient;
 var lock = new ReadWriteLock();
 
 // -------- 2 Konf-i laadimine  --------
-var config = require('/opt/tara-ci-config/TARA-Stat/config');
+var config = require('/opt/tara-stat/config/config.js');
 
 // -------- 3 Globaalsed muutujad -------- 
 // MongoDB andmebaasiühendus. Deklareeritud siin, et oleks elutukse
@@ -266,8 +266,7 @@ for (let anchor of config.TLS_S_CA) {
       path.join(
         __dirname,
         '..',
-        'tara-ci-config',
-        'TARA-Stat',
+        'config',
         'keys',
         anchor),
       'utf8'
@@ -280,12 +279,12 @@ for (let anchor of config.TLS_S_CA) {
 var TLS_S_options = {
   key: fs.readFileSync(
     path.join(
-      __dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      __dirname, '..', 'config', 'keys',
       config.TLS_S_KEY), 'utf8'
     ),
   cert: fs.readFileSync(
     path.join(
-      __dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      __dirname, '..', 'config', 'keys',
       config.TLS_S_CERT), 'utf8'
     ),
   ca: caList,
@@ -387,13 +386,13 @@ const tcpTlsServer = tls.createServer(
 // Valmista ette HTTPS serveri suvandid
 var HTTPS_S_options = {
   ca: fs.readFileSync(
-    path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+    path.join(__dirname, '..', 'config', 'keys',
       config.CA_CERT), 'utf8'),
   key: fs.readFileSync(
-    path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+    path.join(__dirname, '..', 'config', 'keys',
       config.HTTPS_KEY), 'utf8'),
   cert: fs.readFileSync(
-    path.join(__dirname, '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+    path.join(__dirname, '..', 'config', 'keys',
       config.HTTPS_CERT), 'utf8'),
   requestCert: false,
   rejectUnauthorized: false

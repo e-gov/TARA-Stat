@@ -185,23 +185,30 @@ Repos olevates konf-ifailides on saladused esitatud väärtustega `changeit`. To
 
 ### 1.5 Olulised asukohad
 
-| repo, kaust v fail | otstarve     |
-|--------------|--------------|
-| `https://github.com/e-gov/TARA-Stat` | avalik koodirepo |
-| `index.js`   | veebirakendus |
-| `scripts`    | paigaldusskriptid |
-| `docs`       | dokumentatsioon |
-| `/opt/tara-ci-config/TARA-Stat` | TARA-Stat seadistus |
-| `/opt/tara-ci-config/TARA-Stat/keys` | TARA-Stat võtmed |
-| `/opt/TARA-Stat/log.txt` | TARA-Stat veebirakenduse logi |
-| `/lib/systemd/system/tarastat.service` | TARA-Stat veebirakenduse systemd haldusüksuse kirjeldusfail |
-| `/etc/mongodb.conf` | MongoDB konf-ifail |
-| `/var/log/mongodb/mongod.log` | MongoDB logi |
-| `var/lib/mongodb` | MongoDB andmebaasifailid |
-| `/var/log/mongodb/mongod.log` | MongoDB andmebaasilogi |
-| `/lib/systemd/system/mongod.service` | MongoDB systemd haldusüksuse kirjeldusfail |
-| `/etc/init.d/mongodb` | automaatkäivitusskript |
-| `/opt/TARA-Stat/log.txt` | veebirakenduse logi. Logifaili asukoht on veebirakenduse konf-ifailis seatav. |
+Kaustastruktuur
+
+````
+/opt/tara-stat        
+              /tara-stat          -- TARA-Stat rakendus
+                        index.js  -- TARA-Stat veebirakendus       
+              /config/
+                      /config.js  -- TARA-Stat konf-ifail
+                      /keys       -- kaust TARA-Stat võtmete ja sertide hoidmiseks
+````
+
+- `https://github.com/e-gov/TARA-Stat` -- avalik koodirepo
+- `  index.js` - veebirakendus (peaprogramm)
+- `  scripts`  - paigaldusskriptid
+- `  docs`     - avalik dokumentatsioon
+
+- `/opt/TARA-Stat/log.txt` -- TARA-Stat veebirakenduse logi
+- `/lib/systemd/system/tarastat.service` -- TARA-Stat veebirakenduse systemd haldusüksuse kirjeldusfail
+- `/etc/mongodb.conf` -- MongoDB konf-ifail
+- `/var/log/mongodb/mongod.log` -- MongoDB logi
+- `var/lib/mongodb` -- MongoDB andmebaasifailid
+- `/var/log/mongodb/mongod.log` -- MongoDB andmebaasilogi
+- `/lib/systemd/system/mongod.service` -- MongoDB systemd haldusüksuse kirjeldusfail
+- `/etc/init.d/mongodb` -- automaatkäivitusskript
 
 ### 1.6 Sõltuvused
 
@@ -211,7 +218,7 @@ Tootmissõltuvused:
 |----------|----------|-----------------|
 | backend: | | |
 | Ubuntu   | 16 LTS   | suure tõenäosusega sobib ka hilisem |
-| Node.js  | 6.x      | veebirakenduse platvorm |
+| Node.js  | 8.x      | veebirakenduse platvorm |
 | body-parser | standardne | HTTP päringu parsimisvahend, kasutusel veebirakenduses |
 | ejs         | standardne | templiidimootor, kasutusel veebirakendus |
 | express | standardne | HTTP päringute marsruuter, kasutusel veebirakendus |
