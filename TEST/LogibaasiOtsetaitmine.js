@@ -1,6 +1,8 @@
 /**
  * Genereerin logikirjeid ja salvestan need Logibaasi.
- * Käivitada mongo abil.
+ * Käivitada:
+ * 
+ *  mongo --shell <failinimi>
  */
 
 'use strict';
@@ -62,10 +64,9 @@ function getRandomInt(min, max) {
 var conn = new Mongo();
 var db = conn.getDB("Logibaas");
 
-console.log('--- Genereerin ' + N.toString() + ' logikirjet');
-for (let i = 0; i < N; i++) {
+for (var i = 0; i < N; i++) {
   // Moodusta saadetav kirje
-  let saadetavKirje = {
+  var saadetavKirje = {
     "time": genereeriKuupaev(a, b),
     "clientId": klientrakendused[getRandomInt(0, klientrakendused.length - 1)],
     "method": meetodid[getRandomInt(0, meetodid.length - 1)],
