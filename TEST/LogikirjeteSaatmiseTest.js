@@ -17,7 +17,7 @@ const fs = require('fs'); // Sertide laadimiseks
 const path = require('path');
 
 // -------- 2 Konf-i laadimine  --------
-var config = require('/opt/tara-ci-config/TARA-Stat/config');
+var config = require('/opt/tara-stat/config/config.js');
 
 // Logikirjete vahemiku algus
 var a = { y: 2018, m: 4, d: 1 };
@@ -115,17 +115,17 @@ var TLS_K_OPTIONS = {
   port: config.TLS_S_PORT,
   key: fs.readFileSync(
     path.join(
-      __dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      __dirname, '..', '..', 'config', 'keys',
       'tara-stat-makett.ci.kit-SELF.key'
     ), 'utf8'),
   cert: fs.readFileSync(
     path.join(
-      __dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      __dirname, '..', '..', 'config', 'keys',
       'tara-stat-makett.ci.kit-SELF.cert'
     ), 'utf8'),
   ca: fs.readFileSync(
     path.join(
-      __dirname, '..', '..', 'tara-ci-config', 'TARA-Stat', 'keys',
+      __dirname, '..', '..', 'config', 'keys',
       config.TLS_S_CERT
     ), 'utf8'),
   requestCert: true,
