@@ -22,8 +22,6 @@ Dokument on mõeldud TARA-Stat paigaldajale, käitajale ja kasutajale.
 
 TARA-Stat-i on arendanud Riigi Infosüsteemi Amet.
 
-Märkus. Eraldi _write-up_ mikroteenusarhitektuurist on siin: [https://e-gov.github.io/TARA-Stat/](https://e-gov.github.io/TARA-Stat/).
-
 Tähistused:
 
 | tähistus | tähendus |
@@ -31,8 +29,6 @@ Tähistused:
 | <tara-stat> | TARA-STAT masina domeeninimi |
 | <tara-stat-https-port> | TARA-STAT veebirakenduse HTTPS serveri pordinumber |
 | <tara-stat-tls-port> | TARA-STAT veebirakenduse Syslog TCP TLS serveri pordinumber |
-
-_Kõik viited salasõnadele ja tundlikele taristuparameetritele (nt hostinimed, pordid, kasutajanimed) on dokumendis illustratiivsed ja kuuluvad toodangupaigalduses ümbervaatamisele, salasõnade osas aga kindlasti asendamisega turvalistega._
 
 ## 1 Tarkvara kirjeldus
 
@@ -75,7 +71,7 @@ TARA-Stat suhtleb 5 välise osapoolega.
 |----------------|----------|
 | statistikakasutaja | autentimisteenust TARA käitava organisatsiooni teenistuja - teenusehaldur või tootejuht- kes vajab teavet teenuse kasutamise mahu, sh trendide kohta. Statistikakasutajale tuleb pakkuda statistikat. Eriti vajalik on teave teenuse tarbimismahtudest klientrakenduste lõikes. Statistikakasutajal peab olema võimalik ette anda periood, mille kohta statistika arvutatakse. Statistikakasutajal ei tohi olla võimalust logi muuta.<br><br>Kuna statistika on üldistatud ega sisalda isikuandmeid, lähtume statistika otspunkti turvamisel, et otspunkt on avatud organisatsiooni sisevõrgus, kõigile töötajatele. |
 | TARA-Server | saadab TARA-Stat-i logikirjeid. TARA-Server võib olla paigaldatud mitmes instantsis. |
-| andmehaldur | inimene, kes, kasutades MongoDB standardvahendit - käsurealiidest `mongo` - kustutab logibaasist aegunud kirjeid. (Kasutusstatistika pakub huvi u aasta jooksul). See on harv tegevus. |
+| andmehaldur | inimene, kes, kasutades MongoDB standardvahendit - käsurealiidest `mongo` - saab vajadusel logibaasist aegunud kirjeid kustutada. Aegunud logikirjeid saab kustutada ka statistikakasutaja. Seetõttu see roll on varuvõimalus. |
 | admin | inimene, kes paigaldab tarkvara, loob andmebaasi kasutajatele (TARA-Server, andmehaldur) kontod ja annab pääsuõigused. |
 | monitooringusüsteem | saab TARA-Stat-le saata "elutuksepäringu". TARA-Stat vastab, kas ta toimib. |
 
@@ -164,6 +160,8 @@ Statistika väljastamise otspunkti e statistikakasutaja UI kaudu saab kasutaja t
 - vajutada nupule
 - kuvatakse autentimiste arv perioodi jooksul klientrakenduste lõikes.
 
+Samas saab ka aegunud logikirjeid kustutada. See toimub perioodi etteandmisega. Enne kustutamist küsitakse kinnitust. Selline kustutamine on otstarbekas, kuna tõendusväärtus ega pikaajalisem säilitamine pole kasutusstatistika logi puhul eesmärk.
+
 ### 1.4 Võtmed ja salasõnad
 
 TARA-Stat paigaldamiseks ja käitamiseks on vaja järgmisi võtmeid ja salasõnu (saladusi):
@@ -180,8 +178,6 @@ TARA-Stat paigaldamiseks ja käitamiseks on vaja järgmisi võtmeid ja salasõnu
 | 8 | `TARA-Stat TCP TLS server` | TARA-Stat veebirakendus TCP TLS serverina | _self-signed_ sert ja privaatvõti | TARA-Stat veebirakenduse seadistamisel | TARA-Serveri pöördumisel TARA-Stat-i poole |
 
 Statistikakasutaja on TARA-Stat-i suhtes anonüümne inimene. Ta pöördub sisevõrgust TARA-Stat veebirakenduse statistika väljastamise otspunkti poole. Statistikakasutajat ei autendita, juurdepääs piiratakse kontekstiga.
-
-Repos olevates konf-ifailides on saladused esitatud väärtustega `changeit`. Toodangupaigalduses tuleb väärtused `changeit` asendada. Paigaldusskriptides küsitakse uusi väärtusi.
 
 ### 1.5 Olulised asukohad
 
@@ -203,6 +199,7 @@ Kaustastruktuur
 
 - `/opt/TARA-Stat/log.txt` -- TARA-Stat veebirakenduse logi
 - `/lib/systemd/system/tarastat.service` -- TARA-Stat veebirakenduse systemd haldusüksuse kirjeldusfail
+
 - `/etc/mongodb.conf` -- MongoDB konf-ifail
 - `/var/log/mongodb/mongod.log` -- MongoDB logi
 - `var/lib/mongodb` -- MongoDB andmebaasifailid
@@ -224,9 +221,9 @@ Tootmissõltuvused:
 | express | standardne | HTTP päringute marsruuter, kasutusel veebirakendus |
 | rwlock | standardne | lukuhalduri teek, kasutusel veebirakenduses |
 | mongodb | standardne | MongoDB klient, kasutusel veebirakenduses |
-| MongoDB  | 3.6.4 | logibaas |
+| MongoDB  | 4.0.4 | logibaas |
 | frontend: | | |
-| HTML5, Css3, Javascript | | |
+| HTML5, CSS3, Javascript | | |
 | jQuery | | |
 | Material Design ikoonid | | |
 
@@ -245,9 +242,11 @@ Konfigureeritakse järgmiste failidega:
 
 | fail        | eesmärk ja kasutamine |
 |-------------|-----------------------|
-| `/opt/tara-ci-config/TARA-Stat/config.js` | veebirakenduse konf-n. |
-| `/opt/tara-ci-config/TARA-Stat/keys` | veebirakenduse konf-n. |
+| `/opt/tara-stat/config/config.js` | veebirakenduse konf-n. |
+| `/opt/tara-stat/config/keys` | veebirakenduse konf-n. |
 | `/etc/mongodb.conf`        | MongoDB konf-n. Kasutatakse MongoDB distributsiooni vaikimisi konf-i. Käsitsi konf-mine on vajalik siis, kui tahetakse muuta tundlike taristuparameetrite vaikeväärtusi (nt porti). |
+
+TARA-Stat konfiguratsiooni hoitakse eraldi, mitteavalikus repos.
 
 ## 2 Paigaldamine ja seadistamine
 
@@ -255,118 +254,19 @@ Konfigureeritakse järgmiste failidega:
 
 TARA-Stat paigaldatakse ühes instantsis, ühte masinasse. _Kõrgkäideldavus ei ole TARA-Stat praeguses teostuses eesmärk. Tõrke korral tekib küll statistikas auk, kuid ärivajaduse rahuldamiseks on aktsepteeritav ka mõneti lünklik statistika._
 
-Koodi ja seadistust hoitakse eraldi repodes.
+Paigalduse üldine käik:
 
-| repo nimi | eesmärk | avalik
-|------|---------|---------
-| `https://e-gov.github.io/TARA-Stat` | rakenduse kood | jah
-| `tara-ci-config` | rakenduse seadistus | ei
+- masina ettevalmistamine > virtuaalmasin on loodud; Ubuntu 16 LTS on paigaldatud
+- paigalda koodirepo (või uuenda seda)
+- paigalda Node.js
+- paigalda MongoDB
+- paigalda konf-ifail ja seadista
+- paigalda võtmed
+- käivita rakendus
 
-Paigaldustoimingud:
+Täpsem teave ei ole avalik.
 
-| nr | toimingu nimetus/eesmärk  | eeldused | skript või käsitsipaigaldamise juhis | tulemus |
-|----|------------------|----------|--------------------------------------|---------|
-| 1  | Masina ettevalmistamine | - |                                      | virtuaalmasin on loodud; Ubuntu 16 LTS on paigaldatud |
-| 2  | Paigalda koodirepo (või uuenda seda) | 1      | vt allpool                           | TARA-Stat kood on masinas kaustas `/opt/TARA-Stat` |
-| 3  | Paigalda (või uuenda) Node.js   | 1      | vt allpool | Node.js on masinas paigaldatud (või uuendatud) |
-| 4  | Paigalda (või uuenda) MongoDB  | 1 | vt allpool | MongoDB on masinas paigaldatud (või uuendatud) ja teenusena käivitatud |
-| 5  | Paigalda konf-ifail ja võtmed | 2, 3 | vt allpool | Konf-ifail ja võtmed on masinas kaustas `/opt/tara-ci-config/TARA-Stat` |
-| 6  | Seadista TARA-Stat veebirakendus | 2, 3, 5 | vt allpool | TARA-Stat veebirakendus on seadistatud ja teenusena käivitatud |
-
-### 2.2 Paigalda koodirepo
-
-Eeldused:
-- virtuaalmasin (VM) on loodud
-- Ubuntu 16 LTS on paigaldatud
-- paigaldaja (admin) on sudo-õigustega kasutajana sisse loginud
-
-Paigalda koodirepo. Siin juhendis eeldame, et TARA-Stat kood asub GitHub-is, kuid võib olla ka siserepos.
-
-````
-sudo rm -R /opt/TARA-Stat # kustuta vana kood (valikuline)
-cd /opt
-sudo git clone https://github.com/e-gov/TARA-Stat
-````
-
-Kontrolli, et TARA-Stat kood kopeeriti kausta `/opt/TARA-Stat`.
-
-Koodiuuenduse paigaldamisel seiska kõigepealt veebirakendus (juhul kui see käib). Seejärel tõmba uuendused koodirepost.
-
-````
-sudo systemctl stop tarastat
-cd /opt/TARA-Stat
-sudo git pull
-````
-
-Koodi uuendamisel on vaja veebirakendus uuesti seadistada.
-
-### 2.3 Paigalda Node.js
-
-Eeldused:
-- virtuaalmasin (VM) on loodud
-- Ubuntu 16 LTS on paigaldatud
-- paigaldaja (admin) on sudo-õigustega kasutajana sisse loginud
-
-Käivita skript:
-
-`TARA-Stat-paigalda-Nodejs.sh`
-
-Skript: 1) kontrollib, kas Node.js on juba paigaldatud; kui jah, siis annab teate paigaldajale ja töö lõpp; 2) paigaldab curl-i; 3) paigaldab Node.js
-
-Skripti sõltuvused: `https://deb.nodesource.com/setup_6.x`
-
-### 2.4 Paigalda MongoDB
-
-Eeldused:
-- virtuaalmasin (VM) on loodud
-- Ubuntu 16 LTS on paigaldatud
-- paigaldaja (admin) on sudo-õigustega kasutajana sisse loginud
-
-Käivita skript:
-
-`TARA-Stat-paigalda-MongoDB.sh`
-
-Skripti sõltuvused:
-- `hkp://keyserver.ubuntu.com:80`
-- `https://repo.mongodb.org/apt/ubuntu`
-- kasutaja `mongodb` parool
-- MongoDB kasutajate `userAdmin`, `rakendus` ja `andmehaldur` paroolid
-
-### 2.5 Paigalda konf-ifail ja võtmed
-
-Valmista konf-ifail ja võtmed ette konfiguratsioonirepos (mitteavalik). Seejärel klooni repo masinasse:
-
-`cd /opt`
-`sudo git clone <konf-irepo>`
-
-### 2.6 Seadista veebirakendus
-
-Eeldused:
-- Node.js on paigaldatud
-- MongoDB on paigaldatud
-- masinasse on loodud koodirepo `https://github.com/e-gov/TARA-Stat` kohalik git-koopia ja see on värske
-- konf-irepo on kopeeritud masinasse, kausta `/opt/tara-ci-config`.
-
-Käivita skript:
-
-`sudo bash /opt/TARA-Stat/scripts/Seadista.sh`:
-
-Skript teeb:
-1. Loon Node.js käitluskasutaja (run user) tarastat
-2. Paigaldan rakendusele vajalikud Node.js teegid
-3. Annan tarastat-le õigused kodukaustale (TARA-Stat)
-4. Loon systemd haldusüksuse kirjeldusfaili
-5. Laen deemoni
-6. (valikuline) Käivitan rakenduse (koos MongoDB-ga)
-
-Skripti sõltuvused:
-- kasutaja `tarastat` parool
-- Node.js teegirepo (sisemine või `https://registry.npmjs.org/`)
-- Node.js teegid: `body-parser`, `ejs`, `express`, `rwlock`, `mongodb`
-- MongoDB kasutamise salasõna
-
-
-### 2.7 VM tulemüüri seadistamine
+### 2.2 Juurdepääsude avamine
 
 Vaja on tagada:
 
@@ -376,37 +276,21 @@ Vaja on tagada:
 
 TARA-Stat kuulab HTTPS ühendusi pordil <tara-stat-https-port> ja Syslog TCP ühendusi pordil <tara-stat-tls-port>. Need pordid on määratud failis `config.js`.
 
-Vajadusel vt:
-- [How to Install MongoDB on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04), Step 3.
+### 2.3 Käivitamine ja seiskamine
 
-Pääsureeglite seadmisel VLAN-is ja/või sisevõrgu ruuteri(te)s, samuti TARA-Serveris lähtu organisatsiooni võrgureeglitest.
+Nii TARA-Stat veebirakendus kui ka MongoDB käitatakse systemd hallatavate teenustena. Teenused käivitatakse ja seisatakse standardsete `systemctl` käskudega, nt:
 
-### 2.8 Käivitamine ja seiskamine
-
-Nii TARA-Stat veebirakendus kui ka MongoDB käitatakse systemd hallatavate teenustena. 
-
-|    | TARA-Stat veebiteenus | MongoDB (logibaas) |
-|----|:---------------------:|:------------------:|
-| systemd teenusenimi | `tarastat` |  `mongodb`  |
-| käitav Ubuntu kasutaja | `tarastat` | `mongodb` |
-
-Teenused käivitatakse ja seisatakse standardsete `systemctl` käskudega, nt:
-
- käsk | selgitus
-------|----------
-`sudo systemctl start mongodb` | käivita teenus `mongodb`
-`sudo systemctl stop mongodb` | peata teenus `mongodb`
-
-Ülalolevates näidetes saab siis `mongodb` asemel kasutada `tarastat`.
+`sudo systemctl start mongodb` (käivita teenus `mongodb`)
+`sudo systemctl stop tarastat` (peata teenus `tarastat`)
 
 Teenuste `tarastat` ja `mongodb` käivitamise järjekord ei ole oluline. Kuid peab arvestama, et `tarastat` sõltub `mongodb`-st - kui logibaas ei ole üleval, siis ei saa logikirjeid salvestada ega statistikat väljastada.
 
-### 2.9 Monitooringuga ühendamine
+### 2.4 Monitooringuga ühendamine
 
 Päringu `https://<tara-stat>/status` saamisel kontrollib TARA-Stat oma logibaasi ülevalolekut. Kui logibaas on üleval, siis tagastatakse HTTP vastus `200` `OK`,
 - vastasel korral `500` `Internal Server Error`.
 
-### 2.10 Diagnostika
+### 2.5 Diagnostika
 
 TARA-Stat ülevalolekut saab lõppkasutaja seisukohast kontrollida nii:
 - lülitu tööarvutiga organisatsiooni sisevõrku (VPN)
@@ -416,45 +300,31 @@ Märkus. Kui rakendus peaks teatama, et ühendus ei ole turvaline, siis see on t
 
 TARA-Stat masinas saab teenuste `tarastat` ja `mongodb` ülalolekut kontrollida:
 
- käsk | selgitus
-------|----------
-`systemctl status tarastat` | kuva teenuse `tarastat` staatus
-`systemctl status mongodb` | kuva teenuse `mongodb` staatus
-
-Samuti saab kasutada diagnostikaskripti. Diagnostikaskript väljastab `systemctl status` raportid teenuste `tarastat` (TARA-Stat veebirakendus) ja `mongodb` (logibaas) kohta. Pööra tähelepanu:
-- kas `Active` väärtus on `active (running)` (roheline)
-- 10 viimasele logiteatele.
-
-`sudo bash /opt/TARA-Stat/scripts/Olukord.sh`
-
-Lisaks väljastab skript teatmikteabe kummagi teenuse oluliste asukohtade kohta.
+`systemctl status tarastat` (kuva teenuse `tarastat` staatus)
+`systemctl status mongodb` (kuva teenuse `mongodb` staatus)
 
 Probleemide lahendamiseks saab kasutada teenuse enda logisid (vt jaotis "Olulised asukohad").
 
-### 2.11 Logibaasi haldamine
+### 2.6 Logibaasi haldamine
 
 Kui tekib vajadus välja selgitada, mis seisus on MongoDB andmebaasi sisu või või logibaasi tühjendada, siis tee järgmist:
 
-käsk | selgitus
------|---------
-`mongo -u andmehaldur -p changeit -authenticationDatabase users;` | ava MongoDB käsureavahend, logides sisse kasutajaga `andmehaldur`
-`use logibaas` | lülitu logibaasile
-`show collections` | peab näitama: `autentimised`
-`db.autentimised.find().sort({_id:1}).limit(5);` | kuva 5 viimast kirjet
-`db.autentimised.remove({})` | tühjenda logibaas
-`exit` | välju CLI-st
+`mongo -u andmehaldur -p changeit -authenticationDatabase users;` (ava MongoDB käsureavahend, logides sisse kasutajaga `andmehaldur`)
+`use logibaas` (lülitu logibaasile)
+`show collections` (peab näitama: `autentimised`)
+`db.autentimised.find().sort({_id:1}).limit(5);` (kuva 5 viimast kirjet)
+`db.autentimised.remove({})` (tühjenda logibaas)
+`exit` (välju CLI-st)
 
-Andmebaasi kasutajaid haldamiseks tuleb käsureavahendisse sisse logida administraatorina:
+Andmebaasi kasutajate haldamiseks tuleb käsureavahendisse sisse logida administraatorina:
 
-käsk | selgitus
------|---------
-`mongo -u userAdmin -p changeit -authenticationDatabase admin` | ava MongoDB käsureavahend, logides sisse kasutajaga `userAdmin`
-`show dbs` | kuva andmebaasid. Loetelus peab olema `admin` ja ´logibaas`
-`use admin` | lülitu andmebaasile `admin`
-`show users` | kuva kasutajakontod valitud andmebaasis; peab näitama kasutajat `admin`
-`use users` | lülitus andmebaasile `users`
-`show users` | kuva kasutajakontod andmebaasis `users`; peab näitama kasutajaid `andmehaldur` ja `rakendus`
-`db.auth("andmehaldur", "changeit")` | logi sisse andmehaldurina
+`mongo -u userAdmin -p changeit -authenticationDatabase admin` (ava MongoDB käsureavahend, logides sisse kasutajaga `userAdmin`)
+`show dbs` (kuva andmebaasid. Loetelus peab olema `admin` ja `logibaas`)
+`use admin` (lülitu andmebaasile `admin`)
+`show users` (kuva kasutajakontod valitud andmebaasis; peab näitama kasutajat `admin`)
+`use users` (lülitus andmebaasile `users`)
+`show users` (kuva kasutajakontod andmebaasis `users`; peab näitama kasutajaid `andmehaldur` ja `rakendus`)
+`db.auth("andmehaldur", "changeit")` (logi sisse andmehaldurina)
 
 Vaata lisaks:
 - [mongo](https://docs.mongodb.com/manual/reference/program/mongo/)
@@ -474,16 +344,16 @@ Testimisvahendeid toodangus ei kasutata. Neid võib repo sisuga koos tootmismasi
 
 `LogikirjeteSaatmiseTest.js` lihtne Node.js rakendus, mis etendab logikirjeid TARA-Stat logibaasi saatvat TARA-Server-it.
 
-Testrakendus kasutab kaustas `/opt/tara-ci-config` olevad seadistust ja võtmeid.
+Testrakendus kasutab TARA-Stat konf-ifaili `config.js` ja võtmeid.
 
 Testrakenduse võib käivitada TARA-Stat-ga samas masinas.
 
-Soovi korral võib testrakenduse paigaldada eraldi masinasse. Selleks tuleb täita kõik ülalkirjeldatud paigaldussammud, v.a MongoDB paigaldamine ja paigaldussammus "Seadista TARA-Stat veebirakendus" vastata veebiteenuse käivitamise küsimusele eitavalt.
+Soovi korral võib testrakenduse paigaldada eraldi masinasse. Selleks tuleb täita kõik ülalkirjeldatud paigaldussammud, v.a MongoDB paigaldamine.
 
 Testrakenduse käivitamiseks sisesta: 
 
 ````
-cd /opt/TARA-Stat/TEST
+cd /opt/tara-stat/tara-stat/TEST
 nodejs LogikirjeteSaatmiseTest
 ````
 
