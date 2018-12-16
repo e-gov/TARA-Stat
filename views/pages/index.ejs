@@ -1,46 +1,75 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <% include ../partials/header.ejs %>
+<head>
+  <% include ../partials/header.ejs %>
     <script src='js/alusta.js'></script>
-  </head>
+</head>
 
-  <body onload="alusta();">
+<body onload="alusta();">
 
-    <h1>TARA statistika</h1>
+  <h1>TARA statistika</h1>
 
-    <p class='info'>Ühendus logibaasiga OK</p>
+  <div id='teateriba'>
+    <div id='teade' class='info inline'></div>
 
-    <p>Kirjeid logibaasis: <span id='Kirjeid'>&nbsp;</span></p>
-
-    <p>TARA-Stat näitab autentimiste arvu klientrakenduste ja 
-      autentimismeetodite (sh pankade) ja toimingu edukuse 
-      (alustatud, edukas, viga) lõikes.</p>
-
-    <p>Otsingut saab piirata aasta, kuu, päeva või isegi 
-      väiksema ajaühikuga. Nt <code>2018-08-21T17:14</code> 
-      piirab otsingu 21.08.2018 17. tunni 14. minuti sees logitud 
-      sündmustega.
-    </p>  
-
-    <div style='display: flex; justify-content: space-between; align-items: center;'>
-      <label class='active'>
-        Otsingumuster, nt
-        <code>2018-04</code> (regex avaldis): 
-        <input id='perioodiMuster' type='text' style='margin: 0 2rem;' autocomplete='off'>
-      </label>
-      <div id='sooritaNupp' class='nupp' title='Arvuta statistika'>
-        <i class='ikoon material-icons'>search</i>
-      </div>
+    <div id='uuendaNupp' class='nupp inline' title='Uuenda'>
+      <i class='ikoon material-icons'>autorenew</i>
     </div>
 
-    <p id='Tulem'></p>
+    <div id='kinnitusNupp' class='nupp inline peidetud' title='Kinnita'>
+      <i class='ikoon material-icons'>check_circle_outline</i>
+    </div>
+    <div id='tyhistusNupp' class='nupp inline peidetud' title='Tühista'>
+      <i class='ikoon material-icons hoiatav'>clear</i>
+    </div>
+    <div id='suleTeadeNupp' class='nupp inline peidetud' title='Sule teade'>
+        <i class='ikoon material-icons'>clear</i>
+      </div>
+  
+  </div>
 
-    <p style='margin-top: 2rem;'><a href='https://e-gov.github.io/TARA-Stat/Dokumentatsioon'>
-      Tarkvara kasutusjuhend</a>
+  <div style='display: flex; justify-content: space-between; align-items: center;'>
+    <label class='active'>
+      Sisesta valikumuster (nt
+      <code>2018-04</code>) :
+      <input id='perioodiMuster' type='text' style='margin: 0 2rem;' autocomplete='off'>
+    </label>
+    <div id='sooritaNupp' class='nupp' title='Arvuta statistika'>
+      <i class='ikoon material-icons'>search</i>
+    </div>
+    <div id='kustutaNupp' class='nupp' title='Kustuta logikirjeid'>
+      <i class='ikoon material-icons'>delete_forever</i>
+    </div>
+    <div id='abiteabeNupp' class='nupp' title='Abiteave'>
+      <i class='ikoon material-icons'>help</i>
+    </div>
+  </div>
+
+  <div id='abiteave' class='peidetud'>
+
+    <p>
+      Kasutusstatistika väljastatakse klientrakenduste, autentimismeetodite ja toimingu edukuse (alustatud, edukas, viga) lõikes.
     </p>
 
-  </body>
+    <p>
+      Otsingut saab piirata aasta, kuu, päeva või isegi väiksema ajaühikuga.
+    </p>
+
+    <p>Nt
+      <code>2018-08-21T17:14</code> piirab otsingu 21.08.2018 17. tunni 14. minuti sees logitud sündmustega.
+    </p>
+
+    <p>Logibaasist saab kirjeid kustutada. Selleks sisesta kustutatavat perioodi määrav valikumuster ja vakuta 'Kustuta logikirjeid'.</p>
+
+    <div id='sulgeAbiteaveNupp' class='nupp' title='Sulge abiteave'>
+      <i class='ikoon material-icons'>clear</i>
+    </div>
+  </div>
+
+  <p id='AutentimisteArv'></p>
+  <p id='Tulem'></p>
+
+</body>
 
 </html>

@@ -1,6 +1,6 @@
 /**
  * Genereerin logikirjeid ja salvestan need Logibaasi.
- * Käivitada:
+ * Käivitamine: skripti kaustas (TEST)
  * 
  *  mongo --quiet LBOtsetaitmine.js
  */

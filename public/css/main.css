@@ -34,6 +34,39 @@ h1 {
   color: #757575;
 }
 
+.hoiatav {
+  color: tomato !important;
+}
+
+.peidetud {
+  display: none !important;
+}
+
+#teateriba { /* Trikk inline-block elementide rea vert. joondamiseks */
+  height: 2rem;
+  margin-bottom: 2rem;
+}
+#teateriba:before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+
+.inline {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#teade {
+  min-height: 2rem;
+}
+
+#abiteave {
+  display: flex; justify-content: space-between;
+  align-items: flex-start;
+}
+
 a, a:hover, a:active, a:visited {
   color: 292B2C !important;
   text-decoration: underline;
@@ -44,13 +77,12 @@ a, a:hover, a:active, a:visited {
 .ok { color: green; }
 .nok { color: Tomato; }
 
-.kood {
-  border: 1px dotted Tomato;
-  color: Tomato;
+code {
+  color: black;
+  background-color: #f6f8fa; /* nagu GitHubis */
   border-radius: 4px;
   padding: 4px;
-  font-family: 'Courier New', monospace;
-  font-size: 14pt;
+  font-family: monospace;
 }
 
 .info, .viga {
@@ -58,19 +90,19 @@ a, a:hover, a:active, a:visited {
   border: .5em;
   border-left-style: solid;
   page-break-inside: avoid;
-  margin: 1em auto;
+  margin: 1em 1em 1.5em 0;
 }  
 
 .info {
-  border-color: #52E052;
-  background: #E9FBE9;
+  border-color: darkgray /* #52E052 */;
+  background: lightgrey /* #E9FBE9 */;
   overflow: auto;
 }
 
 .viga {
-  border-color: orange;
+  border-color: tomato;
   border-style: none solid;
-  background: #FFEECC;
+  background: lavenderblush;
 }
 
 /* Tabelid */

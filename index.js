@@ -147,13 +147,12 @@ app.get('/stat', (req, res) => {
   /* Võta päringu query-osast sirvikust saadetud perioodimuster */
   const p = req.query.p;
   /* undefined, kui parameeter päringus puudub */
-  // console.log('--- Perioodimuster: ', p);
   /* Moodusta regex */
   var r;
   if (p) {
     r = new RegExp(p);
   }
-  else {
+  else { // Vali kõik
     r = new RegExp('.*');
   }
 

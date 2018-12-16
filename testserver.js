@@ -55,11 +55,30 @@ app.get('/', function (req, res) {
 
 // Väljasta kirjete arv
 app.get('/kirjeid', (req, res) => {
-    db.collection('autentimised').countDocuments({}).then(
-      (c) => {
-        console.log(c);
-        res.send({ kirjeid: c });
-      });
+  db.collection('autentimised').countDocuments({}).then(
+    (c) => {
+      console.log(c);
+      res.send({ kirjeid: c });
+    });
+});
+
+app.get('/kustuta', (req, res) => {
+
+  console.log('Alustan kustutamist');
+  /* Võta päringu query-osast sirvikust saadetud perioodimuster */
+  const p = req.query.p; // kui parameeter päringus puudub, siis undefined
+  var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
+
+  db.collection('autentimised').deleteMany(
+    {
+      time: { $regex: r }
+    }
+  ).then((opTulemus) => {
+    var k = opTulemus.deletedCount;
+    console.log('Kustutasin ' + k + ' kirjet');
+    res.send({ kustutati: k });
+  });
+
 });
 
 // Väljasta statistika (AJAX päring)
@@ -115,7 +134,6 @@ app.get('/stat', (req, res) => {
   /* Võta päringu query-osast sirvikust saadetud perioodimuster */
   const p = req.query.p;
   /* undefined, kui parameeter päringus puudub */
-  // console.log('--- Perioodimuster: ', p);
   /* Moodusta regex */
   var r;
   if (p) {
@@ -151,8 +169,8 @@ MongoClient.connect(
 
       // Käivita HTTP server 
       httpServer.listen(5000, () => {
-        console.log('HTTPS server kuuldel pordil: ' + 
-        httpServer.address().port);
+        console.log('HTTPS server kuuldel pordil: ' +
+          httpServer.address().port);
       });
 
     }
