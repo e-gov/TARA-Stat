@@ -132,16 +132,8 @@ app.get('/stat', (req, res) => {
   }
 
   /* Võta päringu query-osast sirvikust saadetud perioodimuster */
-  const p = req.query.p;
-  /* undefined, kui parameeter päringus puudub */
-  /* Moodusta regex */
-  var r;
-  if (p) {
-    r = new RegExp(p);
-  }
-  else {
-    r = new RegExp('.*');
-  }
+  const p = req.query.p; // kui parameeter päringus puudub, siis undefined
+  var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
 
   // Tee otsing logibaasis ja saada tulemused
   leiaKlienditi(r, db, (kirjed) => {

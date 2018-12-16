@@ -172,7 +172,8 @@ function alusta() {
           .removeClass('viga')
           .addClass('info')
           .text('Kustutati ' +
-            JSON.stringify(data.kustutati) + ' kirjet.');
+            data.kustutati.toString() +
+            ' kirjet.');
         $('#suleTeadeNupp').removeClass('peidetud');
       }
     );
