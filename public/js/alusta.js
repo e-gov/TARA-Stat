@@ -79,4 +79,18 @@ function alusta() {
     );
 
   }
+  
+  function pariKirjeteArv() {
+    var url = '/kirjeid';
+    $.getJSON(url,
+      (data, status, xhr) => {
+        /* Saadud andmed on kujul
+        { "kirjeid": 1 }
+        */
+       $('#Kirjeid').text(JSON.stringify(data.kirjeid));
+      }
+    );
+  }
+
+  pariKirjeteArv();
 }

@@ -2,17 +2,20 @@
  * Genereerin logikirjeid ja salvestan need Logibaasi.
  * Käivitada:
  * 
- *  mongo --shell <failinimi>
+ *  mongo --quiet LBOtsetaitmine.js
  */
 
 'use strict';
+
+var conn = new Mongo();
+var db = conn.getDB("logibaas");
 
 // Logikirjete vahemiku algus
 var a = { y: 2018, m: 4, d: 1 };
 // Logikirjete vahemiku lõpp
 var b = { y: 2018, m: 7, d: 2 };
 // Logikirjete arv
-const N = 5;
+const N = 10;
 const klientrakendused = [
   'klientrakendus A',
   'klientrakendus B',
@@ -61,9 +64,6 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-var conn = new Mongo();
-var db = conn.getDB("Logibaas");
-
 for (var i = 0; i < N; i++) {
   // Moodusta saadetav kirje
   var saadetavKirje = {
@@ -75,5 +75,10 @@ for (var i = 0; i < N; i++) {
   if (saadetavKirje.operation == 'ERROR') {
     saadetavKirje.error = veateated[getRandomInt(0, veateated.length - 1)]
   }
-  db.logibaas.insertOne(saadetavKirje);
+  db.autentimised.insertOne(saadetavKirje);
 }
+
+var c = db.autentimised.countDocuments({});
+print('Kirjeid pärast lisamist: ' + c.toString());
+
+
