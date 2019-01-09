@@ -43,7 +43,7 @@ var config = require('/opt/tara-stat/config/config.js');
 // MongoDB klient. Operatsioon "connection" teeb MongoClient uue
 // instantsi, mis omistatakse allolevale muutujale.
 var globClient = MongoClient;
-// Ühendus MongoDB andmebaasiga "Logibaas". Deklareeritud siin,
+// Ühendus MongoDB andmebaasiga "logibaas". Deklareeritud siin,
 // et oleks elutukse väljastajas kättesaadav.
 var db;
 // Andmebaasiga ühendumise URL
@@ -93,75 +93,82 @@ app.use(bodyParser.json());
 
 // Kuva esileht
 app.get('/', function (req, res) {
-  // Kas logibaasiga ühendus on loodud?
-  if (db !== null) {
-    console.log("Logibaasiga ühendumine õnnestus");
-    res.render('pages/index');
-  }
-  else {
-    console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-    res.render('pages/viga',
-      { veateade: "ERR-01: Logibaasiga ühendumine ebaõnnestus" });
-  }
+  res.render('pages/index');
 });
 
 // Väljasta edukate autentimiste arv perioodil
 app.get('/standard', function (req, res) {
   const p = req.query.p; // Periood
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
-  looVoiUuendaYhendus();
-  db.collection('autentimised').countDocuments(
-    {
-      time: { $regex: r },
-      operation: "SUCCESSFUL_AUTH"
-    }
-  ).then(
-    (c) => {
-      console.log(c);
-      res.send({ kirjeid: c });
-    });
+  looVoiUuendaYhendus().then(
+    if (db !== null) {
+    db.collection('autentimised').countDocuments(
+      {
+        time: { $regex: r },
+        operation: "SUCCESSFUL_AUTH"
+      }
+    ).then(
+      (c) => {
+        console.log('/standard: väljastan tulemuse: ' + c.toString());
+        res.send({ err: null, kirjeid: c });
+      });
+  }
+  else {
+    res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
+  }
+  );
 });
 
 // Väljasta kirjete arv
 app.get('/kirjeid', (req, res) => {
   const p = req.query.p; // Periood
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
-  looVoiUuendaYhendus();
-  db.collection('autentimised').countDocuments(
-    {
-      time: { $regex: r },
-      operation: "SUCCESSFUL_AUTH"
-    }
-  ).then(
-    (c) => {
-      console.log(c);
-      res.send({ kirjeid: c });
-    });
+  looVoiUuendaYhendus().then(
+    if (db !== null) {
+    db.collection('autentimised').countDocuments(
+      {
+        time: { $regex: r },
+        operation: "SUCCESSFUL_AUTH"
+      }
+    ).then(
+      (c) => {
+        console.log(c);
+        res.send({ err: null, kirjeid: c });
+      });
+  }
+  else {
+    res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
+  }
+  );
 });
 
 // Kustuta kirjed, vastavalt päringumustrile
 app.get('/kustuta', (req, res) => {
-
   console.log('Alustan kustutamist');
   /* Võta päringu query-osast sirvikust saadetud perioodimuster */
   const p = req.query.p; // kui parameeter päringus puudub, siis undefined
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
-  looVoiUuendaYhendus();
-  db.collection('autentimised').deleteMany(
-    {
-      time: { $regex: r }
-    }
-  ).then((opTulemus) => {
-    var k = opTulemus.deletedCount;
-    console.log('Kustutasin ' + k + ' kirjet');
-    res.send({ kustutati: k });
-  });
+  looVoiUuendaYhendus().then(
+    if (db !== null) {
+    db.collection('autentimised').deleteMany(
+      {
+        time: { $regex: r }
+      }
+    ).then((opTulemus) => {
+      var k = opTulemus.deletedCount;
+      console.log('Kustutasin ' + k + ' kirjet');
+      res.send({ err: null, kustutati: k });
+    });
+  }
+  else {
+    res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
+  }
+  );
 
 });
 
 // Väljasta statistika (AJAX päring)
 app.get('/stat', (req, res) => {
-
   /**
    * Leia autentimiste arv klienditi
    * @param r - aja filtri regex
@@ -169,8 +176,11 @@ app.get('/stat', (req, res) => {
    * @param callback - funktsioon, millele edastatakse MongoDB
    *   aggregation pipeline läbimise tulemusel saadud kirjed 
    */
-  const leiaKlienditi = function (r, db, callback) {
-    looVoiUuendaYhendus();
+  /* Võta päringu query-osast sirvikust saadetud perioodimuster */
+  const p = req.query.p; // kui parameeter päringus puudub, siis undefined
+  var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
+  looYhendus().then(
+    if (db !== null) {
     const collection = db.collection(config.COLLECTION);
     collection
       .aggregate([
@@ -196,7 +206,7 @@ app.get('/stat', (req, res) => {
           }
         }
       ])
-      .toArray(function (err, kirjed) {
+      .toArray((err, kirjed) => {
         if (err === null) {
           console.log('Päring andmebaasi täidetud. Leitud kirjeid: ' +
             kirjed.length);
@@ -207,69 +217,74 @@ app.get('/stat', (req, res) => {
           /* TODO Ajax-päringule vastamisel see pole adekvaatne */
           res.render('pages/viga', { veateade: "ERR-02: Viga logibaasist lugemisel" });
         }
+      })
+      .then((kirjed) => {
+        res.send(
+          {
+            err: null, kirjed: kirjed
+          });
+      })
+      .catch(err => {
+        console.log('ERR-02: Viga andmete lugemisel logibaasist');
+        res.send({ err: 'ERR-02: Viga andmete lugemisel logibaasist' });
       });
   }
-
-  /* Võta päringu query-osast sirvikust saadetud perioodimuster */
-  const p = req.query.p; // kui parameeter päringus puudub, siis undefined
-  var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
-
-  // Tee otsing logibaasis ja saada tulemused
-  leiaKlienditi(r, db, (kirjed) => {
-    res.send(
-      {
-        kirjed: kirjed
-      });
-  });
-
+  else {
+    console.log("ERR-01: Logibaasiga ei saa ühendust");
+    res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
+  }
 });
 
 // Vasta elusolekupäringule
 app.get('/status', function (req, res) {
   // Tee proovisalvestus MongoDB andmebaasi
   var lisamiseTulemus;
-  looVoiUuendaYhendus();
-  lisamiseTulemus = db.collection(config.HEARTBEATHELPERTABLE)
-    .insert({
-      kirjeldus: 'elutukse'
+  looVoiUuendaYhendus()
+    .then(() => {
+      if (db !== null) {
+        lisamiseTulemus = db.collection(config.HEARTBEATHELPERTABLE)
+          .insert({
+            kirjeldus: 'elutukse'
+          });
+        if (lisamiseTulemus.writeError) {
+          console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");
+          res.status(500).send('ERR-05: Kirjutamine logibaasi ebaõnnestus')
+        }
+        res.status(200).send('OK');
+      }
+      else {
+        console.log("ERR-01: Logibaasiga ei saa ühendust");
+        res.status(500).send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
+      }
     });
-  if (lisamiseTulemus.writeError) {
-    console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");
-    res.status(500).send('ERR-05: Kirjutamine logibaasi ebaõnnestus')
-  }
-  res.status(200).send('OK');
 });
 
 // -------- 6 Mitmesugused töötlusfunktsioonid -------- 
 
-/** Kontrollib, kas ühendus MongoDB-ga (mida hoiab globClient),
- * on üleval. Kui on, siis tagastab true. Vastasel korral üritab
- * luua uue ühenduse. Kui see õnnestub, siis salvestab ühenduse
- * loomisega loodava uue kliendi globaalmuutujasse globClient
- * ja tagastab true. Muutujas db tagastab logibaasiga ühenduse.
- * Kui ühendumine ei õnnestu, siis tagastab false.
+/** Kontrollib, kas baasiühendus on olemas ja toimib
+ * (globaalne muutuja globClient). Kui ei ole, siis üritab
+ * luua ühenduse. Ühenduse loomisel seatakse ka globaalne
+ * muutuja db osutama andmebaasile "logibaas". 
+ * looYhendus() on async funktsioon s.t tagastab lubaduse. Lubaduse
+ * töötlemiseks kasuta .then(() => {}) konstruktsiooni.
  */
-function looVoiUuendaYhendus() {
-  if (globClient.isConnected()) {
-    return false;
+async function looYhendus() {
+  try {
+    if (globClient && globClient.isConnected()) {
+      console.log('Ühendus olemas');
+      return;
+    }
+    var klient = await MongoClient.connect(MONGODB_URL,
+      { useNewUrlParser: true });
+    console.log('Ühendus loodud');
+    globClient = klient;
+    db = klient.db('logibaas');
   }
-  else {
-    globClient.connect(
-      MONGODB_URL,
-      { useNewUrlParser: true },
-      (err, client) => {
-        // client on uus MongoClient-i instance
-        if (err === null) {
-          console.log("--- Logibaasiga ühendumine õnnestus");
-          globClient = client;
-          db = globClient.db(config.LOGIBAAS);
-        }
-        else {
-          console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-        }
-      });
-    
-  }
+  catch (err) {
+    console.log('Ühenduse loomine ebaõnnestus', err);
+    db = null;
+    globClient = null;
+  };
 }
 
 /**
