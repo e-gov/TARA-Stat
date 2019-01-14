@@ -50,7 +50,7 @@ TARA-Stat koosneb kahest komponendist:
 | komponent | tehniline nimi | otstarve |
 |-----------|----------------|----------|
 | veebirakendus | `tarastat` | Node.js rakendus, mis ühelt poolt võtab vastu logikirjed ja salvestab need logibaasi. Teiselt poolt arvutab kasutusstatistika ja esitab seda statistikakasutajale. Koosneb omakorda serveripoolsest osast ja  kasutaja sirvikusse laetavast osast |
-| logibaas | `mongodb` | MongoDB andmebaas, kuhu salvestatakse logikirjeid |
+| logibaas | `mongod` | MongoDB andmebaas, kuhu salvestatakse logikirjeid |
 
 Komponente käitatakse ühes masinas, Linux-i teenustena.
 
@@ -168,7 +168,7 @@ TARA-Stat paigaldamiseks ja käitamiseks on vaja järgmisi võtmeid ja salasõnu
 |:--------:|--------:|:--------------:|----|----|
 | `admin` | Ubuntu kasutaja, kes paigaldab tarkvara ja teeb muid haldustoiminguid | salasõna | määratakse VM op-süsteemi paigaldamisel | adminitoimigutes VM-is | 
 | `tarastat` | Ubuntu kasutaja, kelle alt käivitatakse TARA-Stat veebirakendus | salasõna | TARA-Stat veebirakenduse seadistamisel | TARA-Stat veebirakenduse käitamisel |
-| `mongodb` | Ubuntu kasutaja, kelle alt käitatakse MongoDB andmebaas | salasõna | MongoDB paigaldamisel | MongoDB käitamisel |
+| `mongod` | Ubuntu kasutaja, kelle alt käitatakse MongoDB andmebaas | salasõna | MongoDB paigaldamisel | MongoDB käitamisel |
 | `userAdmin` | MongoDB kasutaja, kes haldab MongoDB kasutajaid. Seda rolli täidab VM admin | salasõna | MongoDB paigaldamisel | MongoDB kasutajakontode haldamisel |
 | `rakendus` | TARA-Stat veebirakenduse konto MongoDB-s | salasõna | määratakse MongoDB paigaldamisel, kantakse ka TARA-Stat veebirakenduse konf-i | TARA-Stat-i poolt pöördumisel MongoDB poole |
 | `andmehaldur` | MongoDB konto, mille alt kustutatakse aegunud logikirjeid. Andmehalduri rolli täidab VM admin | salasõna | MongoDB paigaldamisel | MongoDB logibaasi haldamisel |
@@ -199,12 +199,10 @@ Kaustastruktuur
 - `/opt/TARA-Stat/log.txt` -- TARA-Stat veebirakenduse logi
 - `/lib/systemd/system/tarastat.service` -- TARA-Stat veebirakenduse systemd haldusüksuse kirjeldusfail
 
-- `/etc/mongodb.conf` -- MongoDB konf-ifail
-- `/var/log/mongodb/mongod.log` -- MongoDB logi
+- `/etc/mongod.conf` -- MongoDB konf-ifail
+- `/var/log/mongod/mongod.log` -- MongoDB logi
 - `var/lib/mongodb` -- MongoDB andmebaasifailid
-- `/var/log/mongodb/mongod.log` -- MongoDB andmebaasilogi
 - `/lib/systemd/system/mongod.service` -- MongoDB systemd haldusüksuse kirjeldusfail
-- `/etc/init.d/mongodb` -- automaatkäivitusskript
 
 ### 1.6 Sõltuvused
 
@@ -219,7 +217,7 @@ Tootmissõltuvused:
 | ejs         | standardne | templiidimootor, kasutusel veebirakendus |
 | express | standardne | HTTP päringute marsruuter, kasutusel veebirakendus |
 | rwlock | standardne | lukuhalduri teek, kasutusel veebirakenduses |
-| mongodb | standardne | MongoDB klient, kasutusel veebirakenduses |
+| mongod | standardne | MongoDB klient, kasutusel veebirakenduses |
 | MongoDB  | 4.0.4 | logibaas |
 | frontend: | | |
 | HTML5, CSS3, Javascript | | |
@@ -243,7 +241,7 @@ Konfigureeritakse järgmiste failidega:
 |-------------|-----------------------|
 | `/opt/tara-stat/config/config.js` | veebirakenduse konf-n. |
 | `/opt/tara-stat/config/keys` | veebirakenduse konf-n. |
-| `/etc/mongodb.conf`        | MongoDB konf-n. Kasutatakse MongoDB distributsiooni vaikimisi konf-i. Käsitsi konf-mine on vajalik siis, kui tahetakse muuta tundlike taristuparameetrite vaikeväärtusi (nt porti). |
+| `/etc/mongod.conf`        | MongoDB konf-n. Kasutatakse MongoDB distributsiooni vaikimisi konf-i. Käsitsi konf-mine on vajalik siis, kui tahetakse muuta tundlike taristuparameetrite vaikeväärtusi (nt porti). |
 
 TARA-Stat konfiguratsiooni hoitakse eraldi, mitteavalikus repos.
 
@@ -279,11 +277,11 @@ TARA-Stat kuulab HTTPS ühendusi pordil <tara-stat-https-port> ja Syslog TCP üh
 
 Nii TARA-Stat veebirakendus kui ka MongoDB käitatakse systemd hallatavate teenustena. Teenused käivitatakse ja seisatakse standardsete `systemctl` käskudega, nt:
 
-`sudo systemctl start mongodb` (käivita teenus `mongodb`)
+`sudo systemctl start mongod` (käivita teenus `mongod`)
 
 `sudo systemctl stop tarastat` (peata teenus `tarastat`)
 
-Teenuste `tarastat` ja `mongodb` käivitamise järjekord ei ole oluline. Kuid peab arvestama, et `tarastat` sõltub `mongodb`-st - kui logibaas ei ole üleval, siis ei saa logikirjeid salvestada ega statistikat väljastada.
+Teenuste `tarastat` ja `mongod` käivitamise järjekord ei ole oluline. Kuid peab arvestama, et `tarastat` sõltub `mongod`-st - kui logibaas ei ole üleval, siis ei saa logikirjeid salvestada ega statistikat väljastada.
 
 ### 2.4 Monitooringuga ühendamine
 
@@ -298,11 +296,11 @@ TARA-Stat ülevalolekut saab lõppkasutaja seisukohast kontrollida nii:
 
 Märkus. Kui rakendus peaks teatama, et ühendus ei ole turvaline, siis see on tingitud _self-signed_ serdist. Aktsepteeri turvaerind. Ilmub rakenduse avaleht. Kui paigaldatud on organisatsiooni CA poolt väljaantud sert, siis teadet ei tule. 
 
-TARA-Stat masinas saab teenuste `tarastat` ja `mongodb` ülalolekut kontrollida:
+TARA-Stat masinas saab teenuste `tarastat` ja `mongod` ülalolekut kontrollida:
 
 `systemctl status tarastat` (kuva teenuse `tarastat` staatus)
 
-`systemctl status mongodb` (kuva teenuse `mongodb` staatus)
+`systemctl status mongod` (kuva teenuse `mongod` staatus)
 
 Probleemide lahendamiseks saab kasutada teenuse enda logisid (vt jaotis "Olulised asukohad").
 
@@ -312,9 +310,13 @@ Kui tekib vajadus välja selgitada, mis seisus on MongoDB andmebaasi sisu või v
 
 `mongo -u andmehaldur -p changeit -authenticationDatabase users;` (ava MongoDB käsureavahend, logides sisse kasutajaga `andmehaldur`)
 
+(kui autentimine pole sisse lülitatud, siis lihtsalt `mongo`)
+
 `use logibaas` (lülitu logibaasile)
 
 `show collections` (peab näitama: `autentimised`)
+
+`db.autentimised.count()` (kuva kirjete arv logibaasis)
 
 `db.autentimised.find().sort({_id:1}).limit(5);` (kuva 5 viimast kirjet)
 
@@ -339,8 +341,8 @@ Andmebaasi kasutajate haldamiseks tuleb käsureavahendisse sisse logida administ
 `db.auth("andmehaldur", "changeit")` (logi sisse andmehaldurina)
 
 Vaata lisaks:
-- [mongo](https://docs.mongodb.com/manual/reference/program/mongo/)
-- [mongo Shell Quick Reference](https://docs.mongodb.com/manual/reference/mongo-shell/)
+- [mongo](https://docs.mongod.com/manual/reference/program/mongo/)
+- [mongo Shell Quick Reference](https://docs.mongod.com/manual/reference/mongo-shell/)
 
 ## 3 Kasutamine
 
@@ -384,7 +386,7 @@ TARA-Stat-is on rakendatud järgmised turvavalikud.
 1. Elutukse otspunkt on ligipääsetav ainult organisatsiooni sisevõrgus.
 1. Veebirakendus pöördub MongoDB poole eraldi andmebaasikasutajana (`rakendus`). Andmebaasikasutaja autenditakse. Kasutusel on MongoDB vaikimisi autentimismehhanism - soolaga salasõna põhine.
 1. Admin on eraldi andmebaasikasutaja.
-1. Nii veebirakendus kui ka MongoDB käitatakse eraldi, spetsiaalsete kasutajate alt (`tarastat` ja `mongodb`).
+1. Nii veebirakendus kui ka MongoDB käitatakse eraldi, spetsiaalsete kasutajate alt (`tarastat` ja `mongod`).
 1. Ligipääs andmebaasile (kirjutamine) on kaitstud ka failisüsteemi õiguste tasemel.
 1. Andmebaas ei ole nähtav VM-st väljapoole. Andmebaasi kasutab ainult samas masinas asuv veebirakendus. 
 
@@ -400,7 +402,7 @@ Kaitse on rakendatud ohuvektorile: rakenduse kokkujooksmine vales vormingus andm
 1. Andmebaasi auditilogi ei peeta, kuna terviklusvajadus ei ole nii kõrge.
 
 Vajadusel vt taustaks:
-- MongoDB [turvakäsitlus](https://docs.mongodb.com/manual/security/) sisaldab [turvameelespead](https://docs.mongodb.com/manual/administration/security-checklist/) rea soovitustega.
+- MongoDB [turvakäsitlus](https://docs.mongod.com/manual/security/) sisaldab [turvameelespead](https://docs.mongod.com/manual/administration/security-checklist/) rea soovitustega.
 
 ## 6 Käideldavus
 
