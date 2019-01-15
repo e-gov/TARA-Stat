@@ -3,6 +3,8 @@
  * 
  * Ilma logikirjete vastuvõtuta; HTTP server;
  * autentimata andmebaas
+ * 
+ * Käivitamiseks kanna või kopeeri Tara-Stat juurkausta.
  */
 
 'use strict';

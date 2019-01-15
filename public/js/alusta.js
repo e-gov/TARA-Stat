@@ -25,6 +25,7 @@ function alusta() {
 
   $('#suleTeadeNupp').click(() => {
     $('#suleTeadeNupp').addClass('peidetud');
+    $('#teateriba').addClass('peidetud');
     pariKirjeteArv();
   });
 
@@ -42,13 +43,14 @@ function alusta() {
     $('#uuendaNupp').addClass('peidetud');
     $('#kinnitusNupp').removeClass('peidetud');
     $('#tyhistusNupp').removeClass('peidetud');
+    $('#teateriba').removeClass('peidetud');
   });
 
   $('#kinnitusNupp').click(() => {
     $('#kinnitusNupp').addClass('peidetud');
     $('#tyhistusNupp').addClass('peidetud');
-    $('#teade').text('Kustutan...');
     kustutaKirjed();
+    $('#teateriba').addClass('peidetud');
   });
 
   $('#tyhistusNupp').click(() => {
@@ -59,6 +61,7 @@ function alusta() {
       .removeClass('viga')
       .addClass('info')
       .text('');
+    $('#teateriba').addClass('peidetud');
     pariKirjeteArv();
   });
 
@@ -231,6 +234,7 @@ function alusta() {
             data.kustutati.toString() +
             ' kirjet.');
         $('#suleTeadeNupp').removeClass('peidetud');
+        $('#teateriba').removeClass('peidetud');
       }
     );
   }
