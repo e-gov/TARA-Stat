@@ -20,9 +20,9 @@ const path = require('path');
 var config = require('/opt/tara-stat/config/config.js');
 
 // Logikirjete vahemiku algus
-var a = { y: 2018, m: 4, d: 1 };
+var a = { y: 2018, m: 1, d: 1 };
 // Logikirjete vahemiku lõpp
-var b = { y: 2018, m: 7, d: 2 };
+var b = { y: 2019, m: 12, d: 28 };
 // Logikirjete arv
 const N = 10;
 const klientrakendused = [
