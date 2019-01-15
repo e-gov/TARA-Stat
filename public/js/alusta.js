@@ -7,6 +7,10 @@ function alusta() {
     }
   });
 
+  $('#standardstatNupp').click(() => {
+    pariStandarStat();
+  });
+
   $('#sooritaNupp').click(() => {
     pariStatistika();
   });
@@ -138,6 +142,58 @@ function alusta() {
 
   }
 
+  /** Päring logibaasist edukate autentimiste arvu jooksval 
+   * päeval ja jooksval kuul ning kuvab kasutajale.
+   * 
+   */
+  function pariStandarStat() {
+    // Teeme kaks AJAX-päringut /standard otspunkti vastu.
+
+    var d = new Date(Date.now());
+    // getMonth() annab 0..11
+    var k = (parseInt(d.getMonth()) + 1).toString();
+    // Vajadusel lisa esinull
+    if (k.length == 1) { k = '0' + k }
+    // getDate() annab 1..31
+    var p = d.getDate().toString();
+    // Vajadusel lisa esinull
+    if (p.length == 1) { p = '0' + p }
+    var paevaMuster = d.getFullYear() + '-' +
+      k + '-' + p;
+
+    $.getJSON('/standard?p=' + paevaMuster,
+      (data, status, xhr) => {
+        if (status == "success") {
+          /* Saadud andmed on kujul
+          { "kirjeid": 1 }
+          */
+          $('#edukaidTana').text(JSON.stringify(data.kirjeid));
+        }
+        else {
+          // Päring ebaõnnestus, tühjenda andmed
+          $('#edukaidTana').text('');
+        }
+      }
+    );
+
+    var kuuMuster = d.getFullYear() + '-' + k;
+
+    $.getJSON('/standard?p=' + kuuMuster,
+      (data, status, xhr) => {
+        if (status == "success") {
+          /* Saadud andmed on kujul
+          { "kirjeid": 1 }
+          */
+          $('#edukaidKuul').text(JSON.stringify(data.kirjeid));
+        }
+        else {
+          // Päring ebaõnnestus, tühjenda andmed
+          $('#edukaidKuul').text('');
+        }
+      }
+    );
+  }
+
   function pariKirjeteArv() {
     var url = '/kirjeid';
     $.getJSON(url,
@@ -145,8 +201,8 @@ function alusta() {
         /* Saadud andmed on kujul
         { "kirjeid": 1 }
         */
-        $('#teade').text('Logibaasis on ' +
-          JSON.stringify(data.kirjeid) + ' kirjet.');
+        $('#kirjeidLogibaasis').
+          text(JSON.stringify(data.kirjeid));
       }
     );
   }
@@ -180,4 +236,5 @@ function alusta() {
   }
 
   pariKirjeteArv();
+  pariStandarStat();
 }

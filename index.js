@@ -94,15 +94,39 @@ app.get('/', function (req, res) {
   }
 });
 
-// Väljasta kirjete arv
-app.get('/kirjeid', (req, res) => {
-  db.collection('autentimised').countDocuments({}).then(
+// Väljasta edukate autentimiste arv perioodil
+app.get('/standard', function (req, res) {
+  const p = req.query.p; // Periood
+  var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
+  db.collection('autentimised').countDocuments(
+    {
+      time: { $regex: r },
+      operation: "SUCCESSFUL_AUTH"
+    }
+  ).then(
     (c) => {
       console.log(c);
       res.send({ kirjeid: c });
     });
 });
 
+// Väljasta kirjete arv
+app.get('/kirjeid', (req, res) => {
+  const p = req.query.p; // Periood
+  var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
+  db.collection('autentimised').countDocuments(
+    {
+      time: { $regex: r },
+      operation: "SUCCESSFUL_AUTH"
+    }
+  ).then(
+    (c) => {
+      console.log(c);
+      res.send({ kirjeid: c });
+    });
+});
+
+// Kustuta kirjed, vastavalt päringumustrile
 app.get('/kustuta', (req, res) => {
 
   console.log('Alustan kustutamist');
@@ -201,7 +225,8 @@ app.get('/status', function (req, res) {
   res.status(200).send('OK');
 });
 
-// -------- 6 Logikirje salvestamise abifunktsioonid -------- 
+// -------- 6 Mitmesugused töötlusfunktsioonid -------- 
+
 /**
  * Logikirje salvestamine logibaasi (MongoDB)
  * @param logikirje {String} saadetud logikirje, JSON-struktuur
