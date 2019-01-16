@@ -40,9 +40,20 @@ var lock = new ReadWriteLock();
 var config = require('/opt/tara-stat/config/config.js');
 
 // -------- 3 Globaalsed muutujad -------- 
-// MongoDB andmebaasiühendus. Deklareeritud siin, et oleks elutukse
-// väljastajas kättesaadav
+// MongoDB klient. Operatsioon "connection" teeb MongoClient uue
+// instantsi, mis omistatakse allolevale muutujale.
+var globClient = MongoClient;
+// Ühendus MongoDB andmebaasiga "Logibaas". Deklareeritud siin,
+// et oleks elutukse väljastajas kättesaadav.
 var db;
+// Andmebaasiga ühendumise URL
+// NB! Konto andmebaas - users - on URL-i hardcoded.
+const authMechanism = 'DEFAULT';
+const MONGODB_URL =
+  f('mongodb://%s:%s@localhost:27017/users?authMechanism=%s',
+    config.MONGOUSER,
+    config.MONGOUSERPWD,
+    authMechanism);
 
 // -------- 4 Väiksemad ettevalmistused -------- 
 
@@ -98,6 +109,7 @@ app.get('/', function (req, res) {
 app.get('/standard', function (req, res) {
   const p = req.query.p; // Periood
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
+  looVoiUuendaYhendus();
   db.collection('autentimised').countDocuments(
     {
       time: { $regex: r },
@@ -114,6 +126,7 @@ app.get('/standard', function (req, res) {
 app.get('/kirjeid', (req, res) => {
   const p = req.query.p; // Periood
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
+  looVoiUuendaYhendus();
   db.collection('autentimised').countDocuments(
     {
       time: { $regex: r },
@@ -133,7 +146,7 @@ app.get('/kustuta', (req, res) => {
   /* Võta päringu query-osast sirvikust saadetud perioodimuster */
   const p = req.query.p; // kui parameeter päringus puudub, siis undefined
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
-
+  looVoiUuendaYhendus();
   db.collection('autentimised').deleteMany(
     {
       time: { $regex: r }
@@ -157,6 +170,7 @@ app.get('/stat', (req, res) => {
    *   aggregation pipeline läbimise tulemusel saadud kirjed 
    */
   const leiaKlienditi = function (r, db, callback) {
+    looVoiUuendaYhendus();
     const collection = db.collection(config.COLLECTION);
     collection
       .aggregate([
@@ -214,6 +228,7 @@ app.get('/stat', (req, res) => {
 app.get('/status', function (req, res) {
   // Tee proovisalvestus MongoDB andmebaasi
   var lisamiseTulemus;
+  looVoiUuendaYhendus();
   lisamiseTulemus = db.collection(config.HEARTBEATHELPERTABLE)
     .insert({
       kirjeldus: 'elutukse'
@@ -226,6 +241,36 @@ app.get('/status', function (req, res) {
 });
 
 // -------- 6 Mitmesugused töötlusfunktsioonid -------- 
+
+/** Kontrollib, kas ühendus MongoDB-ga (mida hoiab globClient),
+ * on üleval. Kui on, siis tagastab true. Vastasel korral üritab
+ * luua uue ühenduse. Kui see õnnestub, siis salvestab ühenduse
+ * loomisega loodava uue kliendi globaalmuutujasse globClient
+ * ja tagastab true. Muutujas db tagastab logibaasiga ühenduse.
+ * Kui ühendumine ei õnnestu, siis tagastab false.
+ */
+function looVoiUuendaYhendus() {
+  if (globClient.isConnected()) {
+    return false;
+  }
+  else {
+    globClient.connect(
+      MONGODB_URL,
+      { useNewUrlParser: true },
+      (err, client) => {
+        // client on uus MongoClient-i instance
+        if (err === null) {
+          console.log("--- Logibaasiga ühendumine õnnestus");
+          globClient = client;
+          db = globClient.db(config.LOGIBAAS);
+        }
+        else {
+          console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
+        }
+      });
+    
+  }
+}
 
 /**
  * Logikirje salvestamine logibaasi (MongoDB)
@@ -269,6 +314,7 @@ function salvestaLogikirje(logikirje) {
 
   // WriteResult objekt
   var lisamiseTulemus;
+  looVoiUuendaYhendus();
   lisamiseTulemus = db
     .collection(config.COLLECTION)
     .insertOne(salvestatavKirje);
@@ -325,12 +371,12 @@ var TLS_S_options = {
     path.join(
       __dirname, '..', 'config', 'keys',
       config.TLS_S_KEY), 'utf8'
-    ),
+  ),
   cert: fs.readFileSync(
     path.join(
       __dirname, '..', 'config', 'keys',
       config.TLS_S_CERT), 'utf8'
-    ),
+  ),
   ca: caList,
   requestCert: true,
   rejectUnauthorized: true
@@ -443,38 +489,17 @@ var HTTPS_S_options = {
 };
 var httpsServer = https.createServer(HTTPS_S_options, app);
 
-// -------- 9 Loo ühendus MongoDB - ga ja käivita
-//            TLS ning HTTPS serverid             -------- 
+// -------- 9 Käivita TLS ning HTTPS serverid -------- 
 
-// Andmebaasiga ühendumise URL
-// NB! Konto andmebaas - users - on URL-i hardcoded.
-const authMechanism = 'DEFAULT';
-const MONGODB_URL =
-  f('mongodb://%s:%s@localhost:27017/users?authMechanism=%s',
-    config.MONGOUSER,
-    config.MONGOUSERPWD,
-    authMechanism);
+// Käivita TLS server
+tcpTlsServer.listen(config.TLS_S_PORT, () => {
+  console.log('TLS server kuuldel pordil: ' + config.TLS_S_PORT);
+});
 
-MongoClient.connect(
-  MONGODB_URL,
-  { useNewUrlParser: true },
-  (err, client) => {
-    if (err === null) {
-      // console.log("--- Logibaasiga ühendumine õnnestus");
-      db = client.db(config.LOGIBAAS);
+// Käivita HTTPS server 
+httpsServer.listen(config.HTTPS_S_PORT, () => {
+  console.log('HTTPS server kuuldel pordil: ' + httpsServer.address().port);
+});
 
-      // Käivita TLS server
-      tcpTlsServer.listen(config.TLS_S_PORT, () => {
-        console.log('TLS server kuuldel pordil: ' + config.TLS_S_PORT);
-      });
-
-      // Käivita HTTPS server 
-      httpsServer.listen(config.HTTPS_S_PORT, () => {
-        console.log('HTTPS server kuuldel pordil: ' + httpsServer.address().port);
-      });
-
-    }
-    else {
-      console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
-    }
-  });
+// Proovi ühenduda logibaasiga
+looVoiUuendaYhendus();
