@@ -101,7 +101,7 @@ app.get('/', function (req, res) {
 app.get('/standard', function (req, res) {
   const p = req.query.p; // Periood
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
-  looVoiUuendaYhendus().then(() => {
+  looYhendus().then(() => {
     if (db !== null) {
       db.collection('autentimised').countDocuments(
         {
@@ -125,7 +125,7 @@ app.get('/standard', function (req, res) {
 app.get('/kirjeid', (req, res) => {
   const p = req.query.p; // Periood
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
-  looVoiUuendaYhendus().then(() => {
+  looYhendus().then(() => {
     if (db !== null) {
       db.collection('autentimised').countDocuments(
         {
@@ -150,7 +150,7 @@ app.get('/kustuta', (req, res) => {
   /* Võta päringu query-osast sirvikust saadetud perioodimuster */
   const p = req.query.p; // kui parameeter päringus puudub, siis undefined
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
-  looVoiUuendaYhendus().then(() => {
+  looYhendus().then(() => {
     if (db !== null) {
       db.collection('autentimised').deleteMany(
         {
@@ -241,7 +241,7 @@ app.get('/stat', (req, res) => {
 app.get('/status', function (req, res) {
   // Tee proovisalvestus MongoDB andmebaasi
   var lisamiseTulemus;
-  looVoiUuendaYhendus()
+  looYhendus()
     .then(() => {
       if (db !== null) {
         lisamiseTulemus = db.collection(config.HEARTBEATHELPERTABLE)
@@ -331,7 +331,7 @@ function salvestaLogikirje(logikirje) {
 
   // WriteResult objekt
   var lisamiseTulemus;
-  looVoiUuendaYhendus();
+  looYhendus();
   lisamiseTulemus = db
     .collection(config.COLLECTION)
     .insertOne(salvestatavKirje);
@@ -519,4 +519,4 @@ httpsServer.listen(config.HTTPS_S_PORT, () => {
 });
 
 // Proovi ühenduda logibaasiga
-looVoiUuendaYhendus();
+looYhendus();
