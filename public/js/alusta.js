@@ -148,7 +148,8 @@ function pariStatistika() {
     },
     success: (data, status, xhr) => {
       /* Saadud andmed on kujul
-        { "kirjed":
+        { err: null või veateade,
+          kirjed:
           [
             {
               "_id": {
@@ -162,9 +163,15 @@ function pariStatistika() {
           ]
         }
       */
-      var kirjed = data.kirjed;
-      kuvaKirjed(kirjed);
-      kuvaAutentimisteArv(kirjed);
+      if (err !== null) {
+        var kirjed = data.kirjed;
+        kuvaKirjed(kirjed);
+        kuvaAutentimisteArv(kirjed);
+      }
+      else {
+        console.log('/stat: ' + err);
+        kuvaTeade(err, 'viga');
+      }
     }
   });
 }
@@ -185,10 +192,17 @@ function pariKirjeteArv() {
     },
     success: (data, status, xhr) => {
       /* Saadud andmed on kujul
-      { "kirjeid": 1 }
+      { err: null või veateade, kirjeid: 1 }
       */
-      $('#kirjeidLogibaasis').
-        text(JSON.stringify(data.kirjeid));
+      if (err !== null) {
+        $('#kirjeidLogibaasis').
+          text(JSON.stringify(data.kirjeid));
+      }
+      else {
+        $('#kirjeidLogibaasis').text('?');
+        console.log('/kirjeid: ' + err);
+        kuvaTeade(err, 'viga');
+      }
     }
   });
 }
@@ -218,10 +232,17 @@ function kustutaKirjed() {
     },
     success: (data, status, xhr) => {
       /* Saadud andmed on kujul
-      { "kustutati": 1 }
+      { err: null v veateade,
+        kustutati: 1 }
       */
-      kuvaTeade('Kustutati ' + data.kustutati.toString() +
-        ' kirjet.', 'info');
+      if (err !== null) {
+        kuvaTeade('Kustutati ' + data.kustutati.toString() +
+          ' kirjet.', 'info');
+      }
+      else {
+        console.log('/kustuta: ' + err);
+        kuvaTeade(err, 'viga');
+      }
     }
   });
 }
@@ -260,9 +281,15 @@ function pariStandardStat() {
     },
     success: (data, status, xhr) => {
       /* Saadud andmed on kujul
-      { "kirjeid": 1 }
+      { err: null v veateade, kirjeid: 1 }
       */
-      $('#edukaidTana').text(JSON.stringify(data.kirjeid));
+      if (err !== null) {
+        $('#edukaidTana').text(JSON.stringify(data.kirjeid));
+      }
+      else {
+        console.log('/standard: ' + err);
+        kuvaTeade(err, 'viga');
+      }
     }
   });
 
@@ -281,9 +308,15 @@ function pariStandardStat() {
     },
     success: (data, status, xhr) => {
       /* Saadud andmed on kujul
-      { "kirjeid": 1 }
+      { err: null v veateade, kirjeid: 1 }
       */
-      $('#edukaidKuul').text(JSON.stringify(data.kirjeid));
+      if (err !== null) {
+        $('#edukaidKuul').text(JSON.stringify(data.kirjeid));
+      }
+      else {
+        console.log('/standard: ' + err);
+        kuvaTeade(err, 'viga');
+      }
     }
   });
 }

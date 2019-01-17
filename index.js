@@ -101,47 +101,67 @@ app.get('/', function (req, res) {
 app.get('/standard', function (req, res) {
   const p = req.query.p; // Periood
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
-  looYhendus().then(() => {
-    if (db !== null) {
-      db.collection('autentimised').countDocuments(
-        {
-          time: { $regex: r },
-          operation: "SUCCESSFUL_AUTH"
-        }
-      )
-        .then(
-          (c) => {
-            console.log('/standard: väljastan tulemuse: ' + c.toString());
-            res.send({ err: null, kirjeid: c });
+  looYhendus()
+    .then(() => {
+      if (db !== null) {
+        db.collection('autentimised').countDocuments(
+          {
+            time: { $regex: r },
+            operation: "SUCCESSFUL_AUTH"
+          }
+        )
+          .then((data) => {
+            console.log('/standard: väljastan tulemuse: ' + data.toString());
+            res.send({ err: null, kirjeid: data });
+          })
+          .catch((err) => {
+            console.log('/standard: ERR-02: Logibaasist lugemine ebaõnnestus: ',
+              err);
+            res.send({ err: "ERR-02: Logibaasist lugemine ebaõnnestus" });
           });
-    }
-    else {
+      }
+      else {
+        res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
+      }
+    })
+    .catch((err) => {
+      console.log('/standard: ERR-01: Logibaasiga ei saa ühendust ',
+        err);
       res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
-    }
-  });
+    });
 });
 
 // Väljasta kirjete arv
 app.get('/kirjeid', (req, res) => {
   const p = req.query.p; // Periood
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
-  looYhendus().then(() => {
-    if (db !== null) {
-      db.collection('autentimised').countDocuments(
-        {
-          time: { $regex: r },
-          operation: "SUCCESSFUL_AUTH"
-        }
-      ).then(
-        (c) => {
-          console.log(c);
-          res.send({ err: null, kirjeid: c });
-        });
-    }
-    else {
-      res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
-    }
-  });
+  looYhendus()
+    .then(() => {
+      if (db !== null) {
+        db.collection('autentimised').countDocuments(
+          {
+            time: { $regex: r },
+            operation: "SUCCESSFUL_AUTH"
+          })
+          .then(
+            (c) => {
+              console.log('/kirjeid: Kirjeid kokku: ', c);
+              res.send({ err: null, kirjeid: c });
+            })
+          .catch((err) => {
+            console.log('/kirjeid: ERR-02: Viga logibaasist lugemisel');
+            res.send({ err: "/kirjeid: ERR-02: Viga logibaasist lugemisel" });
+          });
+      }
+      else {
+        res.send({ err: "/kirjeid: ERR-01: Logibaasiga ei saa ühendust" });
+      }
+    })
+    .catch((err) => {
+      console.log('/kirjeid: ERR-01: Logibaasiga ei saa ühendust ',
+        err);
+      res.send({ err: "/kirjeid: ERR-01: Logibaasiga ei saa ühendust" });
+    });
 });
 
 // Kustuta kirjed, vastavalt päringumustrile
@@ -150,22 +170,33 @@ app.get('/kustuta', (req, res) => {
   /* Võta päringu query-osast sirvikust saadetud perioodimuster */
   const p = req.query.p; // kui parameeter päringus puudub, siis undefined
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
-  looYhendus().then(() => {
-    if (db !== null) {
-      db.collection('autentimised').deleteMany(
-        {
-          time: { $regex: r }
-        }
-      ).then((opTulemus) => {
-        var k = opTulemus.deletedCount;
-        console.log('Kustutasin ' + k + ' kirjet');
-        res.send({ err: null, kustutati: k });
-      });
-    }
-    else {
-      res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
-    }
-  });
+  looYhendus()
+    .then(() => {
+      if (db !== null) {
+        db.collection('autentimised')
+          .deleteMany(
+            {
+              time: { $regex: r }
+            })
+          .then((opTulemus) => {
+            var k = opTulemus.deletedCount;
+            console.log('Kustutasin ' + k + ' kirjet');
+            res.send({ err: null, kustutati: k });
+          })
+          .catch((err) => {
+            console.log('/kustuta: ERR-02: Kustutamine ebaõnnestus');
+            res.send({ err: "ERR-02: Kustutamine ebaõnnestus"});
+          });
+      }
+      else {
+        res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
+      }
+    })
+    .catch((err) => {
+      console.log('/kirjeid: ERR-01: Logibaasiga ei saa ühendust ',
+        err);
+      res.send({ err: "/kirjeid: ERR-01: Logibaasiga ei saa ühendust" });
+    });
 });
 
 // Väljasta statistika (AJAX päring)
@@ -180,61 +211,56 @@ app.get('/stat', (req, res) => {
   /* Võta päringu query-osast sirvikust saadetud perioodimuster */
   const p = req.query.p; // kui parameeter päringus puudub, siis undefined
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
-  looYhendus().then(() => {
-    if (db !== null) {
-      const collection = db.collection(config.COLLECTION);
-      collection
-        .aggregate([
-          {
-            $match: {
-              time: { $regex: r }
-            }
-          },
-          {
-            $group: {
-              _id: {
-                "clientId": "$clientId",
-                "method": "$method",
-                "operation": "$operation",
-                "bank": "$bank"
-              },
-              kirjeteArv: { $sum: 1 }
-            }
-          },
-          {
-            $sort: {
-              _id: 1
-            }
-          }
-        ])
-        .toArray((err, kirjed) => {
-          if (err === null) {
-            console.log('Päring andmebaasi täidetud. Leitud kirjeid: ' +
-              kirjed.length);
-            callback(kirjed);
-          }
-          else {
-            console.log('ERR-02: Viga logibaasist lugemisel');
-            /* TODO Ajax-päringule vastamisel see pole adekvaatne */
-            res.render('pages/viga', { veateade: "ERR-02: Viga logibaasist lugemisel" });
-          }
-        })
-        .then((kirjed) => {
-          res.send(
+  looYhendus()
+    .then(() => {
+      if (db !== null) {
+        const collection = db.collection(config.COLLECTION);
+        collection
+          .aggregate([
             {
-              err: null, kirjed: kirjed
-            });
-        })
-        .catch(err => {
-          console.log('ERR-02: Viga andmete lugemisel logibaasist');
-          res.send({ err: 'ERR-02: Viga andmete lugemisel logibaasist' });
-        });
-    }
-    else {
-      console.log("ERR-01: Logibaasiga ei saa ühendust");
+              $match: {
+                time: { $regex: r }
+              }
+            },
+            {
+              $group: {
+                _id: {
+                  "clientId": "$clientId",
+                  "method": "$method",
+                  "operation": "$operation",
+                  "bank": "$bank"
+                },
+                kirjeteArv: { $sum: 1 }
+              }
+            },
+            {
+              $sort: {
+                _id: 1
+              }
+            }
+          ])
+          .toArray()
+          .then((kirjed) => {
+            console.log('/stat: Päring baasi täidetud. Leitud kirjeid: ' +
+              kirjed.length);
+            res.send(
+              { err: null, kirjed: kirjed });
+          })
+          .catch((err) => {
+            console.log('ERR-02: Viga andmete lugemisel logibaasist');
+            res.send({ err: 'ERR-02: Viga andmete lugemisel logibaasist' });
+          });
+      }
+      else {
+        console.log("/stat: ERR-01: Logibaasiga ei saa ühendust");
+        res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
+      }
+    })
+    .catch((err) => {
+      console.log('/stat: ERR-01: Logibaasiga ei saa ühendust ',
+        err);
       res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
-    }
-  });
+    });
 });
 
 // Vasta elusolekupäringule
@@ -255,9 +281,14 @@ app.get('/status', function (req, res) {
         res.status(200).send('OK');
       }
       else {
-        console.log("ERR-01: Logibaasiga ei saa ühendust");
+        console.log("/status: ERR-01: Logibaasiga ei saa ühendust");
         res.status(500).send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
       }
+    })
+    .catch((err) => {
+      console.log('/status: ERR-01: Logibaasiga ei saa ühendust ',
+        err);
+      res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
     });
 });
 
