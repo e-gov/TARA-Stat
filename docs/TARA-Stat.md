@@ -24,9 +24,9 @@ TARA-Stat-i on arendanud Riigi Infosüsteemi Amet.
 
 Tähistused:
 
-`<tara-stat>` (TARA-Stat masina domeeninimi)
-`<tara-stat-https-port>` (TARA-Stat veebirakenduse HTTPS serveri pordinumber)
-`<tara-stat-tls-port>` (TARA-Stat veebirakenduse Syslog TCP TLS serveri pordinumber)
+- `<tara-stat>` (TARA-Stat masina domeeninimi)
+- `<tara-stat-https-port>` (TARA-Stat veebirakenduse HTTPS serveri pordinumber)
+- `<tara-stat-tls-port>` (TARA-Stat veebirakenduse Syslog TCP TLS serveri pordinumber)
 
 ## 1 Tarkvara kirjeldus
 
@@ -37,7 +37,7 @@ TARA-Stat pakub:
 - võimalust autentimisteenuses TARA toimuvate autentimisündmuste logimiseks
 - võimalust logi põhjal statistika arvutamiseks ja vaatamiseks. Eelkõige huvitab autentimiste arv klientrakenduste lõikes ajaperioodil.
 
-Üldistatud arhitektuurijoonis:
+Üldistatud arhitektuurijoonis (pordinumbrid on näitlikud):
 
 <p style='text-align:center;'><img src='img/Arhi.PNG' width= "700"></p>
 
