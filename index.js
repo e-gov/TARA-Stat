@@ -54,6 +54,7 @@ const MONGODB_URL =
     config.MONGOUSER,
     config.MONGOUSERPWD,
     authMechanism);
+console.log(MONGODB_URL);
 
 // -------- 4 Väiksemad ettevalmistused -------- 
 
@@ -248,13 +249,16 @@ app.get('/status', function (req, res) {
  * loomisega loodava uue kliendi globaalmuutujasse globClient
  * ja tagastab true. Muutujas db tagastab logibaasiga ühenduse.
  * Kui ühendumine ei õnnestu, siis tagastab false.
+ * PROBLEEM: väljub funktsioonist enne callback-i täitmist.
+ * Lahendada async-ga.
  */
 function looVoiUuendaYhendus() {
   if (globClient.isConnected()) {
-    return false;
+    console.log('--- Logibaasiga ühendus olemas ---')
+    return;
   }
   else {
-    globClient.connect(
+    MongoClient.connect(
       MONGODB_URL,
       { useNewUrlParser: true },
       (err, client) => {
@@ -268,7 +272,6 @@ function looVoiUuendaYhendus() {
           console.log("ERR-01: Logibaasiga ühendumine ebaõnnestus");
         }
       });
-    
   }
 }
 
