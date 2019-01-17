@@ -163,7 +163,7 @@ function pariStatistika() {
           ]
         }
       */
-      if (data.err !== null) {
+      if (data.err === null) {
         kuvaKirjed(data.kirjed);
         kuvaAutentimisteArv(data.kirjed);
       }
@@ -193,7 +193,7 @@ function pariKirjeteArv() {
       /* Saadud andmed on kujul
       { err: null või veateade, kirjeid: 1 }
       */
-      if (data.err !== null) {
+      if (data.err === null) {
         $('#kirjeidLogibaasis').
           text(JSON.stringify(data.kirjeid));
       }
@@ -234,7 +234,7 @@ function kustutaKirjed() {
       { err: null v veateade,
         kustutati: 1 }
       */
-      if (data.err !== null) {
+      if (data.err === null) {
         kuvaTeade('Kustutati ' + data.kustutati.toString() +
           ' kirjet.', 'info');
       }
@@ -282,7 +282,7 @@ function pariStandardStat() {
       /* Saadud andmed on kujul
       { err: null v veateade, kirjeid: 1 }
       */
-      if (data.err !== null) {
+      if (data.err === null) {
         $('#edukaidTana').text(JSON.stringify(data.kirjeid));
       }
       else {
@@ -309,7 +309,7 @@ function pariStandardStat() {
       /* Saadud andmed on kujul
       { err: null v veateade, kirjeid: 1 }
       */
-      if (data.err !== null) {
+      if (data.err === null) {
         $('#edukaidKuul').text(JSON.stringify(data.kirjeid));
       }
       else {
