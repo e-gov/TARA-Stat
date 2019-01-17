@@ -10,7 +10,7 @@ body {
   /* font-family: 'Segoe UI', Arial, serif; */
   font-family: Arial, sans-serif;
   font-size: 17px; 
-  color: #222325 !important;
+  color: #black !important;
   line-height: 1.4 !important;
   }
 
@@ -106,7 +106,7 @@ th { font-weight: normal; font-style: italic; text-align: center; }
 pre, code, samp {
   font-family: monospace;
   font-size: 17px;
-  color: green !important;
+  color: black !important;
   background-color: #f6f8fa; /* nagu GitHubis */
   white-space:pre-wrap;
   overflow-y: hidden; overflow-x: hidden;
