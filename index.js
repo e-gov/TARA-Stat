@@ -141,7 +141,7 @@ app.get('/kirjeid', (req, res) => {
         db.collection('autentimised').countDocuments(
           {
             time: { $regex: r },
-            operation: "SUCCESSFUL_AUTH"
+            // operation: "SUCCESSFUL_AUTH"
           })
           .then(
             (c) => {
@@ -150,22 +150,22 @@ app.get('/kirjeid', (req, res) => {
             })
           .catch((err) => {
             console.log('/kirjeid: ERR-02: Viga logibaasist lugemisel');
-            res.send({ err: "/kirjeid: ERR-02: Viga logibaasist lugemisel" });
+            res.send({ err: "ERR-02: Viga logibaasist lugemisel" });
           });
       }
       else {
-        res.send({ err: "/kirjeid: ERR-01: Logibaasiga ei saa ühendust" });
+        res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
       }
     })
     .catch((err) => {
       console.log('/kirjeid: ERR-01: Logibaasiga ei saa ühendust ',
         err);
-      res.send({ err: "/kirjeid: ERR-01: Logibaasiga ei saa ühendust" });
+      res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
     });
 });
 
 // Kustuta kirjed, vastavalt päringumustrile
-app.get('/kustuta', (req, res) => {
+app.delete('/kustuta', (req, res) => {
   console.log('Alustan kustutamist');
   /* Võta päringu query-osast sirvikust saadetud perioodimuster */
   const p = req.query.p; // kui parameeter päringus puudub, siis undefined
@@ -195,7 +195,7 @@ app.get('/kustuta', (req, res) => {
     .catch((err) => {
       console.log('/kirjeid: ERR-01: Logibaasiga ei saa ühendust ',
         err);
-      res.send({ err: "/kirjeid: ERR-01: Logibaasiga ei saa ühendust" });
+      res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
     });
 });
 
