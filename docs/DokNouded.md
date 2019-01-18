@@ -24,7 +24,7 @@ Siin sõnastatud nõuded on üldistus konkreetses moodulis  [TARA-Stat](https://
 
 **Dokumentatsioon** on koodi juurde kuuluv inimloetav kirjeldus tarkvara omaduste kohta.
 
-**Mooduli kasutusdokumentatsioon** on inimloetav, süstematiseeritud teave, mille lugeja saab: 1) ülevaate tarkvara eesmärgist, ülesehitusest ja tööpõhimõttest; 2) juhised tarkvara paigaldamiseks, seadistamiseks, käitamiseks ja kasutamiseks.
+**Mooduli kasutusdokumentatsioon** on inimloetav, süstematiseeritud teave, millest lugeja saab: 1) ülevaate tarkvara eesmärgist, ülesehitusest ja tööpõhimõttest; 2) juhised tarkvara paigaldamiseks, seadistamiseks, käitamiseks ja kasutamiseks.
 
 Kasutusdokumentatsiooni sihtrühmaks on tarkvara paigaldaja, haldaja, edasiarendaja ja lõppkasutaja abipöördumiste käsitleja.
 
