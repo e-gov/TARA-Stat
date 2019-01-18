@@ -3,7 +3,7 @@ permalink: DokNouded
 layout: TARA
 ---
 
-# Mooduli dokumenteerimine
+# Mooduli dokumenteerimise nõuded
 {: .no_toc}
 
 ## Sisukord
