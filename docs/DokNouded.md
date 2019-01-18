@@ -107,7 +107,7 @@ Moodul on otstarbekas dokumenteerida ühe dokumendiga. Dokumentatsiooni osaks on
 
 **veateated**. Mooduli poolt väljastatavate veateadete täielik loetelu koos nõuannetega vea kõrvaldamiseks.
 
-Koodi dokumenteerimine. Iga mittetriviaalse funktsiooni (funktsioonipõhise programmeerimiskeele korral) või klassi ja meetodi (objekt-orienteeritud programmeerimiskeele korral) päises peab olema inimloetav lühikirjeldus funktsiooni, klassi või meetodi ülesande, sisend- ja väljundparameetrite kohta. Suure mooduli korral on vajalik Javadoc vms koodi dokumumentatsiooni genereerimise vahend.
+Koodi dokumenteerimine. Iga mittetriviaalse funktsiooni (funktsioonipõhise programmeerimiskeele korral) või klassi ja meetodi (objekt-orienteeritud programmeerimiskeele korral) päises peab olema inimloetav lühikirjeldus funktsiooni, klassi või meetodi ülesande, sisend- ja väljundparameetrite kohta. Suure mooduli korral on vajalik Javadoc vms koodi dokumentatsiooni genereerimise vahend.
 
 Priit Parmakson, 18.01.2019
 
