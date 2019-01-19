@@ -16,11 +16,14 @@ function seaValikualaNupukasitlejad() {
 
   // Peida kõik alad, v.a ala
   function ava(ala) {
-    $('#yldstatistikaala').addClass('peidetud');
-    $('#detailstatistikaala').addClass('peidetud');
-    $('#kustutaala').addClass('peidetud');
-    $('#abiala').addClass('peidetud');
-    $(ala).removeClass('peidetud');
+    ['#yldstatistikaala',
+      '#detailstatistikaala',
+      '#kustutaala',
+      '#abiala'
+    ].forEach((i) => {
+      i.addClass('peidetud').removeClass('valitud');
+    });
+    $(ala).removeClass('peidetud').addClass('valitud');
   }
 
   // Valikunuppude käsitlejad
