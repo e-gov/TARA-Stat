@@ -12,7 +12,7 @@ function kuvaTeade(teade, teateTyyp) {
   $('#teateriba').removeClass('peidetud');
 }
 
-function seaNuppudeKasitlejad() {
+function seaValikualaNupukasitlejad() {
 
   // Peida kõik alad, v.a ala
   function ava(ala) {
@@ -21,7 +21,7 @@ function seaNuppudeKasitlejad() {
     $('#kustutaala').addClass('peidetud');
     $('#abiala').addClass('peidetud');
     $(ala).removeClass('peidetud');
-  } 
+  }
 
   // Valikunuppude käsitlejad
   $('#yldstatistikaNupp').click(() => {
@@ -40,39 +40,34 @@ function seaNuppudeKasitlejad() {
     ava('#abiala');
   });
 
-  // Nuppude käsitlejad
-  $('#perioodiMuster').on('keydown', (e) => {
-    if (e.keyCode == 13) {
-      pariStatistika();
-    }
-  });
+}
 
-  $('#standardstatNupp').click(() => {
-    pariStandarStat();
-  });
+function seaNupuKasitlejad() {
 
-  $('#sooritaNupp').click(() => {
-    pariStatistika();
-  });
-
-  $('#abiteabeNupp').click(() => {
-    $('#abiteave').removeClass('peidetud');
-  });
-
-  $('#sulgeAbiteaveNupp').click(() => {
-    $('#abiteave').addClass('peidetud');
-  });
-
+  // Teade
   $('#suleTeadeNupp').click(() => {
     $('#suleTeadeNupp').addClass('peidetud');
     $('#teateriba').addClass('peidetud');
     pariKirjeteArv();
   });
 
+  // Üldstatistika
   $('#uuendaNupp').click(() => {
-    pariKirjeteArv();
+    pariYldstatistika();
   });
 
+  // Detailstatistika
+  $('#perioodiMusterOtsi').on('keydown', (e) => {
+    if (e.keyCode == 13) {
+      pariStatistika();
+    }
+  });
+
+  $('#sooritaNupp').click(() => {
+    pariStatistika();
+  });
+
+  // Kustuta
   $('#kustutaNupp').click(() => {
     // Küsi kinnitust
     $('#teade')
@@ -104,6 +99,119 @@ function seaNuppudeKasitlejad() {
     $('#teateriba').addClass('peidetud');
     pariKirjeteArv();
   });
+
+  // Abi
+  $('#sulgeAbiteaveNupp').click(() => {
+    $('#abiala').addClass('peidetud');
+  });
+}
+
+// Pärib baasist ja kuvab üldstatistika
+function pariYldstatistika() {
+  /** edukaid autentimisi täna:
+   *  käesoleval kuul:
+   *  kirjeid logibaasis:
+   *  logi peetud alates:
+   * Teeme kaks AJAX-päringut /standard otspunkti vastu
+   * ja päringu /kirjeid otspunkti vastu
+   */
+
+  // Koosta perioodimustrid (päeva ja kuu jaoks)
+  var d = new Date(Date.now());
+  // getMonth() annab 0..11
+  var k = (parseInt(d.getMonth()) + 1).toString();
+  // Vajadusel lisa esinull
+  if (k.length == 1) { k = '0' + k }
+  // getDate() annab 1..31
+  var p = d.getDate().toString();
+  // Vajadusel lisa esinull
+  if (p.length == 1) { p = '0' + p }
+  var paevaMuster = d.getFullYear() + '-' +
+    k + '-' + p;
+  var kuuMuster = d.getFullYear() + '-' + k;
+
+  // AJAX-päringutes parem kasutada ajax meetodit
+  $.ajax({
+    url: '/standard?p=' + paevaMuster,
+    method: 'GET',
+    dataType: "json",
+    data: null,
+    error: (jqXHR, textStatus, errorThrown) => {
+      $('#kirjeidLogibaasis').text('?');
+      console.log('Serveri poole pöördumine ebaõnnestus: ',
+        textStatus, ': ', errorThrown);
+      kuvaTeade('Serveri poole pöördumine ebaõnnestus', 'viga');
+      $('#edukaidTana').text('');
+    },
+    success: (data, status, xhr) => {
+      /* Saadud andmed on kujul
+      { err: null v veateade, kirjeid: 1 }
+      */
+      if (data.err === null) {
+        $('#edukaidTana').text(JSON.stringify(data.kirjeid));
+      }
+      else {
+        console.log('/standard: ' + data.err);
+        kuvaTeade(data.err, 'viga');
+      }
+    }
+  });
+
+  // AJAX-päringutes parem kasutada ajax meetodit
+  $.ajax({
+    url: '/standard?p=' + kuuMuster,
+    method: 'GET',
+    dataType: "json",
+    data: null,
+    error: (jqXHR, textStatus, errorThrown) => {
+      $('#kirjeidLogibaasis').text('?');
+      console.log('Serveri poole pöördumine ebaõnnestus: ',
+        textStatus, ': ', errorThrown);
+      kuvaTeade('Serveri poole pöördumine ebaõnnestus', 'viga');
+      $('#edukaidKuul').text('');
+    },
+    success: (data, status, xhr) => {
+      /* Saadud andmed on kujul
+      { err: null v veateade, kirjeid: 1 }
+      */
+      if (data.err === null) {
+        $('#edukaidKuul').text(JSON.stringify(data.kirjeid));
+      }
+      else {
+        console.log('/standard: ' + data.err);
+        kuvaTeade(data.err, 'viga');
+      }
+    }
+  });
+
+  // AJAX-päringutes parem kasutada ajax meetodit
+  $.ajax({
+    url: '/kirjeid',
+    method: 'GET',
+    dataType: "json",
+    data: null,
+    error: (jqXHR, textStatus, errorThrown) => {
+      $('#kirjeidLogibaasis').text('?');
+      console.log('Serveri poole pöördumine ebaõnnestus: ',
+        textStatus, ': ', errorThrown);
+      kuvaTeade('Serveri poole pöördumine ebaõnnestus', 'viga');
+    },
+    success: (data, status, xhr) => {
+      /* Saadud andmed on kujul
+      { err: null või veateade, kirjeid: 1 }
+      */
+      if (data.err === null) {
+        $('#kirjeidLogibaasis').
+          text(JSON.stringify(data.kirjeid));
+      }
+      else {
+        $('#kirjeidLogibaasis').text('?');
+        console.log('/kirjeid: ' + data.err);
+        kuvaTeade(data.err, 'viga');
+      }
+    }
+  });
+
 }
 
 // Pärib ja kuvab täieliku statistika, perioodimustri järgi
@@ -202,37 +310,6 @@ function pariStatistika() {
   });
 }
 
-// Päring kirjete koguarvu ja kuvab kasutajale
-function pariKirjeteArv() {
-  // AJAX-päringutes parem kasutada ajax meetodit
-  $.ajax({
-    url: '/kirjeid',
-    method: 'GET',
-    dataType: "json",
-    data: null,
-    error: (jqXHR, textStatus, errorThrown) => {
-      $('#kirjeidLogibaasis').text('?');
-      console.log('Serveri poole pöördumine ebaõnnestus: ',
-        textStatus, ': ', errorThrown);
-      kuvaTeade('Serveri poole pöördumine ebaõnnestus', 'viga');
-    },
-    success: (data, status, xhr) => {
-      /* Saadud andmed on kujul
-      { err: null või veateade, kirjeid: 1 }
-      */
-      if (data.err === null) {
-        $('#kirjeidLogibaasis').
-          text(JSON.stringify(data.kirjeid));
-      }
-      else {
-        $('#kirjeidLogibaasis').text('?');
-        console.log('/kirjeid: ' + data.err);
-        kuvaTeade(data.err, 'viga');
-      }
-    }
-  });
-}
-
 // Kustutab kirjed vastavalt mustrile
 function kustutaKirjed() {
   // Tee lisatakse allik-URL-le (origin)
@@ -273,82 +350,8 @@ function kustutaKirjed() {
   });
 }
 
-/** Pärib baasist edukate autentimiste arvu jooksval 
- * päeval ja jooksval kuul ning kuvab kasutajale. */
-function pariStandardStat() {
-  // Teeme kaks AJAX-päringut /standard otspunkti vastu.
-
-  // Koosta perioodimustrid (päeva ja kuu jaoks)
-  var d = new Date(Date.now());
-  // getMonth() annab 0..11
-  var k = (parseInt(d.getMonth()) + 1).toString();
-  // Vajadusel lisa esinull
-  if (k.length == 1) { k = '0' + k }
-  // getDate() annab 1..31
-  var p = d.getDate().toString();
-  // Vajadusel lisa esinull
-  if (p.length == 1) { p = '0' + p }
-  var paevaMuster = d.getFullYear() + '-' +
-    k + '-' + p;
-  var kuuMuster = d.getFullYear() + '-' + k;
-
-  // AJAX-päringutes parem kasutada ajax meetodit
-  $.ajax({
-    url: '/standard?p=' + paevaMuster,
-    method: 'GET',
-    dataType: "json",
-    data: null,
-    error: (jqXHR, textStatus, errorThrown) => {
-      $('#kirjeidLogibaasis').text('?');
-      console.log('Serveri poole pöördumine ebaõnnestus: ',
-        textStatus, ': ', errorThrown);
-      kuvaTeade('Serveri poole pöördumine ebaõnnestus', 'viga');
-      $('#edukaidTana').text('');
-    },
-    success: (data, status, xhr) => {
-      /* Saadud andmed on kujul
-      { err: null v veateade, kirjeid: 1 }
-      */
-      if (data.err === null) {
-        $('#edukaidTana').text(JSON.stringify(data.kirjeid));
-      }
-      else {
-        console.log('/standard: ' + data.err);
-        kuvaTeade(data.err, 'viga');
-      }
-    }
-  });
-
-  // AJAX-päringutes parem kasutada ajax meetodit
-  $.ajax({
-    url: '/standard?p=' + kuuMuster,
-    method: 'GET',
-    dataType: "json",
-    data: null,
-    error: (jqXHR, textStatus, errorThrown) => {
-      $('#kirjeidLogibaasis').text('?');
-      console.log('Serveri poole pöördumine ebaõnnestus: ',
-        textStatus, ': ', errorThrown);
-      kuvaTeade('Serveri poole pöördumine ebaõnnestus', 'viga');
-      $('#edukaidKuul').text('');
-    },
-    success: (data, status, xhr) => {
-      /* Saadud andmed on kujul
-      { err: null v veateade, kirjeid: 1 }
-      */
-      if (data.err === null) {
-        $('#edukaidKuul').text(JSON.stringify(data.kirjeid));
-      }
-      else {
-        console.log('/standard: ' + data.err);
-        kuvaTeade(data.err, 'viga');
-      }
-    }
-  });
-}
-
 function alusta() {
-  seaNuppudeKasitlejad();
-  pariKirjeteArv();
-  pariStandardStat();
+  seaValikualaNupukasitlejad
+  seaNupuKasitlejad();
+  pariYldstatistika();
 }

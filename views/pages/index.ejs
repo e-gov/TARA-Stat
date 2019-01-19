@@ -61,27 +61,27 @@
   <!-- Üldstatistika ala -->
   <div id='yldstatistikaala' class='peidetud'>
     <div id='yldstatriba'>
-      <div class='vordnekeskjoondatud'>
-        Edukaid autentimisi täna:
+      <div class='vkj'>
+        edukaid autentimisi täna:
         <br>
         <span id='edukaidTana'></span>
       </div>
-      <div class='vordnekeskjoondatud'>
+      <div class='vkj'>
         käesoleval kuul:
         <br>
         <span id='edukaidKuul'></span>
       </div>
-      <div class='vordnekeskjoondatud'>
-        Kirjeid logibaasis:
+      <div class='vkj'>
+        kirjeid logibaasis:
         <br>
         <span id='kirjeidLogibaasis'></span>
       </div>
-      <div class='vordnekeskjoondatud'>
-        Logi peetud alates:
+      <div class='vkj'>
+        logi peetud alates:
         <br>
         <span id='logiAlates'></span>
       </div>
-      <div class='vordnekeskjoondatud'>
+      <div class='vkj'>
         <div id='uuendaNupp' class='nupp inline' title='Uuenda'>
           <i class='ikoon material-icons'>autorenew</i>
         </div>
@@ -91,11 +91,11 @@
 
   <!-- Detailstatistika ala -->
   <div id='detailstatistikaala' class='peidetud'>
-    <div id='detstatohje' style='display: flex; justify-content: space-between;'>
+    <div id='detstatohje'>
       <label class='active'>
         Sisesta valikumuster (nt
         <code>2018-04</code>) :
-        <input id='perioodiMuster' type='text' style='margin: 0 2rem;' autocomplete='off'>
+        <input id='perioodiMusterOtsi' type='text' style='margin: 0 2rem;' autocomplete='off'>
       </label>
       <div id='sooritaNupp' class='nupp' title='Arvuta statistika'>
         <i class='ikoon material-icons'>search</i>
@@ -108,11 +108,12 @@
 
   <!-- Kustuta ala -->
   <div id='kustutaala' class='peidetud'>
-    <div id='kustutaohje' style='display: flex;'>
+    <div id='kustutaohje'>
       <label class='active'>
         Sisesta valikumuster (nt
         <code>2018-04</code>) :
-        <input id='perioodiMuster' type='text' style='margin: 0 2rem;' autocomplete='off'>
+        <input id='perioodiMusterKustuta' type='text'
+         style='margin: 0 2rem;' autocomplete='off'>
       </label>
       <div id='kustutaNupp' class='nupp' title='Kustuta logikirjeid'>
         <i class='ikoon material-icons'>delete_forever</i>

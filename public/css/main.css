@@ -29,6 +29,7 @@ h1 {
   display: flex;
   align-items: center;
   border: 1px solid lightpink;
+  margin-bottom: 2rem; 
 }
 .valikukast {
   flex-basis: 100%;
@@ -81,7 +82,7 @@ h1 {
   display: flex;
   align-items: center; /* vert-ne */
 }
-.vordnekeskjoondatud {
+.vkj { /* võrdse laiusega, horis. keskjoondatud */
   flex-basis: 100%;
   text-align: center;
   padding: 0 0.5rem;
@@ -92,6 +93,11 @@ how-to-make-flexbox-items-the-same-size/29503264 */
 
 /*#region Detailstatistika */
 /* Tabelid */
+#detstatohje {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 table { table-layout: fixed;
   width: 100%; margin: 0 4em 2em 0; }
 table { border-collapse: collapse; }
@@ -100,11 +106,17 @@ td { padding: 0 1em;}
 /*#endregion */
 
 /*#region Kustuta */
+#kustutaohje {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 /*#endregion */
 
 /*#region Abi */
-#abiteave {
-  display: flex; justify-content: space-between;
+#abiala {
+  display: flex;
+  justify-content: space-between;
   align-items: flex-start;
 }
 /*#endregion */
@@ -120,6 +132,7 @@ td { padding: 0 1em;}
 }
 /*#endregion */
 
+/*#region mitmesugused */
 .hoiatav {
   color: tomato !important;
 }
@@ -145,4 +158,5 @@ code {
   padding: 4px;
   font-family: monospace;
 }
+/*#endregion */
 

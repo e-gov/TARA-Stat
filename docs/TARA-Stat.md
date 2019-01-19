@@ -196,7 +196,7 @@ Kaustastruktuur
 - `  scripts`  - paigaldusskriptid
 - `  docs`     - avalik dokumentatsioon
 
-- `/opt/TARA-Stat/log.txt` -- TARA-Stat veebirakenduse logi
+- `/opt/tara-stat/log.txt` -- TARA-Stat veebirakenduse logi
 - `/lib/systemd/system/tarastat.service` -- TARA-Stat veebirakenduse systemd haldusüksuse kirjeldusfail
 
 - `/etc/mongod.conf` -- MongoDB konf-ifail
