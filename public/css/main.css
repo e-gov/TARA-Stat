@@ -24,27 +24,25 @@ h1 {
   margin-bottom: 1rem;
 }
 
-.ikoon {
-  font-family: 'Material Icons';
-  font-size: 48px; color: #757575;
+/*#region Valimisriba */
+.valimisriba {
+  display: flex;
+  align-items: center;
+  border: 1px solid lightpink;
 }
-
-.nupp { margin: 0.5rem 0.5rem;
-  cursor: pointer;
-  color: #757575;
+.valikukast {
+  flex-basis: 100%;
+  text-align: center;
+  padding: 1rem 2rem;
+  border: 1px solid lightpink;
 }
+/*#endregion */
 
-.hoiatav {
-  color: tomato !important;
-}
-
-.peidetud {
-  display: none !important;
-}
-
+/*#region Teateriba */
 #teateriba { /* Trikk inline-block elementide rea vert. joondamiseks */
   height: 2rem;
   margin-bottom: 2rem;
+  border: 1px solid lightpink;
 }
 #teateriba:before {
   content: "";
@@ -52,19 +50,82 @@ h1 {
   vertical-align: middle;
   height: 100%;
 }
-
 .inline {
   display: inline-block;
   vertical-align: middle;
 }
-
 #teade {
   min-height: 2rem;
 }
+.info, .viga {
+  padding: .5em;
+  border: .5em;
+  border-left-style: solid;
+  page-break-inside: avoid;
+  margin: 1em 1em 1.5em 0;
+}  
+.info {
+  border-color: darkgray /* #52E052 */;
+  background: lightgrey /* #E9FBE9 */;
+  overflow: auto;
+}
+.viga {
+  border-color: tomato;
+  border-style: none solid;
+  background: lavenderblush;
+}
+/*#endregion */
 
+/*#region Üldstatistika */
+#yldstatriba {
+  display: flex;
+  align-items: center; /* vert-ne */
+}
+.vordnekeskjoondatud {
+  flex-basis: 100%;
+  text-align: center;
+  padding: 0 0.5rem;
+}
+/* https://stackoverflow.com/questions/29503227/
+how-to-make-flexbox-items-the-same-size/29503264 */
+/*#endregion */
+
+/*#region Detailstatistika */
+/* Tabelid */
+table { table-layout: fixed;
+  width: 100%; margin: 0 4em 2em 0; }
+table { border-collapse: collapse; }
+table, th, td { border: 1px solid lightgray; }
+td { padding: 0 1em;}
+/*#endregion */
+
+/*#region Kustuta */
+/*#endregion */
+
+/*#region Abi */
 #abiteave {
   display: flex; justify-content: space-between;
   align-items: flex-start;
+}
+/*#endregion */
+
+/*#region ikoonid-nupud */
+.ikoon {
+  font-family: 'Material Icons';
+  font-size: 48px; color: #757575;
+}
+.nupp { margin: 0.5rem 0.5rem;
+  cursor: pointer;
+  color: #757575;
+}
+/*#endregion */
+
+.hoiatav {
+  color: tomato !important;
+}
+
+.peidetud {
+  display: none !important;
 }
 
 a, a:hover, a:active, a:visited {
@@ -85,29 +146,3 @@ code {
   font-family: monospace;
 }
 
-.info, .viga {
-  padding: .5em;
-  border: .5em;
-  border-left-style: solid;
-  page-break-inside: avoid;
-  margin: 1em 1em 1.5em 0;
-}  
-
-.info {
-  border-color: darkgray /* #52E052 */;
-  background: lightgrey /* #E9FBE9 */;
-  overflow: auto;
-}
-
-.viga {
-  border-color: tomato;
-  border-style: none solid;
-  background: lavenderblush;
-}
-
-/* Tabelid */
-table { table-layout: fixed;
-  width: 100%; margin: 0 4em 2em 0; }
-table { border-collapse: collapse; }
-table, th, td { border: 1px solid lightgray; }
-td { padding: 0 1em;}

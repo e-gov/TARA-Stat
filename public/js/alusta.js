@@ -13,6 +13,33 @@ function kuvaTeade(teade, teateTyyp) {
 }
 
 function seaNuppudeKasitlejad() {
+
+  // Peida kõik alad, v.a ala
+  function ava(ala) {
+    $('#yldstatistikaala').addClass('peidetud');
+    $('#detailstatistikaala').addClass('peidetud');
+    $('#kustutaala').addClass('peidetud');
+    $('#abiala').addClass('peidetud');
+    $(ala).removeClass('peidetud');
+  } 
+
+  // Valikunuppude käsitlejad
+  $('#yldstatistikaNupp').click(() => {
+    ava('#yldstatistikaala');
+  });
+
+  $('detailstatistikaNupp').click(() => {
+    ava('#detailstatistikaala');
+  });
+
+  $('kustutaNupp').click(() => {
+    ava('#kustutaala');
+  });
+
+  $('abiNupp').click(() => {
+    ava('#abiala');
+  });
+
   // Nuppude käsitlejad
   $('#perioodiMuster').on('keydown', (e) => {
     if (e.keyCode == 13) {

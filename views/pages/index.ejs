@@ -10,19 +10,39 @@
 
   <h1>TARA statistika</h1>
 
-  <div id='standardstat'
-    style='display: flex; justify-content: space-between; align-items: center;'>
-    <div>
-      Edukaid autentimisi täna: <span id='edukaidTana'></span>,  
-      käesoleval kuul: <span id='edukaidKuul'></span>.
-      Kirjeid logibaasis: <span id='kirjeidLogibaasis'></span>
+  <!-- Valimisriba-->
+  <div id='valimisriba'>
+    <div class='valikukast'>
+      Üldstatistika
+      <br>
+      <div id='yldstatistikaNupp' class='nupp' title='Üldstatistika'>
+        <i class='ikoon material-icons'>view_headline</i>
+      </div>
     </div>
-    <div id='uuendaNupp' class='nupp inline' title='Uuenda'>
-      <i class='ikoon material-icons'>autorenew</i>
+    <div class='valikukast'>
+      Detailne statistika
+      <br>
+      <div id='detailstatistikaNupp' class='nupp' title='Detailne statistika'>
+        <i class='ikoon material-icons'>line_style</i>
+      </div>
     </div>
+    <div class='valikukast'>
+      Kustuta
+      <br>
+      <div id='kustutaNupp' class='nupp' title='Kustuta logikirjeid'>
+        <i class='ikoon material-icons'>delete_forever</i>
+      </div>
+    </div>
+    <div class='valikukast'>
+      Abi
+      <br>
+      <div id='abiNupp' class='nupp' title='Abi'>
+        <i class='ikoon material-icons'>help</i>
+      </div>
+    </div>
+  </div>
 
-  </div>  
-
+  <!-- Teateriba -->
   <div id='teateriba' class='peidetud'>
     <div id='teade' class='info inline'></div>
 
@@ -33,29 +53,75 @@
       <i class='ikoon material-icons hoiatav'>clear</i>
     </div>
     <div id='suleTeadeNupp' class='nupp inline peidetud' title='Sule teade'>
-        <i class='ikoon material-icons'>clear</i>
+      <i class='ikoon material-icons'>clear</i>
+    </div>
+
+  </div>
+
+  <!-- Üldstatistika ala -->
+  <div id='yldstatistikaala' class='peidetud'>
+    <div id='yldstatriba'>
+      <div class='vordnekeskjoondatud'>
+        Edukaid autentimisi täna:
+        <br>
+        <span id='edukaidTana'></span>
       </div>
-  
+      <div class='vordnekeskjoondatud'>
+        käesoleval kuul:
+        <br>
+        <span id='edukaidKuul'></span>
+      </div>
+      <div class='vordnekeskjoondatud'>
+        Kirjeid logibaasis:
+        <br>
+        <span id='kirjeidLogibaasis'></span>
+      </div>
+      <div class='vordnekeskjoondatud'>
+        Logi peetud alates:
+        <br>
+        <span id='logiAlates'></span>
+      </div>
+      <div class='vordnekeskjoondatud'>
+        <div id='uuendaNupp' class='nupp inline' title='Uuenda'>
+          <i class='ikoon material-icons'>autorenew</i>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div style='display: flex; justify-content: space-between; align-items: center;'>
-    <label class='active'>
-      Sisesta valikumuster (nt
-      <code>2018-04</code>) :
-      <input id='perioodiMuster' type='text' style='margin: 0 2rem;' autocomplete='off'>
-    </label>
-    <div id='sooritaNupp' class='nupp' title='Arvuta statistika'>
-      <i class='ikoon material-icons'>search</i>
+  <!-- Detailstatistika ala -->
+  <div id='detailstatistikaala' class='peidetud'>
+    <div id='detstatohje' style='display: flex; justify-content: space-between;'>
+      <label class='active'>
+        Sisesta valikumuster (nt
+        <code>2018-04</code>) :
+        <input id='perioodiMuster' type='text' style='margin: 0 2rem;' autocomplete='off'>
+      </label>
+      <div id='sooritaNupp' class='nupp' title='Arvuta statistika'>
+        <i class='ikoon material-icons'>search</i>
+      </div>
     </div>
-    <div id='kustutaNupp' class='nupp' title='Kustuta logikirjeid'>
-      <i class='ikoon material-icons'>delete_forever</i>
-    </div>
-    <div id='abiteabeNupp' class='nupp' title='Abiteave'>
-      <i class='ikoon material-icons'>help</i>
+
+    <p id='AutentimisteArv'></p>
+    <p id='Tulem'></p>
+  </div>
+
+  <!-- Kustuta ala -->
+  <div id='kustutaala' class='peidetud'>
+    <div id='kustutaohje' style='display: flex;'>
+      <label class='active'>
+        Sisesta valikumuster (nt
+        <code>2018-04</code>) :
+        <input id='perioodiMuster' type='text' style='margin: 0 2rem;' autocomplete='off'>
+      </label>
+      <div id='kustutaNupp' class='nupp' title='Kustuta logikirjeid'>
+        <i class='ikoon material-icons'>delete_forever</i>
+      </div>
     </div>
   </div>
 
-  <div id='abiteave' class='peidetud'>
+  <!-- Abi ala -->
+  <div id='abiala' class='peidetud'>
 
     <p>
       Kasutusstatistika väljastatakse klientrakenduste, autentimismeetodite ja toimingu edukuse (alustatud, edukas, viga) lõikes.
@@ -75,9 +141,6 @@
       <i class='ikoon material-icons'>clear</i>
     </div>
   </div>
-
-  <p id='AutentimisteArv'></p>
-  <p id='Tulem'></p>
 
 </body>
 
