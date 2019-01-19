@@ -15,13 +15,13 @@ function kuvaTeade(teade, teateTyyp) {
 // Peida kõik alad, v.a ala
 function ava(kast, ala) {
   [ // { valikukast, ala }
-    { k: 'v1', a: '#yldstatistikaala' } ,
-    { k: 'v2', a: '#detailstatistikaala' },
-    { k: 'v3', a: '#kustutaala' },
-    { k: 'v4', a: '#abiala' }
+    { k: 'v1', a: 'yldstatistikaala' } ,
+    { k: 'v2', a: 'detailstatistikaala' },
+    { k: 'v3', a: 'kustutaala' },
+    { k: 'v4', a: 'abiala' }
   ].forEach((i) => {
-    $(i.k).removeClass('valitud');
-    $(i.a).addClass('peidetud');
+    $('#' + i.k).removeClass('valitud');
+    $('#' + i.a).addClass('peidetud');
   });
   $('#' + kast).addClass('valitud');
   $('#' + ala).removeClass('peidetud');
