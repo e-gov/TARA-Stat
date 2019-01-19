@@ -13,34 +13,37 @@ function kuvaTeade(teade, teateTyyp) {
 }
 
 // Peida kõik alad, v.a ala
-function ava(ala) {
-  ['#yldstatistikaala',
-    '#detailstatistikaala',
-    '#kustutaala',
-    '#abiala'
+function ava(kast, ala) {
+  [ // { valikukast, ala }
+    { k: 'v1', a: '#yldstatistikaala' } ,
+    { k: 'v2', a: '#detailstatistikaala' },
+    { k: 'v3', a: '#kustutaala' },
+    { k: 'v4', a: '#abiala' }
   ].forEach((i) => {
-    $(i).addClass('peidetud').removeClass('valitud');
+    $(i.k).removeClass('valitud');
+    $(i.a).addClass('peidetud');
   });
-  $(ala).removeClass('peidetud').addClass('valitud');
+  $(kast).addClass('valitud');
+  $(ala).removeClass('peidetud');
 }
 
 function seaValikualaNupukasitlejad() {
 
   // Valikunuppude käsitlejad
   $('#yldstatistikaNupp').click(() => {
-    ava('#yldstatistikaala');
+    ava('v1', '#yldstatistikaala');
   });
 
   $('#detailstatistikaNupp').click(() => {
-    ava('#detailstatistikaala');
+    ava('v2', '#detailstatistikaala');
   });
 
   $('#kustutaalaNupp').click(() => {
-    ava('#kustutaala');
+    ava('v3', '#kustutaala');
   });
 
   $('#abiNupp').click(() => {
-    ava('#abiala');
+    ava('v4', '#abiala');
   });
 
 }
