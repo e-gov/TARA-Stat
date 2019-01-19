@@ -31,15 +31,15 @@ function seaValikualaNupukasitlejad() {
     ava('#yldstatistikaala');
   });
 
-  $('detailstatistikaNupp').click(() => {
+  $('#detailstatistikaNupp').click(() => {
     ava('#detailstatistikaala');
   });
 
-  $('kustutaNupp').click(() => {
+  $('#kustutaalaNupp').click(() => {
     ava('#kustutaala');
   });
 
-  $('abiNupp').click(() => {
+  $('#abiNupp').click(() => {
     ava('#abiala');
   });
 
@@ -72,15 +72,7 @@ function seaNupuKasitlejad() {
   // Kustuta
   $('#kustutaNupp').click(() => {
     // Küsi kinnitust
-    $('#teade')
-      .removeClass('info')
-      .addClass('viga')
-      .text('Logikirjete kustutamist ei saa tagasi võtta. ' +
-        'Kinnita, et tahad kustutada');
-    $('#uuendaNupp').addClass('peidetud');
-    $('#kinnitusNupp').removeClass('peidetud');
-    $('#tyhistusNupp').removeClass('peidetud');
-    $('#teateriba').removeClass('peidetud');
+    $('#kinnituseriba').removeClass('peidetud');
   });
 
   $('#kinnitusNupp').click(() => {
