@@ -46,7 +46,6 @@ h1 {
 #teateriba { /* Trikk inline-block elementide rea vert. joondamiseks */
   height: 2rem;
   margin-bottom: 2rem;
-  border: 1px solid lightpink;
 }
 #teateriba:before {
   content: "";

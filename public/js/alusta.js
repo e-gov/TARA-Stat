@@ -12,19 +12,19 @@ function kuvaTeade(teade, teateTyyp) {
   $('#teateriba').removeClass('peidetud');
 }
 
-function seaValikualaNupukasitlejad() {
+// Peida kõik alad, v.a ala
+function ava(ala) {
+  ['#yldstatistikaala',
+    '#detailstatistikaala',
+    '#kustutaala',
+    '#abiala'
+  ].forEach((i) => {
+    i.addClass('peidetud').removeClass('valitud');
+  });
+  $(ala).removeClass('peidetud').addClass('valitud');
+}
 
-  // Peida kõik alad, v.a ala
-  function ava(ala) {
-    ['#yldstatistikaala',
-      '#detailstatistikaala',
-      '#kustutaala',
-      '#abiala'
-    ].forEach((i) => {
-      i.addClass('peidetud').removeClass('valitud');
-    });
-    $(ala).removeClass('peidetud').addClass('valitud');
-  }
+function seaValikualaNupukasitlejad() {
 
   // Valikunuppude käsitlejad
   $('#yldstatistikaNupp').click(() => {
@@ -99,7 +99,6 @@ function seaNupuKasitlejad() {
       .addClass('info')
       .text('');
     $('#teateriba').addClass('peidetud');
-    pariKirjeteArv();
   });
 
   // Abi
