@@ -23,27 +23,27 @@ function ava(kast, ala) {
     $(i.k).removeClass('valitud');
     $(i.a).addClass('peidetud');
   });
-  $(kast).addClass('valitud');
-  $(ala).removeClass('peidetud');
+  $('#' + kast).addClass('valitud');
+  $('#' + ala).removeClass('peidetud');
 }
 
 function seaValikualaNupukasitlejad() {
 
-  // Valikunuppude käsitlejad
-  $('#yldstatistikaNupp').click(() => {
-    ava('v1', '#yldstatistikaala');
+  // Valikukastide käsitlejad
+  $('#v1Nupp').click(() => {
+    ava('v1', 'yldstatistikaala');
   });
 
-  $('#detailstatistikaNupp').click(() => {
-    ava('v2', '#detailstatistikaala');
+  $('#v2Nupp').click(() => {
+    ava('v2', 'detailstatistikaala');
   });
 
-  $('#kustutaalaNupp').click(() => {
-    ava('v3', '#kustutaala');
+  $('#v3Nupp').click(() => {
+    ava('v3', 'kustutaala');
   });
 
-  $('#abiNupp').click(() => {
-    ava('v4', '#abiala');
+  $('#v4Nupp').click(() => {
+    ava('v4', 'abiala');
   });
 
 }
