@@ -51,7 +51,6 @@ function seaNupuKasitlejad() {
   $('#suleTeadeNupp').click(() => {
     $('#suleTeadeNupp').addClass('peidetud');
     $('#teateriba').addClass('peidetud');
-    pariKirjeteArv();
   });
 
   // Üldstatistika
