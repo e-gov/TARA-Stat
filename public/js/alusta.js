@@ -96,10 +96,6 @@ function seaNupuKasitlejad() {
     $('#teateriba').addClass('peidetud');
   });
 
-  // Abi
-  $('#sulgeAbiteaveNupp').click(() => {
-    $('#abiala').addClass('peidetud');
-  });
 }
 
 // Pärib baasist ja kuvab üldstatistika
@@ -254,7 +250,7 @@ function pariStatistika() {
     $('#Tulem').html(t);
   }
 
-  var perioodiMuster = $('#perioodiMuster').val();
+  var perioodiMuster = $('#perioodiMusterOtsi').val();
 
   /* Piisab tee andmisest. See lisatakse allik-URL-le (origin) */
   var url = '/stat';
@@ -310,7 +306,7 @@ function pariStatistika() {
 function kustutaKirjed() {
   // Tee lisatakse allik-URL-le (origin)
   var url = '/kustuta';
-  var perioodiMuster = $('#perioodiMuster').val();
+  var perioodiMuster = $('#perioodiMusterKustuta').val();
   if (perioodiMuster && perioodiMuster.length > 0) {
     url = url + '?p=' + perioodiMuster;
   }
