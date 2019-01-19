@@ -344,7 +344,7 @@ function kustutaKirjed() {
 }
 
 function alusta() {
-  seaValikualaNupukasitlejad
+  seaValikualaNupukasitlejad();
   seaNupuKasitlejad();
   pariYldstatistika();
 }
