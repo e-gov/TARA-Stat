@@ -28,24 +28,19 @@ function ava(kast, ala) {
 }
 
 function seaValikualaNupukasitlejad() {
-
   // Valikukastide käsitlejad
   $('#v1Nupp').click(() => {
     ava('v1', 'yldstatistikaala');
   });
-
   $('#v2Nupp').click(() => {
     ava('v2', 'detailstatistikaala');
   });
-
   $('#v3Nupp').click(() => {
     ava('v3', 'kustutaala');
   });
-
   $('#v4Nupp').click(() => {
     ava('v4', 'abiala');
   });
-
 }
 
 function seaNupuKasitlejad() {
@@ -199,6 +194,34 @@ function pariYldstatistika() {
       else {
         $('#kirjeidLogibaasis').text('?');
         console.log('/kirjeid: ' + data.err);
+        kuvaTeade(data.err, 'viga');
+      }
+    }
+  });
+
+  // AJAX-päringutes parem kasutada ajax meetodit
+  $.ajax({
+    url: '/alates',
+    method: 'GET',
+    dataType: "json",
+    data: null,
+    error: (jqXHR, textStatus, errorThrown) => {
+      $('#logiAlates').text('?');
+      console.log('Serveri poole pöördumine ebaõnnestus: ',
+        textStatus, ': ', errorThrown);
+      kuvaTeade('Serveri poole pöördumine ebaõnnestus', 'viga');
+    },
+    success: (data, status, xhr) => {
+      /* Saadud andmed on kujul
+      { err: null või veateade, alates: string }
+      */
+      if (data.err === null) {
+        $('#logiAlates').
+          text(data.alates);
+      }
+      else {
+        $('#logiAlates').text('?');
+        console.log('/alates: ' + data.err);
         kuvaTeade(data.err, 'viga');
       }
     }

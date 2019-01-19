@@ -164,6 +164,36 @@ app.get('/kirjeid', (req, res) => {
     });
 });
 
+// Väljasta vanima kirje kuupäev
+app.get('/alates', (req, res) => {
+  looYhendus()
+    .then(() => {
+      if (db !== null) {
+        db.collection('autentimised')
+          .find()
+          .sort({ time: 1 })
+          .limit(1)
+          .then(
+            (c) => {
+              console.log('/alates: Logi peetud alates: ', c.time);
+              res.send({ err: null, alates: c.time });
+            })
+          .catch((err) => {
+            console.log('/alates: ERR-02: Viga logibaasist lugemisel');
+            res.send({ err: "ERR-02: Viga logibaasist lugemisel" });
+          });
+      }
+      else {
+        res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
+      }
+    })
+    .catch((err) => {
+      console.log('/alates: ERR-01: Logibaasiga ei saa ühendust ',
+        err);
+      res.send({ err: "ERR-01: Logibaasiga ei saa ühendust" });
+    });
+});
+
 // Kustuta kirjed, vastavalt päringumustrile
 app.delete('/kustuta', (req, res) => {
   console.log('Alustan kustutamist');
@@ -185,7 +215,7 @@ app.delete('/kustuta', (req, res) => {
           })
           .catch((err) => {
             console.log('/kustuta: ERR-02: Kustutamine ebaõnnestus');
-            res.send({ err: "ERR-02: Kustutamine ebaõnnestus"});
+            res.send({ err: "ERR-02: Kustutamine ebaõnnestus" });
           });
       }
       else {
