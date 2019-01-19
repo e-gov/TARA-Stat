@@ -19,7 +19,7 @@ function ava(ala) {
     '#kustutaala',
     '#abiala'
   ].forEach((i) => {
-    i.addClass('peidetud').removeClass('valitud');
+    $(i).addClass('peidetud').removeClass('valitud');
   });
   $(ala).removeClass('peidetud').addClass('valitud');
 }
