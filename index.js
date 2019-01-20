@@ -173,10 +173,12 @@ app.get('/alates', (req, res) => {
           .find()
           .sort({ time: 1 })
           .limit(1)
+          .toArray()
           .then(
             (c) => {
-              console.log('/alates: Logi peetud alates: ', c.time);
-              res.send({ err: null, alates: c.time });
+              const d = c[0].time.substr(0, 10);
+              console.log('/alates: Vanim logikirje: ', d);
+              res.send({ err: null, alates: d });
             })
           .catch((err) => {
             console.log('/alates: ERR-02: Viga logibaasist lugemisel');
