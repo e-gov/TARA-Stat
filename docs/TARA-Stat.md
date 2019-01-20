@@ -43,7 +43,7 @@ TARA-Stat pakub:
 
 TARA-Stat kasutajaliides statistikakasutajale:
 
-<p style='text-align:center;'><img src='img/Capture.PNG' width= "600" style='border: 1px solid black;'></p>
+<p style='text-align:center;'><img src='img/UI.PNG' width= "700" style='border: 1px solid black;'></p>
 
 TARA-Stat koosneb kahest komponendist:
 
