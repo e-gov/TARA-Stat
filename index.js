@@ -276,7 +276,7 @@ app.get('/stat', (req, res) => {
           .toArray()
           .then((kirjed) => {
             // console.log('/stat: Päring baasi täidetud. Leitud kirjeid: ' +
-              kirjed.length);
+            //  kirjed.length);
             res.send(
               { err: null, kirjed: kirjed });
           })
@@ -472,9 +472,9 @@ const tcpTlsServer = tls.createServer(
     let kliendisert = socket.getPeerCertificate();
     // console.log('TLS Server: klient esitas serdi:');
     // console.log(JSON.stringify(
-      kliendisert,
-      ['subject', 'issuer', 'C', 'O', 'CN', 'valid_from', 'valid_to'],
-      ' '));
+    //  kliendisert,
+    //  ['subject', 'issuer', 'C', 'O', 'CN', 'valid_from', 'valid_to'],
+    //  ' '));
 
     // Kas kliendi autoriseerimine õnnestus?
     if (socket.authorized) {
