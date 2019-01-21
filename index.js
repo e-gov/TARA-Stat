@@ -170,6 +170,8 @@ app.get('/alates', (req, res) => {
     .then(() => {
       if (db !== null) {
         db.collection('autentimised')
+          // Indeksi tagamiseks
+          .createIndex({time:1})
           .find()
           .sort({ time: 1 })
           .limit(1)

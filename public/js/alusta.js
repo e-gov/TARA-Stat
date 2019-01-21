@@ -117,7 +117,7 @@ function pariYldstatistika() {
     k + '-' + p;
   var kuuMuster = d.getFullYear() + '-' + k;
 
-  // AJAX-päringutes parem kasutada ajax meetodit
+  // Päri edukaid autentimisi täna
   $.ajax({
     url: '/standard?p=' + paevaMuster,
     method: 'GET',
@@ -144,7 +144,7 @@ function pariYldstatistika() {
     }
   });
 
-  // AJAX-päringutes parem kasutada ajax meetodit
+  // Päri edukaid autentimisi käimasoleval kuul
   $.ajax({
     url: '/standard?p=' + kuuMuster,
     method: 'GET',
@@ -171,7 +171,7 @@ function pariYldstatistika() {
     }
   });
 
-  // AJAX-päringutes parem kasutada ajax meetodit
+  // Päri kirjete koguarv
   $.ajax({
     url: '/kirjeid',
     method: 'GET',
@@ -199,7 +199,7 @@ function pariYldstatistika() {
     }
   });
 
-  // AJAX-päringutes parem kasutada ajax meetodit
+  // Päri vanim kirje
   $.ajax({
     url: '/alates',
     method: 'GET',
