@@ -430,3 +430,4 @@ ERR-02 | Viga logibaasist lugemisel | Kas MongoDB töötab?
 ERR-03 | Valesti moodustatud logikirje | Kontrollida logikirje saatmist TARA-Serveris
 ERR-04 | Logibaasi poole pöörduja autentimine ebaõnnestus | Kontrollida API kasutajanime ja võtit
 ERR-05 | Kirjutamine logibaasi ebaõnnestus | Kontrollida kettamahtu ja kirjutamisõigusi
+ERR-06 | Kustutamine ebaõnnestus | Pöördu rakenduse halduri poole

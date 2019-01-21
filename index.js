@@ -111,7 +111,7 @@ app.get('/standard', function (req, res) {
           }
         )
           .then((data) => {
-            console.log('/standard: väljastan tulemuse: ' + data.toString());
+            // console.log('/standard: väljastan tulemuse: ' + data.toString());
             res.send({ err: null, kirjeid: data });
           })
           .catch((err) => {
@@ -145,7 +145,7 @@ app.get('/kirjeid', (req, res) => {
           })
           .then(
             (c) => {
-              console.log('/kirjeid: Kirjeid kokku: ', c);
+              // console.log('/kirjeid: Kirjeid kokku: ', c);
               res.send({ err: null, kirjeid: c });
             })
           .catch((err) => {
@@ -179,7 +179,7 @@ app.get('/alates', (req, res) => {
           .then(
             (c) => {
               const d = c[0].time.substr(0, 10);
-              console.log('/alates: Vanim logikirje: ', d);
+              // console.log('/alates: Vanim logikirje: ', d);
               res.send({ err: null, alates: d });
             })
           .catch((err) => {
@@ -200,7 +200,7 @@ app.get('/alates', (req, res) => {
 
 // Kustuta kirjed, vastavalt päringumustrile
 app.delete('/kustuta', (req, res) => {
-  console.log('Alustan kustutamist');
+  // console.log('Alustan kustutamist');
   /* Võta päringu query-osast sirvikust saadetud perioodimuster */
   const p = req.query.p; // kui parameeter päringus puudub, siis undefined
   var r = (p) ? new RegExp(p) : new RegExp('.*'); // regex
@@ -214,12 +214,12 @@ app.delete('/kustuta', (req, res) => {
             })
           .then((opTulemus) => {
             var k = opTulemus.deletedCount;
-            console.log('Kustutasin ' + k + ' kirjet');
+            // console.log('Kustutasin ' + k + ' kirjet');
             res.send({ err: null, kustutati: k });
           })
           .catch((err) => {
-            console.log('/kustuta: ERR-02: Kustutamine ebaõnnestus');
-            res.send({ err: "ERR-02: Kustutamine ebaõnnestus" });
+            console.log('/kustuta: ERR-06: Kustutamine ebaõnnestus');
+            res.send({ err: "ERR-06: Kustutamine ebaõnnestus" });
           });
       }
       else {
@@ -275,7 +275,7 @@ app.get('/stat', (req, res) => {
           ])
           .toArray()
           .then((kirjed) => {
-            console.log('/stat: Päring baasi täidetud. Leitud kirjeid: ' +
+            // console.log('/stat: Päring baasi täidetud. Leitud kirjeid: ' +
               kirjed.length);
             res.send(
               { err: null, kirjed: kirjed });
@@ -338,12 +338,12 @@ app.get('/status', function (req, res) {
 async function looYhendus() {
   try {
     if (globClient && globClient.isConnected()) {
-      console.log('Ühendus olemas');
+      // console.log('Ühendus olemas');
       return;
     }
     var klient = await MongoClient.connect(MONGODB_URL,
       { useNewUrlParser: true });
-    console.log('Ühendus loodud');
+    // console.log('Ühendus loodud');
     globClient = klient;
     db = klient.db('logibaas');
   }
@@ -404,7 +404,7 @@ function salvestaLogikirje(logikirje) {
     console.log("ERR-05: Kirjutamine logibaasi ebaõnnestus");
   }
   else {
-    console.log(' Kirje lisatud logibaasi');
+    // console.log(' Kirje lisatud logibaasi');
   }
 }
 
@@ -468,17 +468,17 @@ var TLS_S_options = {
 const tcpTlsServer = tls.createServer(
   TLS_S_options,
   (socket) => {
-    console.log('TLS Server: ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
+    // console.log('TLS Server: ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
     let kliendisert = socket.getPeerCertificate();
-    console.log('TLS Server: klient esitas serdi:');
-    console.log(JSON.stringify(
+    // console.log('TLS Server: klient esitas serdi:');
+    // console.log(JSON.stringify(
       kliendisert,
       ['subject', 'issuer', 'C', 'O', 'CN', 'valid_from', 'valid_to'],
       ' '));
 
     // Kas kliendi autoriseerimine õnnestus?
     if (socket.authorized) {
-      console.log("TLS Server: autoriseerisin ühenduse.");
+      // console.log("TLS Server: autoriseerisin ühenduse.");
     }
     else {
       console.log("TLS Server: ei autoriseerinud ühendust " +
@@ -512,7 +512,7 @@ const tcpTlsServer = tls.createServer(
 
     // Andmete saabumise käsitleja
     socket.on('data', function (data) {
-      console.log('Saadud: ' + data.length + ' baiti');
+      // console.log('Saadud: ' + data.length + ' baiti');
       // Võta andmepuhvrisse kirjutamise lukk
       lock.writeLock(function (release) {
         // Lisa saabunud andmed puhvrisse
@@ -539,7 +539,7 @@ const tcpTlsServer = tls.createServer(
     // Ühenduse sulgemise käsitleja
     socket.on('close',
       () => {
-        console.log('TARA-Stat: ühendus suletud');
+        // console.log('TARA-Stat: ühendus suletud');
       });
 
     // Ühenduse vea käsitleja
@@ -549,7 +549,7 @@ const tcpTlsServer = tls.createServer(
         console.log(errorMessage);
       });
 
-    console.log('Ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
+    // console.log('Ühendusevõtt aadressilt ' + socket.remoteAddress + ':' + socket.remotePort);
     socket.write(`TARA-Stat kuuldel\r\n`);
 
   });
