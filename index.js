@@ -42,7 +42,7 @@ var config = require('/opt/tara-stat/config/config.js');
 // -------- 3 Globaalsed muutujad -------- 
 // MongoDB klient. Operatsioon "connection" teeb MongoClient uue
 // instantsi, mis omistatakse allolevale muutujale.
-var globClient = MongoClient;
+var globClient;
 // Ühendus MongoDB andmebaasiga "logibaas". Deklareeritud siin,
 // et oleks elutukse väljastajas kättesaadav.
 var db;
@@ -336,12 +336,12 @@ app.get('/status', function (req, res) {
 async function looYhendus() {
   try {
     if (globClient && globClient.isConnected()) {
-      // console.log('Ühendus olemas');
+      console.log('Ühendus olemas');
       return;
     }
     var klient = await MongoClient.connect(MONGODB_URL,
       { useNewUrlParser: true });
-    // console.log('Ühendus loodud');
+    console.log('Ühendus loodud');
     globClient = klient;
     db = klient.db('logibaas');
   }

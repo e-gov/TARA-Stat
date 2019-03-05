@@ -196,7 +196,7 @@ Kaustastruktuur
 - `  scripts`  - paigaldusskriptid
 - `  docs`     - avalik dokumentatsioon
 
-- `/opt/tara-stat/log.txt` -- TARA-Stat veebirakenduse logi
+- `/opt/tara-stat/tara-stat/log.txt` -- TARA-Stat veebirakenduse logi
 - `/lib/systemd/system/tarastat.service` -- TARA-Stat veebirakenduse systemd haldusüksuse kirjeldusfail
 
 - `/etc/mongod.conf` -- MongoDB konf-ifail
@@ -305,6 +305,8 @@ TARA-Stat masinas saab teenuste `tarastat` ja `mongod` ülalolekut kontrollida:
 Probleemide lahendamiseks saab kasutada teenuse enda logisid (vt jaotis "Olulised asukohad"):
 
 `sudo journalctl -u tarastat` (`tarastat` koondlogi vaatamine vahendiga `journalctl`)
+
+`tail /opt/tara-stat/tara-stat/log.txt` -- TARA-Stat veebirakenduse logi
 
 `tail /var/log/mongodb/mongod.log` (andmebaasisüsteemi logi)
 
